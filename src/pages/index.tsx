@@ -10,17 +10,25 @@ const Home: NextPage = () => {
   const { data: session } = useSession();
   if (session) {
     return (
-      <div>
-        Signed in as {session.user?.email} <br />
+      <div className="text-center justify-center space-y-4">
         <h1>{res.data?.greeting}</h1>
-        <button onClick={() => signOut()}>Sign out</button>
+        <button
+          className="bg-red-500 p-2 rounded hover:bg-red-400"
+          onClick={() => signOut()}
+        >
+          Sign out
+        </button>
       </div>
     );
   }
   return (
     <div>
-      Not signed in <br />
-      <button onClick={() => signIn()}>Sign in</button>
+      <button
+        className="bg-blue-500 p-2 rounded hover:bg-blue-400"
+        onClick={() => signIn("google")}
+      >
+        Sign in with Google
+      </button>
     </div>
   );
 };
