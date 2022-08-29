@@ -1,7 +1,7 @@
 // components/Footer.tsx
 
 const Footer = () => {
-  return <div>Footer</div>;
+  return <div className="text-center">Footer</div>;
 };
 
 export default Footer;
