@@ -14,11 +14,9 @@ const Layout: React.FC<Props> = ({ children }) => {
       <Head>
         <title>WatchBox</title>
       </Head>
-      <div className="flex flex-col h-screen">
+      <div className="flex flex-col justify-between h-screen">
         <Header />
-        <main className="grid justify-center h-full place-items-center">
-          {children}
-        </main>
+        <main>{children}</main>
         <Footer />
       </div>
     </>

@@ -2,7 +2,8 @@
 
 import type { NextPage } from "next";
 import { trpc } from "../utils/trpc";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useSession,  signOut } from "next-auth/react";
+import Login from "../components/Login";
 
 const Home: NextPage = () => {
   const res = trpc.useQuery(["example.hello", { text: "from ChatBox" }]);
@@ -23,12 +24,13 @@ const Home: NextPage = () => {
   }
   return (
     <div>
-      <button
+      {/* <button
         className="bg-blue-500 p-2 rounded hover:bg-blue-400"
         onClick={() => signIn("google")}
       >
         Sign in with Google
-      </button>
+      </button> */}
+      <Login />
     </div>
   );
 };
