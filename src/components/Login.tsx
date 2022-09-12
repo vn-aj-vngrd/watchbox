@@ -6,25 +6,30 @@ const Login = () => {
   return (
     <div className="flex flex-col justify-center min-h-full py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        {/* <img
-            className="w-auto h-12 mx-auto"
-            src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg"
-            alt="Workflow"
-          /> */}
-        <h2 className="mt-6 text-3xl font-extrabold text-center text-gray-900">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="#2563EB"
+          className="w-6 h-6 mx-auto"
+        >
+          <path d="M12.378 1.602a.75.75 0 00-.756 0L3 6.632l9 5.25 9-5.25-8.622-5.03zM21.75 7.93l-9 5.25v9l8.628-5.032a.75.75 0 00.372-.648V7.93zM11.25 22.18v-9l-9-5.25v8.57a.75.75 0 00.372.648l8.628 5.033z" />
+        </svg>
+        <h2 className="mt-6 text-3xl font-bold text-center text-gray-900 dark:text-white">
           WatchBox
         </h2>
-        <p className="mt-2 text-sm text-center text-gray-600">Quote here...</p>
+        <p className="mt-2 text-sm text-center text-gray-600 dark:text-white">
+          Manage, track, and share your favorite movies and TV shows.
+        </p>
       </div>
 
       <div>
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-          <div className="px-4 py-8 bg-white shadow sm:rounded-lg sm:px-10">
+          <div className="px-4 py-8 bg-white shadow sm:rounded-lg sm:px-10 dark:bg-[#212121]">
             <form className="space-y-6">
               <div>
                 <label
                   htmlFor="email"
-                  className="block text-sm font-medium text-gray-700"
+                  className="block text-sm font-medium text-gray-700 dark:text-white"
                 >
                   Email address
                 </label>
@@ -56,7 +61,7 @@ const Login = () => {
                   <div className="w-full border-t border-gray-300" />
                 </div>
                 <div className="relative flex justify-center text-sm">
-                  <span className="px-2 text-gray-500 bg-white">
+                  <span className="px-2 text-gray-500 bg-white dark:bg-black dark:text-white">
                     Or continue with
                   </span>
                 </div>
