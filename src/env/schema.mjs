@@ -7,7 +7,6 @@ import { z } from "zod";
  */
 export const serverSchema = z.object({
   DATABASE_URL: z.string().url(),
-  DATABASE_URL_POSTGRES: z.string().url(),
   NODE_ENV: z.enum(["development", "test", "production"]),
   NEXTAUTH_SECRET: z.string(),
   NEXTAUTH_URL: z.string().url(),
@@ -15,8 +14,8 @@ export const serverSchema = z.object({
   GOOGLE_CLIENT_SECRET: z.string(),
   TWITTER_CLIENT_ID: z.string(),
   TWITTER_CLIENT_SECRET: z.string(),
-  FACEBOOK_CLIENT_ID: z.string(),
-  FACEBOOK_CLIENT_SECRET: z.string(),
+  DISCORD_CLIENT_ID: z.string(),
+  DISCORD_CLIENT_SECRET: z.string(),
 });
 
 /**
