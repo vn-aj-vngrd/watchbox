@@ -14,11 +14,49 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-model Example {
-    id String @id @default(cuid())
+model Box {
+    id         String      @id @default(cuid())
+    userId     String
+    boxTitle   String
+    boxLink    String
+    created_at DateTime    @default(now())
+    updated_at DateTime    @default(now())
+    Component  Component[]
+    user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-// Necessary for Next auth
+model Component {
+    id            String   @id @default(cuid())
+    boxId         String
+    componentName String
+    xAxis         Int
+    yAxis         Int
+    Entry         Entry[]
+    created_at    DateTime @default(now())
+    updated_at    DateTime @default(now())
+    box           Box      @relation(fields: [boxId], references: [id], onDelete: Cascade)
+}
+
+model Entry {
+    id          String    @id @default(cuid())
+    componentId String
+    entryTitle  String
+    note        String
+    review      String
+    rating      Int
+    created_at  DateTime  @default(now())
+    updated_at  DateTime  @default(now())
+    component   Component @relation(fields: [componentId], references: [id], onDelete: Cascade)
+}
+
+model Pin {
+    id         String   @id @default(cuid())
+    userId     String
+    pinnedId   String
+    created_at DateTime @default(now())
+    user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
 model Account {
     id                String  @id @default(cuid())
     userId            String
@@ -53,6 +91,10 @@ model User {
     image         String?
     accounts      Account[]
     sessions      Session[]
+    Box           Box[]
+    created_at    DateTime  @default(now())
+    updated_at    DateTime  @default(now())
+    Pin           Pin[]
 }
 
 model VerificationToken {

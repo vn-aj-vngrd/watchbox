@@ -2,7 +2,8 @@
 
 import type { NextPage } from "next";
 import { trpc } from "../utils/trpc";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
+import Login from "../components/Login";
 
 const Home: NextPage = () => {
   const res = trpc.useQuery(["example.hello", { text: "from ChatBox" }]);
@@ -10,10 +11,10 @@ const Home: NextPage = () => {
   const { data: session } = useSession();
   if (session) {
     return (
-      <div className="text-center justify-center space-y-4">
+      <div className="justify-center space-y-4 text-center">
         <h1>{res.data?.greeting}</h1>
         <button
-          className="bg-red-500 p-2 rounded hover:bg-red-400"
+          className="p-2 bg-red-500 rounded hover:bg-red-400"
           onClick={() => signOut()}
         >
           Sign out
@@ -21,16 +22,7 @@ const Home: NextPage = () => {
       </div>
     );
   }
-  return (
-    <div>
-      <button
-        className="bg-blue-500 p-2 rounded hover:bg-blue-400"
-        onClick={() => signIn("google")}
-      >
-        Sign in with Google
-      </button>
-    </div>
-  );
+  return <Login />;
 };
 
 export default Home;
