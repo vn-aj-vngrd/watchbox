@@ -5,7 +5,7 @@ generator client {
 
 datasource db {
     provider             = "cockroachdb"
-    url                  = env("DATABASE_URL_POSTGRES")
+    url                  = env("DATABASE_URL")
     referentialIntegrity = "prisma"
 }
 
