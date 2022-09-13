@@ -2,7 +2,7 @@
 
 import type { GetServerSidePropsContext, NextPage } from "next";
 import { trpc } from "../utils/trpc";
-import { useSession, signOut, getSession } from "next-auth/react";
+import { signOut, getSession } from "next-auth/react";
 
 const Home: NextPage = () => {
   const res = trpc.useQuery(["example.hello", { text: "from ChatBox" }]);
