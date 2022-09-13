@@ -1,4 +1,5 @@
 // src/pages/_app.tsx
+
 import { httpBatchLink } from "@trpc/client/links/httpBatchLink";
 import { loggerLink } from "@trpc/client/links/loggerLink";
 import { withTRPC } from "@trpc/next";
@@ -8,6 +9,7 @@ import superjson from "superjson";
 import Layout from "../components/Layout";
 import type { AppRouter } from "../server/router";
 import { ThemeProvider } from "next-themes";
+import NextNProgress from "nextjs-progressbar";
 import "../styles/globals.css";
 
 const MyApp: AppType = ({
@@ -18,7 +20,16 @@ const MyApp: AppType = ({
     <SessionProvider session={session}>
       <ThemeProvider attribute="class">
         <Layout>
-          <Component {...pageProps} />
+          <>
+            <NextNProgress
+              color="#3b82f6"
+              height={5}
+              options={{
+                showSpinner: false,
+              }}
+            />
+            <Component {...pageProps} />
+          </>
         </Layout>
       </ThemeProvider>
     </SessionProvider>
