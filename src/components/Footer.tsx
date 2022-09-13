@@ -3,9 +3,9 @@
 const Footer = () => {
   return (
     <footer className="py-2 text-sm border-t bg-white dark:border-[#525252] dark:bg-black">
-      <div className="container flex justify-between px-4 mx-auto">
+      <div className="flex justify-between px-4 mx-auto">
         <div>
-          <p>Copyright © {new Date().getFullYear()} | NextDevs </p>
+          <p>© {new Date().getFullYear()} | NextDevs </p>
         </div>
 
         <div>
