@@ -14,7 +14,7 @@ export const authOptions: NextAuthOptions = {
     signIn: "/auth/signin",
     // signOut: "/auth/signin", // "/auth/signout",
     error: "/auth/error",
-    verifyRequest: "/auth/verifyrequest",
+    verifyRequest: "/auth/verifyrequest?provider=email&type=email",
     newUser: "/auth/newuser",
   },
   // Include user.id on session
