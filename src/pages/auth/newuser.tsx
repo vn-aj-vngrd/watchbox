@@ -25,7 +25,7 @@ const newuser = () => {
       <Meta title="Watchbox - Welcome" />
       <PageAlert
         elem={
-          <h2 className="flex justify-center mb-5">
+          <h2 className="flex justify-center mb-10">
             <MegaphoneIcon className="w-12 h-12 text-blue-600" />
           </h2>
         }
