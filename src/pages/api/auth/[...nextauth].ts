@@ -12,7 +12,7 @@ import { env } from "../../../env/server.mjs";
 export const authOptions: NextAuthOptions = {
   pages: {
     signIn: "/auth/signin",
-    signOut: "/auth/signin", // "/auth/signout",
+    // signOut: "/auth/signin", // "/auth/signout",
     error: "/auth/error",
     verifyRequest: "/auth/verifyrequest",
     newUser: "/auth/newuser",
