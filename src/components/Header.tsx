@@ -1,7 +1,6 @@
 // components/Header.tsx
 
 import { HomeIcon, HeartIcon, UserIcon } from "@heroicons/react/24/solid";
-import Link from "next/link";
 import router, { useRouter } from "next/router";
 import ToggleTheme from "./ToggleTheme";
 import ReactTooltip from "react-tooltip";
