@@ -44,13 +44,15 @@ const SigninForm = () => {
       case "CredentialsSignin":
         setCallback({
           isCallback: true,
-          message: "You need to sign in with your email address.",
+          message:
+            "There has been a problem signing you in. Please try again later.",
         });
         break;
       case "Signin":
         setCallback({
           isCallback: true,
-          message: "You need to sign in with your email address.",
+          message:
+            "There has been a problem signing you in. Please try again later.",
         });
         break;
       case "OAuthCallback":
@@ -62,31 +64,36 @@ const SigninForm = () => {
       case "OAuthCreateAccount":
         setCallback({
           isCallback: true,
-          message: "You need to sign in with your email address.",
+          message:
+            "There has been a problem signing you in. Please try again later.",
         });
         break;
       case "EmailCreateAccount":
         setCallback({
           isCallback: true,
-          message: "You need to sign in with your email address.",
+          message:
+            "There has been a problem signing you in. Please try again later.",
         });
         break;
       case "Callback":
         setCallback({
           isCallback: true,
-          message: "You need to sign in with your email address.",
+          message:
+            "There has been a problem signing you in. Please try again later.",
         });
         break;
       case "OAuthSignin":
         setCallback({
           isCallback: true,
-          message: "You need to sign in with your email address.",
+          message:
+            "There has been a problem signing you in. Please try again later.",
         });
         break;
       case "EmailSignin":
         setCallback({
           isCallback: true,
-          message: "You need to sign in with your email address.",
+          message:
+            "There has been a problem signing you in. Please try again later.",
         });
         break;
       default:
@@ -108,7 +115,7 @@ const SigninForm = () => {
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
-          className="w-6 h-6 mx-auto fill-blue-600 dark:fill-blue-500"
+          className="w-6 h-6 mx-auto fill-blue-600"
         >
           <path d="M12.378 1.602a.75.75 0 00-.756 0L3 6.632l9 5.25 9-5.25-8.622-5.03zM21.75 7.93l-9 5.25v9l8.628-5.032a.75.75 0 00.372-.648V7.93zM11.25 22.18v-9l-9-5.25v8.57a.75.75 0 00.372.648l8.628 5.033z" />
         </svg>
@@ -154,7 +161,7 @@ const SigninForm = () => {
                   htmlFor="email"
                   className="block text-sm font-medium text-gray-700 dark:text-white"
                 >
-                  Email address
+                  Email Address
                 </label>
                 <div className="relative mt-1 rounded-md shadow-sm">
                   <input
@@ -194,11 +201,11 @@ const SigninForm = () => {
                 {isLoading ? (
                   <button
                     type="submit"
-                    className="flex justify-center items-center w-full px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                    className="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none "
                   >
                     <svg
                       role="status"
-                      className="inline mr-3 w-4 h-4 text-white animate-spin"
+                      className="inline w-4 h-4 mr-3 text-white animate-spin"
                       viewBox="0 0 100 101"
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
@@ -217,7 +224,7 @@ const SigninForm = () => {
                 ) : (
                   <button
                     type="submit"
-                    className="flex justify-center items-center w-full px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                    className="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none"
                   >
                     Sign in
                   </button>
@@ -228,7 +235,7 @@ const SigninForm = () => {
             <div className="mt-6">
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-gray-300" />
+                  <div className="w-full border-t border-gray-300 dark:border-grayColor" />
                 </div>
                 <div className="relative flex justify-center text-sm">
                   <span className="px-2 text-gray-500 bg-white dark:bg-darkerColor dark:text-white">
@@ -241,7 +248,7 @@ const SigninForm = () => {
                 <div>
                   <button
                     onClick={() => signIn("google")}
-                    className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50"
+                    className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 dark:bg-darkColor dark:text-white dark:border-grayColor dark:hover:bg-grayColor"
                   >
                     <span className="sr-only">Google</span>
                     <svg
@@ -259,7 +266,7 @@ const SigninForm = () => {
                 <div>
                   <button
                     onClick={() => signIn("twitter")}
-                    className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50"
+                    className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 dark:bg-darkColor dark:text-white dark:border-grayColor dark:hover:bg-grayColor"
                   >
                     <span className="sr-only">Twitter</span>
                     <svg
@@ -277,7 +284,7 @@ const SigninForm = () => {
                 <div>
                   <button
                     onClick={() => signIn("discord")}
-                    className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50"
+                    className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 dark:bg-darkColor dark:text-white dark:border-grayColor dark:hover:bg-grayColor"
                   >
                     <span className="sr-only">Discord</span>
                     <svg

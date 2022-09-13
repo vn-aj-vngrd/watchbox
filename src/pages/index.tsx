@@ -2,32 +2,40 @@
 
 import type { GetServerSidePropsContext, NextPage } from "next";
 import { trpc } from "../utils/trpc";
-import { signOut } from "next-auth/react";
-import { authOptions } from "./api/auth/[...nextauth]";
-import { unstable_getServerSession } from "next-auth/next";
+import PageAlert from "../components/PageAlert";
+import { MegaphoneIcon } from "@heroicons/react/24/solid";
+import { getServerSideSession } from "../utils/session";
+import Spinner from "../components/Spinner";
+import Meta from "../components/Meta";
 
 const Home: NextPage = () => {
   const res = trpc.useQuery(["example.hello", { text: "from ChatBox" }]);
 
+  if (!res.data) {
+    return <Spinner />;
+  }
+
   return (
-    <div className="justify-center space-y-4 text-center">
-      <h1>{res.data?.greeting}</h1>
-      <button
-        className="p-2 text-white bg-red-500 rounded hover:bg-red-400"
-        onClick={() => signOut()}
-      >
-        Sign out
-      </button>
-    </div>
+    <>
+      <Meta title="Watchbox - Home" />
+      <div className="justify-center space-y-4 text-center">
+        <PageAlert
+          elem={
+            <h2 className="flex justify-center mb-5">
+              <MegaphoneIcon className="w-12 h-12 text-blue-600" />
+            </h2>
+          }
+          title="Welcome back to WatchBox!"
+          description={`${res.data?.greeting}!`}
+          btnTitle="Get Started"
+        />
+      </div>
+    </>
   );
 };
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const session = await unstable_getServerSession(
-    ctx.req,
-    ctx.res,
-    authOptions
-  );
+  const session = await getServerSideSession(ctx);
 
   if (!session) {
     return {
