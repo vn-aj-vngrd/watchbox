@@ -1,14 +1,21 @@
-// components/Login.tsx
+// components/SigninForm.tsx
+
 import { useForm, SubmitHandler } from "react-hook-form";
 import { signIn } from "next-auth/react";
 import { ExclamationCircleIcon } from "@heroicons/react/24/solid";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 type Inputs = {
   email: string;
 };
 
-const Login = () => {
+type Callback = {
+  isCallback: boolean;
+  message: string;
+};
+
+const SigninForm = () => {
   const {
     register,
     handleSubmit,
@@ -18,13 +25,79 @@ const Login = () => {
   } = useForm<Inputs>();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [callback, setCallback] = useState<Callback>({
+    isCallback: false,
+    message: "",
+  });
+  const { query } = useRouter();
 
   useEffect(() => {
     reset();
-  }, [reset]);
+    switch (query.error) {
+      case "OAuthAccountNotLinked":
+        setCallback({
+          isCallback: true,
+          message:
+            "To confirm your identity, please sign in with the same account you used originally.",
+        });
+        break;
+      case "CredentialsSignin":
+        setCallback({
+          isCallback: true,
+          message: "You need to sign in with your email address.",
+        });
+        break;
+      case "Signin":
+        setCallback({
+          isCallback: true,
+          message: "You need to sign in with your email address.",
+        });
+        break;
+      case "OAuthCallback":
+        setCallback({
+          isCallback: true,
+          message: "OAuth failed, please try again.",
+        });
+        break;
+      case "OAuthCreateAccount":
+        setCallback({
+          isCallback: true,
+          message: "You need to sign in with your email address.",
+        });
+        break;
+      case "EmailCreateAccount":
+        setCallback({
+          isCallback: true,
+          message: "You need to sign in with your email address.",
+        });
+        break;
+      case "Callback":
+        setCallback({
+          isCallback: true,
+          message: "You need to sign in with your email address.",
+        });
+        break;
+      case "OAuthSignin":
+        setCallback({
+          isCallback: true,
+          message: "You need to sign in with your email address.",
+        });
+        break;
+      case "EmailSignin":
+        setCallback({
+          isCallback: true,
+          message: "You need to sign in with your email address.",
+        });
+        break;
+      default:
+        setCallback({
+          isCallback: false,
+          message: "",
+        });
+    }
+  }, [reset, query]);
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log(data);
     setIsLoading(true);
     signIn("email", { email: data.email });
   };
@@ -49,7 +122,32 @@ const Login = () => {
 
       <div>
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-          <div className="px-4 py-8 bg-white shadow sm:rounded-lg sm:px-10 dark:bg-[#212121]">
+          <div className="px-4 py-8 bg-white shadow sm:rounded-lg sm:px-10 dark:bg-darkerColor">
+            {callback.isCallback && (
+              <div
+                className="flex p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800"
+                role="alert"
+              >
+                <svg
+                  aria-hidden="true"
+                  className="flex-shrink-0 inline w-5 h-5 mr-3"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                    clipRule="evenodd"
+                  ></path>
+                </svg>
+                <span className="sr-only">Info</span>
+                <div>
+                  <span className="font-medium">Error: </span>{" "}
+                  {callback.message}
+                </div>
+              </div>
+            )}
             <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
               <div>
                 <label
@@ -65,7 +163,7 @@ const Login = () => {
                     className={
                       errors.email
                         ? "block w-full px-3 py-2 placeholder-red-400 border border-red-400 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-red-500 focus:border-blue-500 sm:text-sm"
-                        : "block w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:border-[#525252] dark:focus:border-blue-500 dark:focus:ring-blue-400"
+                        : "block w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:border-darkColor dark:focus:border-blue-500 dark:focus:ring-blue-400"
                     }
                     {...register("email", {
                       required: {
@@ -133,7 +231,7 @@ const Login = () => {
                   <div className="w-full border-t border-gray-300" />
                 </div>
                 <div className="relative flex justify-center text-sm">
-                  <span className="px-2 text-gray-500 bg-white dark:bg-[#212121] dark:text-white">
+                  <span className="px-2 text-gray-500 bg-white dark:bg-darkerColor dark:text-white">
                     Or sign in with
                   </span>
                 </div>
@@ -203,4 +301,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SigninForm;
