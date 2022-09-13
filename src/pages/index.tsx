@@ -21,7 +21,7 @@ const Home: NextPage = () => {
       <div className="justify-center space-y-4 text-center">
         <PageAlert
           elem={
-            <h2 className="flex justify-center mb-5">
+            <h2 className="flex justify-center mb-10">
               <MegaphoneIcon className="w-12 h-12 text-blue-600" />
             </h2>
           }

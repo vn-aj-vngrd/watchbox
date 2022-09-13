@@ -11,7 +11,7 @@ const error = () => {
       <Meta title="Watchbox - Sign In Error" />
       <PageAlert
         elem={
-          <h2 className="flex justify-center mb-5">
+          <h2 className="flex justify-center mb-10">
             <XCircleIcon className="w-12 h-12 text-blue-500" />
           </h2>
         }
