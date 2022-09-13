@@ -1,28 +1,42 @@
 // src/pages/index.tsx
 
-import type { NextPage } from "next";
+import type { GetServerSidePropsContext, NextPage } from "next";
 import { trpc } from "../utils/trpc";
-import { useSession, signOut } from "next-auth/react";
-import Login from "../components/Login";
+import { useSession, signOut, getSession } from "next-auth/react";
 
 const Home: NextPage = () => {
   const res = trpc.useQuery(["example.hello", { text: "from ChatBox" }]);
 
-  const { data: session } = useSession();
-  if (session) {
-    return (
-      <div className="justify-center space-y-4 text-center">
-        <h1>{res.data?.greeting}</h1>
-        <button
-          className="p-2 bg-red-500 rounded hover:bg-red-400"
-          onClick={() => signOut()}
-        >
-          Sign out
-        </button>
-      </div>
-    );
+  return (
+    <div className="justify-center space-y-4 text-center">
+      <h1>{res.data?.greeting}</h1>
+      <button
+        className="p-2 text-white bg-red-500 rounded hover:bg-red-400"
+        onClick={() => signOut()}
+      >
+        Sign out
+      </button>
+    </div>
+  );
+};
+
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const session = await getSession(ctx);
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/auth/signin",
+        permanent: false,
+      },
+    };
   }
-  return <Login />;
+
+  return {
+    props: {
+      session,
+    },
+  };
 };
 
 export default Home;
