@@ -1,9 +1,11 @@
+// src/auth/signin.tsx
+
 import type { GetServerSidePropsContext } from "next";
 import { getSession } from "next-auth/react";
-import Login from "../../components/Login";
+import SigninForm from "../../components/SigninForm";
 
 const signin = () => {
-  return <Login />;
+  return <SigninForm />;
 };
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {

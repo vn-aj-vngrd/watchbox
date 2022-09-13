@@ -2,7 +2,9 @@
 
 import type { GetServerSidePropsContext, NextPage } from "next";
 import { trpc } from "../utils/trpc";
-import { signOut, getSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
+import { authOptions } from "./api/auth/[...nextauth]";
+import { unstable_getServerSession } from "next-auth/next";
 
 const Home: NextPage = () => {
   const res = trpc.useQuery(["example.hello", { text: "from ChatBox" }]);
@@ -21,7 +23,11 @@ const Home: NextPage = () => {
 };
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const session = await getSession(ctx);
+  const session = await unstable_getServerSession(
+    ctx.req,
+    ctx.res,
+    authOptions
+  );
 
   if (!session) {
     return {
