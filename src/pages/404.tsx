@@ -3,10 +3,10 @@
 import Meta from "../components/Meta";
 import PageAlert from "../components/PageAlert";
 
-export default function Custom404() {
+const Custom404 = () => {
   return (
     <>
-      <Meta title="Watchbox - 404" />
+      <Meta title="Watchbox | 404" />
       <PageAlert
         elem={
           <p className="text-4xl font-extrabold text-red-600 sm:text-5xl">
@@ -14,9 +14,11 @@ export default function Custom404() {
           </p>
         }
         title="Page not found"
-        description="Please check the URL in the address bar and try again."
+        description="The link may be broken, or the page may have been removed. Check to see if the link you're trying to open is correct."
         btnTitle="Go back to home"
       />
     </>
   );
-}
+};
+
+export default Custom404;
