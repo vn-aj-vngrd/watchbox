@@ -10,7 +10,7 @@ import Meta from "../components/Meta";
 import { Session } from "next-auth";
 
 const Home: NextPage = () => {
-  const res = trpc.useQuery(["example.hello", { text: "from ChatBox" }]);
+  const res = trpc.useQuery(["box.getBoxes", { skip: 0, take: 5 }]);
 
   if (!res.data) {
     return <Spinner />;
@@ -27,7 +27,7 @@ const Home: NextPage = () => {
             </h2>
           }
           title="Welcome back to WatchBox!"
-          description={`${res.data?.greeting}!`}
+          // description={`${res.data?.greeting}!`}
           btnTitle="Get Started"
         />
       </div>
