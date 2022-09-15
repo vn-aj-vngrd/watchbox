@@ -7,6 +7,7 @@ import { MegaphoneIcon } from "@heroicons/react/24/solid";
 import { getServerSideSession } from "../utils/session";
 import Spinner from "../components/Spinner";
 import Meta from "../components/Meta";
+import { Session } from "next-auth";
 
 const Home: NextPage = () => {
   const res = trpc.useQuery(["example.hello", { text: "from ChatBox" }]);
@@ -17,7 +18,7 @@ const Home: NextPage = () => {
 
   return (
     <>
-      <Meta title="Watchbox - Home" />
+      <Meta title="Watchbox | Dashboard" />
       <div className="justify-center space-y-4 text-center">
         <PageAlert
           elem={
@@ -35,7 +36,7 @@ const Home: NextPage = () => {
 };
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const session = await getServerSideSession(ctx);
+  const session: Session | null = await getServerSideSession(ctx);
 
   if (!session) {
     return {
@@ -47,9 +48,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   }
 
   return {
-    props: {
-      session,
-    },
+    props: {},
   };
 };
 

@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import {
   ArrowLeftOnRectangleIcon,
@@ -7,20 +7,34 @@ import {
 } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import { signOut, useSession } from "next-auth/react";
+import Spinner from "./Spinner";
+import router from "next/router";
 
 const Account = () => {
   const { data: session } = useSession();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    setIsLoading(false);
+  }, []);
+
+  const onClick = () => {
+    setIsLoading(true);
+    signOut();
+  };
+
+  if (isLoading) {
+    return <Spinner isGlobal={true} />;
+  }
 
   return (
     <Menu as="div" className="relative inline-block text-left">
       <div>
-        <Menu.Button className="inline-flex items-center p-1 text-gray-700 bg-white border border-gray-300 rounded-full shadow-sm hover:bg-gray-200 focus:outline-none dark:bg-darkColor dark:text-white dark:border-transparent dark:hover:bg-grayColor">
+        <Menu.Button className="inline-flex items-center p-1 text-gray-900 bg-white border border-gray-300 rounded-full shadow-sm hover:bg-gray-200 focus:outline-none dark:bg-darkColor dark:text-white dark:border-transparent dark:hover:bg-grayColor">
           <div className="w-5 h-5">
             {session?.user?.image ? (
               <Image
-                loader={() =>
-                  `${session?.user?.image}?w=500&q=100` || ""
-                }
+                loader={() => `${session?.user?.image}?w=500&q=100` || ""}
                 src={session?.user?.image || ""}
                 alt=""
                 layout="fill"
@@ -51,22 +65,22 @@ const Account = () => {
           </div>
           <div className="py-1 ">
             <Menu.Item>
-              <a
-                href="#"
-                className="flex items-center w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-white dark:hover:bg-grayColor"
+              <button
+                onClick={() => router.push("/account")}
+                className="flex items-center w-full px-4 py-2 text-sm text-left text-gray-900 hover:bg-gray-100 hover:text-gray-900 dark:text-white dark:hover:bg-grayColor"
               >
-                <Cog8ToothIcon className="w-6 h-6  p-[0.1rem] mr-2 border border-gray-300 rounded-full dark:text-white" />
+                <Cog8ToothIcon className="w-6 h-6 p-[0.1rem] mr-2 rounded-full dark:text-white" />
                 Account Settings
-              </a>
+              </button>
             </Menu.Item>
           </div>
           <div className="py-1">
             <Menu.Item>
               <button
-                onClick={() => signOut()}
-                className="flex items-center w-full px-4 py-2 text-sm text-left text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-white dark:hover:bg-grayColor"
+                onClick={onClick}
+                className="flex items-center w-full px-4 py-2 text-sm text-left text-gray-900 hover:bg-gray-100 hover:text-gray-900 dark:text-white dark:hover:bg-grayColor"
               >
-                <ArrowLeftOnRectangleIcon className="w-6 h-6 p-[0.1rem] mr-2 border border-gray-300 rounded-full dark:text-white" />
+                <ArrowLeftOnRectangleIcon className="w-6 h-6 p-[0.1rem] mr-2 rounded-full dark:text-white" />
                 Sign Out
               </button>
             </Menu.Item>

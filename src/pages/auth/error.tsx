@@ -8,11 +8,11 @@ import { XCircleIcon } from "@heroicons/react/24/solid";
 const error = () => {
   return (
     <>
-      <Meta title="Watchbox - Sign In Error" />
+      <Meta title="Watchbox | Sign In Error" />
       <PageAlert
         elem={
           <h2 className="flex justify-center mb-10">
-            <XCircleIcon className="w-12 h-12 text-blue-500" />
+            <XCircleIcon className="w-12 h-12 text-red-500" />
           </h2>
         }
         title="Sign in Error"

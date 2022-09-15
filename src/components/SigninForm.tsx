@@ -119,7 +119,7 @@ const SigninForm = () => {
         >
           <path d="M12.378 1.602a.75.75 0 00-.756 0L3 6.632l9 5.25 9-5.25-8.622-5.03zM21.75 7.93l-9 5.25v9l8.628-5.032a.75.75 0 00.372-.648V7.93zM11.25 22.18v-9l-9-5.25v8.57a.75.75 0 00.372.648l8.628 5.033z" />
         </svg>
-        <h2 className="mt-6 text-3xl font-bold text-center text-gray-900 dark:text-white">
+        <h2 className="mt-4 text-3xl font-bold text-center text-gray-900 dark:text-white">
           WatchBox
         </h2>
         <p className="mt-2 text-sm text-center text-gray-600 dark:text-white">
