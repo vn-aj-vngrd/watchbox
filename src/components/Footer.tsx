@@ -3,7 +3,7 @@
 const Footer = () => {
   return (
     <footer className="py-2 text-sm border-t bg-white dark:border-[#525252] dark:bg-black">
-      <div className="flex justify-between px-4 mx-auto">
+      <div className="flex justify-between px-4 mx-auto text-gray-900 dark:text-white">
         <div>
           <p>© {new Date().getFullYear()} | NextDevs </p>
         </div>

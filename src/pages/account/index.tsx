@@ -1,15 +1,12 @@
-// src/auth/signin.tsx
-
-import type { GetServerSidePropsContext } from "next";
+import { GetServerSidePropsContext } from "next";
 import Meta from "../../components/Meta";
-import SigninForm from "../../components/SigninForm";
 import { getServerSideSession } from "../../utils/session";
 
-const signin = () => {
+const index = () => {
   return (
     <>
-      <Meta title="Watchbox | Sign In" />
-      <SigninForm />
+      <Meta title="WatchBox | Account Settings" />
+      <p className="text-center">Account Settings </p>
     </>
   );
 };
@@ -17,10 +14,10 @@ const signin = () => {
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   const session = await getServerSideSession(ctx);
 
-  if (session) {
+  if (!session) {
     return {
       redirect: {
-        destination: "/",
+        destination: "/auth/signin",
         permanent: false,
       },
     };
@@ -31,4 +28,4 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   };
 };
 
-export default signin;
+export default index;
