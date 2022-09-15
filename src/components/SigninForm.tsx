@@ -5,6 +5,7 @@ import { signIn } from "next-auth/react";
 import { ExclamationCircleIcon } from "@heroicons/react/24/solid";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import Spinner from "./Spinner";
 
 type Inputs = {
   email: string;
@@ -24,7 +25,9 @@ const SigninForm = () => {
     formState: { errors },
   } = useForm<Inputs>();
 
+  const [isEmailLoading, setIsEmailLoading] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const [callback, setCallback] = useState<Callback>({
     isCallback: false,
     message: "",
@@ -33,6 +36,8 @@ const SigninForm = () => {
 
   useEffect(() => {
     reset();
+    setIsEmailLoading(false);
+    setIsLoading(false);
     switch (query.error) {
       case "OAuthAccountNotLinked":
         setCallback({
@@ -105,9 +110,13 @@ const SigninForm = () => {
   }, [reset, query]);
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    setIsLoading(true);
+    setIsEmailLoading(true);
     signIn("email", { email: data.email });
   };
+
+  if (isLoading) {
+    return <Spinner isGlobal={true} />;
+  }
 
   return (
     <div className="flex flex-col justify-center min-h-full py-12 sm:px-6 lg:px-8">
@@ -198,7 +207,7 @@ const SigninForm = () => {
               </div>
 
               <div>
-                {isLoading ? (
+                {isEmailLoading ? (
                   <button
                     type="submit"
                     className="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none "
@@ -247,7 +256,10 @@ const SigninForm = () => {
               <div className="grid grid-cols-3 gap-3 mt-6">
                 <div>
                   <button
-                    onClick={() => signIn("google")}
+                    onClick={() => {
+                      setIsLoading(true);
+                      signIn("google");
+                    }}
                     className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 dark:bg-darkColor dark:text-white dark:border-grayColor dark:hover:bg-grayColor"
                   >
                     <span className="sr-only">Google</span>
@@ -265,7 +277,10 @@ const SigninForm = () => {
 
                 <div>
                   <button
-                    onClick={() => signIn("twitter")}
+                    onClick={() => {
+                      setIsLoading(true);
+                      signIn("twitter");
+                    }}
                     className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 dark:bg-darkColor dark:text-white dark:border-grayColor dark:hover:bg-grayColor"
                   >
                     <span className="sr-only">Twitter</span>
@@ -283,7 +298,10 @@ const SigninForm = () => {
 
                 <div>
                   <button
-                    onClick={() => signIn("discord")}
+                    onClick={() => {
+                      setIsLoading(true);
+                      signIn("discord");
+                    }}
                     className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 dark:bg-darkColor dark:text-white dark:border-grayColor dark:hover:bg-grayColor"
                   >
                     <span className="sr-only">Discord</span>
