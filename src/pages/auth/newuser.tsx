@@ -22,7 +22,7 @@ const newuser = () => {
 
   return (
     <>
-      <Meta title="Watchbox - Welcome" />
+      <Meta title="Watchbox | Welcome" />
       <PageAlert
         elem={
           <h2 className="flex justify-center mb-10">

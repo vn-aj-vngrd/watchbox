@@ -3,10 +3,10 @@
 import Meta from "../components/Meta";
 import PageAlert from "../components/PageAlert";
 
-export default function Custom500() {
+const Custom500 = () => {
   return (
     <>
-      <Meta title="Watchbox - 505" />
+      <Meta title="Watchbox | 505" />
       <PageAlert
         elem={
           <p className="text-4xl font-extrabold text-red-600 sm:text-5xl">
@@ -19,4 +19,6 @@ export default function Custom500() {
       />
     </>
   );
-}
+};
+
+export default Custom500;

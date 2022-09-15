@@ -22,7 +22,7 @@ const ToogleTheme = () => {
         <button
           onClick={() => setTheme("light")}
           type="button"
-          className="inline-flex items-center p-1 text-gray-700 bg-white border border-gray-300 rounded-full shadow-sm hover:bg-gray-200 focus:outline-none dark:bg-darkColor dark:text-white dark:border-transparent dark:hover:bg-grayColor"
+          className="inline-flex items-center p-1 text-gray-900 bg-white border border-gray-300 rounded-full shadow-sm hover:bg-gray-200 focus:outline-none dark:bg-darkColor dark:text-white dark:border-transparent dark:hover:bg-grayColor"
         >
           <SunIcon className="h-5" />
         </button>
@@ -34,7 +34,7 @@ const ToogleTheme = () => {
         <button
           onClick={() => setTheme("dark")}
           type="button"
-          className="inline-flex items-center p-1 text-gray-700 bg-white border border-gray-300 rounded-full shadow-sm hover:bg-gray-200 focus:outline-none dark:bg-darkColor dark:text-white dark:border-transparent dark:hover:bg-grayColor"
+          className="inline-flex items-center p-1 text-gray-900 bg-white border border-gray-300 rounded-full shadow-sm hover:bg-gray-200 focus:outline-none dark:bg-darkColor dark:text-white dark:border-transparent dark:hover:bg-grayColor"
         >
           <MoonIcon className="h-5" />
         </button>

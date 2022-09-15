@@ -1,13 +1,15 @@
 // src/auth/verifyrequest.tsx
 
 import { ArrowRightOnRectangleIcon } from "@heroicons/react/24/solid";
+import { GetServerSidePropsContext } from "next";
 import Meta from "../../components/Meta";
 import PageAlert from "../../components/PageAlert";
+import { getServerSideSession } from "../../utils/session";
 
 const verifyrequest = () => {
   return (
     <>
-      <Meta title="Watchbox - Verify Request" />
+      <Meta title="Watchbox | Verify Request" />
       <PageAlert
         elem={
           <h2 className="flex justify-center mb-10">
@@ -20,6 +22,23 @@ const verifyrequest = () => {
       />
     </>
   );
+};
+
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const session = await getServerSideSession(ctx);
+
+  if (session) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
 };
 
 export default verifyrequest;
