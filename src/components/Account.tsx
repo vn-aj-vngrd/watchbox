@@ -6,12 +6,16 @@ import {
   UserIcon,
 } from "@heroicons/react/24/solid";
 import Image from "next/image";
-import { signOut, useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import Spinner from "./Spinner";
 import router from "next/router";
+import { Session } from "next-auth";
 
-const Account = () => {
-  const { data: session } = useSession();
+type Props = {
+  session: Session | null;
+};
+
+const Account: React.FC<Props> = ({ session }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {

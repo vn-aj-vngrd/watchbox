@@ -85,6 +85,7 @@ model User {
     emailVerified DateTime?
     cloudinaryId  String?
     image         String?
+    isNewUser     Boolean   @default(true)
     accounts      Account[]
     sessions      Session[]
     Box           Box[]

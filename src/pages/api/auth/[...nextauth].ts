@@ -19,10 +19,21 @@ export const authOptions: NextAuthOptions = {
   },
   // Include user.id on session
   callbacks: {
-    session({ session, user }) {
+    async session({ session, user }) {
+      const res = await prisma.user.findFirst({
+        where: {
+          id: user.id,
+        },
+        select: {
+          isNewUser: true,
+        },
+      });
+
       if (session.user) {
         session.user.id = user.id;
+        session.user.isNewUser = res?.isNewUser;
       }
+
       return session;
     },
   },
