@@ -81,6 +81,7 @@ CREATE TABLE "User" (
     "name" STRING,
     "email" STRING,
     "emailVerified" TIMESTAMP(3),
+    "cloudinaryId" STRING,
     "image" STRING,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,

@@ -83,13 +83,15 @@ model User {
     name          String?
     email         String?   @unique
     emailVerified DateTime?
+    cloudinaryId  String?
     image         String?
+    isNewUser     Boolean   @default(true)
     accounts      Account[]
     sessions      Session[]
     Box           Box[]
+    Pin           Pin[]
     created_at    DateTime  @default(now())
     updated_at    DateTime  @default(now())
-    Pin           Pin[]
 }
 
 model VerificationToken {

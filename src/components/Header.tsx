@@ -1,13 +1,16 @@
 // components/Header.tsx
 
 import { HomeIcon, PlusIcon } from "@heroicons/react/24/solid";
-import router, { useRouter } from "next/router";
+import router from "next/router";
 import ToggleTheme from "./ToggleTheme";
 import Account from "./Account";
+import { Session } from "next-auth";
 
-const Header = () => {
-  const path = useRouter().pathname;
+type Props = {
+  session: Session | null;
+};
 
+const Header: React.FC<Props> = ({ session }) => {
   return (
     <header className="sticky top-0 z-10 py-4 bg-white border-b border-gray-200 shadow-sm dark:bg-black dark:border-[#525252]">
       <div className="flex flex-wrap items-center justify-between px-4 mx-auto ">
@@ -40,10 +43,7 @@ const Header = () => {
 
         <div>
           <div className="flex items-center space-x-5 ">
-            {path === "/" ||
-            path === "/account" ||
-            path === "/box" ||
-            path === "/entry" ? (
+            {session ? (
               <>
                 <div>
                   <button
@@ -58,20 +58,18 @@ const Header = () => {
 
                 <div>
                   <button
+                    onClick={() => router.push("/")}
                     type="button"
                     className="inline-flex items-center p-1 text-gray-900 bg-white border border-gray-300 rounded-full shadow-sm hover:bg-gray-200 focus:outline-none dark:bg-darkColor dark:text-white dark:border-transparent dark:hover:bg-grayColor"
                   >
-                    <HomeIcon
-                      className="w-5 h-5"
-                      onClick={() => router.push("/")}
-                    />
+                    <HomeIcon className="w-5 h-5" />
                   </button>
                 </div>
 
                 <div>{<ToggleTheme />}</div>
 
                 <div>
-                  <Account />
+                  <Account session={session} />
                 </div>
               </>
             ) : (

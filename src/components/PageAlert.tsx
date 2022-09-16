@@ -22,12 +22,14 @@ const PageAlert: React.FC<Props> = ({ elem, title, description, btnTitle }) => {
         </p>
       </div>
       <div className="flex justify-center mt-10">
-        <button
-          onClick={() => router.push("/")}
-          className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-500 focus:outline-none"
-        >
-          {btnTitle || ""}
-        </button>
+        {btnTitle && (
+          <button
+            onClick={() => router.push("/")}
+            className="inline-flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-500 focus:outline-none"
+          >
+            {btnTitle}
+          </button>
+        )}
       </div>
     </div>
   );
