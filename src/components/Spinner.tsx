@@ -10,7 +10,6 @@ const Spinner: React.FC<Props> = ({ isGlobal }) => {
       <div
         role="status"
         className="fixed top-0 bottom-0 left-0 right-0 z-50 flex flex-col items-center justify-center w-full h-full m-auto overflow-auto"
-        style={{ backgroundColor: "rgba(0,0,0,0.3)" }}
       >
         <svg
           aria-hidden="true"
