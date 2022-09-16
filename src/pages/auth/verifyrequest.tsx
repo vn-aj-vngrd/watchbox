@@ -25,15 +25,17 @@ const verifyrequest = () => {
 };
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const session = await getServerSideSession(ctx);
+  if (ctx) {
+    const session = await getServerSideSession(ctx);
 
-  if (session) {
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-    };
+    if (session) {
+      return {
+        redirect: {
+          destination: "/",
+          permanent: false,
+        },
+      };
+    }
   }
 
   return {
