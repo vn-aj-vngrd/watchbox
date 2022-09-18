@@ -11,7 +11,6 @@ import { ArrowRightIcon, MegaphoneIcon } from "@heroicons/react/24/solid";
 
 import { useCallback, useEffect, useRef } from "react";
 import ReactCanvasConfetti from "react-canvas-confetti";
-import Link from "next/link";
 
 const description = [
   "WatchBox streamlines and simplifies the process of creating movie and TV show lists for you to share with others or keep for yourself. ",
@@ -100,7 +99,7 @@ const Welcome = () => {
               <MegaphoneIcon className="w-10 h-10 text-blue-600" />
             </h2>
           }
-          title={`Welcome, ${session?.user?.name?.split(" ")[0] || null}!`}
+          title={`Welcome, ${session?.user?.name?.split(" ")[0] || " User"}!`}
           description={description}
         />
 
@@ -113,10 +112,9 @@ const Welcome = () => {
           </button>
           <p className="text-sm text-darkColor dark:text-white">
             By clicking the button, you agree to the {""}
-            <Link href="terms_conditions">
-              <span className="text-blue-500">terms and conditions</span>
-            </Link>
-            .
+            <button className="text-blue-500 hover:underline">
+              terms and conditions.
+            </button>
           </p>
         </div>
       </div>

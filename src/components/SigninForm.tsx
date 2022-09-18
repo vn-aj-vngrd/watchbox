@@ -115,7 +115,6 @@ const SigninForm = () => {
     setIsEmailLoading(true);
     signIn("email", {
       email: data.email,
-      callbackUrl: `/verifyrequest/${data.email}`,
     });
   };
 
