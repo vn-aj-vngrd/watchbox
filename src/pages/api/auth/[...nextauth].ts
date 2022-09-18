@@ -12,10 +12,9 @@ import { env } from "../../../env/server.mjs";
 export const authOptions: NextAuthOptions = {
   pages: {
     signIn: "/auth/signin",
-    // signOut: "/auth/signin", // "/auth/signout",
     error: "/auth/error",
-    verifyRequest: "/auth/verifyrequest?provider=email&type=email",
-    newUser: "/auth/newuser",
+    verifyRequest: "/auth/verifyrequest",
+    newUser: "/auth/newuser/",
   },
   // Include user.id on session
   callbacks: {

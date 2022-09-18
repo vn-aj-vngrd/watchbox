@@ -13,16 +13,7 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   if (ctx) {
     const session: Session | null = await getServerSideSession(ctx);
 
-    if (session?.user?.isNewUser === false) {
-      return {
-        redirect: {
-          destination: "/",
-          permanent: false,
-        },
-      };
-    }
-
-    if (!session) {
+    if (!session || session?.user?.isNewUser === false) {
       return {
         notFound: true,
       };
