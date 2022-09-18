@@ -1,9 +1,8 @@
 import { createProtectedRouter } from "./protected-router";
 import { z } from "zod";
 
-export const authRouter = createProtectedRouter().query(
-  "validateVerifyRequest",
-  {
+export const authRouter = createProtectedRouter()
+  .query("validateVerifyRequest", {
     input: z
       .object({
         email: z.string().email(),
@@ -16,5 +15,16 @@ export const authRouter = createProtectedRouter().query(
         },
       });
     },
-  }
-);
+  })
+  .mutation("getStarted", {
+    async resolve({ ctx }) {
+      return ctx.prisma.user.update({
+        where: {
+          id: ctx.session.user.id,
+        },
+        data: {
+          isNewUser: false,
+        },
+      });
+    },
+  });
