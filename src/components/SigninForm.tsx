@@ -34,6 +34,8 @@ const SigninForm = () => {
   });
   const { query } = useRouter();
 
+  console.log(useRouter())
+
   useEffect(() => {
     reset();
     setIsEmailLoading(false);
@@ -113,7 +115,7 @@ const SigninForm = () => {
     setIsEmailLoading(true);
     signIn("email", {
       email: data.email,
-      callbackUrl: "/verifyrequest/",
+      callbackUrl: `/verifyrequest/${data.email}`,
     });
   };
 
