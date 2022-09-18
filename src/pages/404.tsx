@@ -3,6 +3,11 @@
 import Meta from "../components/Meta";
 import PageAlert from "../components/PageAlert";
 
+const description = [
+  "The page you are looking for does not exist.",
+  "Please check the URL and try again.",
+]
+
 const Custom404 = () => {
   return (
     <>
@@ -14,7 +19,7 @@ const Custom404 = () => {
           </p>
         }
         title="Page not found"
-        description="The link may be broken, or the page may have been removed. Check to see if the link you're trying to open is correct."
+        description={description}
         btnTitle="Go back to home"
       />
     </>

@@ -2,7 +2,7 @@
 
 import { useForm, SubmitHandler } from "react-hook-form";
 import { signIn } from "next-auth/react";
-import { ExclamationCircleIcon } from "@heroicons/react/24/solid";
+import { ExclamationCircleIcon, SquaresPlusIcon } from "@heroicons/react/24/solid";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Spinner from "./Spinner";
@@ -111,7 +111,10 @@ const SigninForm = () => {
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     setIsEmailLoading(true);
-    signIn("email", { email: data.email });
+    signIn("email", {
+      email: data.email,
+      callbackUrl: "/verifyrequest/",
+    });
   };
 
   if (isLoading) {
@@ -121,13 +124,7 @@ const SigninForm = () => {
   return (
     <div className="flex flex-col justify-center min-h-full py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          className="w-6 h-6 mx-auto fill-blue-600"
-        >
-          <path d="M12.378 1.602a.75.75 0 00-.756 0L3 6.632l9 5.25 9-5.25-8.622-5.03zM21.75 7.93l-9 5.25v9l8.628-5.032a.75.75 0 00.372-.648V7.93zM11.25 22.18v-9l-9-5.25v8.57a.75.75 0 00.372.648l8.628 5.033z" />
-        </svg>
+        <SquaresPlusIcon className="w-6 h-6 mx-auto fill-blue-600" />
         <h2 className="mt-4 text-3xl font-bold text-center text-gray-900 dark:text-white">
           WatchBox
         </h2>
@@ -228,7 +225,7 @@ const SigninForm = () => {
                         fill="currentColor"
                       />
                     </svg>
-                    Signing in
+                    Loading
                   </button>
                 ) : (
                   <button

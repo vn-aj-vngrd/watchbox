@@ -3,24 +3,29 @@
 import router from "next/router";
 
 type Props = {
-  elem?: JSX.Element;
-  title?: string;
-  description?: string;
-  btnTitle?: string;
+  elem?: JSX.Element | null;
+  title?: string | null;
+  description?: string[] | null;
+  btnTitle?: string | null;
 };
 
 const PageAlert: React.FC<Props> = ({ elem, title, description, btnTitle }) => {
   return (
     <div className="items-center mx-auto my-auto text-center max-w-max">
       {elem && <>{elem}</>}
-      <div className="">
-        <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl dark:text-white">
-          {title || "Welcome to WatchBox!"}
-        </h1>
-        <p className="mt-4 text-base text-gray-500 dark:text-white">
-          {description || ""}
-        </p>
-      </div>
+
+      <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl dark:text-white">
+        {title || "Welcome to WatchBox!"}
+      </h1>
+      <p className="px-5 mt-4 text-base text-gray-500 dark:text-white">
+        {description?.map((desc, key) => (
+          <span key={key}>
+            {desc}
+            <br />
+          </span>
+        ))}
+      </p>
+
       <div className="flex justify-center mt-10">
         {btnTitle && (
           <button

@@ -3,6 +3,11 @@
 import Meta from "../components/Meta";
 import PageAlert from "../components/PageAlert";
 
+const description = [
+  "Something went wrong on our end.",
+  "Please try again later.",
+]
+
 const Custom500 = () => {
   return (
     <>
@@ -14,7 +19,7 @@ const Custom500 = () => {
           </p>
         }
         title="Server-side error"
-        description="Please try again later."
+        description={description}
         btnTitle="Go back to home"
       />
     </>

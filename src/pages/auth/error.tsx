@@ -5,6 +5,11 @@ import Meta from "../../components/Meta";
 import PageAlert from "../../components/PageAlert";
 import { XCircleIcon } from "@heroicons/react/24/solid";
 
+const description = [
+  "Something went wrong on our end.",
+  "Please try again later.",
+];
+
 const error = () => {
   return (
     <>
@@ -16,7 +21,7 @@ const error = () => {
           </h2>
         }
         title="Sign in Error"
-        description="There has been a problem signing you in. Please use another provider or try again."
+        description={description}
         btnTitle="Go back to home"
       />
     </>

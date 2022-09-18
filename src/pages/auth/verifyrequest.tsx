@@ -6,6 +6,11 @@ import Meta from "../../components/Meta";
 import PageAlert from "../../components/PageAlert";
 import { getServerSideSession } from "../../utils/session";
 
+const description = [
+  "A link has been sent to your email address",
+  "The link will expire in 10 minutes",
+];
+
 const verifyrequest = () => {
   return (
     <>
@@ -17,30 +22,30 @@ const verifyrequest = () => {
           </h2>
         }
         title="Verify Request"
-        description="A link has been sent to your email address. Please click on the link to sign in within 10 minutes."
+        description={description}
         btnTitle="Go back to home"
       />
     </>
   );
 };
 
-export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  if (ctx) {
-    const session = await getServerSideSession(ctx);
+// export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+//   if (ctx) {
+//     const session = await getServerSideSession(ctx);
 
-    if (session) {
-      return {
-        redirect: {
-          destination: "/",
-          permanent: false,
-        },
-      };
-    }
-  }
+//     if (session) {
+//       return {
+//         redirect: {
+//           destination: "/",
+//           permanent: false,
+//         },
+//       };
+//     }
+//   }
 
-  return {
-    props: {},
-  };
-};
+//   return {
+//     props: {},
+//   };
+// };
 
 export default verifyrequest;
