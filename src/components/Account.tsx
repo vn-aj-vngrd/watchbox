@@ -24,7 +24,7 @@ const Account: React.FC<Props> = ({ session }) => {
 
   const onClick = () => {
     setIsLoading(true);
-    signOut();
+    signOut({ redirect: true, callbackUrl: "/auth/signin" });
   };
 
   if (isLoading) {
