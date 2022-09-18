@@ -13,7 +13,7 @@ export const authOptions: NextAuthOptions = {
   pages: {
     signIn: "/auth/signin",
     error: "/auth/error",
-    verifyRequest: "/auth/verifyrequest/:email",
+    verifyRequest: "/auth/verifyrequest",
     newUser: "/auth/newuser/",
   },
   // Include user.id on session
