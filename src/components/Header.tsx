@@ -41,9 +41,9 @@ const Header: React.FC<Props> = ({ session }) => {
                   <button
                     onClick={() => router.push("/")}
                     type="button"
-                    className="inline-flex items-center p-1 text-gray-900 bg-white border border-gray-300 rounded-full shadow-sm hover:bg-gray-200 focus:outline-none dark:bg-darkColor dark:text-white dark:border-transparent dark:hover:bg-grayColor"
+                    className="inline-flex items-center p-1 bg-white border border-gray-300 rounded-full shadow-sm hover:bg-gray-200 focus:outline-none dark:bg-darkColor dark:text-white dark:border-transparent dark:hover:bg-grayColor"
                   >
-                    <HomeIcon className="w-5 h-5" />
+                    <HomeIcon className="w-5 h-5 fill-black dark:fill-white" />
                   </button>
                 </div>
                 <div>
@@ -51,9 +51,9 @@ const Header: React.FC<Props> = ({ session }) => {
                     data-for="fav"
                     data-tip="Favorites"
                     type="button"
-                    className="inline-flex items-center p-1 text-gray-900 bg-white border border-gray-300 rounded-full shadow-sm hover:bg-gray-200 focus:outline-none dark:bg-darkColor dark:text-white dark:border-transparent dark:hover:bg-grayColor"
+                    className="inline-flex items-center p-1 bg-white border border-gray-300 rounded-full shadow-sm hover:bg-gray-200 focus:outline-none dark:bg-darkColor dark:text-white dark:border-transparent dark:hover:bg-grayColor"
                   >
-                    <PencilSquareIcon className="w-5 h-5" />
+                    <PencilSquareIcon className="w-5 h-5 fill-black dark:fill-white" />
                   </button>
                 </div>
 
