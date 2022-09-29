@@ -5,6 +5,7 @@ import { getServerSideSession } from "../utils/session";
 // import { trpc } from "../utils/trpc";
 // import Spinner from "../components/Spinner";
 import Meta from "../components/Meta";
+import Dashboard from "../components/Dashboard";
 import { Session } from "next-auth";
 
 const Home: NextPage = () => {
@@ -19,12 +20,12 @@ const Home: NextPage = () => {
       <Meta title="Watchbox | Dashboard" />
 
       {/* Edit this component below */}
-      <div className="justify-center text-center">
-        <h1>Dashboard</h1>
-      </div>
+      <Dashboard />
     </>
   );
 };
+
+
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   if (ctx) {

@@ -46,16 +46,7 @@ const Header: React.FC<Props> = ({ session }) => {
                     <HomeIcon className="w-5 h-5 fill-black dark:fill-white" />
                   </button>
                 </div>
-                <div>
-                  <button
-                    data-for="fav"
-                    data-tip="Favorites"
-                    type="button"
-                    className="inline-flex items-center p-1 bg-white border border-gray-300 rounded-full shadow-sm hover:bg-gray-200 focus:outline-none dark:bg-darkColor dark:text-white dark:border-transparent dark:hover:bg-grayColor"
-                  >
-                    <PencilSquareIcon className="w-5 h-5 fill-black dark:fill-white" />
-                  </button>
-                </div>
+
 
                 <div>{<ToggleTheme />}</div>
 
