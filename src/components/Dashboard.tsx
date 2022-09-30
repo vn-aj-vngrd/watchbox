@@ -1,5 +1,6 @@
 import { useListState } from "@mantine/hooks";
-import { ChevronLeftIcon, ChevronRightIcon, CubeIcon, HeartIcon } from "@heroicons/react/24/solid";
+import { ChevronLeftIcon, ChevronRightIcon, PlusIcon, CubeIcon, HeartIcon }
+  from "@heroicons/react/24/solid";
 
 // XXX: temporary data; change this to db api call or whatever
 const boxList = [
@@ -28,8 +29,7 @@ const Dashboard = () => {
       <div className="flex-grow-1 flex items-center flex-col">
         <div>
           <div className="text-2xl font-semibold p-2 flex items-center">
-            <CubeIcon className="h-5 w-5 text-blue-600" />
-
+            <CubeIcon className="h-5 w-5 mt-1 text-blue-600" />
             <h1 className="p-2">Boxes</h1>
           </div>
 
@@ -56,8 +56,7 @@ const Dashboard = () => {
       <div className="flex-grow-1 flex items-center flex-col">
         <div>
           <div className="text-2xl font-semibold p-2 flex items-center">
-            <HeartIcon className="h-5 w-5 text-blue-600" />
-
+            <HeartIcon className="h-5 w-5 mt-1 text-blue-600" />
             <h1 className="p-2">Favorites</h1>
           </div>
 
@@ -81,7 +80,7 @@ const Dashboard = () => {
         </div>
       </div>
       <button className="fixed z-90 bottom-12 right-8 bg-white w-12 h-12 rounded-full drop-shadow-lg flex justify-center items-center text-white text-4xl">
-        <ChevronRightIcon className="h-6 w-6" />
+        <PlusIcon className="h-6 w-6 text-blue-600" />
       </button>
     </div>
   );
