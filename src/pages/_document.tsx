@@ -5,7 +5,7 @@ export default class _Document extends Document {
     return (
       <Html>
         <Head>
-          <Meta />
+          <Meta isDoc={true} />
         </Head>
         <body>
           <Main />
