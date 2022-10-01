@@ -19,7 +19,7 @@ const Home: NextPage = () => {
     <>
       <Meta title="Watchbox | Dashboard" />
 
-      <div className=" min-h-[89.4vh] container mx-auto ">
+      <div className=" min-h-[89.4vh] container mx-auto px-4">
         <Dashboard />
       </div>
     </>

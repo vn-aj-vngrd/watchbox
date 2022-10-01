@@ -59,7 +59,7 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="w-full py-6 space-y-12 ">
+    <div className="w-full py-6 space-y-8">
       <div className="flex flex-col items-center justify-between space-y-4 md:flex-row">
         <div className="flex space-x-6">
           <button className="text-2xl subpixel-antialiased font-medium hover:text-blue-600">
