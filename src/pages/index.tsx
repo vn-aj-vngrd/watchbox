@@ -17,7 +17,7 @@ const Home: NextPage = () => {
 
   return (
     <>
-      <Meta title="Watchbox | Dashboard" />
+      <Meta />
 
       <div className=" min-h-[89.4vh] container mx-auto px-4">
         <Dashboard />
