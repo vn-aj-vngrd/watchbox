@@ -1,5 +1,12 @@
-import { useListState } from "@mantine/hooks";
-import { ChevronLeftIcon, PlusIcon, MagnifyingGlassIcon } from "@heroicons/react/24/solid";
+import {
+  ChevronLeftIcon,
+  PlusIcon,
+  MagnifyingGlassIcon,
+  ChevronRightIcon,
+  ChevronDownIcon,
+} from "@heroicons/react/24/solid";
+import { useEffect, useState } from "react";
+import Boxes from "./Boxes";
 
 // XXX: temporary data; change this to db api call or whatever
 const boxList = [
@@ -28,84 +35,132 @@ const favList = [
   { boxEntriesCount: 6 },
 ];
 
-const Dashboard = () => {
+const sortOptions = [
+  { id: "one", name: "Newest" },
+  { id: "two", name: "Oldest" },
+  { id: "three", name: "A-Z" },
+  { id: "four", name: "Z-A" },
+];
 
-  const [boxes, handleBoxes] = useListState(boxList);
-  const [faves, handleFaves] = useListState(favList);
+const Dashboard = () => {
+  const [boxes] = useState(boxList);
+  const [faves] = useState(favList);
+  const [openSort, setOpenSort] = useState<boolean>(false);
+  const [sortArr, setSortArr] = useState<boolean[]>([]);
+
+  useEffect(() => {
+    setSortArr(Array(sortOptions.length).fill(false));
+  }, []);
+
+  const onSort = (id: number) => {
+    const newSortOptions = Array(sortOptions.length).fill(false);
+    newSortOptions[id] = !newSortOptions[id];
+    setSortArr(newSortOptions);
+  };
 
   return (
-
-
-    <div className="mx-auto w-full lg:w-8/12 px-6 sm:px-8 md:px-12">
-
-      <div className="flex justify-between items-center">
+    <div className="w-full py-6 space-y-12 ">
+      <div className="flex flex-col items-center justify-between space-y-4 md:flex-row">
         <div className="flex space-x-6">
-          <button className="text-2xl font-medium subpixel-antialiased">Boxes</button>
-          <button className="text-2xl font-normal subpixel-antialiased">Favorites</button>
+          <button className="text-2xl subpixel-antialiased font-medium hover:text-blue-600">
+            Boxes
+          </button>
+          <button className="text-2xl subpixel-antialiased font-normal hover:text-blue-600">
+            Favorites
+          </button>
         </div>
 
         <div className="flex space-x-6">
-          <div className="">
-            <button className="flex items-center w-full p-2 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:border-darkColor dark:focus:border-blue-500 dark:focus:ring-blue-400">
+          <div>
+            <button
+              onClick={() => {
+                setOpenSort(!openSort);
+              }}
+              className="inline-flex items-center px-4 py-3 text-sm font-normal text-center text-gray-600 bg-white border rounded-lg outline-none dark:bg-grayColor dark:border-grayColor dark:text-white"
+              type="button"
+            >
               Sort
-              <ChevronLeftIcon className="w-4 h-4 ml-2 -rotate-90" />
+              <ChevronDownIcon className="w-4 h-4 ml-2 text-gray-600 dark:text-white" />
             </button>
+
+            {openSort && (
+              <div className="absolute z-10 w-56 mt-2 bg-white border divide-y divide-gray-200 rounded-lg shadow-sm">
+                <ul>
+                  {sortOptions?.map((item, index) => (
+                    <li key={index}>
+                      <div className="px-4 py-2 hover:bg-gray-100">
+                        <div className="flex items-center space-x-4">
+                          <div>
+                            <input
+                              id={item.id}
+                              checked={sortArr[index]}
+                              onChange={() => onSort(index)}
+                              type="checkbox"
+                              className="w-4 h-4"
+                            />
+                          </div>
+
+                          <div>
+                            <p className="text-sm font-medium text-gray-900 ">
+                              {item.name}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
+
           <div className="flex items-center">
-            <MagnifyingGlassIcon className="ml-2 w-5 h-5 absolute" />
-            <input
-              type="text"
-              placeholder="Search Boxes"
-              className="block w-full p-2 pl-8 placeholder-black border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:border-darkColor dark:focus:border-blue-500 dark:focus:ring-blue-400" />
+            <div className="relative w-full">
+              <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                <MagnifyingGlassIcon className="w-5 h-5 text-gray-500 dark:text-white" />
+              </div>
+              <input
+                type="text"
+                id="searchInput"
+                name="searchInput"
+                // onChange={(e) => onSearch(e.target.value)}
+                className="block w-full p-3 pl-10 text-sm placeholder-gray-600 bg-white border rounded-lg outline-none text-gray-800d dark:placeholder-white dark:bg-grayColor dark:border-grayColor dark:text-white"
+                placeholder="Search Box"
+              />
+            </div>
           </div>
         </div>
-
       </div>
 
-      <div className="my-10 w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 lg:grid-cols-4 xl:grid-cols-5 gap-x-2 gap-y-8 place-content-between">
-        {
-          boxes.slice(0, 10).map((box, index) => (
-            <button key={index} className="flex flex-col items-center group">
-              <div className="w-32 lg:w-36 aspect-square bg-blue-500 rounded-lg shadow-sm hover:scale-105 transition ease-in-out duration-150">
-              </div>
-              <div className="p-2 text-center bg-transparent">
-                <p className="font-normal subpixel-antialiased">Lorem Impsum</p>
-              </div>
+      <Boxes boxes={boxes} />
+
+      <nav className="flex justify-center">
+        <ul className="inline-flex space-x-2">
+          <li>
+            <button className="px-3 py-2 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-grayColor dark:border-grayColor dark:text-white">
+              <ChevronLeftIcon className="w-5 h-5" />
             </button>
-          ))
-        }
-      </div>
+          </li>
+          <li>
+            <button className="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-grayColor dark:border-grayColor dark:text-white">
+              1
+            </button>
+          </li>
 
-      <div className="flex place-content-center h-10">
-        <nav className="flex items-center">
-          <ul className="inline-flex items-center -space-x-px">
-            <li>
-              <a href="#" className="flex py-2 px-3 ml-0 text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                <span className="sr-only">Previous</span>
-                <ChevronLeftIcon className="w-4 h-5" />
-              </a>
-            </li>
-            <li>
-              <a href="#" className="py-2 px-3 text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
-            </li>
-            <li>
-              <a href="#" className="py-2 px-3 text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
-            </li>
-            <li>
-              <a href="#" aria-current="page" className="py-2 px-3 text-blue-600 bg-blue-50 border border-blue-300 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">3</a>
-            </li>
-            <li>
-              <a href="#" className="flex py-2 px-3 text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                <span className="sr-only">Next</span>
-                <ChevronLeftIcon className="w-4 h-5 rotate-180" />
-              </a>
-            </li>
-          </ul>
-        </nav>
-      </div>
+          <li>
+            <button className="px-3 py-2 leading-tight text-white bg-blue-600 border border-blue-600 ">
+              2
+            </button>
+          </li>
 
+          <li>
+            <button className="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-grayColor dark:border-grayColor dark:text-white">
+              <ChevronRightIcon className="w-5 h-5" />
+            </button>
+          </li>
+        </ul>
+      </nav>
     </div>
-
   );
 };
 

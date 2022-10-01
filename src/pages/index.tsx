@@ -19,13 +19,12 @@ const Home: NextPage = () => {
     <>
       <Meta title="Watchbox | Dashboard" />
 
-      {/* Edit this component below */}
-      <Dashboard />
+      <div className=" min-h-[89.4vh] container mx-auto ">
+        <Dashboard />
+      </div>
     </>
   );
 };
-
-
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   if (ctx) {
