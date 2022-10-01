@@ -84,11 +84,11 @@ const Dashboard = () => {
             </button>
 
             {openSort && (
-              <div className="absolute z-10 w-56 mt-2 bg-white border divide-y divide-gray-200 rounded-lg shadow-sm">
+              <div className="absolute z-10 w-56 mt-2 bg-white border divide-y divide-gray-200 rounded-lg shadow-sm dark:bg-grayColor dark:border-grayColor">
                 <ul>
                   {sortOptions?.map((item, index) => (
                     <li key={index}>
-                      <div className="px-4 py-2 hover:bg-gray-100">
+                      <div className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-darkColor">
                         <div className="flex items-center space-x-4">
                           <div>
                             <input
@@ -101,7 +101,7 @@ const Dashboard = () => {
                           </div>
 
                           <div>
-                            <p className="text-sm font-medium text-gray-900 ">
+                            <p className="text-sm font-medium text-gray-600 dark:text-white">
                               {item.name}
                             </p>
                           </div>
