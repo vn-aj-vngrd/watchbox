@@ -1,6 +1,5 @@
 import {
   ChevronLeftIcon,
-  PlusIcon,
   MagnifyingGlassIcon,
   ChevronRightIcon,
   ChevronDownIcon,
@@ -27,13 +26,13 @@ const boxList = [
   { boxTitle: "Dropped", boxEntriesCount: 6 },
 ];
 
-const favList = [
-  { boxEntriesCount: 13 },
-  { boxEntriesCount: 2 },
-  { boxEntriesCount: 1 },
-  { boxEntriesCount: 3 },
-  { boxEntriesCount: 6 },
-];
+// const favList = [
+//   { boxEntriesCount: 13 },
+//   { boxEntriesCount: 2 },
+//   { boxEntriesCount: 1 },
+//   { boxEntriesCount: 3 },
+//   { boxEntriesCount: 6 },
+// ];
 
 const sortOptions = [
   { id: "one", name: "Newest" },
@@ -44,7 +43,7 @@ const sortOptions = [
 
 const Dashboard = () => {
   const [boxes] = useState(boxList);
-  const [faves] = useState(favList);
+  // const [faves] = useState(favList);
   const [openSort, setOpenSort] = useState<boolean>(false);
   const [sortArr, setSortArr] = useState<boolean[]>([]);
 
