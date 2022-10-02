@@ -21,25 +21,19 @@ const Home: NextPage = () => {
 
   return (
     <>
-
       <Meta />
-
-      <div className=" min-h-[89.4vh] container mx-auto px-4">
-        <Dashboard />
-      </div>
 
       {session ? (
         <>
           <Meta title="Watchbox | Dashboard" />
           {/* Edit this component below */}
-          <div className="justify-center text-center">
-            <h1>Dashboard</h1>
+          <div className=" min-h-[89.4vh] container mx-auto px-4">
+            <Dashboard />
           </div>
         </>
       ) : (
         <Spinner isGlobal={true} />
       )}
-
     </>
   );
 };
