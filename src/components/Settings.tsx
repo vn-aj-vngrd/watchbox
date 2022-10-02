@@ -1,7 +1,10 @@
 import { PencilSquareIcon } from "@heroicons/react/24/solid";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 
 const Settings = () => {
+  const { data: session } = useSession();
+
   return (
     <div>
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md py-12 space-y-8">
@@ -20,10 +23,12 @@ const Settings = () => {
               <div className="mx-auto relative w-32 h-32 bg-gray-100 rounded-full dark:bg-gray-600">
                 <Image
                   className="absolute z-0 w-24 h-24 rounded-full"
-                  src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
+                  loader={() => `${session?.user?.image}?w=500&q=100` || ""}
+                  src={session?.user?.image || ""}
                   alt=""
                   layout="fill"
                 />
+                {}
                 <PencilSquareIcon className="absolute bottom-0 right-0 w-8 h-8 z-20 p-1.5 rounded-full bg-white border text-gray-700 shadow-sm dark:bg-grayColor dark:border-grayColor dark:text-white cursor-pointer" />
               </div>
 
