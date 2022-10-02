@@ -1,4 +1,11 @@
-const Boxes = ({ boxes }: any) => {
+type Props = {
+  boxes: {
+    boxTitle: string;
+    boxEntriesCount: number;
+  }[];
+};
+
+const Boxes: React.FC<Props> = ({ boxes }) => {
   return (
     <div className="grid md:w-full w-[80%] gap-x-14 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-y-6 md:gap-y-8 mx-auto">
       {boxes?.map((box, index) => (
