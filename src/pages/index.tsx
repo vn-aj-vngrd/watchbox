@@ -25,7 +25,7 @@ const Home: NextPage = () => {
 
       {session ? (
         <>
-          <Meta title="Watchbox | Dashboard" />
+          <Meta title="Watchbox" />
           {/* Edit this component below */}
           <div className=" min-h-[89.4vh] container mx-auto px-4">
             <Dashboard />
