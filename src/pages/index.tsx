@@ -7,6 +7,8 @@ import { getServerSideSession } from "../utils/session";
 import Meta from "../components/Meta";
 import Dashboard from "../components/Dashboard";
 import { Session } from "next-auth";
+import { useSession } from "next-auth/react";
+import Spinner from "../components/Spinner";
 
 const Home: NextPage = () => {
   // const res = trpc.useQuery(["box.getBoxes", { skip: 0, take: 5 }]);
@@ -15,13 +17,29 @@ const Home: NextPage = () => {
   //   return <Spinner />;
   // }
 
+  const { data: session } = useSession();
+
   return (
     <>
+
       <Meta />
 
       <div className=" min-h-[89.4vh] container mx-auto px-4">
         <Dashboard />
       </div>
+
+      {session ? (
+        <>
+          <Meta title="Watchbox | Dashboard" />
+          {/* Edit this component below */}
+          <div className="justify-center text-center">
+            <h1>Dashboard</h1>
+          </div>
+        </>
+      ) : (
+        <Spinner isGlobal={true} />
+      )}
+
     </>
   );
 };
