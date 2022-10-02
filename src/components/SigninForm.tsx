@@ -2,7 +2,10 @@
 
 import { useForm, SubmitHandler } from "react-hook-form";
 import { signIn } from "next-auth/react";
-import { ExclamationCircleIcon, SquaresPlusIcon } from "@heroicons/react/24/solid";
+import {
+  ExclamationCircleIcon,
+  SquaresPlusIcon,
+} from "@heroicons/react/24/solid";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Spinner from "./Spinner";
@@ -34,7 +37,7 @@ const SigninForm = () => {
   });
   const { query } = useRouter();
 
-  console.log(useRouter())
+  console.log(useRouter());
 
   useEffect(() => {
     reset();
@@ -177,7 +180,7 @@ const SigninForm = () => {
                     className={
                       errors.email
                         ? "block w-full px-3 py-2 placeholder-red-400 border border-red-400 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-red-500 focus:border-blue-500 sm:text-sm"
-                        : "block w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:border-darkColor dark:focus:border-blue-500 dark:focus:ring-blue-400"
+                        : "block w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:border-darkerColor dark:focus:border-blue-500 dark:focus:ring-blue-400"
                     }
                     {...register("email", {
                       required: {
@@ -258,7 +261,7 @@ const SigninForm = () => {
                       setIsLoading(true);
                       signIn("google");
                     }}
-                    className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 dark:bg-darkColor dark:text-white dark:border-grayColor dark:hover:bg-grayColor"
+                    className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 dark:bg-darkColor dark:text-white dark:border-darkerColor dark:hover:bg-grayColor"
                   >
                     <span className="sr-only">Google</span>
                     <svg
@@ -279,7 +282,7 @@ const SigninForm = () => {
                       setIsLoading(true);
                       signIn("twitter");
                     }}
-                    className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 dark:bg-darkColor dark:text-white dark:border-grayColor dark:hover:bg-grayColor"
+                    className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 dark:bg-darkColor dark:text-white dark:border-darkerColor dark:hover:bg-grayColor"
                   >
                     <span className="sr-only">Twitter</span>
                     <svg
@@ -300,7 +303,7 @@ const SigninForm = () => {
                       setIsLoading(true);
                       signIn("discord");
                     }}
-                    className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 dark:bg-darkColor dark:text-white dark:border-grayColor dark:hover:bg-grayColor"
+                    className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 dark:bg-darkColor dark:text-white dark:border-darkerColor dark:hover:bg-grayColor"
                   >
                     <span className="sr-only">Discord</span>
                     <svg
