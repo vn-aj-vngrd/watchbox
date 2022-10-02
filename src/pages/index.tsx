@@ -5,6 +5,7 @@ import { getServerSideSession } from "../utils/session";
 // import { trpc } from "../utils/trpc";
 // import Spinner from "../components/Spinner";
 import Meta from "../components/Meta";
+import Dashboard from "../components/Dashboard";
 import { Session } from "next-auth";
 import { useSession } from "next-auth/react";
 import Spinner from "../components/Spinner";
@@ -20,6 +21,13 @@ const Home: NextPage = () => {
 
   return (
     <>
+
+      <Meta />
+
+      <div className=" min-h-[89.4vh] container mx-auto px-4">
+        <Dashboard />
+      </div>
+
       {session ? (
         <>
           <Meta title="Watchbox | Dashboard" />
@@ -31,6 +39,7 @@ const Home: NextPage = () => {
       ) : (
         <Spinner isGlobal={true} />
       )}
+
     </>
   );
 };
