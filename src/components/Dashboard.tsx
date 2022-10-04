@@ -1,38 +1,53 @@
 import {
-  ChevronLeftIcon,
   MagnifyingGlassIcon,
-  ChevronRightIcon,
   ChevronDownIcon,
 } from "@heroicons/react/24/solid";
 import { useEffect, useState } from "react";
 import Boxes from "./Boxes";
+import Favorites from "./Favorites";
+import Pagination from "./Pagination";
 
 // XXX: temporary data; change this to db api call or whatever
 const boxList = [
-  { boxTitle: "Watched", boxEntriesCount: 13 },
-  { boxTitle: "Watching", boxEntriesCount: 2 },
-  { boxTitle: "On Hold", boxEntriesCount: 1 },
-  { boxTitle: "Planned", boxEntriesCount: 3 },
-  { boxTitle: "Dropped", boxEntriesCount: 6 },
-  { boxTitle: "Watched", boxEntriesCount: 13 },
-  { boxTitle: "Watching", boxEntriesCount: 2 },
-  { boxTitle: "On Hold", boxEntriesCount: 1 },
-  { boxTitle: "Planned", boxEntriesCount: 3 },
-  { boxTitle: "Dropped", boxEntriesCount: 6 },
-  { boxTitle: "Watched", boxEntriesCount: 13 },
-  { boxTitle: "Watching", boxEntriesCount: 2 },
-  { boxTitle: "On Hold", boxEntriesCount: 1 },
-  { boxTitle: "Planned", boxEntriesCount: 3 },
-  { boxTitle: "Dropped", boxEntriesCount: 6 },
+  { boxTitle: "Watched1", boxEntriesCount: 13 },
+  { boxTitle: "Watching2", boxEntriesCount: 2 },
+  { boxTitle: "On Hold3", boxEntriesCount: 1 },
+  { boxTitle: "Planned4", boxEntriesCount: 3 },
+  { boxTitle: "Dropped5", boxEntriesCount: 6 },
+  { boxTitle: "Watched6", boxEntriesCount: 13 },
+  { boxTitle: "Watching7", boxEntriesCount: 2 },
+  { boxTitle: "On Hold8", boxEntriesCount: 1 },
+  { boxTitle: "Planned9", boxEntriesCount: 3 },
+  { boxTitle: "Dropped10", boxEntriesCount: 6 },
+  { boxTitle: "Watched11", boxEntriesCount: 13 },
+  { boxTitle: "Watching12", boxEntriesCount: 2 },
+  { boxTitle: "On Hold13", boxEntriesCount: 1 },
+  { boxTitle: "Planned14", boxEntriesCount: 3 },
+  { boxTitle: "Dropped15", boxEntriesCount: 6 },
+  { boxTitle: "Watched16", boxEntriesCount: 13 },
+  { boxTitle: "Watching17", boxEntriesCount: 2 },
+  { boxTitle: "On Hold18", boxEntriesCount: 1 },
+  { boxTitle: "Planned19", boxEntriesCount: 3 },
+  { boxTitle: "Dropped20", boxEntriesCount: 6 },
+  { boxTitle: "Watched21", boxEntriesCount: 13 },
+  { boxTitle: "Watching22", boxEntriesCount: 2 },
+  { boxTitle: "On Hold23", boxEntriesCount: 1 },
+  { boxTitle: "Planned24", boxEntriesCount: 3 },
+  { boxTitle: "Dropped25", boxEntriesCount: 6 },
+  { boxTitle: "Watched26", boxEntriesCount: 13 },
+  { boxTitle: "Watching27", boxEntriesCount: 2 },
+  { boxTitle: "On Hold28", boxEntriesCount: 1 },
+  { boxTitle: "Planned29", boxEntriesCount: 3 },
+  { boxTitle: "Dropped30", boxEntriesCount: 6 },
 ];
 
-// const favList = [
-//   { boxEntriesCount: 13 },
-//   { boxEntriesCount: 2 },
-//   { boxEntriesCount: 1 },
-//   { boxEntriesCount: 3 },
-//   { boxEntriesCount: 6 },
-// ];
+const favList = [
+  { favoriteTitle: "My Fav 1", favoriteEntriesCount: 13 },
+  { favoriteTitle: "My Fav 2", favoriteEntriesCount: 2 },
+  { favoriteTitle: "My Fav 3", favoriteEntriesCount: 1 },
+  { favoriteTitle: "My Fav 4", favoriteEntriesCount: 3 },
+  { favoriteTitle: "My Fav 5", favoriteEntriesCount: 6 },
+];
 
 const sortOptions = [
   { id: "one", name: "Newest" },
@@ -42,10 +57,13 @@ const sortOptions = [
 ];
 
 const Dashboard = () => {
+  const [collection, setCollection] = useState("boxes");
   const [boxes] = useState(boxList);
-  // const [faves] = useState(favList);
+  const [faves] = useState(favList);
   const [openSort, setOpenSort] = useState<boolean>(false);
   const [sortArr, setSortArr] = useState<boolean[]>([]);
+  const [pageIndex, setPageIndex] = useState(1);
+  const [pageCount, setPageCount] = useState(1);
 
   useEffect(() => {
     setSortArr(Array(sortOptions.length).fill(false));
@@ -61,10 +79,14 @@ const Dashboard = () => {
     <div className="w-full py-6 space-y-8">
       <div className="flex flex-col items-center justify-between space-y-4 md:flex-row">
         <div className="flex space-x-6">
-          <button className="text-2xl subpixel-antialiased font-medium hover:text-blue-600">
-            Boxes
+          <button 
+            onClick={() => setCollection("boxes")} 
+            className={`text-2xl subpixel-antialiased hover:text-blue-600 ${collection === "boxes" ? "font-medium" : "font-normal"}`}>
+            Boxes {pageIndex}
           </button>
-          <button className="text-2xl subpixel-antialiased font-normal hover:text-blue-600">
+          <button 
+            onClick={() => setCollection("favorites")} 
+            className={`text-2xl subpixel-antialiased hover:text-blue-600 ${collection === "favorites" ? "font-medium" : "font-normal"}`}>
             Favorites
           </button>
         </div>
@@ -131,34 +153,14 @@ const Dashboard = () => {
         </div>
       </div>
 
-      <Boxes boxes={boxes} />
+      {
+        collection === "boxes" ? 
+          <Boxes index={pageIndex} boxes={boxes} /> : 
+          <Favorites index={pageIndex} favorites={faves} />
+      }
 
-      <nav className="flex justify-center">
-        <ul className="inline-flex space-x-2">
-          <li>
-            <button className="px-3 py-2 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-grayColor dark:border-grayColor dark:text-white">
-              <ChevronLeftIcon className="w-5 h-5" />
-            </button>
-          </li>
-          <li>
-            <button className="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-grayColor dark:border-grayColor dark:text-white">
-              1
-            </button>
-          </li>
+      <Pagination pageCount={pageCount} pageIndex={pageIndex} setPageIndex={setPageIndex}  />
 
-          <li>
-            <button className="px-3 py-2 leading-tight text-white bg-blue-600 border border-blue-600 ">
-              2
-            </button>
-          </li>
-
-          <li>
-            <button className="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-grayColor dark:border-grayColor dark:text-white">
-              <ChevronRightIcon className="w-5 h-5" />
-            </button>
-          </li>
-        </ul>
-      </nav>
     </div>
   );
 };
