@@ -10,4 +10,5 @@ module.exports = withPWA({
   // next.js config
   reactStrictMode: true,
   swcMinify: true,
+  domains: ["res.cloudinary.com"],
 });
