@@ -37,8 +37,6 @@ const SigninForm = () => {
   });
   const { query } = useRouter();
 
-  console.log(useRouter());
-
   useEffect(() => {
     reset();
     setIsEmailLoading(false);

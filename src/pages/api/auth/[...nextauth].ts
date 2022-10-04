@@ -25,12 +25,14 @@ export const authOptions: NextAuthOptions = {
         },
         select: {
           isNewUser: true,
+          username: true,
         },
       });
 
       if (session.user) {
         session.user.id = user.id;
         session.user.isNewUser = res?.isNewUser;
+        session.user.username = res?.username;
       }
 
       return session;
