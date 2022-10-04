@@ -1,4 +1,5 @@
 // require("dotenv").config();
+import { env } from "../env/server.mjs";
 
 // const cloudinary = require("cloudinary").v2;
 // cloudinary.config({
