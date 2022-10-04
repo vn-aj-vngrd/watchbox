@@ -16,7 +16,7 @@ type Props = {
 
 const Header: React.FC<Props> = ({ session }) => {
   return (
-    <header className="sticky top-0 z-10 py-4 bg-white border-b border-gray-200 shadow-sm dark:bg-black dark:border-darkerColor">
+    <header className="sticky top-0 z-10 py-4 bg-white shadow-sm dark:bg-darkerColor dark:border-darkerColor">
       <div className="flex flex-wrap items-center justify-between px-4 mx-auto ">
         <div>
           <button onClick={() => router.push("/")} className="hidden md:flex">
