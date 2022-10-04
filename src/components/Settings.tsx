@@ -10,7 +10,7 @@ const Settings = () => {
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md py-12 space-y-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
           <h2 className="mt-4 text-3xl font-bold text-center text-gray-900 dark:text-white">
-            Account Settings
+            Account Profile
           </h2>
         </div>
 
@@ -34,16 +34,15 @@ const Settings = () => {
 
               <div>
                 <label
-                  htmlFor="email"
+                  htmlFor="username"
                   className="block text-sm font-medium text-gray-700 dark:text-white"
                 >
                   Username
                 </label>
                 <div className="relative mt-1 rounded-md shadow-sm">
                   <input
-                    type="email"
-                    autoComplete="email"
-                    placeholder="Username"
+                    type="text"
+                    value={session?.user?.username || ""}
                     className="block w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:border-darkerColor dark:focus:border-blue-500 dark:focus:ring-blue-400"
                   />
                 </div>
@@ -51,37 +50,20 @@ const Settings = () => {
                   {/* {errors.email && errors.email.message} */}
                 </div>
               </div>
+
               <div>
                 <label
                   htmlFor="email"
                   className="block text-sm font-medium text-gray-700 dark:text-white"
                 >
-                  First Name
+                  Email
                 </label>
                 <div className="relative mt-1 rounded-md shadow-sm">
                   <input
                     type="email"
                     autoComplete="email"
-                    placeholder="Username"
-                    className="block w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:border-darkerColor dark:focus:border-blue-500 dark:focus:ring-blue-400"
-                  />
-                </div>
-                <div className="mt-3 text-sm text-red-500">
-                  {/* {errors.email && errors.email.message} */}
-                </div>
-              </div>
-              <div>
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium text-gray-700 dark:text-white"
-                >
-                  Last Name
-                </label>
-                <div className="relative mt-1 rounded-md shadow-sm">
-                  <input
-                    type="email"
-                    autoComplete="email"
-                    placeholder="Username"
+                    disabled
+                    value={session?.user?.email || ""}
                     className="block w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:border-darkerColor dark:focus:border-blue-500 dark:focus:ring-blue-400"
                   />
                 </div>
