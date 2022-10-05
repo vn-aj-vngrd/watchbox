@@ -35,7 +35,7 @@ const Account: React.FC<Props> = ({ session }) => {
     <Menu as="div" className="relative inline-block text-left">
       <div>
         <Menu.Button className="inline-flex items-center p-1 text-gray-900 bg-white border border-gray-300 rounded-full shadow-sm hover:bg-gray-200 focus:outline-none dark:bg-darkColor dark:text-white dark:border-transparent dark:hover:bg-grayColor">
-          <div className="w-5 h-5 relative">
+          <div className="w-5 h-5">
             {session?.user?.image ? (
               <Image
                 src={session?.user?.image || ""}
