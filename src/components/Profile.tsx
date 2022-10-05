@@ -38,18 +38,16 @@ const Profile = () => {
   };
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    console.log(data);
-
     if(image[0]?.file !== undefined) {
-      const formData = new FormData();
+      const path = require('path');
       var crypto = require('crypto');
-      const public_id = "sample_image";
+
+      const formData = new FormData();
+      const public_id = path.parse(image[0].file.name).name;
       const eager = "w_1000,h_1000,c_pad|w_260,h_200,c_crop";
       const timestamp = Math.round((new Date).getTime()/1000).toString();
       
-      const str = "eager=" + eager + '&public_id' + public_id + '&timestamp' + timestamp + "ek1LTDvzswd7d3IkJ95O5s8mRFQ";
-      console.log(str);
-      //const signature = crypto.createHmac('sha1', "ek1LTDvzswd7d3IkJ95O5s8mRFQ").update(str).digest('hex');
+      const str = "eager=" + eager + '&public_id=' + public_id + '&timestamp=' + timestamp + "ek1LTDvzswd7d3IkJ95O5s8mRFQ";
       const signature = crypto.createHash('sha1').update(str).digest('hex');
 
       formData.append('file', image[0].file);
@@ -64,7 +62,7 @@ const Profile = () => {
         body: formData,
       }).then(res => res.json());
 
-      // console.log(req.secure_url);
+      // mutate({ data.username, req.secure_url });
     }
 
     // mutate({ data.username, req.secure_url });
