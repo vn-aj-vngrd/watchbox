@@ -12,6 +12,7 @@ import Confetti from "./Confetti";
 import { ExclamationCircleIcon } from "@heroicons/react/24/solid";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useEffect } from "react";
+import { refresh } from "../utils/refresh";
 
 const description = [
   "WatchBox streamlines and simplifies the process of creating movie and TV show lists for you to share with others or keep for yourself. ",
@@ -37,8 +38,9 @@ const Welcome = () => {
     reset();
   }, [reset]);
 
-  const { mutate, isLoading, error } = trpc.useMutation(["auth.getStarted"], {
+  const { mutate, isLoading, error } = trpc.useMutation(["user.getStarted"], {
     onSuccess: () => {
+      refresh();
       router.push("/");
     },
   });

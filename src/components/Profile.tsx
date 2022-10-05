@@ -5,68 +5,120 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import ImageUploading, { ImageListType } from "react-images-uploading";
+import sha1 from "crypto-js/sha1";
 import { trpc } from "../utils/trpc";
+import { env } from "../env/client.mjs";
+import { v4 as uuidv4 } from "uuid";
+import Spinner from "./Spinner";
+import router from "next/router";
+import { refresh } from "../utils/refresh";
 
 type Inputs = {
   username: string;
 };
 
 const Profile = () => {
-  const {
-    register,
-    handleSubmit,
-    // watch,
-    reset,
-    formState: { errors },
-  } = useForm<Inputs>();
+  const { mutate: updateUser, isLoading: isUpdating } = trpc.useMutation(
+    ["user.updateUser"],
+    {
+      onSuccess: () => {
+        refresh();
+      },
+      onError: (err) => {
+        console.log(err);
+      },
+    }
+  );
+
+  const { mutate: deleteUser, isLoading: isDeleting } = trpc.useMutation(
+    ["user.deleteUser"],
+    {
+      onSuccess: () => {
+        router.push("/auth/signin");
+        refresh();
+      },
+      onError: (err) => {
+        console.log(err);
+      },
+    }
+  );
 
   const { data: session } = useSession();
   const [image, setImage] = useState<ImageListType>([]);
 
-  useEffect(() => {
-    reset();
-  }, [reset]);
+  const {
+    register,
+    handleSubmit,
+    watch,
+    reset,
+    formState: { errors },
+  } = useForm<Inputs>();
 
-  const { mutate, isLoading, error } = trpc.useMutation(["auth.updateUser"], {
-    onSuccess: () => {
-      console.log("success");
-    },
-  });
+  const username_watch = watch("username");
+
+  useEffect(() => {
+    reset({
+      username: session?.user?.username || " ",
+    });
+  }, [reset, session]);
 
   const onChange = (imageList: ImageListType) => {
     setImage(imageList);
   };
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    if(image[0]?.file !== undefined) {
-      const path = require('path');
-      var crypto = require('crypto');
+    const { username } = data;
 
-      const formData = new FormData();
-      const public_id = path.parse(image[0].file.name).name;
-      const eager = "w_1000,h_1000,c_pad|w_260,h_200,c_crop";
-      const timestamp = Math.round((new Date).getTime()/1000).toString();
-      
-      const str = "eager=" + eager + '&public_id=' + public_id + '&timestamp=' + timestamp + "ek1LTDvzswd7d3IkJ95O5s8mRFQ";
-      const signature = crypto.createHash('sha1').update(str).digest('hex');
-
-      formData.append('file', image[0].file);
-      formData.append("api_key", "399449264973437");
-      formData.append("eager", eager);
-      formData.append("public_id", public_id);
-      formData.append("timestamp", timestamp);
-      formData.append("signature", signature);
-  
-      const req = await fetch('https://api.cloudinary.com/v1_1/dji2nct1t/image/upload', {
-        method: 'POST',
-        body: formData,
-      }).then(res => res.json());
-
-      // mutate({ data.username, req.secure_url });
+    if (username === session?.user?.username && image.length === 0) {
+      return;
     }
 
-    // mutate({ data.username, req.secure_url });
+    if (!image[0]?.file) {
+      updateUser({
+        username,
+        url: session?.user?.image || "",
+      });
+      return;
+    }
+
+    const formData = new FormData();
+    const public_id = uuidv4().toString();
+    const eager = "w_400,h_300,c_pad|w_260,h_200,c_crop";
+    const timestamp = Math.round(new Date().getTime() / 1000).toString();
+    const signature = sha1(
+      `eager=${eager}&public_id=${public_id}&timestamp=${timestamp}${env.NEXT_PUBLIC_CLOUDINARY_SECRET}`
+    ).toString();
+
+    formData.append("file", image[0]?.file);
+    formData.append("api_key", env.NEXT_PUBLIC_CLOUDINARY_API_KEY);
+    formData.append("eager", eager);
+    formData.append("public_id", public_id);
+    formData.append("timestamp", timestamp);
+    formData.append("signature", signature);
+
+    const req = await fetch(
+      `https://api.cloudinary.com/v1_1/${env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
+      {
+        method: "POST",
+        body: formData,
+      }
+    ).then((res) => res.json());
+
+    const { secure_url } = req;
+
+    updateUser({
+      username,
+      url: secure_url,
+    });
   };
+
+  const onClick: React.MouseEventHandler<HTMLButtonElement> = async () => {
+    deleteUser();
+  };
+
+  if (isUpdating || isDeleting) {
+    return <Spinner isGlobal={true} />;
+  }
 
   return (
     <div>
@@ -78,55 +130,57 @@ const Profile = () => {
         </div>
 
         <div className="px-4 py-8 bg-white shadow sm:rounded-lg sm:px-10 dark:bg-darkerColor">
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="space-y-6">
-              <div className="mx-auto relative w-32 h-32 bg-gray-100 rounded-full dark:bg-gray-600">
-                <Image
-                  className="absolute z-0 w-24 h-24 rounded-full"
-                  loader={() => `${session?.user?.image}?w=500&q=100` || ""}
-                  src={session?.user?.image || ""}
-                  alt=""
-                  layout="fill"
-                />
+          <div className="space-y-6">
+            <div className="mx-auto relative w-32 h-32 bg-gray-100 rounded-full dark:bg-gray-600">
+              <Image
+                className="absolute z-0 w-24 h-24 rounded-full"
+                src={session?.user?.image || ""}
+                loader={({ src }) => `${src}?w=500&q=100`}
+                alt=""
+                priority
+                layout="fill"
+              />
 
-                <label
-                  htmlFor="preview"
-                  className="cursor absolute bottom-0 right-0 w-8 h-8 z-20 p-1.5 rounded-full bg-white border text-gray-700 shadow-sm dark:bg-grayColor dark:border-grayColor dark:text-white cursor-pointer "
-                >
-                  <PencilSquareIcon />
-                </label>
-                <input id="preview" type="file" className="hidden" />
+              <label
+                htmlFor="preview"
+                className="cursor absolute bottom-0 right-0 w-8 h-8 z-20 p-1.5 rounded-full bg-white border text-gray-700 shadow-sm dark:bg-grayColor dark:border-grayColor dark:text-white cursor-pointer "
+              >
+                <PencilSquareIcon />
+              </label>
+              <input id="preview" type="file" className="hidden" />
 
-                <ImageUploading
-                  multiple
-                  value={image}
-                  onChange={(imageList: ImageListType) => onChange(imageList)}
-                  dataURLKey="data_url"
-                >
-                  {({ imageList, onImageUpload }) => (
-                    <div className="upload__image-wrapper">
-                      <button
-                        onClick={onImageUpload}
-                        className="cursor absolute bottom-0 right-0 w-8 h-8 z-20 p-1.5 rounded-full bg-white border text-gray-700 shadow-sm dark:bg-grayColor dark:border-grayColor dark:text-white cursor-pointer"
-                      >
-                        <PencilSquareIcon className="" />
-                      </button>
+              <ImageUploading
+                multiple
+                value={image}
+                onChange={(imageList: ImageListType) => onChange(imageList)}
+                dataURLKey="data_url"
+              >
+                {({ imageList, onImageUpload }) => (
+                  <div className="upload__image-wrapper">
+                    <button
+                      onClick={onImageUpload}
+                      className="cursor absolute bottom-0 right-0 w-8 h-8 z-20 p-1.5 rounded-full bg-white border text-gray-700 shadow-sm dark:bg-grayColor dark:border-grayColor dark:text-white cursor-pointer"
+                    >
+                      <PencilSquareIcon className="" />
+                    </button>
 
-                      {imageList?.map((image, index) => (
-                        <div key={index} className="image-item">
-                          <Image
-                            src={image["data_url"]}
-                            className="absolute z-0 w-24 h-24 rounded-full"
-                            alt=""
-                            layout="fill"
-                          />
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </ImageUploading>
-              </div>
-
+                    {imageList?.map((image, index) => (
+                      <div key={index} className="image-item">
+                        <Image
+                          src={image["data_url"]}
+                          className="absolute z-0 w-24 h-24 rounded-full"
+                          priority
+                          alt=""
+                          layout="fill"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </ImageUploading>
+            </div>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              {/* Username */}
               <div>
                 <label
                   htmlFor="username"
@@ -143,7 +197,6 @@ const Profile = () => {
                         : "block w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:border-darkerColor dark:focus:border-blue-500 dark:focus:ring-blue-400"
                     }
                     {...register("username", {
-                      value: session?.user?.username || " ",
                       required: {
                         value: true,
                         message: "* Please enter a username to update.",
@@ -161,6 +214,7 @@ const Profile = () => {
                 </div>
               </div>
 
+              {/* Email */}
               <div>
                 <label
                   htmlFor="email"
@@ -181,20 +235,31 @@ const Profile = () => {
                   {/* {errors.email && errors.email.message} */}
                 </div>
               </div>
-            </div>
 
-            <div className="mt-6">
-              <button
-                type="submit"
-                className="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none"
-              >
-                Save Changes
-              </button>
-            </div>
-          </form>
+              {/* Buttons */}
+              <div className="mt-6">
+                <button
+                  type="submit"
+                  disabled={
+                    username_watch === session?.user?.username &&
+                    image.length === 0
+                  }
+                  className={
+                    username_watch === session?.user?.username &&
+                    image.length === 0
+                      ? "hidden"
+                      : "flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none"
+                  }
+                >
+                  Save Changes
+                </button>
+              </div>
+            </form>
+          </div>
 
           <div className="mt-6">
             <button
+              onClick={onClick}
               type="submit"
               className="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md shadow-sm hover:bg-red-700 focus:outline-none"
             >
