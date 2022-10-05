@@ -84,7 +84,6 @@ model User {
     username      String?   @unique
     email         String?   @unique
     emailVerified DateTime?
-    cloudinaryId  String?
     image         String?
     isNewUser     Boolean   @default(true)
     accounts      Account[]

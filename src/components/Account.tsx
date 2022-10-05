@@ -42,7 +42,8 @@ const Account: React.FC<Props> = ({ session }) => {
                 loader={({ src }) => `${src}?w=500&q=100`}
                 alt=""
                 layout="fill"
-                className="rounded-full"
+                priority
+                className="rounded-full relative"
               />
             ) : (
               <UserIcon />
