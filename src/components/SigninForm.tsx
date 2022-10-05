@@ -178,7 +178,7 @@ const SigninForm = () => {
                     className={
                       errors.email
                         ? "block w-full px-3 py-2 placeholder-red-400 border border-red-400 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-red-500 focus:border-blue-500 sm:text-sm"
-                        : "block w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:border-darkerColor dark:focus:border-blue-500 dark:focus:ring-blue-400"
+                        : "block w-full px-3 py-2 ng-white placeholder-gray-400 border rounded-md shadow-sm appearance-none focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:border-darkColor dark:bg-darkColor dark:focus:border-blue-500 dark:focus:ring-blue-400"
                     }
                     {...register("email", {
                       required: {
@@ -243,7 +243,7 @@ const SigninForm = () => {
             <div className="mt-6">
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-gray-300 dark:border-grayColor" />
+                  <div className="w-full border-t dark:border-grayColor" />
                 </div>
                 <div className="relative flex justify-center text-sm">
                   <span className="px-2 text-gray-500 bg-white dark:bg-darkerColor dark:text-white">
@@ -259,7 +259,7 @@ const SigninForm = () => {
                       setIsLoading(true);
                       signIn("google");
                     }}
-                    className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 dark:bg-darkColor dark:text-white dark:border-darkerColor dark:hover:bg-grayColor"
+                    className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-gray-500 bg-white border rounded-md shadow-sm hover:bg-gray-50 dark:bg-darkColor dark:text-white dark:border-darkerColor dark:hover:bg-grayColor"
                   >
                     <span className="sr-only">Google</span>
                     <svg
@@ -280,7 +280,7 @@ const SigninForm = () => {
                       setIsLoading(true);
                       signIn("twitter");
                     }}
-                    className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 dark:bg-darkColor dark:text-white dark:border-darkerColor dark:hover:bg-grayColor"
+                    className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-gray-500 bg-white border rounded-md shadow-sm hover:bg-gray-50 dark:bg-darkColor dark:text-white dark:border-darkerColor dark:hover:bg-grayColor"
                   >
                     <span className="sr-only">Twitter</span>
                     <svg
@@ -301,7 +301,7 @@ const SigninForm = () => {
                       setIsLoading(true);
                       signIn("discord");
                     }}
-                    className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 dark:bg-darkColor dark:text-white dark:border-darkerColor dark:hover:bg-grayColor"
+                    className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-gray-500 bg-white border rounded-md shadow-sm hover:bg-gray-50 dark:bg-darkColor dark:text-white dark:border-darkerColor dark:hover:bg-grayColor"
                   >
                     <span className="sr-only">Discord</span>
                     <svg

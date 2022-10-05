@@ -11,7 +11,6 @@ import { env } from "../env/client.mjs";
 import { v4 as uuidv4 } from "uuid";
 import Spinner from "./Spinner";
 import router from "next/router";
-import { refresh } from "../utils/refresh";
 import Modal from "./Modal";
 
 type Inputs = {
@@ -24,7 +23,7 @@ const Profile = () => {
     ["user.updateUser"],
     {
       onSuccess: () => {
-        refresh();
+        document.dispatchEvent(new Event("visibilitychange"));
       },
       onError: (err) => {
         console.log(err);
@@ -36,8 +35,8 @@ const Profile = () => {
     ["user.deleteUser"],
     {
       onSuccess: () => {
+        document.dispatchEvent(new Event("visibilitychange"));
         router.push("/auth/signin");
-        refresh();
       },
       onError: (err) => {
         console.log(err);
@@ -200,7 +199,7 @@ const Profile = () => {
                     className={
                       errors.username
                         ? "block w-full px-3 py-2 placeholder-red-400 border border-red-400 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-red-500 focus:border-blue-500 sm:text-sm"
-                        : "block w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:border-darkerColor dark:focus:border-blue-500 dark:focus:ring-blue-400"
+                        : "block w-full px-3 py-2 placeholder-gray-400 border rounded-md shadow-sm appearance-none focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:border-darkColor dark:bg-darkColor dark:focus:border-blue-500 dark:focus:ring-blue-400"
                     }
                     {...register("username", {
                       required: {
@@ -234,7 +233,7 @@ const Profile = () => {
                     className={
                       errors.name
                         ? "block w-full px-3 py-2 placeholder-red-400 border border-red-400 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-red-500 focus:border-blue-500 sm:text-sm"
-                        : "block w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:border-darkerColor dark:focus:border-blue-500 dark:focus:ring-blue-400"
+                        : "block w-full px-3 py-2 placeholder-gray-400 border rounded-md shadow-sm appearance-none focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:border-darkColor dark:bg-darkColor dark:focus:border-blue-500 dark:focus:ring-blue-400"
                     }
                     {...register("name", {
                       required: {
@@ -268,11 +267,8 @@ const Profile = () => {
                     autoComplete="email"
                     disabled
                     value={session?.user?.email || ""}
-                    className="block w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:border-darkerColor dark:focus:border-blue-500 dark:focus:ring-blue-400"
+                    className="block w-full px-3 py-2 placeholder-gray-400 border rounded-md shadow-sm appearance-none focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:border-darkColor dark:bg-darkColor dark:focus:border-blue-500 dark:focus:ring-blue-400"
                   />
-                </div>
-                <div className="mt-3 text-sm text-red-500">
-                  {/* {errors.email && errors.email.message} */}
                 </div>
               </div>
 
