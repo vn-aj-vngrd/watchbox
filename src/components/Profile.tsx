@@ -37,11 +37,37 @@ const Profile = () => {
     setImage(imageList);
   };
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
     console.log(data);
-    // console.log(image[0]?.file);
 
-    // mutate({ data.username, image });
+    if(image[0]?.file !== undefined) {
+      const formData = new FormData();
+      var crypto = require('crypto');
+      const public_id = "sample_image";
+      const eager = "w_1000,h_1000,c_pad|w_260,h_200,c_crop";
+      const timestamp = Math.round((new Date).getTime()/1000).toString();
+      
+      const str = "eager=" + eager + '&public_id' + public_id + '&timestamp' + timestamp + "ek1LTDvzswd7d3IkJ95O5s8mRFQ";
+      console.log(str);
+      //const signature = crypto.createHmac('sha1', "ek1LTDvzswd7d3IkJ95O5s8mRFQ").update(str).digest('hex');
+      const signature = crypto.createHash('sha1').update(str).digest('hex');
+
+      formData.append('file', image[0].file);
+      formData.append("api_key", "399449264973437");
+      formData.append("eager", eager);
+      formData.append("public_id", public_id);
+      formData.append("timestamp", timestamp);
+      formData.append("signature", signature);
+  
+      const req = await fetch('https://api.cloudinary.com/v1_1/dji2nct1t/image/upload', {
+        method: 'POST',
+        body: formData,
+      }).then(res => res.json());
+
+      // console.log(req.secure_url);
+    }
+
+    // mutate({ data.username, req.secure_url });
   };
 
   return (
