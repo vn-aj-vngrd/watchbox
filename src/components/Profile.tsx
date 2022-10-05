@@ -108,6 +108,7 @@ const Profile = () => {
     ).then((res) => res.json());
 
     const { secure_url } = req;
+    console.log(req);
 
     updateUser({
       username,
