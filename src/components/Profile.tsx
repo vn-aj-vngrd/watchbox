@@ -184,7 +184,7 @@ const Profile = () => {
                 )}
               </ImageUploading>
             </div>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               {/* Username */}
               <div>
                 <label
@@ -223,7 +223,7 @@ const Profile = () => {
               <div>
                 <label
                   htmlFor="username"
-                  className="block text-sm font-medium text-gray-700 dark:text-white"
+                  className="block text-sm font-medium text-gray- dark:text-white"
                 >
                   Name
                 </label>
@@ -272,8 +272,8 @@ const Profile = () => {
                 </div>
               </div>
 
-              {/* Buttons */}
-              <div className="mt-6">
+              {/* Save */}
+              <div>
                 <button
                   type="submit"
                   disabled={
@@ -286,7 +286,7 @@ const Profile = () => {
                     name_watch === session?.user?.name &&
                     image.length === 0
                       ? "hidden"
-                      : "flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none"
+                      : "flex items-center mt-6 justify-center w-full px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none"
                   }
                 >
                   Save Changes
