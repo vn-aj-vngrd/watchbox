@@ -73,10 +73,12 @@ const Profile = () => {
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const { username } = data;
+    const { name } = data;
 
     if (!image[0]?.file) {
       updateUser({
         username,
+        name,
         url: session?.user?.image || "",
       });
       return;
@@ -109,11 +111,12 @@ const Profile = () => {
 
     updateUser({
       username,
+      name,
       url: secure_url,
     });
   };
 
-  const onClick: React.MouseEventHandler<HTMLButtonElement> = async () => {
+  const handleRemove: React.MouseEventHandler<HTMLButtonElement> = async () => {
     deleteUser();
   };
 
@@ -123,7 +126,6 @@ const Profile = () => {
 
   return (
     <div>
-      {/* <Modal /> */}
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md py-12 space-y-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
           <h2 className="mt-4 text-3xl font-semibold text-center text-gray-900 dark:text-white">
@@ -147,7 +149,7 @@ const Profile = () => {
 
               <label
                 htmlFor="preview"
-                className="cursor absolute bottom-0 right-0 w-8 h-8 z-20 p-1.5 rounded-full bg-white border text-gray-700 shadow-sm dark:bg-grayColor dark:border-grayColor dark:text-white cursor-pointer"
+                className="cursor absolute bottom-0 right-0 w-8 h-8 z-10 p-1.5 rounded-full bg-white border text-gray-700 shadow-sm dark:bg-grayColor dark:border-grayColor dark:text-white cursor-pointer"
               >
                 <PencilSquareIcon />
               </label>
@@ -162,9 +164,9 @@ const Profile = () => {
                   <div className="upload__image-wrapper">
                     <button
                       onClick={onImageUpload}
-                      className="cursor absolute bottom-0 right-0 w-8 h-8 z-20 p-1.5 rounded-full bg-white border text-gray-700 shadow-sm dark:bg-grayColor dark:border-grayColor dark:text-white cursor-pointer"
+                      className="cursor absolute bottom-0 right-0 w-8 h-8 z-20 p-1.5 rounded-full bg-white border text-gray-700 shadow-sm dark:bg-darkColor dark:border-grayColor dark:text-white cursor-pointer hover:bg-gray-200 dark:hover:bg-grayColor"
                     >
-                      <PencilSquareIcon className="" />
+                      <PencilSquareIcon />
                     </button>
 
                     {imageList?.map((image, index) => (
@@ -297,13 +299,7 @@ const Profile = () => {
           </div>
 
           <div className="mt-6">
-            <button
-              onClick={onClick}
-              type="submit"
-              className="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md shadow-sm hover:bg-red-700 focus:outline-none"
-            >
-              Delete Account
-            </button>
+            <Modal handleRemove={() => handleRemove} />
           </div>
         </div>
       </div>

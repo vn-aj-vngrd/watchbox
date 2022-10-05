@@ -31,6 +31,7 @@ export const userRouter = createProtectedRouter()
   .mutation("updateUser", {
     input: z.object({
       username: z.string(),
+      name: z.string(),
       url: z.string(),
     }),
     async resolve({ ctx, input }) {
@@ -40,6 +41,7 @@ export const userRouter = createProtectedRouter()
         },
         data: {
           username: input.username,
+          name: input.name,
           image: input.url,
         },
       });
