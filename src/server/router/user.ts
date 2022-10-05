@@ -1,7 +1,7 @@
 import { createProtectedRouter } from "./protected-router";
 import { z } from "zod";
 
-export const authRouter = createProtectedRouter()
+export const userRouter = createProtectedRouter()
   .mutation("getStarted", {
     input: z.object({
       username: z.string(),
@@ -31,7 +31,7 @@ export const authRouter = createProtectedRouter()
   .mutation("updateUser", {
     input: z.object({
       username: z.string(),
-      image: z.string(),
+      url: z.string(),
     }),
     async resolve({ ctx, input }) {
       return ctx.prisma.user.update({
@@ -40,7 +40,16 @@ export const authRouter = createProtectedRouter()
         },
         data: {
           username: input.username,
-          image: input.image,
+          image: input.url,
+        },
+      });
+    },
+  })
+  .mutation("deleteUser", {
+    async resolve({ ctx }) {
+      return ctx.prisma.user.delete({
+        where: {
+          id: ctx.session.user.id,
         },
       });
     },
