@@ -1,3 +1,5 @@
+// components/Dashboard.tsx
+
 import {
   ChevronLeftIcon,
   MagnifyingGlassIcon,

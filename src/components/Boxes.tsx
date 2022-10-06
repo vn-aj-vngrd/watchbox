@@ -1,3 +1,5 @@
+// components/Boxes.tsx
+
 type Props = {
   boxes: {
     boxTitle: string;
