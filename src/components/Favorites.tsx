@@ -3,7 +3,7 @@ type Props = {
       favoriteTitle: string;
       favoriteEntriesCount: number;
     }[];
-    index: number;
+    pageIndex: number;
   };
 
   const Favorites: React.FC<Props> = ({ favorites }) => {
@@ -14,7 +14,7 @@ type Props = {
               <div className={`grid ${fav.favoriteEntriesCount > 1 ? "grid-cols-2 grid-rows-2" : "grid-cols-1"} gap-3 w-32 p-4 transition duration-150 ease-in-out bg-blue-600 rounded-lg shadow-sm lg:w-36 aspect-square hover:scale-105`}>
                 
                 {Array.from(Array(fav.favoriteEntriesCount).keys()).filter((item, count) => count < 4).map(entry =>
-                <div className="bg-white rounded-lg"></div>
+                <div key={entry} className="bg-white rounded-lg"></div>
                 )}
 
               </div>

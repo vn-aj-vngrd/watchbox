@@ -27,7 +27,7 @@ const Pagination: React.FC<Props> = ({
         </li>
 
         {Array.from(Array(pageCount).keys()).map((index) => (
-          <li>
+          <li key={index}>
             <button
               onClick={() => setPageIndex(1)}
               className="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-grayColor dark:border-grayColor dark:text-white"
