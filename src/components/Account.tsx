@@ -1,5 +1,3 @@
-// components/Account.tsx
-
 import { Fragment, useEffect, useState } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import {
@@ -40,12 +38,11 @@ const Account: React.FC<Props> = ({ session }) => {
           <div className="w-5 h-5">
             {session?.user?.image ? (
               <Image
+                loader={() => `${session?.user?.image}?w=500&q=100` || ""}
                 src={session?.user?.image || ""}
-                loader={({ src }) => `${src}?w=500&q=100`}
                 alt=""
                 layout="fill"
-                priority
-                className="rounded-full relative"
+                className="rounded-full"
               />
             ) : (
               <UserIcon />
