@@ -13,7 +13,6 @@ model Box {
     id         String      @id @default(cuid())
     userId     String
     boxTitle   String
-    boxLink    String
     created_at DateTime    @default(now())
     updated_at DateTime    @default(now())
     Component  Component[]
