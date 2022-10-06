@@ -13,10 +13,25 @@ model Box {
     id         String      @id @default(cuid())
     userId     String
     boxTitle   String
+    Entry      Entry[]
+    Component  Component[]
     created_at DateTime    @default(now())
     updated_at DateTime    @default(now())
-    Component  Component[]
     user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Entry {
+    id         String   @id @default(cuid())
+    boxId      String
+    entryTitle String
+    note       String
+    review     String
+    rating     Int
+    xAxis      Int
+    yAxis      Int
+    created_at DateTime @default(now())
+    updated_at DateTime @default(now())
+    box        Box      @relation(fields: [boxId], references: [id], onDelete: Cascade)
 }
 
 model Component {
@@ -25,28 +40,15 @@ model Component {
     componentName String
     xAxis         Int
     yAxis         Int
-    Entry         Entry[]
     created_at    DateTime @default(now())
     updated_at    DateTime @default(now())
     box           Box      @relation(fields: [boxId], references: [id], onDelete: Cascade)
 }
 
-model Entry {
-    id          String    @id @default(cuid())
-    componentId String
-    entryTitle  String
-    note        String
-    review      String
-    rating      Int
-    created_at  DateTime  @default(now())
-    updated_at  DateTime  @default(now())
-    component   Component @relation(fields: [componentId], references: [id], onDelete: Cascade)
-}
-
-model Pin {
+model Favorite {
     id         String   @id @default(cuid())
     userId     String
-    pinnedId   String
+    favoriteId String
     created_at DateTime @default(now())
     user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
@@ -78,19 +80,19 @@ model Session {
 }
 
 model User {
-    id            String    @id @default(cuid())
+    id            String     @id @default(cuid())
     name          String?
-    username      String?   @unique
-    email         String?   @unique
+    username      String?    @unique
+    email         String?    @unique
     emailVerified DateTime?
     image         String?
-    isNewUser     Boolean   @default(true)
+    isNewUser     Boolean    @default(true)
     accounts      Account[]
     sessions      Session[]
-    Box           Box[]
-    Pin           Pin[]
-    created_at    DateTime  @default(now())
-    updated_at    DateTime  @default(now())
+    boxes         Box[]
+    favorites     Favorite[]
+    created_at    DateTime   @default(now())
+    updated_at    DateTime   @default(now())
 }
 
 model VerificationToken {

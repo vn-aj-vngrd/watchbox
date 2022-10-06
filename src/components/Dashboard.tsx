@@ -9,6 +9,7 @@ import Boxes from "./Boxes";
 // import Favorites from "./Favorites";
 import ReactPaginate from "react-paginate";
 import { trpc } from "../utils/trpc";
+import Spinner from "./Spinner";
 
 type BoxList = {
   boxTitle: string;
@@ -26,19 +27,32 @@ const itemsPerPage = 1;
 const Dashboard = () => {
   const [collection, setCollection] = useState("boxes");
   const [openSort, setOpenSort] = useState<boolean>(false);
-  const [sortArr, setSortArr] = useState<boolean[]>([false]);
+  const [sortArr, setSortArr] = useState<boolean[]>([true, false, false, false]);
+  const [sortIndex, setSortIndex] = useState(0);
   const [paginationNumber, setpaginationNumber] = useState(0);
+  const [searchParam, setSearchParam] = useState<string | null>();
 
   const boxesData = trpc.useQuery([
     "box.getBoxes",
-    { skip: paginationNumber, take: itemsPerPage },
+    { skip: paginationNumber, take: itemsPerPage, searchParam: searchParam, sortParam: sortOptions[sortIndex]?.name || "Newest" },
   ]);
   const boxesCount = trpc.useQuery(["box.getPageCount"]);
+
+
+  const onSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value === "") {
+      setSearchParam(null);
+      return;
+    } 
+
+    setSearchParam(e.target.value);
+  }
 
   const onSort = (id: number) => {
     const newSortOptions = Array(sortOptions.length).fill(false);
     newSortOptions[id] = !newSortOptions[id];
     setSortArr(newSortOptions);
+    setSortIndex(id);
   };
 
   const handlePageClick = (event: { selected: number }) => {
@@ -120,7 +134,7 @@ const Dashboard = () => {
                 type="text"
                 id="searchInput"
                 name="searchInput"
-                // onChange={(e) => onSearch(e.target.value)}
+                onChange={(e) => onSearch(e)}
                 className="block w-full p-3 pl-10 text-sm placeholder-gray-600 bg-white border rounded-lg outline-none text-gray-800d dark:placeholder-white dark:bg-grayColor dark:border-grayColor dark:text-white"
                 placeholder="Search Box"
               />
@@ -129,21 +143,21 @@ const Dashboard = () => {
         </div>
       </div>
 
+      {boxesData.isLoading && <Spinner />}
+
       {
         collection === "boxes" ? <Boxes boxes={boxesData.data} /> : <></>
         // <Favorites favorites={faves} />
       }
 
-      {boxesCount.data && Math.ceil(boxesCount.data / itemsPerPage) > 1 && (
+      {Math.ceil(boxesCount.data && boxesCount.data / itemsPerPage || 0) > 0 && Math.ceil(boxesData.data && boxesData.data.length / itemsPerPage || 0) > 0 && !boxesData.isLoading ? (
         <div className="flex justify-center">
           <ReactPaginate
             breakLabel="..."
             onPageChange={handlePageClick}
             pageRangeDisplayed={itemsPerPage}
             pageCount={
-              boxesCount?.data !== undefined
-                ? Math.ceil(boxesCount.data / itemsPerPage)
-                : 0
+              searchParam ?  Math.ceil(boxesData.data && boxesData.data?.length / itemsPerPage || 0) : Math.ceil(boxesCount.data && boxesCount.data / itemsPerPage || 0) 
             }
             previousLabel={
               <svg
@@ -157,7 +171,7 @@ const Dashboard = () => {
                   fillRule="evenodd"
                   d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
                   clipRule="evenodd"
-                ></path>
+                />
               </svg>
             }
             nextLabel={
@@ -172,7 +186,7 @@ const Dashboard = () => {
                   fillRule="evenodd"
                   d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
                   clipRule="evenodd"
-                ></path>
+                />
               </svg>
             }
             previousLinkClassName="block duration-300 ease-in-out py-2 px-3 text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-grayColor dark:border-grayColor dark:text-white dark:hover:bg-darkColor"
@@ -184,7 +198,7 @@ const Dashboard = () => {
             activeLinkClassName="bg-blue-600 border-blue-600 text-gray-50 duration-300 ease-in-out hover:bg-primaryColor hover:text-gray-50 hover:border-blue-600 hover:text-gray-700 dark:bg-blue-600 dark:border-blue-600 dark:text-white dark:hover:bg-blue-600"
           />
         </div>
-      )}
+       ): <p className="flex justify-center items-center text-gray-700 dark:text-white">No results found.</p>} 
     </div>
   );
 };
