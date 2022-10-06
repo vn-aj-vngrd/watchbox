@@ -21,9 +21,6 @@ export const serverSchema = z.object({
   TWITTER_CLIENT_SECRET: z.string(),
   DISCORD_CLIENT_ID: z.string(),
   DISCORD_CLIENT_SECRET: z.string(),
-  CLOUDINARY_CLOUD_NAME: z.string(),
-  CLOUDINARY_API_KEY: z.string(),
-  CLOUDINARY_API_SECRET: z.string(),
 });
 
 /**
@@ -33,9 +30,6 @@ export const serverSchema = z.object({
  */
 export const clientSchema = z.object({
   // NEXT_PUBLIC_BAR: z.string(),
-  NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME: z.string(),
-  NEXT_PUBLIC_CLOUDINARY_API_KEY: z.string(),
-  NEXT_PUBLIC_CLOUDINARY_SECRET: z.string(),
 });
 
 /**
@@ -46,8 +40,4 @@ export const clientSchema = z.object({
  */
 export const clientEnv = {
   // NEXT_PUBLIC_BAR: process.env.NEXT_PUBLIC_BAR,
-  NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME:
-    process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
-  NEXT_PUBLIC_CLOUDINARY_API_KEY: process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY,
-  NEXT_PUBLIC_CLOUDINARY_SECRET: process.env.NEXT_PUBLIC_CLOUDINARY_SECRET,
 };
