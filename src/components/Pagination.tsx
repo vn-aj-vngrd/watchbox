@@ -1,4 +1,6 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
+import React, { useEffect, useState } from 'react';
+import ReactPaginate from 'react-paginate';
 
 type Props = {
   pageCount: number;
@@ -13,6 +15,8 @@ const Pagination: React.FC<Props> = ({
   pageIndex,
   setPageIndex,
 }) => {
+
+
   return (
     <nav className="flex justify-center">
       {pageCount}

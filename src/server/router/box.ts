@@ -19,18 +19,28 @@ export const boxRouter = createProtectedRouter()
       });
     },
   })
-  .mutation("createBox", {
-    input: z.object({
-      boxTitle: z.string(),
-      boxLink: z.string(),
-    }),
-    async resolve({ input, ctx }) {
-      return ctx.prisma.box.create({
-        data: {
+
+  .query("getPageCount", {
+    async resolve({ctx}) {
+      return ctx.prisma.box.count({
+        where:{
           userId: ctx.session.user.id,
-          boxTitle: input.boxTitle,
-          boxLink: input.boxLink,
         },
-      });
+      })
     },
-  });
+  })
+  // .mutation("createBox", {
+  //   input: z.object({
+  //     boxTitle: z.string(),
+  //     boxLink: z.string(),
+  //   }),
+  //   async resolve({ input, ctx }) {
+  //     return ctx.prisma.box.create({
+  //       data: {
+  //         userId: ctx.session.user.id,
+  //         boxTitle: input.boxTitle,
+  //         boxLink: input.boxLink,
+  //       },
+  //     });
+  //   },
+  // });
