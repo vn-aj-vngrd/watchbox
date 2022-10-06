@@ -180,8 +180,8 @@ const Dashboard = () => {
               "block py-2 px-3 duration-300 ease-in-out text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-grayColor dark:border-grayColor dark:text-white dark:hover:bg-darkColor"
             }
             className="flex space-x-2"
-            pageLinkClassName="block py-2 px-3 text-gray-500 bg-white border border-gray-300 duration-300 ease-in-out hover:bg-gray-100 hover:text-gray-700"
-            activeLinkClassName="bg-[#6A74CF] border-[#6A74CF] text-gray-50 font-bold duration-300 ease-in-out hover:bg-primaryColor hover:text-gray-50 hover:border-[#6A74CF]"
+            pageLinkClassName="block py-2 px-3 text-gray-500 bg-white border border-gray-300 duration-300 ease-in-out hover:bg-gray-100 hover:text-gray-700 hover:text-gray-700 dark:bg-grayColor dark:border-grayColor dark:text-white dark:hover:bg-darkColor"
+            activeLinkClassName="bg-blue-600 border-blue-600 text-gray-50 duration-300 ease-in-out hover:bg-primaryColor hover:text-gray-50 hover:border-blue-600 hover:text-gray-700 dark:bg-blue-600 dark:border-blue-600 dark:text-white dark:hover:bg-blue-600"
           />
         </div>
       )}
