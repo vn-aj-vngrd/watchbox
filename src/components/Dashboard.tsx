@@ -75,6 +75,7 @@ const Dashboard = () => {
     setSortArr(newSortOptions);
   };
 
+  
   return (
     <div className="w-full py-6 space-y-8">
       <div className="flex flex-col items-center justify-between space-y-4 md:flex-row">
@@ -155,8 +156,8 @@ const Dashboard = () => {
 
       {
         collection === "boxes" ? 
-          <Boxes index={pageIndex} boxes={boxes} /> : 
-          <Favorites index={pageIndex} favorites={faves} />
+          <Boxes pageIndex={pageIndex} boxes={boxes} setPageCount={setPageCount} /> : 
+          <Favorites pageIndex={pageIndex} favorites={faves} />
       }
 
       <Pagination pageCount={pageCount} pageIndex={pageIndex} setPageIndex={setPageIndex}  />
