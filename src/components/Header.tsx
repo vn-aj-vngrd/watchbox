@@ -1,14 +1,11 @@
 // components/Header.tsx
 
-import {
-  HomeIcon,
-  PencilSquareIcon,
-  SquaresPlusIcon,
-} from "@heroicons/react/24/solid";
+import { HomeIcon, SquaresPlusIcon } from "@heroicons/react/24/solid";
 import router from "next/router";
 import ToggleTheme from "./ToggleTheme";
 import Account from "./Account";
 import { Session } from "next-auth";
+import AddBox from "./AddBox";
 
 type Props = {
   session: Session | null;
@@ -20,10 +17,10 @@ const Header: React.FC<Props> = ({ session }) => {
       <div className="flex flex-wrap items-center justify-between px-4 mx-auto ">
         <div>
           <button onClick={() => router.push("/")} className="hidden md:flex">
-            <div className="flex items-center text-xl font-semibold text-darkerColor dark:text-white">
+            <h1 className="flex items-center text-xl font-bold text-black dark:text-white">
               <SquaresPlusIcon className="w-6 h-6 mr-3 text-blue-600" />
               WatchBox
-            </div>
+            </h1>
           </button>
 
           <button onClick={() => router.push("/")} className="flex md:hidden">
@@ -37,16 +34,6 @@ const Header: React.FC<Props> = ({ session }) => {
           <div className="flex items-center space-x-5">
             {session ? (
               <>
-                <div>
-                  <button
-                    onClick={() => router.push("/")}
-                    type="button"
-                    className="inline-flex items-center p-1 bg-white border border-gray-300 rounded-full shadow-sm hover:bg-gray-200 focus:outline-none dark:bg-darkColor dark:text-white dark:border-transparent dark:hover:bg-grayColor"
-                  >
-                    <PencilSquareIcon className="w-5 h-5 fill-black dark:fill-white" />
-                  </button>
-                </div>
-
                 <div>
                   <button
                     onClick={() => router.push("/")}

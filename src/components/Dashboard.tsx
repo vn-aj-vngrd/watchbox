@@ -4,12 +4,13 @@ import {
   MagnifyingGlassIcon,
   ChevronDownIcon,
 } from "@heroicons/react/24/solid";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Boxes from "./Boxes";
 // import Favorites from "./Favorites";
 import ReactPaginate from "react-paginate";
 import { trpc } from "../utils/trpc";
 import Spinner from "./Spinner";
+import AddBox from "./AddBox";
 
 type BoxList = {
   boxTitle: string;
@@ -22,31 +23,40 @@ const sortOptions = [
   { id: "four", name: "Z-A" },
 ];
 
-const itemsPerPage = 1;
+const itemsPerPage = 14;
 
 const Dashboard = () => {
   const [collection, setCollection] = useState("boxes");
   const [openSort, setOpenSort] = useState<boolean>(false);
-  const [sortArr, setSortArr] = useState<boolean[]>([true, false, false, false]);
+  const [sortArr, setSortArr] = useState<boolean[]>([
+    true,
+    false,
+    false,
+    false,
+  ]);
   const [sortIndex, setSortIndex] = useState(0);
-  const [paginationNumber, setpaginationNumber] = useState(0);
   const [searchParam, setSearchParam] = useState<string | null>();
+  const [skip, setSkip] = useState(0);
 
   const boxesData = trpc.useQuery([
     "box.getBoxes",
-    { skip: paginationNumber, take: itemsPerPage, searchParam: searchParam, sortParam: sortOptions[sortIndex]?.name || "Newest" },
+    {
+      skip: skip,
+      take: itemsPerPage,
+      searchParam: searchParam,
+      sortParam: sortOptions[sortIndex]?.name || "Newest",
+    },
   ]);
-  const boxesCount = trpc.useQuery(["box.getPageCount"]);
-
+  const boxesTotalCount = trpc.useQuery(["box.getTotalPageCount"]);
 
   const onSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value === "") {
       setSearchParam(null);
       return;
-    } 
+    }
 
     setSearchParam(e.target.value);
-  }
+  };
 
   const onSort = (id: number) => {
     const newSortOptions = Array(sortOptions.length).fill(false);
@@ -56,7 +66,7 @@ const Dashboard = () => {
   };
 
   const handlePageClick = (event: { selected: number }) => {
-    setpaginationNumber(event.selected);
+    setSkip(event.selected * itemsPerPage);
   };
 
   return (
@@ -142,63 +152,93 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-
       {boxesData.isLoading && <Spinner />}
-
+      {boxesData.data?.length === 0 && (
+        <div className="flex items-center justify-center">
+          No results found.
+        </div>
+      )}
       {
         collection === "boxes" ? <Boxes boxes={boxesData.data} /> : <></>
         // <Favorites favorites={faves} />
       }
 
-      {Math.ceil(boxesCount.data && boxesCount.data / itemsPerPage || 0) > 0 && Math.ceil(boxesData.data && boxesData.data.length / itemsPerPage || 0) > 0 && !boxesData.isLoading ? (
-        <div className="flex justify-center">
-          <ReactPaginate
-            breakLabel="..."
-            onPageChange={handlePageClick}
-            pageRangeDisplayed={itemsPerPage}
-            pageCount={
-              searchParam ?  Math.ceil(boxesData.data && boxesData.data?.length / itemsPerPage || 0) : Math.ceil(boxesCount.data && boxesCount.data / itemsPerPage || 0) 
-            }
-            previousLabel={
-              <svg
-                aria-hidden="true"
-                className="w-6 h-6"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            }
-            nextLabel={
-              <svg
-                aria-hidden="true"
-                className="w-6 h-6"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            }
-            previousLinkClassName="block duration-300 ease-in-out py-2 px-3 text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-grayColor dark:border-grayColor dark:text-white dark:hover:bg-darkColor"
-            nextLinkClassName={
-              "block py-2 px-3 duration-300 ease-in-out text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-grayColor dark:border-grayColor dark:text-white dark:hover:bg-darkColor"
-            }
-            className="flex space-x-2"
-            pageLinkClassName="block py-2 px-3 text-gray-500 bg-white border border-gray-300 duration-300 ease-in-out hover:bg-gray-100 hover:text-gray-700 hover:text-gray-700 dark:bg-grayColor dark:border-grayColor dark:text-white dark:hover:bg-darkColor"
-            activeLinkClassName="bg-blue-600 border-blue-600 text-gray-50 duration-300 ease-in-out hover:bg-primaryColor hover:text-gray-50 hover:border-blue-600 hover:text-gray-700 dark:bg-blue-600 dark:border-blue-600 dark:text-white dark:hover:bg-blue-600"
-          />
-        </div>
-       ): <p className="flex justify-center items-center text-gray-700 dark:text-white">No results found.</p>} 
+      <div
+        className={
+          Math.ceil(
+            (boxesTotalCount.data && boxesTotalCount.data / itemsPerPage) || 0
+          ) > 0 &&
+          Math.ceil(
+            (boxesData.data && boxesData.data.length / itemsPerPage) || 0
+          ) > 0 &&
+          !boxesData.isLoading
+            ? "flex justify-center"
+            : "hidden"
+        }
+      >
+        <ReactPaginate
+          breakLabel="..."
+          onPageChange={handlePageClick}
+          pageRangeDisplayed={itemsPerPage}
+          pageCount={
+            searchParam
+              ? Math.ceil(
+                  (boxesData.data && boxesData.data?.length / itemsPerPage) || 0
+                )
+              : Math.ceil(
+                  (boxesTotalCount.data &&
+                    boxesTotalCount.data / itemsPerPage) ||
+                    0
+                )
+          }
+          previousLabel={
+            <svg
+              aria-hidden="true"
+              className="w-6 h-6"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fillRule="evenodd"
+                d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                clipRule="evenodd"
+              />
+            </svg>
+          }
+          nextLabel={
+            <svg
+              aria-hidden="true"
+              className="w-6 h-6"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fillRule="evenodd"
+                d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                clipRule="evenodd"
+              />
+            </svg>
+          }
+          previousLinkClassName="block duration-300 ease-in-out py-1.5 px-2.5 text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-grayColor dark:border-grayColor dark:text-white dark:hover:bg-darkColor"
+          nextLinkClassName={
+            "block py-1.5 px-2.5 duration-300 ease-in-out text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-grayColor dark:border-grayColor dark:text-white dark:hover:bg-darkColor"
+          }
+          className="flex space-x-2"
+          pageLinkClassName="block py-1.5 px-2.5 text-gray-500 bg-white border border-gray-300 duration-300 ease-in-out hover:bg-gray-100 hover:text-gray-700 hover:text-gray-700 dark:bg-grayColor dark:border-grayColor dark:text-white dark:hover:bg-darkColor"
+          activeLinkClassName="bg-blue-600 border-blue-600 text-gray-50 duration-300 ease-in-out hover:bg-blue-600 hover:text-white  dark:bg-blue-600 dark:border-blue-600 dark:text-white dark:hover:bg-blue-600"
+        />
+      </div>
+
+      <button className="fixed z-50 flex items-center justify-center w-12 h-12 text-4xl text-white bg-white border rounded-full shadow-md bottom-12 right-8 dark:bg-darkColor dark:border-darkColor ">
+        <AddBox
+          onBoxCreated={() => {
+            boxesData.refetch();
+            boxesTotalCount.refetch();
+          }}
+        />
+      </button>
     </div>
   );
 };

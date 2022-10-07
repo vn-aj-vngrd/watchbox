@@ -85,7 +85,7 @@ export const boxRouter = createProtectedRouter()
       }
     },
   })
-  .query("getPageCount", {
+  .query("getTotalPageCount", {
     async resolve({ ctx }) {
       return ctx.prisma.box.count({
         where: {
