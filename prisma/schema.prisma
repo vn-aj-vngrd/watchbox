@@ -24,6 +24,7 @@ model Entry {
     id         String   @id @default(cuid())
     boxId      String
     entryTitle String
+    image      String
     note       String
     review     String
     rating     Int
