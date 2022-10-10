@@ -10,79 +10,34 @@ export const boxRouter = createProtectedRouter()
       sortParam: z.string(),
     }),
     async resolve({ input, ctx }) {
-      switch (input.sortParam) {
-        case "Newest":
-          return ctx.prisma.box.findMany({
-            skip: input?.skip,
-            take: input?.take,
-            where: {
-              userId: ctx.session.user.id,
-              boxTitle: {
-                contains: input.searchParam || undefined,
-                mode: "insensitive",
-              },
-            },
-            orderBy: {
-              created_at: "desc",
-            },
-          });
-        case "Oldest":
-          return ctx.prisma.box.findMany({
-            skip: input?.skip,
-            take: input?.take,
-            where: {
-              userId: ctx.session.user.id,
-              boxTitle: {
-                contains: input.searchParam || undefined,
-                mode: "insensitive",
-              },
-            },
-            orderBy: {
-              created_at: "asc",
-            },
-          });
-        case "A-Z":
-          return ctx.prisma.box.findMany({
-            skip: input?.skip,
-            take: input?.take,
-            where: {
-              userId: ctx.session.user.id,
-              boxTitle: {
-                contains: input.searchParam || undefined,
-                mode: "insensitive",
-              },
-            },
-            orderBy: {
-              boxTitle: "asc",
-            },
-          });
-        case "Z-A":
-          return ctx.prisma.box.findMany({
-            skip: input?.skip,
-            take: input?.take,
-            where: {
-              userId: ctx.session.user.id,
-              boxTitle: {
-                contains: input.searchParam || undefined,
-                mode: "insensitive",
-              },
-            },
-            orderBy: {
-              boxTitle: "desc",
-            },
-          });
-        default:
-          return ctx.prisma.box.findMany({
-            skip: input?.skip,
-            take: input?.take,
-            where: {
-              userId: ctx.session.user.id,
-            },
-            orderBy: {
-              created_at: "desc",
-            },
-          });
-      }
+      return ctx.prisma.box.findMany({
+        skip: input?.skip,
+        take: input?.take,
+        where: {
+          userId: ctx.session.user.id,
+          boxTitle: {
+            contains: input.searchParam || undefined,
+            mode: "insensitive",
+          },
+        },
+        include: {
+          Entry: true,
+        },
+        orderBy: {
+          created_at:
+            input.sortParam === "Newest"
+              ? "desc"
+              : input.sortParam === "Oldest"
+              ? "asc"
+              : undefined,
+          boxTitle:
+            input.sortParam === "Z-A"
+              ? "desc"
+              : input.sortParam === "A-Z"
+              ? "asc"
+              : undefined,
+        },
+      });
     },
   })
   .query("getTotalPageCount", {
