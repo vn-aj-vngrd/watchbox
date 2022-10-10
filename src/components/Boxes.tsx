@@ -46,7 +46,7 @@ const Boxes: React.FC<BoxesProps> = ({ setMode }) => {
       sortParam: sortOptions[sortIndex]?.name || "Newest",
     },
   ]);
-  const boxesTotalCount = trpc.useQuery(["box.getTotalPageCount"]);
+  const boxesTotalCount = trpc.useQuery(["box.getBoxesCount"]);
 
   const onSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value === "") {
