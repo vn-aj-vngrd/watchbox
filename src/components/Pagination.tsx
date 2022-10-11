@@ -10,60 +10,56 @@ type Props = {
 
 // https://swr.vercel.app/docs/pagination
 
-const Pagination: React.FC<Props> = ({
-  pageCount,
-  pageIndex,
-  setPageIndex,
-}) => {
+// const Pagination: React.FC<Props> = ({
+//   pageCount,
+//   pageIndex,
+//   setPageIndex,
+// }) => {
 
 
-  return (
-    <nav className="flex justify-center">
-      {pageCount}
-      <ul className="inline-flex space-x-2">
-        <li>
-          <button
-            onClick={() => (pageIndex > 1 ? setPageIndex(pageIndex - 1) : null)}
-            className="px-3 py-2 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-grayColor dark:border-grayColor dark:text-white"
-          >
-            <ChevronLeftIcon className="w-5 h-5" />
-          </button>
-        </li>
+//   return (
+//     <div
+//         className={
+//           Math.ceil(
+//             (boxesTotalCount.data && boxesTotalCount.data / itemsPerPage) || 0
+//           ) > 0 &&
+//           Math.ceil(
+//             (boxesData.data && boxesData.data.length / itemsPerPage) || 0
+//           ) > 0 &&
+//           !boxesData.isLoading
+//             ? "flex justify-center"
+//             : "hidden"
+//         }
+//       >
+//     <ReactPaginate
+//           breakLabel="..."
+//           onPageChange={handlePageClick}
+//           pageRangeDisplayed={itemsPerPage}
+//           pageCount={
+//             searchParam
+//               ? Math.ceil(
+//                   (favoritesData.data &&
+//                     favoritesData.data?.length / itemsPerPage) ||
+//                     0
+//                 )
+//               : Math.ceil(
+//                   (favoritesTotalCount.data &&
+//                     favoritesTotalCount.data / itemsPerPage) ||
+//                     0
+//                 )
+//           }
+//           previousLabel={<ChevronLeftIcon className="w-5 h-5" />}
+//           nextLabel={<ChevronRightIcon className="w-5 h-5" />}
+//           previousLinkClassName="block duration-300 ease-in-out py-1.5 px-2.5 text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-grayColor dark:border-grayColor dark:text-white dark:hover:bg-darkColor"
+//           nextLinkClassName={
+//             "block py-1.5 px-2.5 duration-300 ease-in-out text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-grayColor dark:border-grayColor dark:text-white dark:hover:bg-darkColor"
+//           }
+//           className="flex space-x-2"
+//           pageLinkClassName="block py-1 px-2.5 text-gray-500 bg-white border border-gray-300 duration-300 ease-in-out hover:bg-gray-100 hover:text-gray-700 hover:text-gray-700 dark:bg-grayColor dark:border-grayColor dark:text-white dark:hover:bg-darkColor"
+//           activeLinkClassName="bg-blue-600 border-blue-600 text-gray-50 duration-300 ease-in-out hover:bg-blue-600 hover:text-white  dark:bg-blue-600 dark:border-blue-600 dark:text-white dark:hover:bg-blue-600"
+//         />
+//       </div>
+//   );
+// };
 
-        {Array.from(Array(pageCount).keys()).map((index) => (
-          <li key={index}>
-            <button
-              onClick={() => setPageIndex(1)}
-              className="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-grayColor dark:border-grayColor dark:text-white"
-            >
-              {index + 1}
-            </button>
-          </li>
-        ))}
-
-        {/* <li>
-            <button onClick={() => setPageIndex(1)} className="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-grayColor dark:border-grayColor dark:text-white">
-              1
-            </button>
-          </li>
-
-          <li>
-            <button onClick={() => setPageIndex(2)} className="px-3 py-2 leading-tight text-white bg-blue-600 border border-blue-600 ">
-              2
-            </button>
-          </li> */}
-
-        <li>
-          <button
-            onClick={() => setPageIndex(pageIndex + 1)}
-            className="px-3 py-2 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-grayColor dark:border-grayColor dark:text-white"
-          >
-            <ChevronRightIcon className="w-5 h-5" />
-          </button>
-        </li>
-      </ul>
-    </nav>
-  );
-};
-
-export default Pagination;
+// export default Pagination;

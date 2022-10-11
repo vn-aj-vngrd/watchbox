@@ -8,6 +8,7 @@ import { Session } from "next-auth";
 import { useSession } from "next-auth/react";
 import Spinner from "../components/Spinner";
 import { useState } from "react";
+import Favorites from "../components/Favorites";
 
 const Home: NextPage = () => {
   const { data: session } = useSession();
@@ -24,7 +25,7 @@ const Home: NextPage = () => {
             {mode === "boxes" ? (
               <Boxes setMode={setMode} />
             ) : (
-              <>{/* Favorites Here */}</>
+              <Favorites setMode={setMode} />
             )}
           </div>
         </>
