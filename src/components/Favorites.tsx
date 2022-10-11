@@ -161,12 +161,12 @@ const Favorites: React.FC<FavoritesProps> = ({ setMode }) => {
           <button key={index} className="flex flex-col items-center group">
             {/* <div
               className={`grid ${
-                box?.Entry.length > 1
+                box?.Box.length > 1
                   ? "grid-cols-2 grid-rows-2"
                   : "grid-cols-1"
               } gap-3 w-32 p-4 transition duration-150 ease-in-out bg-blue-200 dark:bg-darkColor rounded-lg shadow-sm lg:w-36 aspect-square hover:scale-105`}
             >
-              {box?.Entry?.length == 1 ? (
+              {box?.Box?.length == 1 ? (
                 <div className="rounded-md bg-white overflow-hidden h-[98px]">
                   <img
                     src={box?.Entry[0]?.image || ""}
@@ -193,7 +193,7 @@ const Favorites: React.FC<FavoritesProps> = ({ setMode }) => {
             </div> */}
             <div className="p-2 text-center bg-transparent">
               <p className="subpixel-antialiased font-normal text-gray-600 dark:text-white">
-                {favoritesData?.data[index]?.boxTitle}
+                {box?.boxTitle}
               </p>
             </div>
           </button>

@@ -241,14 +241,14 @@ const Boxes: React.FC<BoxesProps> = ({ setMode }) => {
         />
       </div>
 
-      <button className="fixed z-50 flex items-center justify-center w-12 h-12 text-4xl text-white bg-white border rounded-full shadow-md bottom-12 right-8 dark:bg-darkColor dark:border-darkColor ">
+      <div className="fixed z-50 flex items-center justify-center w-12 h-12 text-4xl text-white bg-white border rounded-full shadow-md bottom-12 right-8 dark:bg-darkColor dark:border-darkColor ">
         <AddBox
           onBoxCreated={() => {
             boxesData.refetch();
             boxesTotalCount.refetch();
           }}
         />
-      </button>
+      </div>
     </div>
   );
 };
