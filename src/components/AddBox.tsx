@@ -42,9 +42,10 @@ const AddBox: React.FC<Props> = ({ onBoxCreated }) => {
   });
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    console.log(data);
     setOpen(false);
-    mutateAsync({ boxTitle: data.title });
+    mutateAsync({
+      boxTitle: data.title.charAt(0).toUpperCase() + data.title.slice(1),
+    });
     reset();
   };
 

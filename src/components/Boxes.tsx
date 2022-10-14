@@ -69,7 +69,7 @@ const Boxes: React.FC<BoxesProps> = ({ setMode }) => {
   const handlePageClick = (event: { selected: number }) => {
     setSkip(event.selected * itemsPerPage);
   };
-
+  console.log(boxesData.data);
   return (
     <div className="w-full py-6 space-y-8">
       <div className="flex flex-col items-center justify-between space-y-4 md:flex-row">
@@ -168,24 +168,30 @@ const Boxes: React.FC<BoxesProps> = ({ setMode }) => {
               } gap-3 w-32 p-4 transition duration-150 ease-in-out bg-blue-200 dark:bg-darkColor rounded-lg shadow-sm lg:w-36 aspect-square hover:scale-105`}
             >
               {box?.Entry?.length == 1 ? (
-                <div className="rounded-md bg-white overflow-hidden h-[98px]">
-                  <img
-                    src={box?.Entry[0]?.image || ""}
-                    alt=""
-                    className="object-fill overflow-hidden bg-cover"
-                  />
+                <div className="rounded-md bg-white overflow-hidden">
+                  <Image
+                        className="object-cover"
+                        src={box?.Entry[0]?.image || ""}
+                        alt=""
+                        width="1080"
+                        height="1080"
+                        layout="responsive"
+                      />
                 </div>
               ) : (
                 <>
                   {box?.Entry?.slice(0, 4).map((item, index) => (
                     <div
                       key={index}
-                      className="rounded-md bg-white overflow-hidden h-[40px] w-[40px]"
+                      className="rounded-md bg-white overflow-hidden"
                     >
-                      <img
+                      <Image
+                        className="object-cover"
                         src={item.image || ""}
                         alt=""
-                        className="object-fill overflow-hidden bg-cover"
+                        width="1080"
+                        height="1080"
+                        layout="responsive"
                       />
                     </div>
                   ))}

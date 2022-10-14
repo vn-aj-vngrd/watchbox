@@ -10,6 +10,7 @@ import ReactPaginate from "react-paginate";
 import { trpc } from "../utils/trpc";
 import Spinner from "./Spinner";
 import { ChevronLeftIcon } from "@heroicons/react/24/outline";
+import Image from 'next/image';
 
 const sortOptions = [
   { id: "one", name: "Newest" },
@@ -67,7 +68,7 @@ const Favorites: React.FC<FavoritesProps> = ({ setMode }) => {
     setSkip(event.selected * itemsPerPage);
   };
 
-  console.log(favoritesData?.data);
+  console.log(favoritesData.data);
 
   return (
     <div className="w-full py-6 space-y-8">
@@ -157,43 +158,52 @@ const Favorites: React.FC<FavoritesProps> = ({ setMode }) => {
       )} 
 
       <div className="grid md:w-full w-[80%] gap-x-14 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-y-6 md:gap-y-8 mx-auto">
-        {favoritesData.data?.map((box, index) => (
+        {favoritesData.data?.map((fav, index) => (
           <button key={index} className="flex flex-col items-center group">
-            {/* <div
+            <div
               className={`grid ${
-                box?.Box.length > 1
+                fav?.Entry.length > 1
                   ? "grid-cols-2 grid-rows-2"
                   : "grid-cols-1"
               } gap-3 w-32 p-4 transition duration-150 ease-in-out bg-blue-200 dark:bg-darkColor rounded-lg shadow-sm lg:w-36 aspect-square hover:scale-105`}
             >
-              {box?.Box?.length == 1 ? (
-                <div className="rounded-md bg-white overflow-hidden h-[98px]">
-                  <img
-                    src={box?.Entry[0]?.image || ""}
-                    alt=""
-                    className="object-fill overflow-hidden bg-cover"
-                  />
-                </div>
+              {fav?.Entry?.length == 1 ? (
+                <div
+                key={index}
+                className="rounded-md bg-white overflow-hidden"
+              >
+                <Image
+                  className="object-cover"
+                  src={fav?.Entry[0]?.image || ""}
+                  alt=""
+                  width="1080"
+                  height="1080"
+                  layout="responsive"
+                />
+              </div>
               ) : (
                 <>
-                  {box?.Entry?.slice(0, 4).map((item, index) => (
+                  {fav?.Entry?.slice(0, 4).map((item, index) => (
                     <div
-                      key={index}
-                      className="rounded-md bg-white overflow-hidden h-[40px] w-[40px]"
-                    >
-                      <img
-                        src={item.image || ""}
-                        alt=""
-                        className="object-fill overflow-hidden bg-cover"
-                      />
-                    </div>
+                    key={index}
+                    className="rounded-md bg-white overflow-hidden"
+                  >
+                    <Image
+                      className="object-cover"
+                      src={item.image || ""}
+                      alt=""
+                      width="1080"
+                      height="1080"
+                      layout="responsive"
+                    />
+                  </div>
                   ))}
                 </>
               )}
-            </div> */}
+            </div> 
             <div className="p-2 text-center bg-transparent">
               <p className="subpixel-antialiased font-normal text-gray-600 dark:text-white">
-                {box?.boxTitle}
+                {fav?.boxTitle}
               </p>
             </div>
           </button>
