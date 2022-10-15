@@ -12,7 +12,6 @@ import Spinner from "./Spinner";
 import AddBox from "./AddBox";
 import { ChevronLeftIcon } from "@heroicons/react/24/outline";
 import Image from 'next/image';
-// import Pagination from "./Pagination";
 
 const sortOptions = [
   { id: "one", name: "Newest" },
