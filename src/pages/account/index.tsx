@@ -1,13 +1,13 @@
 import { GetServerSidePropsContext } from "next";
 import Meta from "../../components/Meta";
-import Settings from "../../components/Settings";
+import Profile from "../../components/Profile";
 import { getServerSideSession } from "../../utils/session";
 
 const index = () => {
   return (
     <>
       <Meta title="WatchBox | Account Settings" />
-      <Settings />
+      <Profile />
     </>
   );
 };

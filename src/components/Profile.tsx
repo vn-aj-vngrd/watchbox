@@ -1,4 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
+// components/Profile.tsx
+
 import { PencilSquareIcon } from "@heroicons/react/24/solid";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
@@ -11,7 +13,7 @@ import { env } from "../env/client.mjs";
 import { v4 as uuidv4 } from "uuid";
 import Spinner from "./Spinner";
 import router from "next/router";
-import Modal from "./Modal";
+import Deactivate from "./Deactivate";
 
 type Inputs = {
   username: string;
@@ -296,7 +298,7 @@ const Profile = () => {
           </div>
 
           <div className="mt-6">
-            <Modal handleRemove={() => handleRemove} />
+            <Deactivate handleRemove={() => handleRemove} />
           </div>
         </div>
       </div>

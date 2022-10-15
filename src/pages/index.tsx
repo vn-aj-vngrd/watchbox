@@ -2,33 +2,31 @@
 
 import type { GetServerSidePropsContext, NextPage } from "next";
 import { getServerSideSession } from "../utils/session";
-// import { trpc } from "../utils/trpc";
-// import Spinner from "../components/Spinner";
 import Meta from "../components/Meta";
-import Dashboard from "../components/Dashboard";
+import Boxes from "../components/Boxes";
 import { Session } from "next-auth";
 import { useSession } from "next-auth/react";
 import Spinner from "../components/Spinner";
+import { useState } from "react";
+import Favorites from "../components/Favorites";
 
 const Home: NextPage = () => {
-  // const res = trpc.useQuery(["box.getBoxes", { skip: 0, take: 5 }]);
-
-  // if (res.status === "loading") {
-  //   return <Spinner />;
-  // }
-
   const { data: session } = useSession();
+
+  const [mode, setMode] = useState<"boxes" | "favorites">("boxes");
 
   return (
     <>
       <Meta />
-
       {session ? (
         <>
           <Meta title="Watchbox" />
-          {/* Edit this component below */}
-          <div className=" min-h-[89.4vh] container mx-auto px-4">
-            <Dashboard />
+          <div className="min-h-[87.6vh] container mx-auto px-4">
+            {mode === "boxes" ? (
+              <Boxes setMode={setMode} />
+            ) : (
+              <Favorites setMode={setMode} />
+            )}
           </div>
         </>
       ) : (

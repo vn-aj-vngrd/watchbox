@@ -11,8 +11,7 @@ import { ArrowRightIcon, MegaphoneIcon } from "@heroicons/react/24/solid";
 import Confetti from "./Confetti";
 import { ExclamationCircleIcon } from "@heroicons/react/24/solid";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { useEffect, useState } from "react";
-
+import { useEffect } from "react";
 const description = [
   "WatchBox streamlines and simplifies the process of creating movie and TV show lists for you to share with others or keep for yourself. ",
   "To get started, type you username below.",
@@ -24,7 +23,6 @@ type Inputs = {
 
 const Welcome = () => {
   const { data: session, status } = useSession();
-  // const [isLoading, setIsLoading] = useState(false);
 
   const {
     register,
@@ -38,8 +36,9 @@ const Welcome = () => {
     reset();
   }, [reset]);
 
-  const { mutate, isLoading, error } = trpc.useMutation(["auth.getStarted"], {
+  const { mutate, isLoading, error } = trpc.useMutation(["user.getStarted"], {
     onSuccess: () => {
+      document.dispatchEvent(new Event("visibilitychange"));
       router.push("/");
     },
   });
@@ -74,49 +73,47 @@ const Welcome = () => {
           description={description}
         />
 
-        <form className="" onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className="mx-auto max-w-xs mb-10 space-y-6">
-            <div>
-              <div className="relative mt-1 rounded-md shadow-sm">
-                <input
-                  type="text"
-                  placeholder="Type your username here"
-                  className={
-                    errors.username
-                      ? "block w-full px-3 py-2 placeholder-red-400 border border-red-400 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-red-500 focus:border-blue-500 sm:text-sm"
-                      : "block w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:border-darkerColor dark:focus:border-blue-500 dark:focus:ring-blue-400"
-                  }
-                  {...register("username", {
-                    required: {
-                      value: true,
-                      message: "* Please enter a username to continue.",
-                    },
-                    pattern: {
-                      value: /^[a-zA-Z0-9]{5,}$/,
-                      message:
-                        "* Username must be at least 5 characters long and contain only letters and numbers.",
-                    },
-                  })}
-                />
-                {errors.username && (
-                  <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                    <ExclamationCircleIcon
-                      className="w-5 h-5 text-red-500"
-                      aria-hidden="true"
-                    />
-                  </div>
-                )}
-              </div>
-              {error && (
-                <p className="text-sm text-red-500 mt-1">{error.message}</p>
-              )}
-
+            <div className="relative mt-1 rounded-md shadow-sm">
+              <input
+                type="text"
+                placeholder="Type your username here"
+                className={
+                  errors.username
+                    ? "block w-full px-3 py-2 placeholder-red-400 border border-red-400 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-red-500 focus:border-blue-500 sm:text-sm"
+                    : "block w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:border-darkerColor dark:focus:border-blue-500 dark:focus:ring-blue-400"
+                }
+                {...register("username", {
+                  required: {
+                    value: true,
+                    message: "* Please enter a username to continue.",
+                  },
+                  pattern: {
+                    value: /^[a-zA-Z0-9]{5,}$/,
+                    message:
+                      "* Username must be at least 5 characters long and contain only letters and numbers.",
+                  },
+                })}
+              />
               {errors.username && (
-                <p className="text-sm text-red-500 mt-1">
-                  {errors.username.message}
-                </p>
+                <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                  <ExclamationCircleIcon
+                    className="w-5 h-5 text-red-500"
+                    aria-hidden="true"
+                  />
+                </div>
               )}
             </div>
+            {error && (
+              <p className="text-sm text-red-500 mt-1">{error.message}</p>
+            )}
+
+            {errors.username && (
+              <p className="text-sm text-red-500 mt-1">
+                {errors.username.message}
+              </p>
+            )}
           </div>
 
           <div className="flex-col text-center">

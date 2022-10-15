@@ -10,4 +10,16 @@ module.exports = withPWA({
   // next.js config
   reactStrictMode: true,
   swcMinify: true,
+  
 });
+
+module.exports = {
+  images: {
+    domains: [
+      'encrypted-tbn1.gstatic.com',
+      'encrypted-tbn2.gstatic.com',
+      'encrypted-tbn3.gstatic.com',
+    ],
+  },
+}
+
