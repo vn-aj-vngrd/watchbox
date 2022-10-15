@@ -173,7 +173,7 @@ const Boxes: React.FC<BoxesProps> = ({ setMode }) => {
                 box?.Entry.length > 1
                   ? "grid-cols-2 grid-rows-2"
                   : "grid-cols-1"
-              } gap-3 w-32 p-4 transition duration-150 ease-in-out bg-blue-200 dark:bg-darkColor rounded-lg shadow-sm lg:w-36 aspect-square hover:scale-105`}
+              } gap-3 w-32 p-4 transition duration-150 ease-in-out bg-white-50 border dark:bg-grayColor rounded-lg dark:border-transparent shadow-sm lg:w-36 aspect-square hover:scale-105`}
             >
               {box?.Entry?.length == 1 ? (
                 <div className="rounded-md bg-white overflow-hidden">

@@ -10,7 +10,7 @@ import ReactPaginate from "react-paginate";
 import { trpc } from "../utils/trpc";
 import Spinner from "./Spinner";
 import { ChevronLeftIcon } from "@heroicons/react/24/outline";
-import Image from 'next/image';
+import Image from "next/image";
 
 const sortOptions = [
   { id: "one", name: "Newest" },
@@ -155,7 +155,7 @@ const Favorites: React.FC<FavoritesProps> = ({ setMode }) => {
         <div className="flex items-center justify-center">
           No results found.
         </div>
-      )} 
+      )}
 
       <div className="grid md:w-full w-[80%] gap-x-14 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-y-6 md:gap-y-8 mx-auto">
         {favoritesData.data?.map((fav, index) => (
@@ -165,42 +165,42 @@ const Favorites: React.FC<FavoritesProps> = ({ setMode }) => {
                 fav?.Entry.length > 1
                   ? "grid-cols-2 grid-rows-2"
                   : "grid-cols-1"
-              } gap-3 w-32 p-4 transition duration-150 ease-in-out bg-blue-200 dark:bg-darkColor rounded-lg shadow-sm lg:w-36 aspect-square hover:scale-105`}
+              } gap-3 w-32 p-4 transition duration-150 ease-in-out bg-white-50 border dark:bg-grayColor rounded-lg dark:border-transparent shadow-sm lg:w-36 aspect-square hover:scale-105`}
             >
               {fav?.Entry?.length == 1 ? (
                 <div
-                key={index}
-                className="rounded-md bg-white overflow-hidden"
-              >
-                <Image
-                  className="object-cover"
-                  src={fav?.Entry[0]?.image || ""}
-                  alt=""
-                  width="1080"
-                  height="1080"
-                  layout="responsive"
-                />
-              </div>
+                  key={index}
+                  className="rounded-md bg-white overflow-hidden"
+                >
+                  <Image
+                    className="object-cover"
+                    src={fav?.Entry[0]?.image || ""}
+                    alt=""
+                    width="1080"
+                    height="1080"
+                    layout="responsive"
+                  />
+                </div>
               ) : (
                 <>
                   {fav?.Entry?.slice(0, 4).map((item, index) => (
                     <div
-                    key={index}
-                    className="rounded-md bg-white overflow-hidden"
-                  >
-                    <Image
-                      className="object-cover"
-                      src={item.image || ""}
-                      alt=""
-                      width="1080"
-                      height="1080"
-                      layout="responsive"
-                    />
-                  </div>
+                      key={index}
+                      className="rounded-md bg-white overflow-hidden"
+                    >
+                      <Image
+                        className="object-cover"
+                        src={item.image || ""}
+                        alt=""
+                        width="1080"
+                        height="1080"
+                        layout="responsive"
+                      />
+                    </div>
                   ))}
                 </>
               )}
-            </div> 
+            </div>
             <div className="p-2 text-center bg-transparent">
               <p className="subpixel-antialiased font-normal text-gray-600 dark:text-white">
                 {fav?.boxTitle}
@@ -209,7 +209,7 @@ const Favorites: React.FC<FavoritesProps> = ({ setMode }) => {
           </button>
         ))}
       </div>
- 
+
       <div
         className={
           Math.ceil(
@@ -253,11 +253,9 @@ const Favorites: React.FC<FavoritesProps> = ({ setMode }) => {
           pageLinkClassName="block py-1 px-2.5 text-gray-500 bg-white border border-gray-300 duration-300 ease-in-out hover:bg-gray-100 hover:text-gray-700 hover:text-gray-700 dark:bg-grayColor dark:border-grayColor dark:text-white dark:hover:bg-darkColor"
           activeLinkClassName="bg-blue-600 border-blue-600 text-gray-50 duration-300 ease-in-out hover:bg-blue-600 hover:text-white  dark:bg-blue-600 dark:border-blue-600 dark:text-white dark:hover:bg-blue-600"
         />
-      </div> 
+      </div>
     </div>
   );
 };
-
-
 
 export default Favorites;
