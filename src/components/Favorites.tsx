@@ -1,4 +1,4 @@
-// components/Boxes.tsx
+// components/Favorites.tsx
 
 import {
   MagnifyingGlassIcon,
@@ -9,7 +9,6 @@ import { useState } from "react";
 import ReactPaginate from "react-paginate";
 import { trpc } from "../utils/trpc";
 import Spinner from "./Spinner";
-import AddBox from "./AddBox";
 import { ChevronLeftIcon } from "@heroicons/react/24/outline";
 import Image from 'next/image';
 
@@ -22,11 +21,11 @@ const sortOptions = [
 
 const itemsPerPage = 14;
 
-type BoxesProps = {
+type FavoritesProps = {
   setMode: (mode: "boxes" | "favorites") => void;
 };
 
-const Boxes: React.FC<BoxesProps> = ({ setMode }) => {
+const Favorites: React.FC<FavoritesProps> = ({ setMode }) => {
   const [openSort, setOpenSort] = useState<boolean>(false);
   const [sortArr, setSortArr] = useState<boolean[]>([
     true,
@@ -38,8 +37,8 @@ const Boxes: React.FC<BoxesProps> = ({ setMode }) => {
   const [searchParam, setSearchParam] = useState<string | null>();
   const [skip, setSkip] = useState(0);
 
-  const boxesData = trpc.useQuery([
-    "box.getBoxes",
+  const favoritesData = trpc.useQuery([
+    "favorite.getFavorites",
     {
       skip: skip,
       take: itemsPerPage,
@@ -47,7 +46,7 @@ const Boxes: React.FC<BoxesProps> = ({ setMode }) => {
       sortParam: sortOptions[sortIndex]?.name || "Newest",
     },
   ]);
-  const boxesTotalCount = trpc.useQuery(["box.getBoxesCount"]);
+  const favoritesTotalCount = trpc.useQuery(["favorite.getFavoritesCount"]);
 
   const onSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value === "") {
@@ -68,20 +67,22 @@ const Boxes: React.FC<BoxesProps> = ({ setMode }) => {
   const handlePageClick = (event: { selected: number }) => {
     setSkip(event.selected * itemsPerPage);
   };
-  console.log(boxesData.data);
+
+  console.log(favoritesData.data);
+
   return (
     <div className="w-full py-6 space-y-8">
       <div className="flex flex-col items-center justify-between space-y-4 md:flex-row">
         <div className="flex space-x-6">
           <button
             onClick={() => setMode("boxes")}
-            className="text-2xl subpixel-antialiased text-blue-600 "
+            className="text-2xl subpixel-antialiased hover:text-blue-600 ease-in-out duration-300"
           >
             Boxes
           </button>
           <button
             onClick={() => setMode("favorites")}
-            className="text-2xl subpixel-antialiased hover:text-blue-600 ease-in-out duration-300"
+            className="text-2xl subpixel-antialiased text-blue-600 "
           >
             Favorites
           </button>
@@ -149,72 +150,78 @@ const Boxes: React.FC<BoxesProps> = ({ setMode }) => {
         </div>
       </div>
 
-      {boxesData.isLoading && <Spinner />}
-      {boxesData.data?.length === 0 && (
+      {favoritesData.isLoading && <Spinner />}
+      {favoritesData.data?.length === 0 && (
         <div className="flex items-center justify-center">
           No results found.
         </div>
-      )}
+      )} 
 
       <div className="grid md:w-full w-[80%] gap-x-14 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-y-6 md:gap-y-8 mx-auto">
-        {boxesData.data?.map((box, index) => (
+        {favoritesData.data?.map((fav, index) => (
           <button key={index} className="flex flex-col items-center group">
             <div
               className={`grid ${
-                box?.Entry.length > 1
+                fav?.Entry.length > 1
                   ? "grid-cols-2 grid-rows-2"
                   : "grid-cols-1"
               } gap-3 w-32 p-4 transition duration-150 ease-in-out bg-blue-200 dark:bg-darkColor rounded-lg shadow-sm lg:w-36 aspect-square hover:scale-105`}
             >
-              {box?.Entry?.length == 1 ? (
-                <div className="rounded-md bg-white overflow-hidden">
-                  <Image
-                        className="object-cover"
-                        src={box?.Entry[0]?.image || ""}
-                        alt=""
-                        width="1080"
-                        height="1080"
-                        layout="responsive"
-                      />
-                </div>
+              {fav?.Entry?.length == 1 ? (
+                <div
+                key={index}
+                className="rounded-md bg-white overflow-hidden"
+              >
+                <Image
+                  className="object-cover"
+                  src={fav?.Entry[0]?.image || ""}
+                  alt=""
+                  width="1080"
+                  height="1080"
+                  layout="responsive"
+                />
+              </div>
               ) : (
                 <>
-                  {box?.Entry?.slice(0, 4).map((item, index) => (
+                  {fav?.Entry?.slice(0, 4).map((item, index) => (
                     <div
-                      key={index}
-                      className="rounded-md bg-white overflow-hidden"
-                    >
-                      <Image
-                        className="object-cover"
-                        src={item.image || ""}
-                        alt=""
-                        width="1080"
-                        height="1080"
-                        layout="responsive"
-                      />
-                    </div>
+                    key={index}
+                    className="rounded-md bg-white overflow-hidden"
+                  >
+                    <Image
+                      className="object-cover"
+                      src={item.image || ""}
+                      alt=""
+                      width="1080"
+                      height="1080"
+                      layout="responsive"
+                    />
+                  </div>
                   ))}
                 </>
               )}
-            </div>
+            </div> 
             <div className="p-2 text-center bg-transparent">
               <p className="subpixel-antialiased font-normal text-gray-600 dark:text-white">
-                {box?.boxTitle}
+                {fav?.boxTitle}
               </p>
             </div>
           </button>
         ))}
       </div>
-      {/* <Pagination /> */}
+ 
       <div
         className={
           Math.ceil(
-            (boxesTotalCount.data && boxesTotalCount.data / itemsPerPage) || 0
+            (favoritesTotalCount.data &&
+              favoritesTotalCount.data / itemsPerPage) ||
+              0
           ) > 0 &&
           Math.ceil(
-            (boxesData.data && boxesData.data.length / itemsPerPage) || 0
+            (favoritesData.data && favoritesData.data.length / itemsPerPage) ||
+              0
           ) > 0 &&
-          !boxesData.isLoading
+          !favoritesData.isLoading
             ? "flex justify-center"
             : "hidden"
         }
@@ -226,11 +233,13 @@ const Boxes: React.FC<BoxesProps> = ({ setMode }) => {
           pageCount={
             searchParam
               ? Math.ceil(
-                  (boxesData.data && boxesData.data?.length / itemsPerPage) || 0
+                  (favoritesData.data &&
+                    favoritesData.data?.length / itemsPerPage) ||
+                    0
                 )
               : Math.ceil(
-                  (boxesTotalCount.data &&
-                    boxesTotalCount.data / itemsPerPage) ||
+                  (favoritesTotalCount.data &&
+                    favoritesTotalCount.data / itemsPerPage) ||
                     0
                 )
           }
@@ -244,18 +253,11 @@ const Boxes: React.FC<BoxesProps> = ({ setMode }) => {
           pageLinkClassName="block py-1 px-2.5 text-gray-500 bg-white border border-gray-300 duration-300 ease-in-out hover:bg-gray-100 hover:text-gray-700 hover:text-gray-700 dark:bg-grayColor dark:border-grayColor dark:text-white dark:hover:bg-darkColor"
           activeLinkClassName="bg-blue-600 border-blue-600 text-gray-50 duration-300 ease-in-out hover:bg-blue-600 hover:text-white  dark:bg-blue-600 dark:border-blue-600 dark:text-white dark:hover:bg-blue-600"
         />
-      </div>
-
-      <div className="fixed z-50 flex items-center justify-center w-12 h-12 text-4xl text-white bg-white border rounded-full shadow-md bottom-12 right-8 dark:bg-darkColor dark:border-darkColor ">
-        <AddBox
-          onBoxCreated={() => {
-            boxesData.refetch();
-            boxesTotalCount.refetch();
-          }}
-        />
-      </div>
+      </div> 
     </div>
   );
 };
 
-export default Boxes;
+
+
+export default Favorites;

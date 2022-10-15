@@ -10,14 +10,31 @@ datasource db {
 }
 
 model Box {
-    id         String      @id @default(cuid())
-    userId     String
-    boxTitle   String
-    boxLink    String
-    created_at DateTime    @default(now())
-    updated_at DateTime    @default(now())
-    Component  Component[]
-    user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+    id          String        @id @default(cuid())
+    userId      String
+    boxTitle    String
+    Entry       Entry[]
+    Component   Component[]
+    FavoriteBox FavoriteBox[]
+    created_at  DateTime      @default(now())
+    updated_at  DateTime      @default(now())
+    user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Entry {
+    id            String          @id @default(cuid())
+    boxId         String
+    entryTitle    String
+    image         String
+    note          String
+    review        String
+    rating        Int
+    xAxis         Int
+    yAxis         Int
+    FavoriteEntry FavoriteEntry[]
+    created_at    DateTime        @default(now())
+    updated_at    DateTime        @default(now())
+    box           Box             @relation(fields: [boxId], references: [id], onDelete: Cascade)
 }
 
 model Component {
@@ -26,30 +43,27 @@ model Component {
     componentName String
     xAxis         Int
     yAxis         Int
-    Entry         Entry[]
     created_at    DateTime @default(now())
     updated_at    DateTime @default(now())
     box           Box      @relation(fields: [boxId], references: [id], onDelete: Cascade)
 }
 
-model Entry {
-    id          String    @id @default(cuid())
-    componentId String
-    entryTitle  String
-    note        String
-    review      String
-    rating      Int
-    created_at  DateTime  @default(now())
-    updated_at  DateTime  @default(now())
-    component   Component @relation(fields: [componentId], references: [id], onDelete: Cascade)
-}
-
-model Pin {
+model FavoriteBox {
     id         String   @id @default(cuid())
     userId     String
-    pinnedId   String
+    boxId      String
     created_at DateTime @default(now())
     user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    box        Box      @relation(fields: [boxId], references: [id], onDelete: Cascade)
+}
+
+model FavoriteEntry {
+    id         String   @id @default(cuid())
+    userId     String
+    entryId    String
+    created_at DateTime @default(now())
+    user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    entry      Entry    @relation(fields: [entryId], references: [id], onDelete: Cascade)
 }
 
 model Account {
@@ -58,12 +72,12 @@ model Account {
     type              String
     provider          String
     providerAccountId String
-    refresh_token     String? //@db.Text
-    access_token      String? //@db.Text
+    refresh_token     String?
+    access_token      String?
     expires_at        Int?
     token_type        String?
     scope             String?
-    id_token          String? //@db.Text
+    id_token          String?
     session_state     String?
     user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -79,20 +93,20 @@ model Session {
 }
 
 model User {
-    id            String    @id @default(cuid())
-    name          String?
-    username      String?   @unique
-    email         String?   @unique
-    emailVerified DateTime?
-    cloudinaryId  String?
-    image         String?
-    isNewUser     Boolean   @default(true)
-    accounts      Account[]
-    sessions      Session[]
-    Box           Box[]
-    Pin           Pin[]
-    created_at    DateTime  @default(now())
-    updated_at    DateTime  @default(now())
+    id              String          @id @default(cuid())
+    name            String?
+    username        String?         @unique
+    email           String?         @unique
+    emailVerified   DateTime?
+    image           String?
+    isNewUser       Boolean         @default(true)
+    accounts        Account[]
+    sessions        Session[]
+    boxes           Box[]
+    favoriteBoxes   FavoriteBox[]
+    FavoriteEntries FavoriteEntry[]
+    created_at      DateTime        @default(now())
+    updated_at      DateTime        @default(now())
 }
 
 model VerificationToken {

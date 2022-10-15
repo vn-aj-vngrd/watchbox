@@ -1,8 +1,8 @@
 import { createProtectedRouter } from "./protected-router";
 import { z } from "zod";
 
-export const boxRouter = createProtectedRouter()
-  .query("getBoxes", {
+export const favoriteRouter = createProtectedRouter()
+  .query("getFavorites", {
     input: z.object({
       skip: z.number(),
       take: z.number(),
@@ -11,17 +11,18 @@ export const boxRouter = createProtectedRouter()
     }),
     async resolve({ input, ctx }) {
       return ctx.prisma.box.findMany({
-        skip: input?.skip,
-        take: input?.take,
+        take: input.take,
+        skip: input.skip,
         where: {
-          userId: ctx.session.user.id,
-          boxTitle: {
-            contains: input.searchParam || undefined,
-            mode: "insensitive",
+          FavoriteBox: {
+            some: {
+              userId: ctx.session.user.id,
+            },
           },
         },
         include: {
           Entry: true,
+          FavoriteBox: true,
         },
         orderBy: {
           created_at:
@@ -40,24 +41,11 @@ export const boxRouter = createProtectedRouter()
       });
     },
   })
-  .query("getBoxesCount", {
+  .query("getFavoritesCount", {
     async resolve({ ctx }) {
-      return ctx.prisma.box.count({
+      return ctx.prisma.favoriteBox.count({
         where: {
           userId: ctx.session.user.id,
-        },
-      });
-    },
-  })
-  .mutation("createBox", {
-    input: z.object({
-      boxTitle: z.string(),
-    }),
-    async resolve({ input, ctx }) {
-      return ctx.prisma.box.create({
-        data: {
-          userId: ctx.session.user.id,
-          boxTitle: input.boxTitle,
         },
       });
     },
