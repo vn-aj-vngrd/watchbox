@@ -6,7 +6,7 @@ import PageAlert from "../../components/PageAlert";
 import { XCircleIcon } from "@heroicons/react/24/solid";
 
 const description = [
-  "Something went wrong on our end.",
+  "The link has expired or something went wrong on our end.",
   "Please try again later.",
 ];
 
