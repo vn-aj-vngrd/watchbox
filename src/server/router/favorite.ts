@@ -25,6 +25,12 @@ export const favoriteRouter = createProtectedRouter()
           FavoriteBox: true,
         },
         orderBy: {
+          created_at:
+            input.sortParam === "Newest"
+              ? "desc"
+              : input.sortParam === "Oldest"
+              ? "asc"
+              : undefined,
           boxTitle:
             input.sortParam === "Z-A"
               ? "desc"
