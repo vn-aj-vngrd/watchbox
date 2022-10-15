@@ -131,7 +131,7 @@ const Profile = () => {
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md py-12 space-y-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
           <h2 className="mt-4 text-3xl font-semibold text-center text-gray-900 dark:text-white">
-            Account Profile
+            Account Settings
           </h2>
         </div>
 
