@@ -11,7 +11,7 @@ import { trpc } from "../utils/trpc";
 import Spinner from "./Spinner";
 import AddBox from "./AddBox";
 import { ChevronLeftIcon } from "@heroicons/react/24/outline";
-import Image from 'next/image';
+import Image from "next/image";
 
 const sortOptions = [
   { id: "one", name: "Newest" },
@@ -146,6 +146,15 @@ const Boxes: React.FC<BoxesProps> = ({ setMode }) => {
               />
             </div>
           </div>
+
+          <div className="">
+            <AddBox
+              onBoxCreated={() => {
+                boxesData.refetch();
+                boxesTotalCount.refetch();
+              }}
+            />
+          </div>
         </div>
       </div>
 
@@ -169,13 +178,13 @@ const Boxes: React.FC<BoxesProps> = ({ setMode }) => {
               {box?.Entry?.length == 1 ? (
                 <div className="rounded-md bg-white overflow-hidden">
                   <Image
-                        className="object-cover"
-                        src={box?.Entry[0]?.image || ""}
-                        alt=""
-                        width="1080"
-                        height="1080"
-                        layout="responsive"
-                      />
+                    className="object-cover"
+                    src={box?.Entry[0]?.image || ""}
+                    alt=""
+                    width="1080"
+                    height="1080"
+                    layout="responsive"
+                  />
                 </div>
               ) : (
                 <>
@@ -243,15 +252,6 @@ const Boxes: React.FC<BoxesProps> = ({ setMode }) => {
           className="flex space-x-2"
           pageLinkClassName="block py-1 px-2.5 text-gray-500 bg-white border border-gray-300 duration-300 ease-in-out hover:bg-gray-100 hover:text-gray-700 hover:text-gray-700 dark:bg-grayColor dark:border-grayColor dark:text-white dark:hover:bg-darkColor"
           activeLinkClassName="bg-blue-600 border-blue-600 text-gray-50 duration-300 ease-in-out hover:bg-blue-600 hover:text-white  dark:bg-blue-600 dark:border-blue-600 dark:text-white dark:hover:bg-blue-600"
-        />
-      </div>
-
-      <div className="fixed z-50 flex items-center justify-center w-12 h-12 text-4xl text-white bg-white border rounded-full shadow-md bottom-12 right-8 dark:bg-darkColor dark:border-darkColor ">
-        <AddBox
-          onBoxCreated={() => {
-            boxesData.refetch();
-            boxesTotalCount.refetch();
-          }}
         />
       </div>
     </div>
