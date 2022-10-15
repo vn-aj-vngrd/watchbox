@@ -5,7 +5,6 @@ import router from "next/router";
 import ToggleTheme from "./ToggleTheme";
 import Account from "./Account";
 import { Session } from "next-auth";
-import AddBox from "./AddBox";
 
 type Props = {
   session: Session | null;

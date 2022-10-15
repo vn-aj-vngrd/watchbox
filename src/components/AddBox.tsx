@@ -58,7 +58,7 @@ const AddBox: React.FC<Props> = ({ onBoxCreated }) => {
       <button
         onClick={() => setOpen(true)}
         type="button"
-        className="inline-flex items-center p-3.5 bg-white rounded-full shadow-sm hover:bg-gray-200 focus:outline-none dark:bg-darkColor dark:text-white dark:border-transparent dark:hover:bg-grayColor"
+        className="inline-flex items-center p-3 bg-white rounded-lg shadow-sm hover:bg-gray-200 focus:outline-none border dark:bg-grayColor dark:text-white dark:border-transparent dark:hover:bg-grayColor"
       >
         <PencilSquareIcon className="w-5 h-5 fill-gray-700 dark:fill-blue-50" />
       </button>
@@ -100,7 +100,7 @@ const AddBox: React.FC<Props> = ({ onBoxCreated }) => {
             >
               <form
                 onSubmit={handleSubmit(onSubmit)}
-                className="inline-block p-10 overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:align-middle w-[90%] sm:w-[90%] md:w-[35rem]"
+                className="inline-block p-10 overflow-hidden text-left align-bottom transition-all transform bg-white dark:bg-darkerColor rounded-lg shadow-xl sm:my-8 sm:align-middle w-[90%] sm:w-[90%] md:w-[35rem]"
               >
                 <div className="mb-6">
                   <div className="flex items-center justify-center w-12 h-12 mx-auto bg-blue-100 rounded-full">
@@ -112,7 +112,7 @@ const AddBox: React.FC<Props> = ({ onBoxCreated }) => {
                   <div className="mt-3 sm:mt-5">
                     <Dialog.Title
                       as="h3"
-                      className="text-lg font-semibold text-center text-gray-700 upper"
+                      className="text-xl font-semibold text-center text-gray-700 dark:text-white"
                     >
                       Create Box
                     </Dialog.Title>
@@ -120,7 +120,7 @@ const AddBox: React.FC<Props> = ({ onBoxCreated }) => {
                       <div>
                         <label
                           htmlFor="email"
-                          className="block text-sm font-medium text-gray-700"
+                          className="block text-sm font-medium text-gray-700 dark:text-white"
                         >
                           Title
                         </label>
@@ -155,7 +155,7 @@ const AddBox: React.FC<Props> = ({ onBoxCreated }) => {
                     </div>
                   </div>
                 </div>
-                <div className="flex flex-col space-y-2">
+                <div className="flex flex-col space-y-2 md:space-x-2 md:space-y-0 md:flex-row">
                   <button
                     type="button"
                     className="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md shadow-sm hover:bg-red-700 focus:outline-none"
