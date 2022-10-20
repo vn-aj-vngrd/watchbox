@@ -8,10 +8,10 @@ import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import ImageUploading, { ImageListType } from "react-images-uploading";
 import sha1 from "crypto-js/sha1";
-import { trpc } from "../utils/trpc";
-import { env } from "../env/client.mjs";
+import { trpc } from "../../utils/trpc";
+import { env } from "../../env/client.mjs";
 import { v4 as uuidv4 } from "uuid";
-import Spinner from "./Spinner";
+import Spinner from "../Common/Spinner";
 import router from "next/router";
 import Deactivate from "./Deactivate";
 

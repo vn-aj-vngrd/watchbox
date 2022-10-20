@@ -1,12 +1,12 @@
 // src/pages/505.tsx
 
-import Meta from "../components/Meta";
-import PageAlert from "../components/PageAlert";
+import Meta from "../components/Common/Meta";
+import PageAlert from "../components/Common/PageAlert";
 
 const description = [
   "Something went wrong on our end.",
   "Please try again later.",
-]
+];
 
 const Custom500 = () => {
   return (

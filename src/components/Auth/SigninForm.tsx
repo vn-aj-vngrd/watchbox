@@ -8,7 +8,7 @@ import {
 } from "@heroicons/react/24/solid";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import Spinner from "./Spinner";
+import Spinner from "../Common/Spinner";
 
 type Inputs = {
   email: string;

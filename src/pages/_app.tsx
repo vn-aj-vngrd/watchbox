@@ -6,7 +6,7 @@ import { withTRPC } from "@trpc/next";
 import { SessionProvider } from "next-auth/react";
 import type { AppType } from "next/dist/shared/lib/utils";
 import superjson from "superjson";
-import Layout from "../components/Layout";
+import Layout from "../components/Common/Layout";
 import type { AppRouter } from "../server/router";
 import { ThemeProvider } from "next-themes";
 import NextNProgress from "nextjs-progressbar";
@@ -16,7 +16,6 @@ const MyApp: AppType = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
-
   return (
     <SessionProvider session={session}>
       <ThemeProvider attribute="class">

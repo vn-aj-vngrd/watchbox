@@ -3,7 +3,7 @@
 import { HomeIcon, SquaresPlusIcon } from "@heroicons/react/24/solid";
 import router from "next/router";
 import ToggleTheme from "./ToggleTheme";
-import Account from "./Account";
+import AvatarDropdown from "../Account/AvatarDropdown";
 import { Session } from "next-auth";
 
 type Props = {
@@ -46,7 +46,7 @@ const Header: React.FC<Props> = ({ session }) => {
                 <div>{<ToggleTheme />}</div>
 
                 <div>
-                  <Account session={session} />
+                  <AvatarDropdown session={session} />
                 </div>
               </>
             ) : (

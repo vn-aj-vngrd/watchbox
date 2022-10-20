@@ -7,8 +7,8 @@ import {
 } from "@heroicons/react/24/solid";
 import { useState } from "react";
 import ReactPaginate from "react-paginate";
-import { trpc } from "../utils/trpc";
-import Spinner from "./Spinner";
+import { trpc } from "../../utils/trpc";
+import Spinner from "../Common/Spinner";
 import AddBox from "./AddBox";
 import { ChevronLeftIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
@@ -68,7 +68,7 @@ const Boxes: React.FC<BoxesProps> = ({ setMode }) => {
   const handlePageClick = (event: { selected: number }) => {
     setSkip(event.selected * itemsPerPage);
   };
-  console.log(boxesData.data);
+
   return (
     <div className="w-full py-6 space-y-8">
       <div className="flex flex-col items-center justify-between space-y-4 md:flex-row">

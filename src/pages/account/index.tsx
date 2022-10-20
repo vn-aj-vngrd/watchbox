@@ -1,6 +1,6 @@
 import { GetServerSidePropsContext } from "next";
-import Meta from "../../components/Meta";
-import Settings from "../../components/Settings";
+import Meta from "../../components/Common/Meta";
+import Settings from "../../components/Account/Settings";
 import { getServerSideSession } from "../../utils/session";
 
 const index = () => {

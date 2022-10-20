@@ -1,6 +1,6 @@
 // src/auth/newuser.tsx
 
-import Welcome from "../../components/Welcome";
+import Welcome from "../../components/Auth/Welcome";
 import { GetServerSidePropsContext } from "next";
 import { Session } from "next-auth";
 import { getServerSideSession } from "../../utils/session";
