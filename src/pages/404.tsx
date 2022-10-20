@@ -1,12 +1,12 @@
 // src/pages/404.tsx
 
-import Meta from "../components/Meta";
-import PageAlert from "../components/PageAlert";
+import Meta from "../components/Common/Meta";
+import PageAlert from "../components/Common/PageAlert";
 
 const description = [
   "The page you are looking for does not exist.",
   "Please check the URL and try again.",
-]
+];
 
 const Custom404 = () => {
   return (

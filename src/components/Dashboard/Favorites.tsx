@@ -7,8 +7,8 @@ import {
 } from "@heroicons/react/24/solid";
 import { useState } from "react";
 import ReactPaginate from "react-paginate";
-import { trpc } from "../utils/trpc";
-import Spinner from "./Spinner";
+import { trpc } from "../../utils/trpc";
+import Spinner from "../Common/Spinner";
 import { ChevronLeftIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 
@@ -67,8 +67,6 @@ const Favorites: React.FC<FavoritesProps> = ({ setMode }) => {
   const handlePageClick = (event: { selected: number }) => {
     setSkip(event.selected * itemsPerPage);
   };
-
-  console.log(favoritesData.data);
 
   return (
     <div className="w-full py-6 space-y-8">

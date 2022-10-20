@@ -1,8 +1,8 @@
 // src/auth/error.tsx
 
 import { NextApiRequest } from "next";
-import Meta from "../../components/Meta";
-import PageAlert from "../../components/PageAlert";
+import Meta from "../../components/Common/Meta";
+import PageAlert from "../../components/Common/PageAlert";
 import { XCircleIcon } from "@heroicons/react/24/solid";
 
 const description = [

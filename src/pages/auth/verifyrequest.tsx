@@ -2,8 +2,8 @@
 
 import { ArrowRightOnRectangleIcon } from "@heroicons/react/24/solid";
 import { GetServerSidePropsContext } from "next";
-import Meta from "../../components/Meta";
-import PageAlert from "../../components/PageAlert";
+import Meta from "../../components/Common/Meta";
+import PageAlert from "../../components/Common/PageAlert";
 import { getServerSideSession } from "../../utils/session";
 
 const description = [

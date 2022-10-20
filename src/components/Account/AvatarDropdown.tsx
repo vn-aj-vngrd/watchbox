@@ -1,4 +1,4 @@
-// components/Account.tsx
+// components/AvatarDropdown.tsx
 
 import { Fragment, useEffect, useState } from "react";
 import { Menu, Transition } from "@headlessui/react";
@@ -9,7 +9,7 @@ import {
 } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import { signOut } from "next-auth/react";
-import Spinner from "./Spinner";
+import Spinner from "../Common/Spinner";
 import router from "next/router";
 import { Session } from "next-auth";
 
@@ -17,7 +17,7 @@ type Props = {
   session: Session | null;
 };
 
-const Account: React.FC<Props> = ({ session }) => {
+const AvatarDropdown: React.FC<Props> = ({ session }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
@@ -98,4 +98,4 @@ const Account: React.FC<Props> = ({ session }) => {
   );
 };
 
-export default Account;
+export default AvatarDropdown;

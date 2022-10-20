@@ -1,8 +1,8 @@
 // src/auth/signin.tsx
 
 import type { GetServerSidePropsContext } from "next";
-import Meta from "../../components/Meta";
-import SigninForm from "../../components/SigninForm";
+import Meta from "../../components/Common/Meta";
+import SigninForm from "../../components/Auth/SigninForm";
 import { getServerSideSession } from "../../utils/session";
 
 const signin = () => {

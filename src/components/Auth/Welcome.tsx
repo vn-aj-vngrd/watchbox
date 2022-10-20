@@ -2,10 +2,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { useSession } from "next-auth/react";
-import { trpc } from "../utils/trpc";
-import PageAlert from "../components/PageAlert";
-import Spinner from "../components/Spinner";
-import Meta from "../components/Meta";
+import { trpc } from "../../utils/trpc";
+import PageAlert from "../Common/PageAlert";
+import Spinner from "../Common/Spinner";
+import Meta from "../Common/Meta";
 import router from "next/router";
 import { ArrowRightIcon, MegaphoneIcon } from "@heroicons/react/24/solid";
 import Confetti from "./Confetti";

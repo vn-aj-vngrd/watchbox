@@ -1,5 +1,5 @@
 import { GetServerSidePropsContext } from "next";
-import Meta from "../../components/Meta";
+import Meta from "../../components/Common/Meta";
 import { getServerSideSession } from "../../utils/session";
 
 const entry = () => {

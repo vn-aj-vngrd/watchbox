@@ -6,8 +6,8 @@ import {
 } from "@heroicons/react/24/solid";
 import { Fragment, useRef, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { trpc } from "../utils/trpc";
-import Spinner from "./Spinner";
+import { trpc } from "../../utils/trpc";
+import Spinner from "../Common/Spinner";
 import router from "next/router";
 
 type Inputs = {
