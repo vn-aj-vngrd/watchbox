@@ -18,10 +18,7 @@ const Meta: React.FC<Props> = ({ title, isDoc }) => {
           name="description"
           content="WatchBox is an open-source utility web application that allows users to keep track of and record their viewing history for movies and television shows."
         />
-        <meta
-          name="keywords"
-          content="WatchBox, Movie Tracker, Movie Notes, Movie Manager"
-        />
+        <meta name="keywords" content="WatchBox, Movie Tracker, Movie Notes, Movie Manager" />
         <meta name="robots" content="index, follow" />
         <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="language" content="English" />
@@ -54,10 +51,7 @@ const Meta: React.FC<Props> = ({ title, isDoc }) => {
         name="description"
         content="WatchBox is an open-source utility web application that allows users to keep track of and record their viewing history for movies and television shows."
       />
-      <meta
-        name="keywords"
-        content="WatchBox, Movie Tracker, Movie Notes, Movie Manager"
-      />
+      <meta name="keywords" content="WatchBox, Movie Tracker, Movie Notes, Movie Manager" />
       <meta name="robots" content="index, follow" />
       <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
       <meta name="language" content="English" />

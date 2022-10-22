@@ -6,11 +6,7 @@ export const getServerSideSession = async (ctx: {
   req: GetServerSidePropsContext["req"];
   res: GetServerSidePropsContext["res"];
 }) => {
-  const session = await unstable_getServerSession(
-    ctx.req,
-    ctx.res,
-    authOptions
-  );
+  const session = await unstable_getServerSession(ctx.req, ctx.res, authOptions);
 
   return session;
 };

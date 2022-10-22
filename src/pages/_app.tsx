@@ -12,10 +12,7 @@ import { ThemeProvider } from "next-themes";
 import NextNProgress from "nextjs-progressbar";
 import "../styles/globals.css";
 
-const MyApp: AppType = ({
-  Component,
-  pageProps: { session, ...pageProps },
-}) => {
+const MyApp: AppType = ({ Component, pageProps: { session, ...pageProps } }) => {
   return (
     <SessionProvider session={session}>
       <ThemeProvider attribute="class">

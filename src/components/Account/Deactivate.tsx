@@ -23,12 +23,7 @@ const Modal: React.FC<Props> = ({ handleRemove }) => {
         Delete Account
       </button>
       <Transition.Root show={open} as={Fragment}>
-        <Dialog
-          as="div"
-          className="relative z-50"
-          initialFocus={cancelButtonRef}
-          onClose={setOpen}
-        >
+        <Dialog as="div" className="relative z-50" initialFocus={cancelButtonRef} onClose={setOpen}>
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -70,9 +65,8 @@ const Modal: React.FC<Props> = ({ handleRemove }) => {
                         </Dialog.Title>
                         <div className="mt-2">
                           <p className="text-sm text-gray-500 dark:text-white">
-                            Are you sure you want to deactivate your account?
-                            All of your data will be permanently removed. This
-                            action cannot be undone.
+                            Are you sure you want to deactivate your account? All of your data will
+                            be permanently removed. This action cannot be undone.
                           </p>
                         </div>
                       </div>
