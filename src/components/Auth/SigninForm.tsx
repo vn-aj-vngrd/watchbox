@@ -2,10 +2,7 @@
 
 import { useForm, SubmitHandler } from "react-hook-form";
 import { signIn } from "next-auth/react";
-import {
-  ExclamationCircleIcon,
-  SquaresPlusIcon,
-} from "@heroicons/react/24/solid";
+import { ExclamationCircleIcon, SquaresPlusIcon } from "@heroicons/react/24/solid";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Spinner from "../Common/Spinner";
@@ -52,15 +49,13 @@ const SigninForm = () => {
       case "CredentialsSignin":
         setCallback({
           isCallback: true,
-          message:
-            "There has been a problem signing you in. Please try again later.",
+          message: "There has been a problem signing you in. Please try again later.",
         });
         break;
       case "Signin":
         setCallback({
           isCallback: true,
-          message:
-            "There has been a problem signing you in. Please try again later.",
+          message: "There has been a problem signing you in. Please try again later.",
         });
         break;
       case "OAuthCallback":
@@ -72,36 +67,31 @@ const SigninForm = () => {
       case "OAuthCreateAccount":
         setCallback({
           isCallback: true,
-          message:
-            "There has been a problem signing you in. Please try again later.",
+          message: "There has been a problem signing you in. Please try again later.",
         });
         break;
       case "EmailCreateAccount":
         setCallback({
           isCallback: true,
-          message:
-            "There has been a problem signing you in. Please try again later.",
+          message: "There has been a problem signing you in. Please try again later.",
         });
         break;
       case "Callback":
         setCallback({
           isCallback: true,
-          message:
-            "There has been a problem signing you in. Please try again later.",
+          message: "There has been a problem signing you in. Please try again later.",
         });
         break;
       case "OAuthSignin":
         setCallback({
           isCallback: true,
-          message:
-            "There has been a problem signing you in. Please try again later.",
+          message: "There has been a problem signing you in. Please try again later.",
         });
         break;
       case "EmailSignin":
         setCallback({
           isCallback: true,
-          message:
-            "There has been a problem signing you in. Please try again later.",
+          message: "There has been a problem signing you in. Please try again later.",
         });
         break;
       default:
@@ -158,8 +148,7 @@ const SigninForm = () => {
                 </svg>
                 <span className="sr-only">Info</span>
                 <div>
-                  <span className="font-medium">Error: </span>{" "}
-                  {callback.message}
+                  <span className="font-medium">Error: </span> {callback.message}
                 </div>
               </div>
             )}
@@ -193,10 +182,7 @@ const SigninForm = () => {
                   />
                   {errors.email && (
                     <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                      <ExclamationCircleIcon
-                        className="w-5 h-5 text-red-500"
-                        aria-hidden="true"
-                      />
+                      <ExclamationCircleIcon className="w-5 h-5 text-red-500" aria-hidden="true" />
                     </div>
                   )}
                 </div>

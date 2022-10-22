@@ -1,10 +1,6 @@
 // components/Boxes.tsx
 
-import {
-  MagnifyingGlassIcon,
-  ChevronDownIcon,
-  ChevronRightIcon,
-} from "@heroicons/react/24/solid";
+import { MagnifyingGlassIcon, ChevronDownIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
 import ReactPaginate from "react-paginate";
 import { trpc } from "../../utils/trpc";
@@ -28,12 +24,7 @@ type BoxesProps = {
 
 const Boxes: React.FC<BoxesProps> = ({ setMode }) => {
   const [openSort, setOpenSort] = useState<boolean>(false);
-  const [sortArr, setSortArr] = useState<boolean[]>([
-    true,
-    false,
-    false,
-    false,
-  ]);
+  const [sortArr, setSortArr] = useState<boolean[]>([true, false, false, false]);
   const [sortIndex, setSortIndex] = useState(0);
   const [searchParam, setSearchParam] = useState<string | null>();
   const [skip, setSkip] = useState(0);
@@ -160,9 +151,7 @@ const Boxes: React.FC<BoxesProps> = ({ setMode }) => {
 
       {boxesData.isLoading && <Spinner />}
       {boxesData.data?.length === 0 && (
-        <div className="flex items-center justify-center">
-          No results found.
-        </div>
+        <div className="flex items-center justify-center">No results found.</div>
       )}
 
       <div className="grid md:w-full w-[80%] gap-x-14 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-y-6 md:gap-y-8 mx-auto">
@@ -170,9 +159,7 @@ const Boxes: React.FC<BoxesProps> = ({ setMode }) => {
           <button key={index} className="flex flex-col items-center group">
             <div
               className={`grid ${
-                box?.Entry.length > 1
-                  ? "grid-cols-2 grid-rows-2"
-                  : "grid-cols-1"
+                box?.Entry.length > 1 ? "grid-cols-2 grid-rows-2" : "grid-cols-1"
               } gap-3 w-32 p-4 transition duration-150 ease-in-out bg-white-50 border dark:bg-grayColor rounded-lg dark:border-transparent shadow-sm lg:w-36 aspect-square hover:scale-105`}
             >
               {box?.Entry?.length == 1 ? (
@@ -189,10 +176,7 @@ const Boxes: React.FC<BoxesProps> = ({ setMode }) => {
               ) : (
                 <>
                   {box?.Entry?.slice(0, 4).map((item, index) => (
-                    <div
-                      key={index}
-                      className="rounded-md bg-white overflow-hidden"
-                    >
+                    <div key={index} className="rounded-md bg-white overflow-hidden">
                       <Image
                         className="object-cover"
                         src={item.image || ""}
@@ -217,12 +201,8 @@ const Boxes: React.FC<BoxesProps> = ({ setMode }) => {
       {/* <Pagination /> */}
       <div
         className={
-          Math.ceil(
-            (boxesTotalCount.data && boxesTotalCount.data / itemsPerPage) || 0
-          ) > 0 &&
-          Math.ceil(
-            (boxesData.data && boxesData.data.length / itemsPerPage) || 0
-          ) > 0 &&
+          Math.ceil((boxesTotalCount.data && boxesTotalCount.data / itemsPerPage) || 0) > 0 &&
+          Math.ceil((boxesData.data && boxesData.data.length / itemsPerPage) || 0) > 0 &&
           !boxesData.isLoading
             ? "flex justify-center"
             : "hidden"
@@ -234,14 +214,8 @@ const Boxes: React.FC<BoxesProps> = ({ setMode }) => {
           pageRangeDisplayed={itemsPerPage}
           pageCount={
             searchParam
-              ? Math.ceil(
-                  (boxesData.data && boxesData.data?.length / itemsPerPage) || 0
-                )
-              : Math.ceil(
-                  (boxesTotalCount.data &&
-                    boxesTotalCount.data / itemsPerPage) ||
-                    0
-                )
+              ? Math.ceil((boxesData.data && boxesData.data?.length / itemsPerPage) || 0)
+              : Math.ceil((boxesTotalCount.data && boxesTotalCount.data / itemsPerPage) || 0)
           }
           previousLabel={<ChevronLeftIcon className="w-5 h-5" />}
           nextLabel={<ChevronRightIcon className="w-5 h-5" />}

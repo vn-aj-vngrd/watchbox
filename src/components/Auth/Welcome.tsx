@@ -98,21 +98,14 @@ const Welcome = () => {
               />
               {errors.username && (
                 <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                  <ExclamationCircleIcon
-                    className="w-5 h-5 text-red-500"
-                    aria-hidden="true"
-                  />
+                  <ExclamationCircleIcon className="w-5 h-5 text-red-500" aria-hidden="true" />
                 </div>
               )}
             </div>
-            {error && (
-              <p className="text-sm text-red-500 mt-1">{error.message}</p>
-            )}
+            {error && <p className="text-sm text-red-500 mt-1">{error.message}</p>}
 
             {errors.username && (
-              <p className="text-sm text-red-500 mt-1">
-                {errors.username.message}
-              </p>
+              <p className="text-sm text-red-500 mt-1">{errors.username.message}</p>
             )}
           </div>
 
@@ -145,9 +138,7 @@ const Welcome = () => {
 
             <p className="text-sm text-darkColor dark:text-white">
               By clicking the button, you agree to the {""}
-              <button className="text-blue-500 hover:underline">
-                terms and conditions.
-              </button>
+              <button className="text-blue-500 hover:underline">terms and conditions.</button>
             </p>
           </div>
         </form>

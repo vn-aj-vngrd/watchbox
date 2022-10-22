@@ -2,11 +2,7 @@
 
 import { Fragment, useEffect, useState } from "react";
 import { Menu, Transition } from "@headlessui/react";
-import {
-  ArrowLeftOnRectangleIcon,
-  Cog8ToothIcon,
-  UserIcon,
-} from "@heroicons/react/24/solid";
+import { ArrowLeftOnRectangleIcon, Cog8ToothIcon, UserIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import { signOut } from "next-auth/react";
 import Spinner from "../Common/Spinner";

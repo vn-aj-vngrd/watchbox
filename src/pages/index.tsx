@@ -22,11 +22,7 @@ const Home: NextPage = () => {
         <>
           <Meta title="Watchbox" />
           <div className="min-h-[87.6vh] container mx-auto px-4">
-            {mode === "boxes" ? (
-              <Boxes setMode={setMode} />
-            ) : (
-              <Favorites setMode={setMode} />
-            )}
+            {mode === "boxes" ? <Boxes setMode={setMode} /> : <Favorites setMode={setMode} />}
           </div>
         </>
       ) : (

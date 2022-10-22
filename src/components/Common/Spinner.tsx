@@ -27,9 +27,7 @@ const Spinner: React.FC<Props> = ({ isGlobal }) => {
             fill="currentFill"
           />
         </svg>
-        <span className="sr-only text-darkerColor dark:text-white">
-          Loading...
-        </span>
+        <span className="sr-only text-darkerColor dark:text-white">Loading...</span>
       </div>
     );
   }
@@ -52,9 +50,7 @@ const Spinner: React.FC<Props> = ({ isGlobal }) => {
             fill="currentFill"
           />
         </svg>
-        <span className="sr-only text-darkerColor dark:text-white">
-          Loading...
-        </span>
+        <span className="sr-only text-darkerColor dark:text-white">Loading...</span>
       </div>
     </div>
   );

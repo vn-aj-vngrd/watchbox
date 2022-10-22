@@ -13,11 +13,7 @@ const Custom404 = () => {
     <>
       <Meta title="Watchbox | 404" />
       <PageAlert
-        elem={
-          <p className="text-4xl font-extrabold text-red-600 sm:text-5xl">
-            404
-          </p>
-        }
+        elem={<p className="text-4xl font-extrabold text-red-600 sm:text-5xl">404</p>}
         title="Page not found"
         description={description}
         btnTitle="Go back to home"

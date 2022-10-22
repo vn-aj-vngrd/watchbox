@@ -21,30 +21,24 @@ type Inputs = {
 };
 
 const Profile = () => {
-  const { mutate: updateUser, isLoading: isUpdating } = trpc.useMutation(
-    ["user.updateUser"],
-    {
-      onSuccess: () => {
-        document.dispatchEvent(new Event("visibilitychange"));
-      },
-      onError: (err) => {
-        console.log(err);
-      },
-    }
-  );
+  const { mutate: updateUser, isLoading: isUpdating } = trpc.useMutation(["user.updateUser"], {
+    onSuccess: () => {
+      document.dispatchEvent(new Event("visibilitychange"));
+    },
+    onError: (err) => {
+      console.log(err);
+    },
+  });
 
-  const { mutate: deleteUser, isLoading: isDeleting } = trpc.useMutation(
-    ["user.deleteUser"],
-    {
-      onSuccess: () => {
-        document.dispatchEvent(new Event("visibilitychange"));
-        router.push("/auth/signin");
-      },
-      onError: (err) => {
-        console.log(err);
-      },
-    }
-  );
+  const { mutate: deleteUser, isLoading: isDeleting } = trpc.useMutation(["user.deleteUser"], {
+    onSuccess: () => {
+      document.dispatchEvent(new Event("visibilitychange"));
+      router.push("/auth/signin");
+    },
+    onError: (err) => {
+      console.log(err);
+    },
+  });
 
   const { data: session } = useSession();
   const [image, setImage] = useState<ImageListType>([]);
@@ -90,7 +84,7 @@ const Profile = () => {
     const eager = "w_400,h_300,c_pad|w_260,h_200,c_crop";
     const timestamp = Math.round(new Date().getTime() / 1000).toString();
     const signature = sha1(
-      `eager=${eager}&public_id=${public_id}&timestamp=${timestamp}${env.NEXT_PUBLIC_CLOUDINARY_SECRET}`
+      `eager=${eager}&public_id=${public_id}&timestamp=${timestamp}${env.NEXT_PUBLIC_CLOUDINARY_SECRET}`,
     ).toString();
 
     formData.append("file", image[0]?.file);
@@ -105,7 +99,7 @@ const Profile = () => {
       {
         method: "POST",
         body: formData,
-      }
+      },
     ).then((res) => res.json());
 
     const { secure_url } = req;

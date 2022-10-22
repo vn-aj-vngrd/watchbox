@@ -1,9 +1,5 @@
 import { Dialog, Transition } from "@headlessui/react";
-import {
-  ExclamationCircleIcon,
-  PencilSquareIcon,
-  CubeIcon,
-} from "@heroicons/react/24/solid";
+import { ExclamationCircleIcon, PencilSquareIcon, CubeIcon } from "@heroicons/react/24/solid";
 import { Fragment, useRef, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { trpc } from "../../utils/trpc";
@@ -83,10 +79,7 @@ const AddBox: React.FC<Props> = ({ onBoxCreated }) => {
             </Transition.Child>
 
             {/* This element is to trick the browser into centering the modal contents. */}
-            <span
-              className="hidden sm:inline-block sm:align-middle sm:h-screen"
-              aria-hidden="true"
-            >
+            <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">
               &#8203;
             </span>
             <Transition.Child
@@ -104,10 +97,7 @@ const AddBox: React.FC<Props> = ({ onBoxCreated }) => {
               >
                 <div className="mb-6">
                   <div className="flex items-center justify-center w-12 h-12 mx-auto bg-blue-100 rounded-full">
-                    <CubeIcon
-                      className="w-6 h-6 text-blue-600"
-                      aria-hidden="true"
-                    />
+                    <CubeIcon className="w-6 h-6 text-blue-600" aria-hidden="true" />
                   </div>
                   <div className="mt-3 sm:mt-5">
                     <Dialog.Title

@@ -31,11 +31,7 @@ export const boxRouter = createProtectedRouter()
               ? "asc"
               : undefined,
           boxTitle:
-            input.sortParam === "Z-A"
-              ? "desc"
-              : input.sortParam === "A-Z"
-              ? "asc"
-              : undefined,
+            input.sortParam === "Z-A" ? "desc" : input.sortParam === "A-Z" ? "asc" : undefined,
         },
       });
     },
