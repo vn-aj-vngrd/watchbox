@@ -1,10 +1,10 @@
 import { Dialog, Transition } from "@headlessui/react";
-import { ExclamationCircleIcon, PencilSquareIcon, CubeIcon } from "@heroicons/react/24/solid";
+import { CubeIcon, ExclamationCircleIcon, PencilSquareIcon } from "@heroicons/react/24/solid";
+import router from "next/router";
 import { Fragment, useRef, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { trpc } from "../../utils/trpc";
 import Spinner from "../Common/Spinner";
-import router from "next/router";
 
 type Inputs = {
   title: string;
@@ -46,7 +46,14 @@ const AddBox: React.FC<Props> = ({ onBoxCreated }) => {
   };
 
   if (isLoading) {
-    return <Spinner />;
+    return (
+      <div
+        onClick={() => setOpen(true)}
+        className="inline-flex items-center p-[6px] bg-white border rounded-lg shadow-sm focus:outline-none dark:border-transparent dark:bg-grayColor"
+      >
+        <Spinner />
+      </div>
+    );
   }
 
   return (
@@ -54,7 +61,7 @@ const AddBox: React.FC<Props> = ({ onBoxCreated }) => {
       <button
         onClick={() => setOpen(true)}
         type="button"
-        className="inline-flex items-center p-3 bg-white rounded-lg shadow-sm hover:bg-gray-200 focus:outline-none border dark:bg-grayColor dark:text-white dark:border-transparent dark:hover:bg-grayColor"
+        className="inline-flex items-center p-3 bg-white border rounded-lg shadow-sm hover:bg-gray-200 focus:outline-none dark:bg-grayColor dark:text-white dark:border-transparent dark:hover:bg-grayColor"
       >
         <PencilSquareIcon className="w-5 h-5 fill-gray-700 dark:fill-blue-50" />
       </button>

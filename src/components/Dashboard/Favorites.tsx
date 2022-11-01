@@ -15,7 +15,7 @@ const sortOptions = [
   { id: "four", name: "Z-A" },
 ];
 
-const itemsPerPage = 14;
+const itemsPerPage = 21;
 
 type FavoritesProps = {
   setMode: (mode: "boxes" | "favorites") => void;
@@ -66,7 +66,7 @@ const Favorites: React.FC<FavoritesProps> = ({ setMode }) => {
         <div className="flex space-x-6">
           <button
             onClick={() => setMode("boxes")}
-            className="text-2xl subpixel-antialiased hover:text-blue-600 ease-in-out duration-300"
+            className="text-2xl subpixel-antialiased duration-300 ease-in-out hover:text-blue-600"
           >
             Boxes
           </button>
@@ -154,7 +154,7 @@ const Favorites: React.FC<FavoritesProps> = ({ setMode }) => {
               } gap-3 w-32 p-4 transition duration-150 ease-in-out bg-white-50 border dark:bg-grayColor rounded-lg dark:border-transparent shadow-sm lg:w-36 aspect-square hover:scale-105`}
             >
               {fav?.Entry?.length == 1 ? (
-                <div key={index} className="rounded-md bg-white overflow-hidden">
+                <div key={index} className="overflow-hidden bg-white rounded-md">
                   <Image
                     className="object-cover"
                     src={fav?.Entry[0]?.image || ""}
@@ -167,7 +167,7 @@ const Favorites: React.FC<FavoritesProps> = ({ setMode }) => {
               ) : (
                 <>
                   {fav?.Entry?.slice(0, 4).map((item, index) => (
-                    <div key={index} className="rounded-md bg-white overflow-hidden">
+                    <div key={index} className="overflow-hidden bg-white rounded-md">
                       <Image
                         className="object-cover"
                         src={item.image || ""}

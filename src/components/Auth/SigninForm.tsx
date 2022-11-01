@@ -127,7 +127,7 @@ const SigninForm = () => {
 
       <div>
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-          <div className="px-4 py-8 bg-white shadow sm:rounded-lg sm:px-10 dark:bg-darkerColor">
+          <div className="px-4 py-8 bg-white rounded-lg shadow sm:px-10 dark:bg-darkerColor">
             {callback.isCallback && (
               <div
                 className="flex p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800"

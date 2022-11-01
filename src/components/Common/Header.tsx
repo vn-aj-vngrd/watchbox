@@ -12,11 +12,11 @@ type Props = {
 
 const Header: React.FC<Props> = ({ session }) => {
   return (
-    <header className="sticky top-0 z-10 py-4 bg-white shadow-sm dark:bg-darkerColor dark:border-darkerColor">
-      <div className="flex flex-wrap items-center justify-between px-4 mx-auto ">
+    <header className="sticky top-0 z-10 py-4 bg-white dark:bg-darkerColor dark:border-darkerColor">
+      <div className="flex flex-wrap items-center justify-between px-4 mx-auto">
         <div>
           <button onClick={() => router.push("/")} className="hidden md:flex">
-            <h1 className="flex items-center text-xl font-bold text-black dark:text-white">
+            <h1 className="flex items-center text-xl font-semibold text-black dark:text-white">
               <SquaresPlusIcon className="w-6 h-6 mr-3 text-blue-600" />
               WatchBox
             </h1>
