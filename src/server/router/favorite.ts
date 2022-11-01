@@ -1,5 +1,5 @@
-import { createProtectedRouter } from "./protected-router";
 import { z } from "zod";
+import { createProtectedRouter } from "./protected-router";
 
 export const favoriteRouter = createProtectedRouter()
   .query("getFavorites", {
@@ -18,6 +18,10 @@ export const favoriteRouter = createProtectedRouter()
             some: {
               userId: ctx.session.user.id,
             },
+          },
+          boxTitle: {
+            contains: input.searchParam || undefined,
+            mode: "insensitive",
           },
         },
         include: {
