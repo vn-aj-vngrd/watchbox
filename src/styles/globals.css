@@ -3,6 +3,9 @@
 @tailwind utilities;
 
 @layer base {
+  body {
+    @apply bg-gray-50 dark:bg-[#212121];
+  }
   /* html, body {
         width: 100vw;
         height: 100%;
@@ -31,10 +34,4 @@
   /* a, button {
         background-color: rgba(255, 0, 0, 0.25) !important
     } */
-}
-
-@layer components {
-  body {
-    @apply bg-gray-50 dark:bg-[#212121];
-  }
 }
