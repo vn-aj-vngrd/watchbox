@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 // components/Profile.tsx
 
 import { PencilSquareIcon } from "@heroicons/react/24/solid";
@@ -20,7 +19,7 @@ type Inputs = {
   name: string;
 };
 
-const Profile = () => {
+const Settings = () => {
   const { mutate: updateUser, isLoading: isUpdating } = trpc.useMutation(["user.updateUser"], {
     onSuccess: () => {
       document.dispatchEvent(new Event("visibilitychange"));
@@ -103,7 +102,6 @@ const Profile = () => {
     ).then((res) => res.json());
 
     const { secure_url } = req;
-    console.log(req);
 
     updateUser({
       username,
@@ -112,7 +110,7 @@ const Profile = () => {
     });
   };
 
-  const handleRemove: React.MouseEventHandler<HTMLButtonElement> = async () => {
+  const handleRemove = async () => {
     deleteUser();
   };
 
@@ -122,7 +120,7 @@ const Profile = () => {
 
   return (
     <div>
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md py-12 space-y-8">
+      <div className="py-12 mt-8 space-y-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
           <h2 className="mt-4 text-3xl font-semibold text-center text-gray-900 dark:text-white">
             Account Settings
@@ -131,7 +129,7 @@ const Profile = () => {
 
         <div className="px-4 py-8 bg-white shadow sm:rounded-lg sm:px-10 dark:bg-darkerColor">
           <div className="space-y-6">
-            <div className="mx-auto relative w-32 h-32 bg-gray-100 rounded-full dark:bg-gray-600">
+            <div className="relative w-32 h-32 mx-auto bg-gray-100 rounded-full dark:bg-gray-600">
               {image.length === 0 && (
                 <Image
                   className="absolute z-0 w-24 h-24 rounded-full"
@@ -292,7 +290,7 @@ const Profile = () => {
           </div>
 
           <div className="mt-6">
-            <Deactivate handleRemove={() => handleRemove} />
+            <Deactivate handleRemove={handleRemove} />
           </div>
         </div>
       </div>
@@ -300,4 +298,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default Settings;
