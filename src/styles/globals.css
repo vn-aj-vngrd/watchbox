@@ -4,7 +4,7 @@
 
 @layer base {
   body {
-    @apply bg-gray-50 dark:bg-[#212121];
+    @apply bg-gray-50 dark:bg-[#111111];
   }
   /* html, body {
         width: 100vw;
