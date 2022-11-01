@@ -21,7 +21,7 @@ const Home: NextPage = () => {
       {session ? (
         <>
           <Meta title="Watchbox" />
-          <div className="min-h-[87.6vh] container mx-auto px-4">
+          <div className="min-h-[87.6vh]">
             {mode === "boxes" ? <Boxes setMode={setMode} /> : <Favorites setMode={setMode} />}
           </div>
         </>

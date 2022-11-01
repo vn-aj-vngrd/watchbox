@@ -1,9 +1,9 @@
 // components/Layout.tsx
 
-import Header from "./Header";
-import Footer from "./Footer";
-import Meta from "./Meta";
 import { useSession } from "next-auth/react";
+import Footer from "./Footer";
+import Header from "./Header";
+import Meta from "./Meta";
 import Spinner from "./Spinner";
 
 type Props = {
@@ -22,7 +22,7 @@ const Layout: React.FC<Props> = ({ children }) => {
       <Meta />
       <div className="flex flex-col justify-between h-screen">
         <Header session={session} />
-        <main>{children}</main>
+        <main className="w-full px-4 mx-auto max-w-7xl">{children}</main>
         <Footer />
       </div>
     </>

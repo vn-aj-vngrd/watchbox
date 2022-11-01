@@ -127,7 +127,7 @@ const Settings = () => {
           </h2>
         </div>
 
-        <div className="px-4 py-8 bg-white shadow sm:rounded-lg sm:px-10 dark:bg-darkerColor">
+        <div className="px-4 py-8 bg-white rounded-lg shadow sm:px-10 dark:bg-darkerColor">
           <div className="space-y-6">
             <div className="relative w-32 h-32 mx-auto bg-gray-100 rounded-full dark:bg-gray-600">
               {image.length === 0 && (
