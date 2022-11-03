@@ -22,19 +22,18 @@ model Box {
 }
 
 model Entry {
-    id            String          @id @default(cuid())
-    boxId         String
-    entryTitle    String
-    image         String
-    note          String
-    review        String
-    rating        Int
-    xAxis         Int
-    yAxis         Int
-    FavoriteEntry FavoriteEntry[]
-    created_at    DateTime        @default(now())
-    updated_at    DateTime        @default(now())
-    box           Box             @relation(fields: [boxId], references: [id], onDelete: Cascade)
+    id         String   @id @default(cuid())
+    boxId      String
+    entryTitle String
+    image      String
+    note       String
+    review     String
+    rating     Int
+    xAxis      Int
+    yAxis      Int
+    created_at DateTime @default(now())
+    updated_at DateTime @default(now())
+    box        Box      @relation(fields: [boxId], references: [id], onDelete: Cascade)
 }
 
 model Component {
@@ -55,15 +54,6 @@ model FavoriteBox {
     created_at DateTime @default(now())
     user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
     box        Box      @relation(fields: [boxId], references: [id], onDelete: Cascade)
-}
-
-model FavoriteEntry {
-    id         String   @id @default(cuid())
-    userId     String
-    entryId    String
-    created_at DateTime @default(now())
-    user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-    entry      Entry    @relation(fields: [entryId], references: [id], onDelete: Cascade)
 }
 
 model Account {
@@ -93,20 +83,19 @@ model Session {
 }
 
 model User {
-    id              String          @id @default(cuid())
-    name            String?
-    username        String?         @unique
-    email           String?         @unique
-    emailVerified   DateTime?
-    image           String?
-    isNewUser       Boolean         @default(true)
-    accounts        Account[]
-    sessions        Session[]
-    boxes           Box[]
-    favoriteBoxes   FavoriteBox[]
-    FavoriteEntries FavoriteEntry[]
-    created_at      DateTime        @default(now())
-    updated_at      DateTime        @default(now())
+    id            String        @id @default(cuid())
+    name          String?
+    username      String?       @unique
+    email         String?       @unique
+    emailVerified DateTime?
+    image         String?
+    isNewUser     Boolean       @default(true)
+    accounts      Account[]
+    sessions      Session[]
+    boxes         Box[]
+    favoriteBoxes FavoriteBox[]
+    created_at    DateTime      @default(now())
+    updated_at    DateTime      @default(now())
 }
 
 model VerificationToken {
