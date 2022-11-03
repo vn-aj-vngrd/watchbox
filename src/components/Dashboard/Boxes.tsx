@@ -1,13 +1,13 @@
 // components/Boxes.tsx
 
-import { MagnifyingGlassIcon, ChevronDownIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
+import { ChevronLeftIcon } from "@heroicons/react/24/outline";
+import { ChevronDownIcon, ChevronRightIcon, MagnifyingGlassIcon } from "@heroicons/react/24/solid";
+import Image from "next/image";
 import { useState } from "react";
 import ReactPaginate from "react-paginate";
 import { trpc } from "../../utils/trpc";
 import Spinner from "../Common/Spinner";
-import AddBox from "./AddBox";
-import { ChevronLeftIcon } from "@heroicons/react/24/outline";
-import Image from "next/image";
+import CreateBox from "./CreateBox";
 
 const sortOptions = [
   { id: "one", name: "Newest" },
@@ -139,7 +139,7 @@ const Boxes: React.FC<BoxesProps> = ({ setMode }) => {
           </div>
 
           <div className="">
-            <AddBox
+            <CreateBox
               onBoxCreated={() => {
                 boxesData.refetch();
                 boxesTotalCount.refetch();

@@ -14,7 +14,7 @@ type Props = {
   onBoxCreated: () => void;
 };
 
-const AddBox: React.FC<Props> = ({ onBoxCreated }) => {
+const CreateBox: React.FC<Props> = ({ onBoxCreated }) => {
   const { mutateAsync, isLoading } = trpc.useMutation("box.createBox", {
     onSuccess: () => {
       onBoxCreated();
@@ -180,4 +180,4 @@ const AddBox: React.FC<Props> = ({ onBoxCreated }) => {
   );
 };
 
-export default AddBox;
+export default CreateBox;

@@ -4,10 +4,10 @@
 
 @layer base {
   html {
-    @apply text-black scrollbar-thin scrollbar-track-gray-400/20 scrollbar-thumb-yellow-500;
+    @apply text-black scrollbar-thin scrollbar-track-gray-400/20 scrollbar-thumb-blue-500;
   }
   body {
-    @apply bg-gray-50 dark:bg-[#111111];
+    @apply bg-gray-50 dark:bg-[#111111] dark:text-white text-black;
   }
 
   input,

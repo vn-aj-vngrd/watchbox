@@ -72,7 +72,7 @@ const Favorites: React.FC<FavoritesProps> = ({ setMode }) => {
           </button>
           <button
             onClick={() => setMode("favorites")}
-            className="text-2xl subpixel-antialiased text-blue-600 "
+            className="text-2xl subpixel-antialiased text-blue-600"
           >
             Favorites
           </button>
