@@ -1,11 +1,12 @@
 // components/Favorites.tsx
 
 import { MagnifyingGlassIcon, ChevronDownIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
+import { ChevronLeftIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import ReactPaginate from "react-paginate";
 import { trpc } from "../../utils/trpc";
 import Spinner from "../Common/Spinner";
-import { ChevronLeftIcon } from "@heroicons/react/24/outline";
+import router from "next/router";
 import Image from "next/image";
 
 const sortOptions = [
@@ -147,7 +148,11 @@ const Favorites: React.FC<FavoritesProps> = ({ setMode }) => {
 
       <div className="mx-auto grid w-[80%] grid-cols-2 gap-x-14 gap-y-6 sm:grid-cols-3 md:w-full md:grid-cols-4 md:gap-y-8 lg:grid-cols-5 xl:grid-cols-7">
         {favoritesData.data?.map((fav, index) => (
-          <button key={index} className="group flex flex-col items-center">
+          <button
+            key={index}
+            onClick={() => router.push("/box")}
+            className="group flex flex-col items-center"
+          >
             <div
               className={`grid ${
                 fav?.Entry.length > 1 ? "grid-cols-2 grid-rows-2" : "grid-cols-1"
