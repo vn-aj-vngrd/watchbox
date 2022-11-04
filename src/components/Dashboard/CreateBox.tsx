@@ -1,5 +1,6 @@
 import { Dialog, Transition } from "@headlessui/react";
-import { CubeIcon, ExclamationCircleIcon, PencilSquareIcon } from "@heroicons/react/24/solid";
+import { CubeIcon, ExclamationCircleIcon } from "@heroicons/react/24/solid";
+import { PencilSquareIcon } from "@heroicons/react/20/solid";
 import router from "next/router";
 import { Fragment, useRef, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -49,7 +50,7 @@ const CreateBox: React.FC<Props> = ({ onBoxCreated }) => {
     return (
       <div
         onClick={() => setOpen(true)}
-        className="inline-flex items-center p-[6px] bg-white border rounded-lg shadow-sm focus:outline-none dark:border-transparent dark:bg-grayColor"
+        className="inline-flex items-center rounded-lg border bg-white p-[6px] shadow-sm focus:outline-none dark:border-transparent dark:bg-grayColor"
       >
         <Spinner />
       </div>
@@ -61,9 +62,9 @@ const CreateBox: React.FC<Props> = ({ onBoxCreated }) => {
       <button
         onClick={() => setOpen(true)}
         type="button"
-        className="inline-flex items-center p-3 bg-white border rounded-lg shadow-sm hover:bg-gray-200 focus:outline-none dark:bg-grayColor dark:text-white dark:border-transparent dark:hover:bg-grayColor"
+        className="inline-flex items-center rounded-lg border bg-white p-3 shadow-sm focus:outline-none hover:bg-gray-200 dark:border-transparent dark:bg-grayColor dark:text-white dark:hover:bg-grayColor"
       >
-        <PencilSquareIcon className="w-5 h-5 fill-gray-700 dark:fill-blue-50" />
+        <PencilSquareIcon className="h-5 w-5 fill-gray-700 dark:fill-blue-50" />
       </button>
       <Transition.Root show={open} as={Fragment}>
         <Dialog
@@ -72,7 +73,7 @@ const CreateBox: React.FC<Props> = ({ onBoxCreated }) => {
           initialFocus={cancelButtonRef}
           onClose={setOpen}
         >
-          <div className="flex items-center justify-center min-h-screen text-center">
+          <div className="flex min-h-screen items-center justify-center text-center">
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
@@ -82,11 +83,11 @@ const CreateBox: React.FC<Props> = ({ onBoxCreated }) => {
               leaveFrom="opacity-100"
               leaveTo="opacity-0"
             >
-              <Dialog.Overlay className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75" />
+              <Dialog.Overlay className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
             </Transition.Child>
 
             {/* This element is to trick the browser into centering the modal contents. */}
-            <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">
+            <span className="hidden sm:inline-block sm:h-screen sm:align-middle" aria-hidden="true">
               &#8203;
             </span>
             <Transition.Child
@@ -100,16 +101,16 @@ const CreateBox: React.FC<Props> = ({ onBoxCreated }) => {
             >
               <form
                 onSubmit={handleSubmit(onSubmit)}
-                className="inline-block p-10 overflow-hidden text-left align-bottom transition-all transform bg-white dark:bg-darkerColor rounded-lg shadow-xl sm:my-8 sm:align-middle w-[90%] sm:w-[90%] md:w-[35rem]"
+                className="inline-block w-[90%] transform overflow-hidden rounded-lg bg-white p-10 text-left align-bottom shadow-xl transition-all dark:bg-darkerColor sm:my-8 sm:w-[90%] sm:align-middle md:w-[35rem]"
               >
                 <div className="mb-6">
-                  <div className="flex items-center justify-center w-12 h-12 mx-auto bg-blue-100 rounded-full">
-                    <CubeIcon className="w-6 h-6 text-blue-600" aria-hidden="true" />
+                  <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-blue-100">
+                    <CubeIcon className="h-6 w-6 text-blue-600" aria-hidden="true" />
                   </div>
                   <div className="mt-3 sm:mt-5">
                     <Dialog.Title
                       as="h3"
-                      className="text-xl font-semibold text-center text-gray-700 dark:text-white"
+                      className="text-center text-xl font-semibold text-gray-700 dark:text-white"
                     >
                       Create Box
                     </Dialog.Title>
@@ -126,8 +127,8 @@ const CreateBox: React.FC<Props> = ({ onBoxCreated }) => {
                             type="text"
                             className={
                               errors.title
-                                ? "block w-full px-3 py-2 placeholder-red-400 border border-red-400 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-red-500 focus:border-blue-500 sm:text-sm"
-                                : "block w-full px-3 py-2 ng-white placeholder-gray-400 border rounded-md shadow-sm appearance-none focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:border-darkColor dark:bg-darkColor dark:focus:border-blue-500 dark:focus:ring-blue-400"
+                                ? "block w-full appearance-none rounded-md border border-red-400 px-3 py-2 placeholder-red-400 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-red-500 sm:text-sm"
+                                : "ng-white block w-full appearance-none rounded-md border px-3 py-2 placeholder-gray-400 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 dark:border-darkColor dark:bg-darkColor dark:focus:border-blue-500 dark:focus:ring-blue-400 sm:text-sm"
                             }
                             {...register("title", {
                               required: {
@@ -137,9 +138,9 @@ const CreateBox: React.FC<Props> = ({ onBoxCreated }) => {
                             })}
                           />
                           {errors.title && (
-                            <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
                               <ExclamationCircleIcon
-                                className="w-5 h-5 text-red-500"
+                                className="h-5 w-5 text-red-500"
                                 aria-hidden="true"
                               />
                             </div>
@@ -152,10 +153,10 @@ const CreateBox: React.FC<Props> = ({ onBoxCreated }) => {
                     </div>
                   </div>
                 </div>
-                <div className="flex flex-col space-y-2 md:space-x-2 md:space-y-0 md:flex-row">
+                <div className="flex flex-col space-y-2 md:flex-row md:space-x-2 md:space-y-0">
                   <button
                     type="button"
-                    className="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md shadow-sm hover:bg-red-700 focus:outline-none"
+                    className="flex w-full items-center justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-sm font-medium text-white shadow-sm focus:outline-none hover:bg-red-700"
                     onClick={() => {
                       setOpen(false);
                       reset();
@@ -166,7 +167,7 @@ const CreateBox: React.FC<Props> = ({ onBoxCreated }) => {
                   </button>
                   <button
                     type="submit"
-                    className="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none"
+                    className="flex w-full items-center justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm focus:outline-none hover:bg-blue-700"
                   >
                     Create
                   </button>
