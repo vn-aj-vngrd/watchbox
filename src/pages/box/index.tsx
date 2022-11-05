@@ -6,7 +6,22 @@ const account = () => {
   return (
     <>
       <Meta title="WatchBox | Box" />
-      <p className="text-center">Box</p>
+
+      <div className="flex h-full w-full border-t border-b dark:border-darkColor">
+        <div className="flex h-full w-72 flex-col border-r dark:border-darkColor">
+          {/* Controls */}
+          <div className="h-12 border-b dark:border-darkColor">Controls</div>
+          {/* Left pane */}
+          <div className="h-full">Left pane</div>
+        </div>
+
+        <div className="flex h-full grow flex-col">
+          {/* Top bar */}
+          <div className="h-12 border-b dark:border-darkColor">Top bar</div>
+          {/* Canvas */}
+          <div className="h-full">Canvas</div>
+        </div>
+      </div>
     </>
   );
 };
