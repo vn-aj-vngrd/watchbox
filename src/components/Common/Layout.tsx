@@ -5,6 +5,7 @@ import Footer from "./Footer";
 import Header from "./Header";
 import Meta from "./Meta";
 import Spinner from "./Spinner";
+import router from "next/router";
 
 type Props = {
   children: JSX.Element;
@@ -20,9 +21,17 @@ const Layout: React.FC<Props> = ({ children }) => {
   return (
     <>
       <Meta />
-      <div className="flex flex-col justify-between h-screen">
+      <div className="flex h-screen flex-col justify-between">
         <Header session={session} />
-        <main className="w-full px-4 mx-auto max-w-7xl">{children}</main>
+        <main
+          className={
+            router.pathname.includes("/box")
+              ? "mx-auto w-full grow"
+              : "mx-auto w-full max-w-7xl px-4"
+          }
+        >
+          {children}
+        </main>
         <Footer />
       </div>
     </>
