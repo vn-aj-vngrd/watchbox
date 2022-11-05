@@ -7,7 +7,13 @@ const Header = () => {
 
   return (
     <div className="flex h-12 items-center border-b px-4 dark:border-darkColor">
-      <div className="flex h-full grow items-center font-medium">Box Title</div>
+      <div className="flex h-full grow items-center font-medium">
+        <input
+          type="text"
+          className="mt-px w-64 border-b border-b-transparent bg-transparent focus:border-b-gray-200 focus:outline-none hover:border-b-gray-200 dark:focus:border-b-darkColor dark:hover:border-b-darkColor"
+          defaultValue="Box Title"
+        />
+      </div>
       <div className="flex h-full items-center">
         <button
           onClick={() => setFavorite(!favorite)}
