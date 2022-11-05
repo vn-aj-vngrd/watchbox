@@ -4,7 +4,7 @@ import { ChevronLeftIcon } from "@heroicons/react/24/solid";
 const Contols = () => {
   return (
     <div className="flex h-12 items-center justify-center gap-x-3 border-b dark:border-darkColor">
-      <button className="flex h-8 w-8 items-center justify-center rounded-md font-bold focus:outline-none hover:bg-gray-200 dark:border-transparent dark:bg-grayColor dark:text-white dark:hover:bg-darkColor">
+      <button className="flex h-8 w-8 items-center justify-center rounded-md font-bold focus:outline-none hover:bg-gray-200 dark:border-transparent dark:text-white dark:hover:bg-darkColor">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="16"
@@ -21,7 +21,7 @@ const Contols = () => {
           </g>
         </svg>
       </button>
-      <button className="flex h-8 w-8 items-center justify-center rounded-md font-bold focus:outline-none hover:bg-gray-200 dark:border-transparent dark:bg-grayColor dark:text-white dark:hover:bg-darkColor">
+      <button className="flex h-8 w-8 items-center justify-center rounded-md font-bold focus:outline-none hover:bg-gray-200 dark:border-transparent dark:text-white dark:hover:bg-darkColor">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="16"
@@ -38,7 +38,7 @@ const Contols = () => {
           </g>
         </svg>
       </button>
-      <button className="flex h-8 w-8 items-center justify-center rounded-md font-bold focus:outline-none hover:bg-gray-200 dark:border-transparent dark:bg-grayColor dark:text-white dark:hover:bg-darkColor">
+      <button className="flex h-8 w-8 items-center justify-center rounded-md font-bold focus:outline-none hover:bg-gray-200 dark:border-transparent dark:text-white dark:hover:bg-darkColor">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="16"
@@ -55,7 +55,7 @@ const Contols = () => {
           </g>
         </svg>
       </button>
-      <button className="flex h-8 w-8 items-center justify-center rounded-md font-bold focus:outline-none hover:bg-gray-200 dark:border-transparent dark:bg-grayColor dark:text-white dark:hover:bg-darkColor">
+      <button className="flex h-8 w-8 items-center justify-center rounded-md font-bold focus:outline-none hover:bg-gray-200 dark:border-transparent dark:text-white dark:hover:bg-darkColor">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="16"
@@ -72,7 +72,7 @@ const Contols = () => {
           </g>
         </svg>
       </button>
-      <button className="flex h-8 w-8 items-center justify-center rounded-md border font-bold focus:outline-none hover:bg-gray-200 dark:border-transparent dark:bg-grayColor dark:text-white dark:hover:bg-darkColor">
+      <button className="flex h-8 w-8 items-center justify-center rounded-md border font-bold focus:outline-none hover:bg-gray-200 dark:border-transparent dark:border-grayColor dark:text-white dark:hover:bg-darkColor">
         <ChevronLeftIcon className="h-4 w-4 fill-black dark:fill-white" />
       </button>
     </div>
