@@ -26,7 +26,7 @@ const Layout: React.FC<Props> = ({ children }) => {
         <main
           className={
             router.pathname.includes("/box")
-              ? "mx-auto w-full grow"
+              ? "mx-auto w-full grow overflow-hidden"
               : "mx-auto w-full max-w-7xl px-4"
           }
         >
