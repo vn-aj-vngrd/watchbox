@@ -1,10 +1,85 @@
+import { useState } from "react";
 import { ChevronLeftIcon } from "@heroicons/react/24/solid";
 // https://icon-sets.iconify.design/mingcute/
 
 const Contols = () => {
+  const alignments = [
+    {
+      id: "left",
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          preserveAspectRatio="xMidYMid meet"
+          viewBox="0 0 24 24"
+        >
+          <g fill="none">
+            <path d="M0 0h24v24H0z" />
+            <path
+              fill="currentColor"
+              d="M14 17.5a1.5 1.5 0 0 1 .144 2.993L14 20.5H4a1.5 1.5 0 0 1-.144-2.993L4 17.5h10Zm6-5a1.5 1.5 0 0 1 0 3H4a1.5 1.5 0 0 1 0-3h16Zm-6-5a1.5 1.5 0 0 1 .144 2.993L14 10.5H4a1.5 1.5 0 0 1-.144-2.993L4 7.5h10Zm6-5a1.5 1.5 0 0 1 .144 2.993L20 5.5H4a1.5 1.5 0 0 1-.144-2.993L4 2.5h16Z"
+            />
+          </g>
+        </svg>
+      ),
+    },
+    {
+      id: "center",
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          preserveAspectRatio="xMidYMid meet"
+          viewBox="0 0 24 24"
+        >
+          <g fill="none">
+            <path d="M0 0h24v24H0z" />
+            <path
+              fill="currentColor"
+              d="M17 17.5a1.5 1.5 0 0 1 .144 2.993L17 20.5H7a1.5 1.5 0 0 1-.144-2.993L7 17.5h10Zm3-5a1.5 1.5 0 0 1 0 3H4a1.5 1.5 0 0 1 0-3h16Zm-3-5a1.5 1.5 0 0 1 .144 2.993L17 10.5H7a1.5 1.5 0 0 1-.144-2.993L7 7.5h10Zm3-5a1.5 1.5 0 0 1 .144 2.993L20 5.5H4a1.5 1.5 0 0 1-.144-2.993L4 2.5h16Z"
+            />
+          </g>
+        </svg>
+      ),
+    },
+    {
+      id: "right",
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="16"
+          height="16"
+          preserveAspectRatio="xMidYMid meet"
+          viewBox="0 0 24 24"
+        >
+          <g fill="none">
+            <path d="M0 0h24v24H0z" />
+            <path
+              fill="currentColor"
+              d="M20 17.5a1.5 1.5 0 0 1 .144 2.993L20 20.5H10a1.5 1.5 0 0 1-.144-2.993L10 17.5h10Zm0-5a1.5 1.5 0 0 1 0 3H4a1.5 1.5 0 0 1 0-3h16Zm0-5a1.5 1.5 0 0 1 .144 2.993L20 10.5H10a1.5 1.5 0 0 1-.144-2.993L10 7.5h10Zm0-5a1.5 1.5 0 0 1 .144 2.993L20 5.5H4a1.5 1.5 0 0 1-.144-2.993L4 2.5h16Z"
+            />
+          </g>
+        </svg>
+      ),
+    },
+  ];
+
+  const [bold, setBold] = useState(false);
+  const [italic, setItalic] = useState(false);
+  const [underline, setUnderline] = useState(false);
+  const [alignment, setAlignment] = useState(0);
+  const [sidePanel, setsidePanel] = useState(true);
+
   return (
     <div className="flex h-12 items-center justify-center gap-x-3 border-b dark:border-darkColor">
-      <button className="flex h-8 w-8 items-center justify-center rounded-md font-bold focus:outline-none hover:bg-gray-200 dark:border-transparent dark:text-white dark:hover:bg-darkColor">
+      <button
+        onClick={() => setBold(!bold)}
+        className={`flex h-8 w-8 items-center justify-center rounded-md font-bold focus:outline-none hover:bg-gray-200 dark:border-transparent dark:text-white dark:hover:bg-darkColor ${
+          bold ? "bg-gray-200 dark:bg-darkColor" : ""
+        }`}
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="16"
@@ -21,7 +96,12 @@ const Contols = () => {
           </g>
         </svg>
       </button>
-      <button className="flex h-8 w-8 items-center justify-center rounded-md font-bold focus:outline-none hover:bg-gray-200 dark:border-transparent dark:text-white dark:hover:bg-darkColor">
+      <button
+        onClick={() => setItalic(!italic)}
+        className={`flex h-8 w-8 items-center justify-center rounded-md font-bold focus:outline-none hover:bg-gray-200 dark:border-transparent dark:text-white dark:hover:bg-darkColor ${
+          italic ? "bg-gray-200 dark:bg-darkColor" : ""
+        }`}
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="16"
@@ -38,7 +118,12 @@ const Contols = () => {
           </g>
         </svg>
       </button>
-      <button className="flex h-8 w-8 items-center justify-center rounded-md font-bold focus:outline-none hover:bg-gray-200 dark:border-transparent dark:text-white dark:hover:bg-darkColor">
+      <button
+        onClick={() => setUnderline(!underline)}
+        className={`flex h-8 w-8 items-center justify-center rounded-md font-bold focus:outline-none hover:bg-gray-200 dark:border-transparent dark:text-white dark:hover:bg-darkColor ${
+          underline ? "bg-gray-200 dark:bg-darkColor" : ""
+        }`}
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="16"
@@ -55,24 +140,16 @@ const Contols = () => {
           </g>
         </svg>
       </button>
-      <button className="flex h-8 w-8 items-center justify-center rounded-md font-bold focus:outline-none hover:bg-gray-200 dark:border-transparent dark:text-white dark:hover:bg-darkColor">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          preserveAspectRatio="xMidYMid meet"
-          viewBox="0 0 24 24"
-        >
-          <g fill="none">
-            <path d="M0 0h24v24H0z" />
-            <path
-              fill="currentColor"
-              d="M14 17.5a1.5 1.5 0 0 1 .144 2.993L14 20.5H4a1.5 1.5 0 0 1-.144-2.993L4 17.5h10Zm6-5a1.5 1.5 0 0 1 0 3H4a1.5 1.5 0 0 1 0-3h16Zm-6-5a1.5 1.5 0 0 1 .144 2.993L14 10.5H4a1.5 1.5 0 0 1-.144-2.993L4 7.5h10Zm6-5a1.5 1.5 0 0 1 .144 2.993L20 5.5H4a1.5 1.5 0 0 1-.144-2.993L4 2.5h16Z"
-            />
-          </g>
-        </svg>
+      <button
+        onClick={() => setAlignment(alignment < 2 ? alignment + 1 : 0)}
+        className="flex h-8 w-8 items-center justify-center rounded-md font-bold focus:outline-none hover:bg-gray-200 dark:border-transparent dark:text-white dark:hover:bg-darkColor"
+      >
+        {alignments[alignment]?.icon}
       </button>
-      <button className="flex h-8 w-8 items-center justify-center rounded-md border font-bold focus:outline-none hover:bg-gray-200 dark:border-transparent dark:border-grayColor dark:text-white dark:hover:bg-darkColor">
+      <button
+        onClick={() => setsidePanel(!sidePanel)}
+        className="flex h-8 w-8 items-center justify-center rounded-md border font-bold focus:outline-none hover:bg-gray-200 dark:border-transparent dark:border-grayColor dark:text-white dark:hover:bg-darkColor"
+      >
         <ChevronLeftIcon className="h-4 w-4 fill-black dark:fill-white" />
       </button>
     </div>
