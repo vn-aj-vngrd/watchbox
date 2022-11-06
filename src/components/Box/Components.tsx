@@ -2,10 +2,11 @@ import { useRef } from "react";
 import { motion } from "framer-motion";
 
 type Props = {
+  canvasDiv: React.RefObject<HTMLDivElement>;
   sidePanel: boolean;
 };
 
-const Components: React.FC<Props> = ({ sidePanel }) => {
+const Components: React.FC<Props> = ({ canvasDiv, sidePanel }) => {
   const componentsDiv = useRef<HTMLDivElement>(null);
 
   return (

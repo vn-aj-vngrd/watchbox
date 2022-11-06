@@ -2,9 +2,10 @@ import Controls from "./Controls";
 import Components from "./Components";
 import Header from "./Header";
 import Canvas from "./Canvas";
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 const BoxPage = () => {
+  const canvasDiv = useRef<HTMLDivElement>(null);
   const [sidePanel, setSidePanel] = useState(true);
 
   return (
@@ -15,11 +16,11 @@ const BoxPage = () => {
         }`}
       >
         <Controls sidePanel={sidePanel} setSidePanel={setSidePanel} />
-        <Components sidePanel={sidePanel} />
+        <Components canvasDiv={canvasDiv} sidePanel={sidePanel} />
       </div>
       <div className="flex h-full grow flex-col">
         <Header />
-        <Canvas />
+        <Canvas canvasDiv={canvasDiv} />
       </div>
     </div>
   );
