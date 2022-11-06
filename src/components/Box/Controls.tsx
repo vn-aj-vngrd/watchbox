@@ -2,7 +2,12 @@ import { useState } from "react";
 import { ChevronLeftIcon } from "@heroicons/react/24/solid";
 // https://icon-sets.iconify.design/mingcute/
 
-const Contols = () => {
+type Props = {
+  sidePanel: boolean;
+  setSidePanel: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+const Contols: React.FC<Props> = ({ sidePanel, setSidePanel }) => {
   const alignments = [
     {
       id: "left",
@@ -70,10 +75,13 @@ const Contols = () => {
   const [italic, setItalic] = useState(false);
   const [underline, setUnderline] = useState(false);
   const [alignment, setAlignment] = useState(0);
-  const [sidePanel, setsidePanel] = useState(true);
 
   return (
-    <div className="flex h-fit flex-col items-center justify-center gap-3 border-b py-2 dark:border-darkColor md:h-12 md:flex-row md:py-0">
+    <div
+      className={`flex h-fit flex-col items-center justify-center gap-3 border-b py-2 dark:border-darkColor ${
+        !sidePanel ? "md:h-fit md:flex-col md:py-2" : "md:h-12 md:flex-row md:py-0"
+      }`}
+    >
       <button
         onClick={() => setBold(!bold)}
         className={`flex h-8 w-8 items-center justify-center rounded-md font-bold focus:outline-none hover:bg-gray-200 dark:border-transparent dark:text-white dark:hover:bg-darkColor ${
@@ -147,10 +155,16 @@ const Contols = () => {
         {alignments[alignment]?.icon}
       </button>
       <button
-        onClick={() => setsidePanel(!sidePanel)}
-        className="hidden h-8 w-8 items-center justify-center rounded-md border font-bold focus:outline-none hover:bg-gray-200 dark:border-transparent dark:border-grayColor dark:text-white dark:hover:bg-darkColor md:flex"
+        onClick={() => setSidePanel(!sidePanel)}
+        className={`hidden h-8 w-8 items-center justify-center rounded-md border font-bold focus:outline-none hover:bg-gray-200 dark:border-transparent dark:border-grayColor dark:text-white dark:hover:bg-darkColor md:flex ${
+          !sidePanel ? "md:order-first" : "md:order-none"
+        }`}
       >
-        <ChevronLeftIcon className="h-4 w-4 fill-black dark:fill-white" />
+        <ChevronLeftIcon
+          className={`h-4 w-4 fill-black transition-transform ease-in-out dark:fill-white ${
+            !sidePanel ? "rotate-180" : ""
+          }`}
+        />
       </button>
     </div>
   );

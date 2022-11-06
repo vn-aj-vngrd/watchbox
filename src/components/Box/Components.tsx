@@ -1,10 +1,24 @@
 // Imports
 
-const Components = () => {
+type Props = {
+  sidePanel: boolean;
+};
+
+const Components: React.FC<Props> = ({ sidePanel }) => {
   return (
     <div className="flex h-full justify-center scrollbar-thin scrollbar-track-gray-400/20 scrollbar-thumb-blue-500">
-      <div className="my-3 grid h-fit grid-cols-1 gap-3 md:my-4 md:grid-cols-2 md:gap-4">
-        <div className="flex h-10 w-10 select-none items-center justify-center rounded-md bg-gray-200 p-1 text-gray-700 dark:bg-darkColor dark:text-white md:h-28 md:w-28 md:rounded-lg md:p-0">
+      <div
+        className={`my-3 grid h-fit grid-cols-1 gap-3 ${
+          !sidePanel ? "md:my-3 md:grid-cols-1 md:gap-3" : "md:my-4 md:grid-cols-2 md:gap-4"
+        }`}
+      >
+        <div
+          className={`flex h-10 w-10 select-none items-center justify-center rounded-md bg-gray-200 p-[6px] text-gray-700 dark:bg-darkColor dark:text-white ${
+            !sidePanel
+              ? "md:h-10 md:w-10 md:rounded-md md:p-[6px]"
+              : "md:h-28 md:w-28 md:rounded-lg md:p-0"
+          }`}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="36"
