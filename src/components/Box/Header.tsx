@@ -1,7 +1,7 @@
 import { HeartIcon as OutlineHeartIcon } from "@heroicons/react/24/outline";
 import { Cog6ToothIcon, HeartIcon as SolidHeartIcon, ShareIcon } from "@heroicons/react/24/solid";
 import { FavoriteBox } from "@prisma/client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { trpc } from "../../utils/trpc";
 import Spinner from "../Common/Spinner";
 
@@ -24,7 +24,11 @@ const Header = ({ boxTitle, favoriteBox, id }: Props) => {
     },
   });
 
-  const [favorite, setFavorite] = useState<boolean>(favoriteBox !== undefined ? true : false);
+  const [favorite, setFavorite] = useState<boolean>(false);
+
+  useEffect(() => {
+    setFavorite(favoriteBox !== null && favoriteBox !== undefined ? true : false);
+  }, [favoriteBox]);
 
   const onFavoriteBox = () => {
     if (favorite) {
