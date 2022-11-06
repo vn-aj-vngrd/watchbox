@@ -73,7 +73,7 @@ const Contols = () => {
   const [sidePanel, setsidePanel] = useState(true);
 
   return (
-    <div className="flex h-12 items-center justify-center gap-x-3 border-b dark:border-darkColor">
+    <div className="flex h-fit flex-col items-center justify-center gap-3 border-b py-2 dark:border-darkColor md:h-12 md:flex-row md:py-0">
       <button
         onClick={() => setBold(!bold)}
         className={`flex h-8 w-8 items-center justify-center rounded-md font-bold focus:outline-none hover:bg-gray-200 dark:border-transparent dark:text-white dark:hover:bg-darkColor ${
@@ -148,7 +148,7 @@ const Contols = () => {
       </button>
       <button
         onClick={() => setsidePanel(!sidePanel)}
-        className="flex h-8 w-8 items-center justify-center rounded-md border font-bold focus:outline-none hover:bg-gray-200 dark:border-transparent dark:border-grayColor dark:text-white dark:hover:bg-darkColor"
+        className="hidden h-8 w-8 items-center justify-center rounded-md border font-bold focus:outline-none hover:bg-gray-200 dark:border-transparent dark:border-grayColor dark:text-white dark:hover:bg-darkColor md:flex"
       >
         <ChevronLeftIcon className="h-4 w-4 fill-black dark:fill-white" />
       </button>
