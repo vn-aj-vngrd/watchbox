@@ -1,10 +1,17 @@
-import Controls from "./Controls";
-import Components from "./Components";
-import Header from "./Header";
-import Canvas from "./Canvas";
+import { Box, FavoriteBox } from "@prisma/client";
 import { useState } from "react";
+import Canvas from "./Canvas";
+import Components from "./Components";
+import Controls from "./Controls";
+import Header from "./Header";
 
-const BoxPage = () => {
+type Props = {
+  box: Box | null | undefined;
+  favoriteBox: FavoriteBox | null | undefined;
+  id: string;
+};
+
+const BoxPage = ({ box, favoriteBox, id }: Props) => {
   const [sidePanel, setSidePanel] = useState(true);
 
   return (
@@ -18,7 +25,7 @@ const BoxPage = () => {
         <Components sidePanel={sidePanel} />
       </div>
       <div className="flex h-full grow flex-col">
-        <Header />
+        <Header boxTitle={box?.boxTitle} favoriteBox={favoriteBox} id={id} />
         <Canvas />
       </div>
     </div>
