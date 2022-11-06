@@ -3879,7 +3879,7 @@ pkg-dir@^4.1.0:
   dependencies:
     find-up "^4.0.0"
 
-popmotion@11.0.5:
+popmotion@11.0.5, popmotion@^11.0.5:
   version "11.0.5"
   resolved "https://registry.yarnpkg.com/popmotion/-/popmotion-11.0.5.tgz#8e3e014421a0ffa30ecd722564fd2558954e1f7d"
   integrity sha512-la8gPM1WYeFznb/JqF4GiTkRRPZsfaj2+kCxqQgr2MJylMmIKUwBfWW8Wa5fml/8gmtlD5yI01MP1QCZPWmppA==
