@@ -3,8 +3,8 @@
 const Components = () => {
   return (
     <div className="flex h-full justify-center scrollbar-thin scrollbar-track-gray-400/20 scrollbar-thumb-blue-500">
-      <div className="my-4 grid h-fit grid-cols-2 gap-4">
-        <div className="flex h-28 w-28 select-none items-center justify-center rounded-lg bg-gray-200 text-gray-700">
+      <div className="my-3 grid h-fit grid-cols-1 gap-3 md:my-4 md:grid-cols-2 md:gap-4">
+        <div className="flex h-10 w-10 select-none items-center justify-center rounded-md bg-gray-200 p-1 text-gray-700 md:h-28 md:w-28 md:rounded-lg md:p-0">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="36"

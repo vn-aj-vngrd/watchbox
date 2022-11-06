@@ -6,11 +6,11 @@ const Header = () => {
   const [favorite, setFavorite] = useState(false);
 
   return (
-    <div className="flex h-12 items-center border-b px-4 dark:border-darkColor">
+    <div className="flex h-12 items-center border-b pl-4 pr-2 dark:border-darkColor">
       <div className="flex h-full grow items-center font-medium">
         <input
           type="text"
-          className="mt-px w-64 border-b border-b-transparent bg-transparent focus:border-b-gray-200 focus:outline-none hover:border-b-gray-200 dark:focus:border-b-darkColor dark:hover:border-b-darkColor"
+          className="mt-px w-40 border-b border-b-transparent bg-transparent focus:border-b-gray-200 focus:outline-none hover:border-b-gray-200 dark:focus:border-b-darkColor dark:hover:border-b-darkColor md:w-64"
           defaultValue="Box Title"
         />
       </div>
