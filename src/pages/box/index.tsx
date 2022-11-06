@@ -1,12 +1,13 @@
 import { GetServerSidePropsContext } from "next";
 import Meta from "../../components/Common/Meta";
+import BoxPage from "../../components/Box/BoxPage";
 import { getServerSideSession } from "../../utils/session";
 
 const account = () => {
   return (
     <>
       <Meta title="WatchBox | Box" />
-      <p className="text-center">Box</p>
+      <BoxPage />
     </>
   );
 };
