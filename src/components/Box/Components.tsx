@@ -29,9 +29,9 @@ const Components: React.FC<Props> = ({ sidePanel }) => {
           onDragEnd={() => {
             componentsDiv.current?.classList.add("scrollbar-thin");
           }}
-          className={`flex h-10 w-10 select-none items-center justify-center rounded-md bg-gray-200 p-[6px] text-gray-700 dark:bg-darkColor dark:text-white ${
+          className={`flex h-10 w-10 select-none items-center justify-center rounded-md bg-gray-200 p-2 text-gray-700 dark:bg-darkColor dark:text-white ${
             !sidePanel
-              ? "md:h-10 md:w-10 md:rounded-md md:p-[6px]"
+              ? "md:h-10 md:w-10 md:rounded-md md:p-2"
               : "md:h-28 md:w-28 md:rounded-lg md:p-0"
           }`}
         >
@@ -62,9 +62,9 @@ const Components: React.FC<Props> = ({ sidePanel }) => {
           onDragEnd={() => {
             componentsDiv.current?.classList.add("scrollbar-thin");
           }}
-          className={`flex h-10 w-10 select-none items-center justify-center rounded-md bg-gray-200 p-[6px] text-gray-700 dark:bg-darkColor dark:text-white ${
+          className={`flex h-10 w-10 select-none items-center justify-center rounded-md bg-gray-200 p-2 text-gray-700 dark:bg-darkColor dark:text-white ${
             !sidePanel
-              ? "md:h-10 md:w-10 md:rounded-md md:p-[6px]"
+              ? "md:h-10 md:w-10 md:rounded-md md:p-2"
               : "md:h-28 md:w-28 md:rounded-lg md:p-0"
           }`}
         >
