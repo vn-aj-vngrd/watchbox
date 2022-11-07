@@ -1,5 +1,5 @@
-import { createProtectedRouter } from "./protected-router";
 import { z } from "zod";
+import { createProtectedRouter } from "./protected-router";
 
 export const boxRouter = createProtectedRouter()
   .query("getBoxes", {
@@ -32,6 +32,21 @@ export const boxRouter = createProtectedRouter()
               : undefined,
           boxTitle:
             input.sortParam === "Z-A" ? "desc" : input.sortParam === "A-Z" ? "asc" : undefined,
+        },
+      });
+    },
+  })
+  .query("getBox", {
+    input: z.object({
+      id: z.string(),
+    }),
+    async resolve({ input, ctx }) {
+      return ctx.prisma.box.findFirst({
+        where: {
+          id: input.id,
+        },
+        include: {
+          Entry: true,
         },
       });
     },

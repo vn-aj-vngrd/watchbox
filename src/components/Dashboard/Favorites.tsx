@@ -150,7 +150,7 @@ const Favorites: React.FC<FavoritesProps> = ({ setMode }) => {
         {favoritesData.data?.map((fav, index) => (
           <button
             key={index}
-            onClick={() => router.push("/box")}
+            onClick={() => router.push(`/box/${fav.id}`)}
             className="group flex flex-col items-center"
           >
             <div
