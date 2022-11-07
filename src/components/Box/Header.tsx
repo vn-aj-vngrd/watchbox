@@ -1,9 +1,16 @@
 import { HeartIcon as OutlineHeartIcon } from "@heroicons/react/24/outline";
-import { Cog6ToothIcon, HeartIcon as SolidHeartIcon, ShareIcon } from "@heroicons/react/24/solid";
+import {
+  HeartIcon as SolidHeartIcon,
+  InformationCircleIcon,
+  ShareIcon,
+} from "@heroicons/react/24/solid";
 import { FavoriteBox } from "@prisma/client";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { server } from "../../config";
 import { trpc } from "../../utils/trpc";
-import Spinner from "../Common/Spinner";
+import DeleteBox from "./DeleteBox";
 
 type Props = {
   boxTitle: string | undefined;
@@ -12,6 +19,8 @@ type Props = {
 };
 
 const Header = ({ boxTitle, favoriteBox, id }: Props) => {
+  const router = useRouter();
+
   const addFavoriteBox = trpc.useMutation("favorite.addFavoriteBox", {
     onSuccess: () => {
       document.dispatchEvent(new Event("visibilitychange"));
@@ -21,6 +30,13 @@ const Header = ({ boxTitle, favoriteBox, id }: Props) => {
   const deleteFavoriteBox = trpc.useMutation("favorite.deleteFavoriteBox", {
     onSuccess: () => {
       document.dispatchEvent(new Event("visibilitychange"));
+    },
+  });
+
+  const deleteBox = trpc.useMutation("box.deleteBox", {
+    onSuccess: () => {
+      document.dispatchEvent(new Event("visibilitychange"));
+      router.push("/");
     },
   });
 
@@ -46,9 +62,11 @@ const Header = ({ boxTitle, favoriteBox, id }: Props) => {
     setFavorite(true);
   };
 
-  if (addFavoriteBox.isLoading || deleteFavoriteBox.isLoading) {
-    return <Spinner isGlobal={true} />;
-  }
+  const onDeleteBox = () => {
+    deleteBox.mutateAsync({
+      id,
+    });
+  };
 
   return (
     <div className="flex h-12 items-center border-b pl-4 pr-2 dark:border-darkColor">
@@ -68,10 +86,19 @@ const Header = ({ boxTitle, favoriteBox, id }: Props) => {
           )}
         </button>
         <button className="flex h-full w-11 items-center justify-center">
-          <ShareIcon className="h-[18px] w-[18px] dark:text-white" />
+          <ShareIcon
+            className="h-[18px] w-[18px] dark:text-white"
+            onClick={() => {
+              navigator.clipboard.writeText(server + router.asPath);
+              toast.success("Copied to clipboard");
+            }}
+          />
         </button>
         <button className="flex h-full w-11 items-center justify-center">
-          <Cog6ToothIcon className="h-5 w-5 dark:text-white" />
+          <DeleteBox onDeleteBox={onDeleteBox} />
+        </button>
+        <button className="flex h-full w-11 items-center justify-center">
+          <InformationCircleIcon className="h-[22px] w-[22px] dark:text-white" />
         </button>
       </div>
     </div>

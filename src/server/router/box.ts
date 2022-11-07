@@ -72,4 +72,16 @@ export const boxRouter = createProtectedRouter()
         },
       });
     },
+  })
+  .mutation("deleteBox", {
+    input: z.object({
+      id: z.string(),
+    }),
+    async resolve({ input, ctx }) {
+      return ctx.prisma.box.delete({
+        where: {
+          id: input.id,
+        },
+      });
+    },
   });
