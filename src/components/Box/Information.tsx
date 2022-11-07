@@ -31,25 +31,25 @@ const Information = ({ box }: Props) => {
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-        <Menu.Items className="absolute right-0 mt-2 w-[20.5rem] origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:divide-grayColor dark:bg-darkColor">
+        <Menu.Items className="absolute right-0 mt-2 w-[22rem] origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:divide-grayColor dark:bg-darkColor">
           <Menu.Item>
-            <button className="flex w-full items-center px-4 py-2 text-left text-sm text-gray-900 hover:bg-gray-100 hover:text-gray-900 dark:text-white dark:hover:bg-grayColor">
+            <div className="flex w-full items-center px-4 py-2 text-left text-sm text-gray-900 dark:text-white">
               <span className="mr-1 font-semibold"> Owner: </span> {box?.username}
-            </button>
+            </div>
           </Menu.Item>
 
           <Menu.Item>
-            <button className="flex w-full items-center px-4 py-2 text-left text-sm text-gray-900 hover:bg-gray-100 hover:text-gray-900 dark:text-white dark:hover:bg-grayColor">
+            <div className="flex w-full items-center px-4 py-2 text-left text-sm text-gray-900 dark:text-white">
               <span className="mr-1 font-semibold">Date Created: </span>
               {moment(box?.boxes[0]?.created_at).format("MMMM Do YYYY, h:mm:ss a")}
-            </button>
+            </div>
           </Menu.Item>
 
           <Menu.Item>
-            <button className="flex w-full items-center px-4 py-2 text-left text-sm text-gray-900 hover:bg-gray-100 hover:text-gray-900 dark:text-white dark:hover:bg-grayColor">
+            <div className="flex w-full items-center px-4 py-2 text-left text-sm text-gray-900 dark:text-white">
               <span className="mr-1 font-semibold">Date Updated: </span>
               {moment(box?.boxes[0]?.updated_at).format("MMMM Do YYYY, h:mm:ss a")}
-            </button>
+            </div>
           </Menu.Item>
         </Menu.Items>
       </Transition>
