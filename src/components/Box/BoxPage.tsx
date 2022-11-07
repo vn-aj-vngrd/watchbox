@@ -1,4 +1,4 @@
-import { Box, FavoriteBox } from "@prisma/client";
+import { FavoriteBox } from "@prisma/client";
 import { useState } from "react";
 import Canvas from "./Canvas";
 import Components from "./Components";
@@ -6,12 +6,20 @@ import Controls from "./Controls";
 import Header from "./Header";
 
 type Props = {
-  box: Box | null | undefined;
+  box:
+    | {
+        id: string;
+        username: string | null;
+        boxes: { id: string; created_at: Date; updated_at: Date; boxTitle: string }[];
+      }
+    | null
+    | undefined;
   favoriteBox: FavoriteBox | null | undefined;
   id: string;
+  refetch: () => void;
 };
 
-const BoxPage = ({ box, favoriteBox, id }: Props) => {
+const BoxPage = ({ box, favoriteBox, id, refetch }: Props) => {
   const [sidePanel, setSidePanel] = useState(true);
 
   return (
@@ -25,7 +33,7 @@ const BoxPage = ({ box, favoriteBox, id }: Props) => {
         <Components sidePanel={sidePanel} />
       </div>
       <div className="flex h-full grow flex-col">
-        <Header boxTitle={box?.boxTitle} favoriteBox={favoriteBox} id={id} />
+        <Header box={box} favoriteBox={favoriteBox} id={id} refetch={refetch} />
         <Canvas />
       </div>
     </div>
