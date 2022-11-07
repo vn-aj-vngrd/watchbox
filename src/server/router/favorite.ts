@@ -49,4 +49,43 @@ export const favoriteRouter = createProtectedRouter()
         },
       });
     },
+  })
+  .query("getFavoriteBox", {
+    input: z.object({
+      boxId: z.string(),
+    }),
+    async resolve({ input, ctx }) {
+      return ctx.prisma.favoriteBox.findFirst({
+        where: {
+          userId: ctx.session.user.id,
+          boxId: input.boxId,
+        },
+      });
+    },
+  })
+  .mutation("addFavoriteBox", {
+    input: z.object({
+      boxId: z.string(),
+    }),
+    async resolve({ input, ctx }) {
+      return ctx.prisma.favoriteBox.create({
+        data: {
+          userId: ctx.session.user.id,
+          boxId: input.boxId,
+        },
+      });
+    },
+  })
+  .mutation("deleteFavoriteBox", {
+    input: z.object({
+      boxId: z.string(),
+    }),
+    async resolve({ input, ctx }) {
+      return ctx.prisma.favoriteBox.deleteMany({
+        where: {
+          userId: ctx.session.user.id,
+          boxId: input.boxId,
+        },
+      });
+    },
   });
