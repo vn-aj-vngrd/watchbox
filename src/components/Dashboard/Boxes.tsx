@@ -3,11 +3,11 @@
 import { ChevronLeftIcon } from "@heroicons/react/24/outline";
 import { ChevronDownIcon, ChevronRightIcon, MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
+import router from "next/router";
 import { useState } from "react";
 import ReactPaginate from "react-paginate";
 import { trpc } from "../../utils/trpc";
 import Spinner from "../Common/Spinner";
-import router from "next/router";
 import CreateBox from "./CreateBox";
 
 const sortOptions = [
@@ -159,7 +159,7 @@ const Boxes: React.FC<BoxesProps> = ({ setMode }) => {
         {boxesData.data?.map((box, index) => (
           <button
             key={index}
-            onClick={() => router.push("/box")}
+            onClick={() => router.push(`box/${box.id}`)}
             className="group flex flex-col items-center"
           >
             <div
