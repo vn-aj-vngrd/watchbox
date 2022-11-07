@@ -1,5 +1,5 @@
 import { HeartIcon as OutlineHeartIcon } from "@heroicons/react/24/outline";
-import { HeartIcon as SolidHeartIcon, ShareIcon } from "@heroicons/react/24/solid";
+import { HeartIcon as SolidHeartIcon, LinkIcon } from "@heroicons/react/24/solid";
 import { FavoriteBox } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
@@ -121,7 +121,7 @@ const Header = ({ box, favoriteBox, id, refetch }: Props) => {
             },
             minLength: {
               value: 4,
-              message: "* Box title must contain at least 4 characters.",
+              message: "Title must be at least 4 characters.",
             },
           })}
         />
@@ -167,7 +167,7 @@ const Header = ({ box, favoriteBox, id, refetch }: Props) => {
           )}
         </button>
         <button className="flex h-full w-11 items-center justify-center">
-          <ShareIcon
+          <LinkIcon
             className="h-[18px] w-[18px] dark:text-white"
             onClick={() => {
               navigator.clipboard.writeText(server + router.asPath);
