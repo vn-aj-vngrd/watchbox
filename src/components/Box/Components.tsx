@@ -1,13 +1,29 @@
 import { useRef } from "react";
 import { motion } from "framer-motion";
+import { snap } from "popmotion";
+
+type CanvasElement = {
+  component: string;
+  x: number;
+  y: number;
+};
 
 type Props = {
   canvasDiv: React.RefObject<HTMLDivElement>;
   sidePanel: boolean;
+  canvasElements: CanvasElement[];
+  setCanvasElements: React.Dispatch<React.SetStateAction<CanvasElement[]>>;
 };
 
-const Components: React.FC<Props> = ({ canvasDiv, sidePanel }) => {
+const Components: React.FC<Props> = ({
+  canvasDiv,
+  sidePanel,
+  canvasElements,
+  setCanvasElements,
+}) => {
   const componentsDiv = useRef<HTMLDivElement>(null);
+  let canvasRef: DOMRect | undefined;
+  const snapTo = snap(10);
 
   return (
     <div
@@ -26,9 +42,24 @@ const Components: React.FC<Props> = ({ canvasDiv, sidePanel }) => {
           whileDrag={{ scale: 0.5 }}
           onDragStart={() => {
             componentsDiv.current?.classList.remove("scrollbar-thin");
+            canvasRef = canvasDiv.current?.getBoundingClientRect();
           }}
-          onDragEnd={() => {
+          onDragEnd={(e, info) => {
             componentsDiv.current?.classList.add("scrollbar-thin");
+            if (
+              canvasDiv.current &&
+              info.point.x - (canvasRef?.x ?? 0) > 0 &&
+              info.point.y - (canvasRef?.y ?? 0) > 0
+            ) {
+              setCanvasElements([
+                ...canvasElements,
+                {
+                  component: "text",
+                  x: snapTo(info.point.x - (canvasRef?.x ?? 0)),
+                  y: snapTo(info.point.y - (canvasRef?.y ?? 0)),
+                },
+              ]);
+            }
           }}
           className={`flex h-10 w-10 select-none items-center justify-center rounded-md bg-gray-200 p-2 text-gray-700 dark:bg-darkColor dark:text-white ${
             !sidePanel
@@ -59,9 +90,24 @@ const Components: React.FC<Props> = ({ canvasDiv, sidePanel }) => {
           whileDrag={{ scale: 0.5 }}
           onDragStart={() => {
             componentsDiv.current?.classList.remove("scrollbar-thin");
+            canvasRef = canvasDiv.current?.getBoundingClientRect();
           }}
-          onDragEnd={() => {
+          onDragEnd={(e, info) => {
             componentsDiv.current?.classList.add("scrollbar-thin");
+            if (
+              canvasDiv.current &&
+              info.point.x - (canvasRef?.x ?? 0) > 0 &&
+              info.point.y - (canvasRef?.y ?? 0) > 0
+            ) {
+              setCanvasElements([
+                ...canvasElements,
+                {
+                  component: "entry",
+                  x: snapTo(info.point.x - (canvasRef?.x ?? 0)),
+                  y: snapTo(info.point.y - (canvasRef?.y ?? 0)),
+                },
+              ]);
+            }
           }}
           className={`flex h-10 w-10 select-none items-center justify-center rounded-md bg-gray-200 p-2 text-gray-700 dark:bg-darkColor dark:text-white ${
             !sidePanel

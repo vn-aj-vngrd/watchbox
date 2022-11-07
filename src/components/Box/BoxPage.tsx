@@ -5,6 +5,12 @@ import Components from "./Components";
 import Controls from "./Controls";
 import Header from "./Header";
 
+type CanvasElement = {
+  component: string;
+  x: number;
+  y: number;
+};
+
 type Props = {
   box: Box | null | undefined;
   favoriteBox: FavoriteBox | null | undefined;
@@ -13,6 +19,7 @@ type Props = {
 
 const BoxPage = ({ box, favoriteBox, id }: Props) => {
   const [sidePanel, setSidePanel] = useState(true);
+  const [canvasElements, setCanvasElements] = useState<CanvasElement[]>([]);
   const canvasDiv = useRef<HTMLDivElement>(null);
 
   return (
@@ -23,11 +30,16 @@ const BoxPage = ({ box, favoriteBox, id }: Props) => {
         }`}
       >
         <Controls sidePanel={sidePanel} setSidePanel={setSidePanel} />
-        <Components canvasDiv={canvasDiv} sidePanel={sidePanel} />
+        <Components
+          canvasDiv={canvasDiv}
+          sidePanel={sidePanel}
+          canvasElements={canvasElements}
+          setCanvasElements={setCanvasElements}
+        />
       </div>
       <div className="flex h-full grow flex-col">
         <Header boxTitle={box?.boxTitle} favoriteBox={favoriteBox} id={id} />
-        <Canvas canvasDiv={canvasDiv} />
+        <Canvas canvasDiv={canvasDiv} canvasElements={canvasElements} />
       </div>
     </div>
   );
