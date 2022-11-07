@@ -135,6 +135,10 @@ const CreateBox: React.FC<Props> = ({ onBoxCreated }) => {
                                 value: true,
                                 message: "Title is required",
                               },
+                              minLength: {
+                                value: 4,
+                                message: "Title must be at least 4 characters",
+                              }
                             })}
                           />
                           {errors.title && (
