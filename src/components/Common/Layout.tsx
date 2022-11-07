@@ -24,11 +24,9 @@ const Layout: React.FC<Props> = ({ children }) => {
       <div className="flex h-screen flex-col justify-between">
         <Header session={session} />
         <main
-          className={
-            router.pathname.includes("/box")
-              ? "mx-auto w-full grow overflow-hidden"
-              : "mx-auto w-full max-w-7xl px-4"
-          }
+          className={`mx-auto w-full grow ${
+            router.pathname.includes("/box") ? "overflow-hidden" : "max-w-7xl px-4"
+          }`}
         >
           {children}
         </main>
