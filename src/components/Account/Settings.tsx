@@ -1,17 +1,17 @@
 // components/Profile.tsx
 
-import { PencilSquareIcon } from "@heroicons/react/20/solid";
+import { PencilSquareIcon } from "@heroicons/react/24/solid";
+import sha1 from "crypto-js/sha1";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
+import router from "next/router";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import ImageUploading, { ImageListType } from "react-images-uploading";
-import sha1 from "crypto-js/sha1";
-import { trpc } from "../../utils/trpc";
-import { env } from "../../env/client.mjs";
 import { v4 as uuidv4 } from "uuid";
+import { env } from "../../env/client.mjs";
+import { trpc } from "../../utils/trpc";
 import Spinner from "../Common/Spinner";
-import router from "next/router";
 import Deactivate from "./Deactivate";
 
 type Inputs = {
@@ -41,6 +41,7 @@ const Settings = () => {
 
   const { data: session } = useSession();
   const [image, setImage] = useState<ImageListType>([]);
+  const [isLoading, setIsloading] = useState<boolean>(false);
 
   const {
     register,
@@ -58,6 +59,7 @@ const Settings = () => {
       username: session?.user?.username || " ",
       name: session?.user?.name || " ",
     });
+    setImage([]);
   }, [reset, session]);
 
   const onChange = (imageList: ImageListType) => {
@@ -66,6 +68,7 @@ const Settings = () => {
   };
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    setIsloading(true);
     const { username } = data;
     const { name } = data;
 
@@ -102,6 +105,8 @@ const Settings = () => {
     ).then((res) => res.json());
 
     const { secure_url } = req;
+
+    setIsloading(false);
 
     updateUser({
       username,
@@ -141,27 +146,25 @@ const Settings = () => {
                 />
               )}
 
-              <label
-                htmlFor="preview"
-                className="cursor absolute bottom-0 right-0 z-10 h-8 w-8 cursor-pointer rounded-full border bg-white p-1.5 text-gray-700 shadow-sm dark:border-grayColor dark:bg-grayColor dark:text-white"
-              >
-                <PencilSquareIcon />
-              </label>
-              <input id="preview" type="file" className="hidden" />
-
               <ImageUploading
                 value={image}
                 onChange={(imageList: ImageListType) => onChange(imageList)}
                 dataURLKey="data_url"
               >
                 {({ imageList, onImageUpload }) => (
-                  <div className="upload__image-wrapper">
-                    <button
-                      onClick={onImageUpload}
-                      className="cursor absolute bottom-0 right-0 z-20 h-8 w-8 cursor-pointer rounded-full border bg-white p-1.5 text-gray-700 shadow-sm hover:bg-gray-200 dark:border-grayColor dark:bg-darkColor dark:text-white dark:hover:bg-grayColor"
-                    >
-                      <PencilSquareIcon />
-                    </button>
+                  <>
+                    {isLoading ? (
+                      <div className="absolute z-20 flex h-full w-full items-center justify-center rounded-full border bg-white p-1.5 text-gray-700 shadow-sm hover:bg-gray-200 dark:border-grayColor dark:bg-darkColor dark:text-white dark:hover:bg-grayColor">
+                        <Spinner />
+                      </div>
+                    ) : (
+                      <button
+                        onClick={onImageUpload}
+                        className="cursor absolute bottom-0 right-0 z-20 h-8 w-8 cursor-pointer rounded-full border bg-white p-1.5 text-gray-700 shadow-sm hover:bg-gray-200 dark:border-grayColor dark:bg-darkColor dark:text-white dark:hover:bg-grayColor"
+                      >
+                        <PencilSquareIcon />
+                      </button>
+                    )}
 
                     {imageList?.map((image, index) => (
                       <div key={index} className="image-item">
@@ -174,7 +177,7 @@ const Settings = () => {
                         />
                       </div>
                     ))}
-                  </div>
+                  </>
                 )}
               </ImageUploading>
             </div>
