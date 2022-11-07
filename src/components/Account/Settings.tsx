@@ -22,6 +22,7 @@ type Inputs = {
 const Settings = () => {
   const { mutate: updateUser, isLoading: isUpdating } = trpc.useMutation(["user.updateUser"], {
     onSuccess: () => {
+      setIsloading(false);
       document.dispatchEvent(new Event("visibilitychange"));
     },
     onError: (err) => {
@@ -105,8 +106,6 @@ const Settings = () => {
     ).then((res) => res.json());
 
     const { secure_url } = req;
-
-    setIsloading(false);
 
     updateUser({
       username,
