@@ -21,7 +21,7 @@ export const boxRouter = createProtectedRouter()
           },
         },
         include: {
-          Entry: true,
+          entries: true,
         },
         orderBy: {
           created_at:
@@ -41,12 +41,25 @@ export const boxRouter = createProtectedRouter()
       id: z.string(),
     }),
     async resolve({ input, ctx }) {
-      return ctx.prisma.box.findFirst({
+      return ctx.prisma.user.findFirst({
         where: {
-          id: input.id,
+          boxes: {
+            some: {
+              id: input.id,
+            },
+          },
         },
-        include: {
-          Entry: true,
+        select: {
+          id: true,
+          username: true,
+          boxes: {
+            select: {
+              id: true,
+              boxTitle: true,
+              created_at: true,
+              updated_at: true,
+            },
+          },
         },
       });
     },
@@ -68,6 +81,22 @@ export const boxRouter = createProtectedRouter()
       return ctx.prisma.box.create({
         data: {
           userId: ctx.session.user.id,
+          boxTitle: input.boxTitle,
+        },
+      });
+    },
+  })
+  .mutation("updateBox", {
+    input: z.object({
+      id: z.string(),
+      boxTitle: z.string(),
+    }),
+    async resolve({ input, ctx }) {
+      return ctx.prisma.box.update({
+        where: {
+          id: input.id,
+        },
+        data: {
           boxTitle: input.boxTitle,
         },
       });

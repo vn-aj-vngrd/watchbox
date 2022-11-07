@@ -36,10 +36,15 @@ const account = ({ id }: Props) => {
     );
   }
 
+  const refetch = () => {
+    getBox.refetch();
+    getFavoriteBox.refetch();
+  };
+
   return (
     <>
       <Meta title="WatchBox | Box" />
-      <BoxPage box={getBox?.data} favoriteBox={getFavoriteBox?.data} id={id} />
+      <BoxPage box={getBox?.data} favoriteBox={getFavoriteBox?.data} id={id} refetch={refetch} />
     </>
   );
 };
