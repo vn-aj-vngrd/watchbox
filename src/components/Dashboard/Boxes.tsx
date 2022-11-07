@@ -164,14 +164,14 @@ const Boxes: React.FC<BoxesProps> = ({ setMode }) => {
           >
             <div
               className={`grid ${
-                box?.Entry.length > 1 ? "grid-cols-2 grid-rows-2" : "grid-cols-1"
+                box?.entries.length > 1 ? "grid-cols-2 grid-rows-2" : "grid-cols-1"
               } bg-white-50 aspect-square w-32 gap-3 rounded-lg border p-4 shadow-sm transition duration-150 ease-in-out group-hover:scale-105 dark:border-transparent dark:bg-grayColor lg:w-36`}
             >
-              {box?.Entry?.length == 1 ? (
+              {box?.entries?.length == 1 ? (
                 <div className="overflow-hidden rounded-md bg-white">
                   <Image
                     className="object-cover"
-                    src={box?.Entry[0]?.image || ""}
+                    src={box?.entries[0]?.image || ""}
                     alt=""
                     width="1080"
                     height="1080"
@@ -180,7 +180,7 @@ const Boxes: React.FC<BoxesProps> = ({ setMode }) => {
                 </div>
               ) : (
                 <>
-                  {box?.Entry?.slice(0, 4).map((item, index) => (
+                  {box?.entries?.slice(0, 4).map((item, index) => (
                     <div key={index} className="overflow-hidden rounded-md bg-white">
                       <Image
                         className="object-cover"

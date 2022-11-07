@@ -1,13 +1,13 @@
 // components/Favorites.tsx
 
-import { MagnifyingGlassIcon, ChevronDownIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
 import { ChevronLeftIcon } from "@heroicons/react/24/outline";
+import { ChevronDownIcon, ChevronRightIcon, MagnifyingGlassIcon } from "@heroicons/react/24/solid";
+import Image from "next/image";
+import router from "next/router";
 import { useState } from "react";
 import ReactPaginate from "react-paginate";
 import { trpc } from "../../utils/trpc";
 import Spinner from "../Common/Spinner";
-import router from "next/router";
-import Image from "next/image";
 
 const sortOptions = [
   { id: "one", name: "Newest" },
@@ -155,14 +155,14 @@ const Favorites: React.FC<FavoritesProps> = ({ setMode }) => {
           >
             <div
               className={`grid ${
-                fav?.Entry.length > 1 ? "grid-cols-2 grid-rows-2" : "grid-cols-1"
+                fav?.entries.length > 1 ? "grid-cols-2 grid-rows-2" : "grid-cols-1"
               } bg-white-50 aspect-square w-32 gap-3 rounded-lg border p-4 shadow-sm transition duration-150 ease-in-out group-hover:scale-105 dark:border-transparent dark:bg-grayColor lg:w-36`}
             >
-              {fav?.Entry?.length == 1 ? (
+              {fav?.entries?.length == 1 ? (
                 <div key={index} className="overflow-hidden rounded-md bg-white">
                   <Image
                     className="object-cover"
-                    src={fav?.Entry[0]?.image || ""}
+                    src={fav?.entries[0]?.image || ""}
                     alt=""
                     width="1080"
                     height="1080"
@@ -171,7 +171,7 @@ const Favorites: React.FC<FavoritesProps> = ({ setMode }) => {
                 </div>
               ) : (
                 <>
-                  {fav?.Entry?.slice(0, 4).map((item, index) => (
+                  {fav?.entries?.slice(0, 4).map((item, index) => (
                     <div key={index} className="overflow-hidden rounded-md bg-white">
                       <Image
                         className="object-cover"
