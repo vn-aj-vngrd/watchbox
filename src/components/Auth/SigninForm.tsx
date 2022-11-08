@@ -1,10 +1,10 @@
 // components/SigninForm.tsx
 
-import { useForm, SubmitHandler } from "react-hook-form";
-import { signIn } from "next-auth/react";
 import { ExclamationCircleIcon, SquaresPlusIcon } from "@heroicons/react/24/solid";
-import { useEffect, useState } from "react";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 import Spinner from "../Common/Spinner";
 
 type Inputs = {
@@ -114,28 +114,28 @@ const SigninForm = () => {
   }
 
   return (
-    <div className="flex flex-col justify-center min-h-full py-12 sm:px-6 lg:px-8">
+    <div className="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <SquaresPlusIcon className="w-6 h-6 mx-auto fill-blue-600" />
-        <h2 className="mt-4 text-3xl font-bold text-center text-gray-900 dark:text-white">
+        <SquaresPlusIcon className="mx-auto h-6 w-6 fill-blue-600" />
+        <h2 className="mt-4 text-center text-3xl font-bold text-gray-900 dark:text-white">
           WatchBox
         </h2>
-        <p className="mt-2 text-sm text-center text-gray-600 dark:text-white">
+        <p className="mt-2 text-center text-sm text-gray-600 dark:text-white">
           Manage, track, and share your favorite movies and TV shows.
         </p>
       </div>
 
       <div>
-        <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-          <div className="px-4 py-8 bg-white rounded-lg shadow sm:px-10 dark:bg-darkerColor">
+        <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-lg">
+          <div className="rounded-lg border border-gray-100 bg-white px-4 py-8 dark:border-transparent dark:bg-darkerColor sm:px-10">
             {callback.isCallback && (
               <div
-                className="flex p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-200 dark:text-red-800"
+                className="mb-4 flex rounded-lg bg-red-100 p-4 text-sm text-red-700 dark:bg-red-200 dark:text-red-800"
                 role="alert"
               >
                 <svg
                   aria-hidden="true"
-                  className="flex-shrink-0 inline w-5 h-5 mr-3"
+                  className="mr-3 inline h-5 w-5 flex-shrink-0"
                   fill="currentColor"
                   viewBox="0 0 20 20"
                   xmlns="http://www.w3.org/2000/svg"
@@ -164,11 +164,7 @@ const SigninForm = () => {
                   <input
                     type="text"
                     autoComplete="email"
-                    className={
-                      errors.email
-                        ? "block w-full px-3 py-2 placeholder-red-400 border border-red-400 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-red-500 focus:border-blue-500 sm:text-sm"
-                        : "block w-full px-3 py-2 ng-white placeholder-gray-400 border rounded-md shadow-sm appearance-none focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:border-darkColor dark:bg-darkColor dark:focus:border-blue-500 dark:focus:ring-blue-400"
-                    }
+                    className="input"
                     {...register("email", {
                       required: {
                         value: true,
@@ -181,8 +177,8 @@ const SigninForm = () => {
                     })}
                   />
                   {errors.email && (
-                    <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                      <ExclamationCircleIcon className="w-5 h-5 text-red-500" aria-hidden="true" />
+                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                      <ExclamationCircleIcon className="h-5 w-5 text-red-500" aria-hidden="true" />
                     </div>
                   )}
                 </div>
@@ -195,11 +191,11 @@ const SigninForm = () => {
                 {isEmailLoading ? (
                   <button
                     type="submit"
-                    className="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none "
+                    className="flex w-full items-center justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm focus:outline-none hover:bg-blue-700 "
                   >
                     <svg
                       role="status"
-                      className="inline w-4 h-4 mr-3 text-white animate-spin"
+                      className="mr-3 inline h-4 w-4 animate-spin text-white"
                       viewBox="0 0 100 101"
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
@@ -218,7 +214,7 @@ const SigninForm = () => {
                 ) : (
                   <button
                     type="submit"
-                    className="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-700 focus:outline-none"
+                    className="flex w-full items-center justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm focus:outline-none hover:bg-blue-700"
                   >
                     Sign in
                   </button>
@@ -232,20 +228,20 @@ const SigninForm = () => {
                   <div className="w-full border-t dark:border-grayColor" />
                 </div>
                 <div className="relative flex justify-center text-sm">
-                  <span className="px-2 text-gray-500 bg-white dark:bg-darkerColor dark:text-white">
+                  <span className="bg-white px-2 text-gray-500 dark:bg-darkerColor dark:text-white">
                     Or sign in with
                   </span>
                 </div>
               </div>
 
-              <div className="grid grid-cols-3 gap-3 mt-6">
+              <div className="mt-6 grid grid-cols-3 gap-3">
                 <div>
                   <button
                     onClick={() => {
                       setIsLoading(true);
                       signIn("google");
                     }}
-                    className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-gray-500 bg-white border rounded-md shadow-sm hover:bg-gray-50 dark:bg-darkColor dark:text-white dark:border-darkerColor dark:hover:bg-grayColor"
+                    className="inline-flex w-full justify-center rounded-md bg-gray-100 px-4 py-2 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-200 dark:border-darkerColor dark:bg-darkColor dark:text-white dark:hover:bg-grayColor"
                   >
                     <span className="sr-only">Google</span>
                     <svg
@@ -266,7 +262,7 @@ const SigninForm = () => {
                       setIsLoading(true);
                       signIn("twitter");
                     }}
-                    className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-gray-500 bg-white border rounded-md shadow-sm hover:bg-gray-50 dark:bg-darkColor dark:text-white dark:border-darkerColor dark:hover:bg-grayColor"
+                    className="inline-flex w-full justify-center rounded-md bg-gray-100 px-4 py-2 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-200 dark:border-darkerColor dark:bg-darkColor dark:text-white dark:hover:bg-grayColor"
                   >
                     <span className="sr-only">Twitter</span>
                     <svg
@@ -287,7 +283,7 @@ const SigninForm = () => {
                       setIsLoading(true);
                       signIn("discord");
                     }}
-                    className="inline-flex justify-center w-full px-4 py-2 text-sm font-medium text-gray-500 bg-white border rounded-md shadow-sm hover:bg-gray-50 dark:bg-darkColor dark:text-white dark:border-darkerColor dark:hover:bg-grayColor"
+                    className="inline-flex w-full justify-center rounded-md bg-gray-100 px-4 py-2 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-200 dark:border-darkerColor dark:bg-darkColor dark:text-white dark:hover:bg-grayColor"
                   >
                     <span className="sr-only">Discord</span>
                     <svg

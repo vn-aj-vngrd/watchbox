@@ -73,25 +73,21 @@ const Welcome = () => {
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="mx-auto mb-10 max-w-xs space-y-6">
+          <div className="mx-auto mb-10 max-w-xs">
             <div className="relative mt-1 rounded-md shadow-sm">
               <input
                 type="text"
                 placeholder="Type your username here"
-                className={
-                  errors.username
-                    ? "block w-full appearance-none rounded-md border border-red-400 px-3 py-2 placeholder-red-400 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-red-500 sm:text-sm"
-                    : "block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 dark:border-darkerColor dark:focus:border-blue-500 dark:focus:ring-blue-400 sm:text-sm"
-                }
+                className="input"
                 {...register("username", {
                   required: {
                     value: true,
-                    message: "* Please enter a username to continue.",
+                    message: "Enter a username to continue.",
                   },
                   pattern: {
                     value: /^[a-zA-Z0-9]{5,}$/,
                     message:
-                      "* Username must be at least 5 characters long and contain only letters and numbers.",
+                      "Username must be at least 5 characters long and contain only letters and numbers.",
                   },
                 })}
               />
@@ -104,7 +100,7 @@ const Welcome = () => {
             {error && <p className="mt-1 text-sm text-red-500">{error.message}</p>}
 
             {errors.username && (
-              <p className="mt-1 text-sm text-red-500">{errors.username.message}</p>
+              <p className="mt-2 ml-1 text-sm text-red-500">{errors.username.message}</p>
             )}
           </div>
 

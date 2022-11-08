@@ -4,7 +4,7 @@ type Props = {
   sidePanel: boolean;
 };
 
-const Components: React.FC<Props> = ({ sidePanel }) => {
+const Components = ({ sidePanel }: Props) => {
   return (
     <div className="flex h-full justify-center scrollbar-thin scrollbar-track-gray-400/20 scrollbar-thumb-blue-500">
       <div
