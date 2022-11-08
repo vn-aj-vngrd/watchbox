@@ -1,7 +1,7 @@
 // components/Layout.tsx
 
 import { useSession } from "next-auth/react";
-import router from "next/router";
+import { useRouter } from "next/router";
 import { ReactNode } from "react";
 import Footer from "./Footer";
 import Header from "./Header";
@@ -14,6 +14,7 @@ type Props = {
 
 const Layout = ({ children }: Props) => {
   const { data: session, status } = useSession();
+  const { pathname } = useRouter();
 
   if (status === "loading") {
     return <Spinner isGlobal={true} />;
@@ -26,12 +27,12 @@ const Layout = ({ children }: Props) => {
         <Header session={session} />
         <main
           className={`mx-auto w-full grow ${
-            router.pathname.includes("/box") ? "overflow-hidden" : "max-w-7xl px-4"
+            pathname.includes("/box") ? "overflow-hidden" : "max-w-7xl px-4"
           }`}
         >
           {children}
         </main>
-        <Footer />
+        {pathname === "/auth/signin" ? <Footer /> : <div />}
       </div>
     </>
   );
