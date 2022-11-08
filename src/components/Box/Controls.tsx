@@ -9,7 +9,7 @@ type Props = {
   setSidePanel: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const Contols: React.FC<Props> = ({ sidePanel, setSidePanel }) => {
+const Contols = ({ sidePanel, setSidePanel }: Props) => {
   const alignments = [
     {
       id: "left",

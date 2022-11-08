@@ -7,7 +7,7 @@
     @apply text-black scrollbar-thin scrollbar-track-gray-400/20 scrollbar-thumb-blue-500;
   }
   body {
-    @apply bg-gray-50 dark:bg-[#111111] dark:text-white text-black;
+    @apply bg-gray-50 text-black dark:bg-[#18191a] dark:text-white;
   }
 
   input,
@@ -17,5 +17,11 @@
   select,
   a {
     -webkit-tap-highlight-color: transparent;
+  }
+}
+
+@layer components {
+  .input {
+    @apply block w-full appearance-none rounded-md bg-gray-100 px-3 py-2 focus:outline-none dark:border-darkColor dark:bg-darkColor sm:text-sm;
   }
 }

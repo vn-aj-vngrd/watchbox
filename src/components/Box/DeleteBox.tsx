@@ -1,25 +1,22 @@
-// components/Deactivate.tsx
+// components/DeleteBox.tsx
 
 import { Dialog, Transition } from "@headlessui/react";
-import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
+import { ExclamationTriangleIcon, TrashIcon } from "@heroicons/react/24/solid";
 import { Fragment, useRef, useState } from "react";
 
 type Props = {
-  handleRemove: () => void;
+  onDeleteBox: () => void;
 };
 
-const Deactivate = ({ handleRemove }: Props) => {
+const DeleteBox = ({ onDeleteBox }: Props) => {
   const [open, setOpen] = useState(false);
   const cancelButtonRef = useRef(null);
+  const [isClicked, setIsClicked] = useState(false);
 
   return (
     <>
-      <button
-        onClick={() => setOpen(true)}
-        type="submit"
-        className="flex w-full items-center justify-center rounded-md border border-transparent bg-red-500 px-4 py-2 text-sm font-medium text-white shadow-sm focus:outline-none hover:bg-red-600"
-      >
-        Deactivate
+      <button onClick={() => setOpen(true)}>
+        <TrashIcon className="h-5 w-5 dark:text-white" />
       </button>
       <Transition.Root show={open} as={Fragment}>
         <Dialog as="div" className="relative z-50" initialFocus={cancelButtonRef} onClose={setOpen}>
@@ -60,12 +57,12 @@ const Deactivate = ({ handleRemove }: Props) => {
                           as="h3"
                           className="text-lg font-medium leading-6 text-gray-900 dark:text-white"
                         >
-                          Deactivate account
+                          Delete Box
                         </Dialog.Title>
                         <div className="mt-2">
                           <p className="text-sm text-gray-500 dark:text-white">
-                            Are you sure you want to deactivate your account? All of your data will
-                            be permanently removed. This action cannot be undone.
+                            Are you sure you want to delete this box? All of your data will be
+                            permanently removed. This action cannot be undone.
                           </p>
                         </div>
                       </div>
@@ -74,10 +71,14 @@ const Deactivate = ({ handleRemove }: Props) => {
                   <div className="bg-white px-4 py-3 dark:bg-darkerColor sm:flex sm:flex-row-reverse sm:px-6">
                     <button
                       type="button"
+                      disabled={isClicked}
                       className="inline-flex w-full justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm focus:outline-none hover:bg-red-700 sm:ml-3 sm:w-auto sm:text-sm"
-                      onClick={handleRemove}
+                      onClick={() => {
+                        setIsClicked(true);
+                        onDeleteBox();
+                      }}
                     >
-                      Deactivate
+                      Delete
                     </button>
                     <button
                       type="button"
@@ -98,4 +99,4 @@ const Deactivate = ({ handleRemove }: Props) => {
   );
 };
 
-export default Deactivate;
+export default DeleteBox;
