@@ -123,8 +123,8 @@ const Settings = () => {
   }
 
   return (
-    <div>
-      <div className="mt-8 space-y-8 py-12 sm:mx-auto sm:w-full sm:max-w-md">
+    <div className="flex h-full items-center justify-center">
+      <div className="space-y-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
           <h2 className="mt-4 text-center text-3xl font-semibold text-gray-900 dark:text-white">
             Account Settings
