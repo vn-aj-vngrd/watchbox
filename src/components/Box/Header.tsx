@@ -1,5 +1,5 @@
 import { HeartIcon as OutlineHeartIcon } from "@heroicons/react/24/outline";
-import { HeartIcon as SolidHeartIcon, LinkIcon } from "@heroicons/react/24/solid";
+import { HeartIcon as SolidHeartIcon, LinkIcon, CheckIcon } from "@heroicons/react/24/solid";
 import { Box, FavoriteBox, User } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
@@ -102,7 +102,7 @@ const Header = ({ box, favoriteBox, id, refetch }: Props) => {
 
   return (
     <div className="flex h-12 items-center border-b pl-4 pr-2 dark:border-darkColor">
-      <form onSubmit={handleSubmit(onSubmit)} className="flex h-full grow items-center space-x-2">
+      <form onSubmit={handleSubmit(onSubmit)} className="flex h-full grow items-center">
         <input
           type="text"
           disabled={session?.user?.id !== box?.id}
@@ -121,15 +121,12 @@ const Header = ({ box, favoriteBox, id, refetch }: Props) => {
         <div className=" text-sm text-red-500">{errors.boxTitle && errors.boxTitle.message}</div>
 
         {boxTitle_watch !== box?.boxes[0]?.boxTitle && !errors.boxTitle && (
-          <button
-            className="flex items-center rounded-md bg-blue-500 px-2 py-1 text-sm text-white"
-            type="submit"
-          >
+          <button className="flex items-center rounded-full p-1" type="submit">
             {isBoxTitleChanged ? (
               <>
                 <svg
                   role="status"
-                  className="mr-2 inline-flex h-4 w-4 animate-spin text-white"
+                  className="ml-1 mt-px inline-flex h-4 w-4 animate-spin text-blue-500"
                   viewBox="0 0 100 101"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
@@ -143,10 +140,9 @@ const Header = ({ box, favoriteBox, id, refetch }: Props) => {
                     fill="currentColor"
                   />
                 </svg>
-                Saving
               </>
             ) : (
-              <>Save</>
+              <CheckIcon className="h-6 w-6 pt-px text-green-500" />
             )}
           </button>
         )}
