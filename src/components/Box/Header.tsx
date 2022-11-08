@@ -1,6 +1,6 @@
 import { HeartIcon as OutlineHeartIcon } from "@heroicons/react/24/outline";
 import { HeartIcon as SolidHeartIcon, LinkIcon } from "@heroicons/react/24/solid";
-import { FavoriteBox } from "@prisma/client";
+import { Box, FavoriteBox, User } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -12,14 +12,7 @@ import DeleteBox from "./DeleteBox";
 import Information from "./Information";
 
 type Props = {
-  box:
-    | {
-        id: string;
-        username: string | null;
-        boxes: { id: string; created_at: Date; updated_at: Date; boxTitle: string }[];
-      }
-    | null
-    | undefined;
+  box: (User & { boxes: Box[] }) | null | undefined;
   favoriteBox: FavoriteBox | null | undefined;
   id: string;
   refetch: () => void;
@@ -103,7 +96,7 @@ const Header = ({ box, favoriteBox, id, refetch }: Props) => {
     setIsBoxTitleChanged(true);
     updateBox.mutateAsync({
       id,
-      boxTitle: data.boxTitle,
+      boxTitle: data.boxTitle.charAt(0).toUpperCase() + data.boxTitle.slice(1),
     });
   };
 

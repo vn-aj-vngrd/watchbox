@@ -2,17 +2,12 @@
 
 import { Menu, Transition } from "@headlessui/react";
 import { InformationCircleIcon } from "@heroicons/react/24/solid";
+import { Box, User } from "@prisma/client";
 import moment from "moment";
 import { Fragment } from "react";
 
 type Props = {
-  box:
-    | {
-        username: string | null;
-        boxes: { id: string; created_at: Date; updated_at: Date; boxTitle: string }[];
-      }
-    | null
-    | undefined;
+  box: (User & { boxes: Box[] }) | null | undefined;
 };
 
 const Information = ({ box }: Props) => {
@@ -31,10 +26,10 @@ const Information = ({ box }: Props) => {
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-        <Menu.Items className="absolute right-0 mt-2 w-[22rem] origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:divide-grayColor dark:bg-darkColor">
+        <Menu.Items className="absolute right-0 mt-2 w-[22rem] origin-top-right divide-y divide-gray-100 rounded-md border border-gray-100 bg-white dark:divide-grayColor  dark:border-transparent dark:bg-darkColor">
           <Menu.Item>
             <div className="flex w-full items-center px-4 py-2 text-left text-sm text-gray-900 dark:text-white">
-              <span className="mr-1 font-semibold"> Owner: </span> {box?.username}
+              <span className="mr-1 font-semibold"> Owner: </span> {box?.name} ({box?.username})
             </div>
           </Menu.Item>
 
