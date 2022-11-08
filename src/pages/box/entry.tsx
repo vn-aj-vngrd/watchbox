@@ -5,7 +5,7 @@ import { getServerSideSession } from "../../utils/session";
 const entry = () => {
   return (
     <>
-      <Meta title="WatchBox | Entry" />
+      <Meta title="Entry" />
       <p className="text-center">Entry</p>
     </>
   );

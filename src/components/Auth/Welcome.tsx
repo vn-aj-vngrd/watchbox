@@ -7,7 +7,6 @@ import router from "next/router";
 import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { trpc } from "../../utils/trpc";
-import Meta from "../Common/Meta";
 import PageAlert from "../Common/PageAlert";
 import Spinner from "../Common/Spinner";
 import Confetti from "./Confetti";
@@ -56,7 +55,6 @@ const Welcome = () => {
 
   return (
     <>
-      <Meta title="Watchbox | Welcome" />
       <div className="flex h-full flex-col items-center justify-center space-y-10">
         <Confetti />
 

@@ -6,7 +6,7 @@ import { getServerSideSession } from "../../utils/session";
 const account = () => {
   return (
     <>
-      <Meta title="WatchBox | Box" />
+      <Meta title="Box" />
       <BoxPage />
     </>
   );
@@ -23,19 +23,6 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
       },
     };
   }
-
-  // const id = ctx?.params?.id;
-  // const box = await prisma?.box?.findFirst({
-  //   where: {
-  //     id: id as string,
-  //   },
-  // });
-
-  // if (!box) {
-  //   return {
-  //     notFound: true,
-  //   };
-  // }
 
   return {
     props: {},
