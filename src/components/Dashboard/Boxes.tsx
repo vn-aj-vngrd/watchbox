@@ -130,8 +130,6 @@ const Boxes = ({ setMode }: BoxesProps) => {
               </div>
               <input
                 type="text"
-                id="searchInput"
-                name="searchInput"
                 onChange={(e) => onSearch(e)}
                 className="block w-full rounded-lg border border-gray-100 bg-white p-3 pl-10 text-sm text-gray-800 placeholder-gray-600 outline-none dark:border-transparent dark:bg-darkColor dark:text-white dark:placeholder-white"
                 placeholder="Search Box"
