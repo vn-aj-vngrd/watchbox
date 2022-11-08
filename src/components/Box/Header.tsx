@@ -127,7 +127,7 @@ const Header = ({ box, favoriteBox, id, refetch }: Props) => {
         <div className=" text-sm text-red-500">{errors.boxTitle && errors.boxTitle.message}</div>
 
         {boxTitle_watch !== box?.boxes[0]?.boxTitle && !errors.boxTitle && (
-          <button className="flex h-full items-center" type="submit">
+          <button className="flex h-full items-center" type="submit" disabled={isBoxTitleChanged}>
             {isBoxTitleChanged ? (
               <>
                 <svg
