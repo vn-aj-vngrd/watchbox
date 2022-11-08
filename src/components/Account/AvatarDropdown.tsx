@@ -68,7 +68,7 @@ const AvatarDropdown = ({ session }: Props) => {
                 onClick={() => router.push("/account")}
                 className="flex w-full items-center px-4 py-2 text-left text-sm text-gray-900 hover:bg-gray-100 hover:text-gray-900 dark:text-white dark:hover:bg-grayColor"
               >
-                <Cog8ToothIcon className="mr-2 h-6 w-6 rounded-full p-[0.1rem] dark:text-white" />
+                <Cog8ToothIcon className="mr-2 h-6 w-6 rounded-full bg-gray-100 p-1 text-black dark:bg-grayColor dark:text-white" />
                 Account Settings
               </button>
             </Menu.Item>
@@ -79,7 +79,7 @@ const AvatarDropdown = ({ session }: Props) => {
                 onClick={onClick}
                 className="flex w-full items-center px-4 py-2 text-left text-sm text-gray-900 hover:bg-gray-100 hover:text-gray-900 dark:text-white dark:hover:bg-grayColor"
               >
-                <ArrowLeftOnRectangleIcon className="mr-2 h-6 w-6 rounded-full p-[0.1rem] dark:text-white" />
+                <ArrowLeftOnRectangleIcon className="mr-2 h-6 w-6 rounded-full bg-gray-100 p-1 text-black dark:bg-grayColor dark:text-white" />
                 Sign Out
               </button>
             </Menu.Item>
