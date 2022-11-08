@@ -1,7 +1,7 @@
 // components/AvatarDropdown.tsx
 
 import { Menu, Transition } from "@headlessui/react";
-import { ArrowLeftOnRectangleIcon, Cog8ToothIcon, UserIcon } from "@heroicons/react/24/solid";
+import { ArrowLeftOnRectangleIcon, Cog8ToothIcon } from "@heroicons/react/24/solid";
 import { Session } from "next-auth";
 import { signOut } from "next-auth/react";
 import Image from "next/image";
@@ -13,7 +13,7 @@ type Props = {
   session: Session | null;
 };
 
-const AvatarDropdown: React.FC<Props> = ({ session }) => {
+const AvatarDropdown = ({ session }: Props) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
@@ -32,19 +32,17 @@ const AvatarDropdown: React.FC<Props> = ({ session }) => {
   return (
     <Menu as="div" className="relative inline-block text-left">
       <div>
-        <Menu.Button className="relative mt-1 flex h-[30px] w-[30px] rounded-full border border-gray-300 bg-white text-gray-900 shadow-sm focus:outline-none hover:bg-gray-200 dark:border-transparent dark:bg-darkColor dark:text-white dark:hover:bg-grayColor">
-          {session?.user?.image ? (
+        <Menu.Button className="relative inline-flex h-8 w-8">
+          <div className="absolute top-0.5 left-0 h-full w-full">
             <Image
               src={session?.user?.image || ""}
-              loader={({ src }) => `${src}?w=500&q=100`}
               alt=""
               layout="fill"
               priority
-              className="relative rounded-full"
+              objectFit="cover"
+              className="rounded-full"
             />
-          ) : (
-            <UserIcon />
-          )}
+          </div>
         </Menu.Button>
       </div>
 
