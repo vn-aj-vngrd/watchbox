@@ -2,18 +2,12 @@
 
 import { Menu, Transition } from "@headlessui/react";
 import { InformationCircleIcon } from "@heroicons/react/24/solid";
+import { Box, User } from "@prisma/client";
 import moment from "moment";
 import { Fragment } from "react";
 
 type Props = {
-  box:
-    | {
-        name: string | null;
-        username: string | null;
-        boxes: { id: string; created_at: Date; updated_at: Date; boxTitle: string }[];
-      }
-    | null
-    | undefined;
+  box: (User & { boxes: Box[] }) | null | undefined;
 };
 
 const Information = ({ box }: Props) => {
