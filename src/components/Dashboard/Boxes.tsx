@@ -148,7 +148,11 @@ const Boxes = ({ setMode }: BoxesProps) => {
         </div>
       </div>
 
-      {boxesData.isLoading && <Spinner />}
+      {boxesData.isLoading && (
+        <div className="absolute top-[50%] right-0 left-0">
+          <Spinner />
+        </div>
+      )}
       {boxesData.data?.length === 0 && (
         <div className="absolute top-[50%] right-0 left-0 space-y-6 text-center">
           <div>

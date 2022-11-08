@@ -139,7 +139,11 @@ const Favorites: React.FC<FavoritesProps> = ({ setMode }) => {
         </div>
       </div>
 
-      {favoritesData.isLoading && <Spinner />}
+      {favoritesData.isLoading && (
+        <div className="absolute top-[50%] right-0 left-0">
+          <Spinner />
+        </div>
+      )}
       {favoritesData.data?.length === 0 && (
         <div className="absolute top-[50%] right-0 left-0 text-center">
           <h3 className="mt-2 font-medium text-black dark:text-white">No Favorites Found</h3>
