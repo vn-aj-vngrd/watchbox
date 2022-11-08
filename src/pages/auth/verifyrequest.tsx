@@ -14,11 +14,11 @@ const description = [
 const verifyrequest = () => {
   return (
     <>
-      <Meta title="Watchbox | Verify Request" />
+      <Meta title="Verify Request" />
       <PageAlert
         elem={
-          <h2 className="flex justify-center mb-10">
-            <ArrowRightOnRectangleIcon className="w-12 h-12 text-blue-600" />
+          <h2 className="mb-10 flex justify-center">
+            <ArrowRightOnRectangleIcon className="h-12 w-12 text-blue-600" />
           </h2>
         }
         title="Verify Request"
