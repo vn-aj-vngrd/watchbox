@@ -26,20 +26,20 @@ const Canvas: React.FC<Props> = ({ canvasDiv, canvasElements }) => {
               return (
                 <div
                   key={index}
-                  className="absolute flex h-20 w-64 items-center justify-center rounded-md bg-darkColor text-sm"
+                  className="absolute flex h-20 w-64 items-center justify-center rounded-md bg-gray-200 text-sm dark:bg-darkColor"
                   style={{ top: canvasElement.y - 40, left: canvasElement.x - 128 }}
                 >
-                  {canvasElement.component}
+                  Text Component
                 </div>
               );
             case "entry":
               return (
                 <div
                   key={index}
-                  className="absolute flex h-20 w-64 items-center justify-center rounded-md bg-darkColor text-sm"
+                  className="absolute flex h-20 w-64 items-center justify-center rounded-md bg-gray-200 text-sm dark:bg-darkColor"
                   style={{ top: canvasElement.y - 40, left: canvasElement.x - 128 }}
                 >
-                  {canvasElement.component}
+                  Entry Component
                 </div>
               );
           }
