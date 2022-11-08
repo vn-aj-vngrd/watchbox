@@ -20,7 +20,6 @@ const Home: NextPage = () => {
       <Meta />
       {session ? (
         <>
-          <Meta title="Watchbox" />
           <div className="h-full">
             {mode === "boxes" ? <Boxes setMode={setMode} /> : <Favorites setMode={setMode} />}
           </div>
