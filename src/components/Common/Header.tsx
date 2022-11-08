@@ -31,18 +31,18 @@ const Header = ({ session }: Props) => {
           {session && (
             <div className="flex items-center md:hidden">
               <button
-                className="absolute z-20 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-gray-100 dark:bg-darkColor"
+                className="nav-link absolute z-20 flex h-10 w-10 cursor-pointer items-center justify-center"
                 onClick={() => {
                   setShowSearchBar(!showSearhBar);
                 }}
               >
-                <MagnifyingGlassIcon className="h-5 w-5 fill-gray-800 dark:fill-white" />
+                <MagnifyingGlassIcon className="nav-icon" />
               </button>
               {showSearhBar && (
                 <div className="absolute z-10 ml-2 transition-all duration-300 ease-in-out">
                   <input
                     type="text"
-                    className="flex w-[165px] items-center rounded-lg border border-gray-100 bg-gray-50 p-2 pl-10 text-xs text-black placeholder-black outline-none dark:border-transparent dark:bg-grayColor dark:text-white dark:placeholder-white "
+                    className="flex w-[165px] items-center rounded-lg border border-gray-100 bg-white p-2 pl-10 text-sm text-black placeholder-black outline-none dark:border-transparent dark:bg-grayColor dark:text-white dark:placeholder-white "
                     placeholder="Search WatchBox"
                   />
                 </div>
@@ -56,7 +56,7 @@ const Header = ({ session }: Props) => {
             <div className="hidden items-center md:flex">
               <div className="relative w-full">
                 <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                  <MagnifyingGlassIcon className="h-5 w-5 fill-gray-800 dark:fill-white" />
+                  <MagnifyingGlassIcon className="nav-icon" />
                 </div>
                 <input
                   type="text"
