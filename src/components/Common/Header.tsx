@@ -30,7 +30,7 @@ const Header = ({ session }: Props) => {
 
           <div className="flex items-center md:hidden">
             <button
-              className="absolute flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-gray-100 dark:bg-grayColor"
+              className="absolute z-20 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-gray-100 dark:bg-grayColor"
               onClick={() => {
                 setShowSearchBar(!showSearhBar);
               }}
@@ -38,7 +38,7 @@ const Header = ({ session }: Props) => {
               <MagnifyingGlassIcon className="text-blackdark:text-white h-5 w-5" />
             </button>
             {showSearhBar && (
-              <div className="ml-2 transition-all duration-300 ease-in-out">
+              <div className="absolute z-10 ml-2 transition-all duration-300 ease-in-out">
                 <input
                   type="text"
                   className="flex w-[150px] items-center rounded-lg border border-gray-100 bg-gray-200 p-2 pl-10  text-xs text-black placeholder-black outline-none dark:border-transparent dark:bg-darkColor dark:text-white dark:placeholder-white "
@@ -74,7 +74,7 @@ const Header = ({ session }: Props) => {
                   <button
                     onClick={() => router.push("/")}
                     type="button"
-                    className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 focus:outline-none hover:bg-gray-100 dark:border-transparent dark:bg-darkColor dark:text-white dark:hover:bg-grayColor"
+                    className=" hidden h-10 w-10 items-center justify-center rounded-full bg-gray-100 focus:outline-none hover:bg-gray-100 dark:border-transparent dark:bg-darkColor dark:text-white dark:hover:bg-grayColor md:inline-flex"
                   >
                     <HomeIcon className="h-5 w-5 fill-black dark:fill-white" />
                   </button>
