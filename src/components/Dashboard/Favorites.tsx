@@ -131,8 +131,8 @@ const Favorites: React.FC<FavoritesProps> = ({ setMode }) => {
               <input
                 type="text"
                 onChange={(e) => onSearch(e)}
-                className="text-gray-800d block w-full rounded-lg border border-gray-100 bg-white p-3 pl-10 text-sm placeholder-gray-600 outline-none dark:border-transparent dark:bg-darkColor dark:text-white dark:placeholder-white"
-                placeholder="Search Box"
+                className="text-gray-800d block w-full rounded-lg border border-gray-100 bg-white p-3 pl-10 text-sm placeholder-gray-500 outline-none dark:border-transparent dark:bg-darkColor dark:text-white dark:placeholder-gray-300 "
+                placeholder="Search Favorite"
               />
             </div>
           </div>
@@ -141,8 +141,8 @@ const Favorites: React.FC<FavoritesProps> = ({ setMode }) => {
 
       {favoritesData.isLoading && <Spinner />}
       {favoritesData.data?.length === 0 && (
-        <div className="text-center">
-          <h3 className="mt-2 font-medium text-black dark:text-white">No Boxes Found</h3>
+        <div className="absolute top-[50%] right-0 left-0 text-center">
+          <h3 className="mt-2 font-medium text-black dark:text-white">No Favorites Found</h3>
           <p className="mt-1 text-sm text-gray-500 dark:text-gray-200">
             Get started by clicking the heart icon in the box.
           </p>
@@ -203,8 +203,10 @@ const Favorites: React.FC<FavoritesProps> = ({ setMode }) => {
           Math.ceil((favoritesTotalCount.data && favoritesTotalCount.data / itemsPerPage) || 0) >
             0 &&
           Math.ceil((favoritesData.data && favoritesData.data.length / itemsPerPage) || 0) > 0 &&
-          !favoritesData.isLoading
-            ? "flex justify-center"
+          !favoritesData.isLoading &&
+          favoritesTotalCount.data &&
+          favoritesTotalCount.data > itemsPerPage
+            ? "absolute bottom-0 right-0 flex h-16 w-full items-center justify-center pb-5"
             : "hidden"
         }
       >

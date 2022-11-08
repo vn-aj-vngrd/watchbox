@@ -62,7 +62,7 @@ const Boxes = ({ setMode }: BoxesProps) => {
   };
 
   return (
-    <div className="bg-rerd-5 w-full space-y-8 py-6">
+    <div className="w-full space-y-8 py-6">
       <div className="flex flex-col items-center justify-between space-y-4 md:flex-row">
         <div className="flex space-x-6">
           <button
@@ -131,7 +131,7 @@ const Boxes = ({ setMode }: BoxesProps) => {
               <input
                 type="text"
                 onChange={(e) => onSearch(e)}
-                className="block w-full rounded-lg border border-gray-100 bg-white p-3 pl-10 text-sm text-gray-800 placeholder-gray-600 outline-none dark:border-transparent dark:bg-darkColor dark:text-white dark:placeholder-white"
+                className="block w-full rounded-lg border border-gray-100 bg-white p-3 pl-10 text-sm text-gray-800 placeholder-gray-500 outline-none dark:border-transparent dark:bg-darkColor dark:text-white dark:placeholder-gray-300 "
                 placeholder="Search Box"
               />
             </div>
@@ -150,7 +150,7 @@ const Boxes = ({ setMode }: BoxesProps) => {
 
       {boxesData.isLoading && <Spinner />}
       {boxesData.data?.length === 0 && (
-        <div className="space-y-4 text-center">
+        <div className="absolute top-[50%] right-0 left-0 space-y-6 text-center">
           <div>
             <h3 className="mt-2 font-medium text-black dark:text-white">No Boxes Found</h3>
             <p className="mt-1 text-sm text-gray-500 dark:text-gray-200">
@@ -220,8 +220,10 @@ const Boxes = ({ setMode }: BoxesProps) => {
         className={
           Math.ceil((boxesTotalCount.data && boxesTotalCount.data / itemsPerPage) || 0) > 0 &&
           Math.ceil((boxesData.data && boxesData.data.length / itemsPerPage) || 0) > 0 &&
-          !boxesData.isLoading
-            ? "flex justify-center"
+          !boxesData.isLoading &&
+          boxesTotalCount.data &&
+          boxesTotalCount.data > itemsPerPage
+            ? "absolute bottom-0 right-0 flex h-16 w-full items-center justify-center pb-5"
             : "hidden"
         }
       >

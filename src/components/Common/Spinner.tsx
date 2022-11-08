@@ -4,16 +4,16 @@ type Props = {
   isGlobal?: boolean;
 };
 
-const Spinner: React.FC<Props> = ({ isGlobal }) => {
+const Spinner = ({ isGlobal }: Props) => {
   if (isGlobal) {
     return (
       <div
         role="status"
-        className="fixed top-0 bottom-0 left-0 right-0 z-50 flex flex-col items-center justify-center w-full h-full m-auto overflow-auto bg-opacity-50 bg-gray-50 dark:bg-darkerColor dark:bg-opacity-50"
+        className="fixed top-0 bottom-0 left-0 right-0 z-50 m-auto flex h-full w-full flex-col items-center justify-center overflow-auto bg-gray-50 bg-opacity-50 dark:bg-darkerColor dark:bg-opacity-50"
       >
         <svg
           aria-hidden="true"
-          className="w-8 h-8 text-gray-200 mr animate-spin dark:text-gray-600 fill-blue-600"
+          className="mr h-8 w-8 animate-spin fill-blue-600 text-gray-200 dark:text-gray-600"
           viewBox="0 0 100 101"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
@@ -36,7 +36,7 @@ const Spinner: React.FC<Props> = ({ isGlobal }) => {
     <div className="text-center">
       <div role="status">
         <svg
-          className="inline w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+          className="inline h-8 w-8 animate-spin fill-blue-600 text-gray-200 dark:text-gray-600"
           viewBox="0 0 100 101"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"

@@ -51,7 +51,7 @@ const CreateBox = ({ onBoxCreated, isFirstBox }: Props) => {
     return (
       <div
         onClick={() => setOpen(true)}
-        className="inline-flex items-center rounded-lg border  border-gray-100  bg-white p-[6px] shadow-sm focus:outline-none dark:border-transparent dark:bg-grayColor"
+        className="inline-flex items-center rounded-lg border border-gray-100 bg-white p-[6px] shadow-sm focus:outline-none dark:border-transparent dark:bg-grayColor"
       >
         <Spinner />
       </div>
@@ -64,9 +64,10 @@ const CreateBox = ({ onBoxCreated, isFirstBox }: Props) => {
         <button
           onClick={() => setOpen(true)}
           type="button"
-          className="inline-flex items-center rounded-lg bg-blue-600 px-4 py-1.5 font-medium  text-white focus:outline-none hover:bg-blue-700"
+          className="inline-flex items-center space-x-3 rounded-lg bg-blue-600 px-4 py-1.5 font-medium text-white focus:outline-none hover:bg-blue-700"
         >
-          Create your first box
+          <PencilSquareIcon className="h-5 w-5 fill-white" />
+          <p> Create your first box</p>
         </button>
       ) : (
         <button
