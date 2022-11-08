@@ -160,7 +160,7 @@ const SigninForm = () => {
                 >
                   Email Address
                 </label>
-                <div className="relative mt-2 rounded-md shadow-sm">
+                <div className="relative mt-2 rounded-md">
                   <input
                     type="text"
                     autoComplete="email"
@@ -191,7 +191,7 @@ const SigninForm = () => {
                 {isEmailLoading ? (
                   <button
                     type="submit"
-                    className="flex w-full items-center justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm focus:outline-none hover:bg-blue-700 "
+                    className="flex w-full items-center justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white focus:outline-none hover:bg-blue-700 "
                   >
                     <svg
                       role="status"
@@ -214,7 +214,7 @@ const SigninForm = () => {
                 ) : (
                   <button
                     type="submit"
-                    className="flex w-full items-center justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm focus:outline-none hover:bg-blue-700"
+                    className="flex w-full items-center justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white focus:outline-none hover:bg-blue-700"
                   >
                     Sign in
                   </button>
