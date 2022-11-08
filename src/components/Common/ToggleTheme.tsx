@@ -1,8 +1,8 @@
 // components/ToggleTheme.tsx
 
-import { useTheme } from "next-themes";
-import { useState, useEffect } from "react";
 import { MoonIcon, SunIcon } from "@heroicons/react/24/solid";
+import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
 
 const ToogleTheme = () => {
   const { systemTheme, theme, setTheme } = useTheme();
@@ -22,9 +22,9 @@ const ToogleTheme = () => {
         <button
           onClick={() => setTheme("light")}
           type="button"
-          className="inline-flex items-center p-1 bg-white border border-gray-300 rounded-full shadow-sm hover:bg-gray-200 focus:outline-none dark:bg-darkColor dark:text-white dark:border-transparent dark:hover:bg-grayColor"
+          className="inline-flex h-10 w-10  items-center justify-center rounded-full  bg-gray-100 focus:outline-none hover:bg-gray-100 dark:border-transparent dark:bg-darkColor dark:text-white dark:hover:bg-grayColor"
         >
-          <SunIcon className="w-5 h-5 fill-black dark:fill-white" />
+          <SunIcon className="h-5 w-5 fill-black dark:fill-white" />
         </button>
       </>
     );
@@ -34,9 +34,9 @@ const ToogleTheme = () => {
         <button
           onClick={() => setTheme("dark")}
           type="button"
-          className="inline-flex items-center p-1 bg-white border border-gray-300 rounded-full shadow-sm hover:bg-gray-200 focus:outline-none dark:bg-darkColor dark:text-white dark:border-transparent dark:hover:bg-grayColor"
+          className="inline-flex h-10 w-10 items-center justify-center rounded-full  bg-gray-100 focus:outline-none hover:bg-gray-100 dark:border-transparent dark:bg-darkColor dark:text-white dark:hover:bg-grayColor"
         >
-          <MoonIcon className="w-5 h-5 fill-black dark:fill-white" />
+          <MoonIcon className="h-5 w-5 fill-black dark:fill-white" />
         </button>
       </>
     );

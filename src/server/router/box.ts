@@ -21,7 +21,7 @@ export const boxRouter = createProtectedRouter()
           },
         },
         include: {
-          Entry: true,
+          entries: true,
         },
         orderBy: {
           created_at:
@@ -41,12 +41,21 @@ export const boxRouter = createProtectedRouter()
       id: z.string(),
     }),
     async resolve({ input, ctx }) {
-      return ctx.prisma.box.findFirst({
+      return ctx.prisma.user.findFirst({
         where: {
-          id: input.id,
+          id: ctx.session.user.id,
+          boxes: {
+            some: {
+              id: input.id,
+            },
+          },
         },
         include: {
-          Entry: true,
+          boxes: {
+            where: {
+              id: input.id,
+            },
+          },
         },
       });
     },
@@ -69,6 +78,34 @@ export const boxRouter = createProtectedRouter()
         data: {
           userId: ctx.session.user.id,
           boxTitle: input.boxTitle,
+        },
+      });
+    },
+  })
+  .mutation("updateBox", {
+    input: z.object({
+      id: z.string(),
+      boxTitle: z.string(),
+    }),
+    async resolve({ input, ctx }) {
+      return ctx.prisma.box.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          boxTitle: input.boxTitle,
+        },
+      });
+    },
+  })
+  .mutation("deleteBox", {
+    input: z.object({
+      id: z.string(),
+    }),
+    async resolve({ input, ctx }) {
+      return ctx.prisma.box.delete({
+        where: {
+          id: input.id,
         },
       });
     },

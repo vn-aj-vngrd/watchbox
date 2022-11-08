@@ -1,18 +1,20 @@
 // components/Layout.tsx
 
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
+import { ReactNode } from "react";
 import Footer from "./Footer";
 import Header from "./Header";
 import Meta from "./Meta";
 import Spinner from "./Spinner";
-import router from "next/router";
 
 type Props = {
-  children: JSX.Element;
+  children: ReactNode;
 };
 
-const Layout: React.FC<Props> = ({ children }) => {
+const Layout = ({ children }: Props) => {
   const { data: session, status } = useSession();
+  const { pathname } = useRouter();
 
   if (status === "loading") {
     return <Spinner isGlobal={true} />;
@@ -24,15 +26,13 @@ const Layout: React.FC<Props> = ({ children }) => {
       <div className="flex h-screen flex-col justify-between">
         <Header session={session} />
         <main
-          className={
-            router.pathname.includes("/box")
-              ? "mx-auto w-full grow overflow-hidden"
-              : "mx-auto w-full max-w-7xl px-4"
-          }
+          className={`mx-auto w-full grow ${
+            pathname.includes("/box") ? "overflow-hidden" : "max-w-7xl px-4"
+          }`}
         >
           {children}
         </main>
-        <Footer />
+        {pathname === "/auth/signin" ? <Footer /> : <div />}
       </div>
     </>
   );

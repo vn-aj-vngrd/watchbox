@@ -21,25 +21,28 @@ const account = ({ id }: Props) => {
 
   if (getBox.isError || getFavoriteBox.isError) {
     return (
-      <div className="flex h-screen items-center justify-center">
-        <PageAlert
-          title="Something went wrong"
-          elem={
-            <h2 className="mb-10 flex justify-center">
-              <XCircleIcon className="h-12 w-12 text-red-500" />
-            </h2>
-          }
-          description={["There's a problem on our side. Please try again."]}
-          btnTitle="Go back to home"
-        />
-      </div>
+      <PageAlert
+        title="Something went wrong"
+        elem={
+          <h2 className="mb-10 flex justify-center">
+            <XCircleIcon className="h-12 w-12 text-red-500" />
+          </h2>
+        }
+        description={["There's a problem on our side. Please try again."]}
+        btnTitle="Go back to home"
+      />
     );
   }
+
+  const refetch = () => {
+    getBox.refetch();
+    getFavoriteBox.refetch();
+  };
 
   return (
     <>
       <Meta title="WatchBox | Box" />
-      <BoxPage box={getBox?.data} favoriteBox={getFavoriteBox?.data} id={id} />
+      <BoxPage box={getBox?.data} favoriteBox={getFavoriteBox?.data} id={id} refetch={refetch} />
     </>
   );
 };
