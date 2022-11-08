@@ -8,9 +8,10 @@ type Props = {
   onDeleteBox: () => void;
 };
 
-const DeleteBox: React.FC<Props> = ({ onDeleteBox }) => {
+const DeleteBox = ({ onDeleteBox }: Props) => {
   const [open, setOpen] = useState(false);
   const cancelButtonRef = useRef(null);
+  const [isClicked, setIsClicked] = useState(false);
 
   return (
     <>
@@ -70,8 +71,12 @@ const DeleteBox: React.FC<Props> = ({ onDeleteBox }) => {
                   <div className="bg-white px-4 py-3 dark:bg-darkerColor sm:flex sm:flex-row-reverse sm:px-6">
                     <button
                       type="button"
+                      disabled={isClicked}
                       className="inline-flex w-full justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm focus:outline-none hover:bg-red-700 sm:ml-3 sm:w-auto sm:text-sm"
-                      onClick={onDeleteBox}
+                      onClick={() => {
+                        setIsClicked(true);
+                        onDeleteBox();
+                      }}
                     >
                       Delete
                     </button>
