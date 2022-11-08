@@ -30,7 +30,7 @@
   }
 
   .nav-link {
-    @apply h-9 w-9 items-center justify-center rounded-full border border-gray-100 bg-white focus:outline-none hover:bg-gray-100 dark:border-transparent dark:bg-darkColor dark:text-white dark:hover:bg-grayColor;
+    @apply h-9 w-9 items-center justify-center rounded-full border border-gray-100 bg-gray-100 focus:outline-none hover:bg-gray-200 dark:border-transparent dark:bg-darkColor dark:text-white dark:hover:bg-grayColor;
   }
 
   .nav-icon {
