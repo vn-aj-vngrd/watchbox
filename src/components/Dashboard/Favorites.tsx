@@ -85,7 +85,7 @@ const Favorites: React.FC<FavoritesProps> = ({ setMode }) => {
               onClick={() => {
                 setOpenSort(!openSort);
               }}
-              className="inline-flex items-center rounded-lg border border-gray-100 bg-white px-4 py-3 text-center text-sm font-normal text-gray-600 outline-none dark:border-transparent dark:bg-darkColor dark:text-white"
+              className="inline-flex items-center rounded-lg border border-gray-100 bg-white p-3 text-center text-sm font-normal text-gray-600 outline-none dark:border-transparent dark:bg-darkColor dark:text-white"
               type="button"
             >
               Sort
@@ -97,7 +97,7 @@ const Favorites: React.FC<FavoritesProps> = ({ setMode }) => {
                 <ul>
                   {sortOptions?.map((item, index) => (
                     <li key={index}>
-                      <div className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-darkColor">
+                      <div className="px-4 py-2">
                         <div className="flex items-center space-x-4">
                           <div>
                             <input
@@ -105,7 +105,7 @@ const Favorites: React.FC<FavoritesProps> = ({ setMode }) => {
                               checked={sortArr[index]}
                               onChange={() => onSort(index)}
                               type="checkbox"
-                              className="h-4 w-4"
+                              className="h-4 w-4 cursor-pointer"
                             />
                           </div>
 

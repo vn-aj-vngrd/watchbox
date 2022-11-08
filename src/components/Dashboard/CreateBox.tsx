@@ -72,7 +72,7 @@ const CreateBox = ({ onBoxCreated, isFirstBox }: Props) => {
         <button
           onClick={() => setOpen(true)}
           type="button"
-          className="inline-flex items-center rounded-lg border  border-gray-100  bg-white p-3  focus:outline-none hover:bg-gray-200 dark:border-transparent dark:bg-darkColor dark:text-white dark:hover:bg-grayColor"
+          className="inline-flex items-center rounded-lg border border-gray-100 bg-white p-3 focus:outline-none hover:bg-gray-200 dark:border-transparent dark:bg-darkColor dark:text-white dark:hover:bg-grayColor"
         >
           <PencilSquareIcon className="h-5 w-5 fill-gray-700 dark:fill-blue-50" />
         </button>
@@ -116,13 +116,13 @@ const CreateBox = ({ onBoxCreated, isFirstBox }: Props) => {
                 className="inline-block w-[90%] transform overflow-hidden rounded-lg bg-white p-10 text-left align-bottom shadow-xl transition-all dark:bg-darkerColor sm:my-8 sm:w-[90%] sm:align-middle md:w-[35rem]"
               >
                 <div className="mb-6">
-                  <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-blue-100">
+                  <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-gray-100 dark:bg-grayColor">
                     <CubeIcon className="h-6 w-6 text-blue-600" aria-hidden="true" />
                   </div>
                   <div className="mt-3 sm:mt-5">
                     <Dialog.Title
                       as="h3"
-                      className="text-center text-xl font-semibold text-gray-700 dark:text-white"
+                      className="text-center text-2xl font-semibold text-gray-700 dark:text-white"
                     >
                       Create Box
                     </Dialog.Title>
