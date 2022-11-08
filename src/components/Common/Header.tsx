@@ -1,43 +1,80 @@
 // components/Header.tsx
 
-import { HomeIcon, SquaresPlusIcon } from "@heroicons/react/20/solid";
-import router from "next/router";
-import ToggleTheme from "./ToggleTheme";
-import AvatarDropdown from "../Account/AvatarDropdown";
+import { HomeIcon, MagnifyingGlassIcon, SquaresPlusIcon } from "@heroicons/react/20/solid";
 import { Session } from "next-auth";
+import router from "next/router";
+import { useState } from "react";
+import AvatarDropdown from "../Account/AvatarDropdown";
+import ToggleTheme from "./ToggleTheme";
 
 type Props = {
   session: Session | null;
 };
 
-const Header: React.FC<Props> = ({ session }) => {
+const Header = ({ session }: Props) => {
+  const [showSearhBar, setShowSearchBar] = useState(false);
+
   return (
-    <header className="sticky top-0 z-10 bg-white py-3.5 dark:border-darkerColor dark:bg-darkerColor">
+    <header className="sticky top-0 z-10 border-b border-gray-100 bg-white py-2.5 dark:border-b dark:border-grayColor dark:bg-darkerColor">
       <div className="mx-auto flex flex-wrap items-center justify-between px-4">
-        <div>
-          <button onClick={() => router.push("/")} className="hidden md:flex">
-            <h1 className="flex items-center text-xl font-semibold text-black dark:text-white">
-              <SquaresPlusIcon className="mr-3 h-6 w-6 text-blue-600" />
+        <div className="flex space-x-2">
+          <button
+            onClick={() => router.push("/")}
+            className="flex items-center justify-center space-x-1"
+          >
+            <SquaresPlusIcon className="mr-3 h-8 w-8 text-blue-600" />
+            <h1 className="hidden items-center text-xl font-semibold text-black dark:text-white md:flex">
               WatchBox
             </h1>
           </button>
 
-          <button onClick={() => router.push("/")} className="flex md:hidden">
-            <div className="flex items-center text-base font-semibold">
-              <SquaresPlusIcon className="mr-2 h-6 w-6 fill-blue-600" />
-            </div>
-          </button>
+          <div className="flex items-center md:hidden">
+            <button
+              className="absolute flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-gray-100 dark:bg-grayColor"
+              onClick={() => {
+                setShowSearchBar(!showSearhBar);
+              }}
+            >
+              <MagnifyingGlassIcon className="text-blackdark:text-white h-5 w-5" />
+            </button>
+            {showSearhBar && (
+              <div className="ml-2 transition-all duration-300 ease-in-out">
+                <input
+                  type="text"
+                  className="flex w-[150px] items-center rounded-lg border border-gray-100 bg-gray-200 p-2 pl-10  text-xs text-black placeholder-black outline-none dark:border-transparent dark:bg-darkColor dark:text-white dark:placeholder-white "
+                  placeholder="Search WatchBox"
+                />
+              </div>
+            )}
+          </div>
         </div>
 
+        {session && (
+          <>
+            <div className="hidden items-center md:flex">
+              <div className="relative w-full">
+                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                  <MagnifyingGlassIcon className="h-5 w-5 text-black dark:text-white" />
+                </div>
+                <input
+                  type="text"
+                  className="block w-full rounded-lg border border-gray-100 bg-gray-100 p-2 pl-10 text-sm text-black placeholder-black outline-none dark:border-transparent dark:bg-darkColor dark:text-white dark:placeholder-white"
+                  placeholder="Search WatchBox"
+                />
+              </div>
+            </div>
+          </>
+        )}
+
         <div>
-          <div className="flex items-center space-x-5">
+          <div className="flex items-center justify-center space-x-5">
             {session ? (
               <>
                 <div>
                   <button
                     onClick={() => router.push("/")}
                     type="button"
-                    className="inline-flex items-center rounded-full border border-gray-300 bg-white p-1 shadow-sm focus:outline-none hover:bg-gray-200 dark:border-transparent dark:bg-darkColor dark:text-white dark:hover:bg-grayColor"
+                    className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 focus:outline-none hover:bg-gray-100 dark:border-transparent dark:bg-darkColor dark:text-white dark:hover:bg-grayColor"
                   >
                     <HomeIcon className="h-5 w-5 fill-black dark:fill-white" />
                   </button>
