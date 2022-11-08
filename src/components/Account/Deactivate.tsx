@@ -1,14 +1,14 @@
 // components/Deactivate.tsx
 
-import { Fragment, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
+import { Fragment, useRef, useState } from "react";
 
 type Props = {
   handleRemove: () => void;
 };
 
-const Deactivate: React.FC<Props> = ({ handleRemove }) => {
+const Deactivate = ({ handleRemove }: Props) => {
   const [open, setOpen] = useState(false);
   const cancelButtonRef = useRef(null);
 
@@ -17,9 +17,9 @@ const Deactivate: React.FC<Props> = ({ handleRemove }) => {
       <button
         onClick={() => setOpen(true)}
         type="submit"
-        className="flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-white bg-red-600 border border-transparent rounded-md shadow-sm hover:bg-red-700 focus:outline-none"
+        className="flex w-full items-center justify-center rounded-md border border-transparent bg-red-500 px-4 py-2 text-sm font-medium text-white shadow-sm focus:outline-none hover:bg-red-600"
       >
-        Delete Account
+        Deactivate
       </button>
       <Transition.Root show={open} as={Fragment}>
         <Dialog as="div" className="relative z-50" initialFocus={cancelButtonRef} onClose={setOpen}>
@@ -32,11 +32,11 @@ const Deactivate: React.FC<Props> = ({ handleRemove }) => {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75" />
+            <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
           </Transition.Child>
 
           <div className="fixed inset-0 overflow-y-auto">
-            <div className="flex items-end justify-center min-h-full p-4 text-center sm:items-center sm:p-0">
+            <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
               <Transition.Child
                 as={Fragment}
                 enter="ease-out duration-300"
@@ -46,12 +46,12 @@ const Deactivate: React.FC<Props> = ({ handleRemove }) => {
                 leaveFrom="opacity-100 translate-y-0 sm:scale-100"
                 leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
               >
-                <Dialog.Panel className="relative overflow-hidden text-left transition-all transform bg-white rounded-lg shadow-xl dark:bg-darkerColor sm:my-8 sm:w-full sm:max-w-lg">
-                  <div className="px-4 pt-5 pb-4 bg-white dark:bg-darkerColor sm:p-6 sm:pb-4">
+                <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all dark:bg-darkerColor sm:my-8 sm:w-full sm:max-w-lg">
+                  <div className="bg-white px-4 pt-5 pb-4 dark:bg-darkerColor sm:p-6 sm:pb-4">
                     <div className="sm:flex sm:items-start">
-                      <div className="flex items-center justify-center flex-shrink-0 w-12 h-12 mx-auto bg-red-100 rounded-full sm:mx-0 sm:h-10 sm:w-10">
+                      <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
                         <ExclamationTriangleIcon
-                          className="w-6 h-6 text-red-600"
+                          className="h-6 w-6 text-red-600"
                           aria-hidden="true"
                         />
                       </div>
@@ -71,17 +71,17 @@ const Deactivate: React.FC<Props> = ({ handleRemove }) => {
                       </div>
                     </div>
                   </div>
-                  <div className="px-4 py-3 bg-white dark:bg-darkerColor sm:flex sm:flex-row-reverse sm:px-6">
+                  <div className="bg-white px-4 py-3 dark:bg-darkerColor sm:flex sm:flex-row-reverse sm:px-6">
                     <button
                       type="button"
-                      className="inline-flex justify-center w-full px-4 py-2 text-base font-medium text-white bg-red-600 border border-transparent rounded-md shadow-sm hover:bg-red-700 focus:outline-none sm:ml-3 sm:w-auto sm:text-sm"
+                      className="inline-flex w-full justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-base font-medium text-white shadow-sm focus:outline-none hover:bg-red-700 sm:ml-3 sm:w-auto sm:text-sm"
                       onClick={handleRemove}
                     >
                       Deactivate
                     </button>
                     <button
                       type="button"
-                      className="inline-flex justify-center w-full px-4 py-2 mt-3 text-base font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm dark:bg-darkColor dark:text-white dark:hover:bg-grayColor dark:border-darkColor"
+                      className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm focus:outline-none hover:bg-gray-50 dark:border-darkColor dark:bg-darkColor dark:text-white dark:hover:bg-grayColor sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
                       onClick={() => setOpen(false)}
                       ref={cancelButtonRef}
                     >

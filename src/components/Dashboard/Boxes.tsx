@@ -62,7 +62,7 @@ const Boxes: React.FC<BoxesProps> = ({ setMode }) => {
   };
 
   return (
-    <div className="w-full space-y-8 py-6">
+    <div className="bg-rerd-5 w-full space-y-8 py-6">
       <div className="flex flex-col items-center justify-between space-y-4 md:flex-row">
         <div className="flex space-x-6">
           <button
@@ -85,7 +85,7 @@ const Boxes: React.FC<BoxesProps> = ({ setMode }) => {
               onClick={() => {
                 setOpenSort(!openSort);
               }}
-              className="inline-flex items-center rounded-lg border bg-white px-4 py-3 text-center text-sm font-normal text-gray-600 outline-none dark:border-grayColor dark:bg-grayColor dark:text-white"
+              className="inline-flex items-center rounded-lg border border-gray-100 bg-white px-4 py-3 text-center text-sm font-normal text-gray-600 outline-none dark:border-transparent dark:bg-darkColor dark:text-white"
               type="button"
             >
               Sort
@@ -93,7 +93,7 @@ const Boxes: React.FC<BoxesProps> = ({ setMode }) => {
             </button>
 
             {openSort && (
-              <div className="absolute z-10 mt-2 w-56 divide-y divide-gray-200 rounded-lg border bg-white shadow-sm dark:border-grayColor dark:bg-grayColor">
+              <div className="absolute z-10 mt-2 w-56 divide-y divide-gray-200 rounded-lg  border-gray-100  bg-white shadow-sm dark:border-transparent dark:bg-darkColor">
                 <ul>
                   {sortOptions?.map((item, index) => (
                     <li key={index}>
@@ -133,13 +133,13 @@ const Boxes: React.FC<BoxesProps> = ({ setMode }) => {
                 id="searchInput"
                 name="searchInput"
                 onChange={(e) => onSearch(e)}
-                className="text-gray-800d block w-full rounded-lg border bg-white p-3 pl-10 text-sm placeholder-gray-600 outline-none dark:border-grayColor dark:bg-grayColor dark:text-white dark:placeholder-white"
+                className="block w-full rounded-lg border border-gray-100 bg-white  p-3 pl-10 text-sm text-gray-800 placeholder-gray-600 outline-none dark:border-transparent dark:bg-darkColor dark:text-white dark:placeholder-white"
                 placeholder="Search Box"
               />
             </div>
           </div>
 
-          <div className="">
+          <div>
             <CreateBox
               onBoxCreated={() => {
                 boxesData.refetch();
@@ -152,7 +152,21 @@ const Boxes: React.FC<BoxesProps> = ({ setMode }) => {
 
       {boxesData.isLoading && <Spinner />}
       {boxesData.data?.length === 0 && (
-        <div className="flex items-center justify-center">No results found.</div>
+        <div className="space-y-4 text-center">
+          <div>
+            <h3 className="mt-2 font-medium text-black dark:text-white">No Boxes Found</h3>
+            <p className="mt-1 text-sm text-gray-500 dark:text-gray-200">
+              Get started by creating a new box.
+            </p>
+          </div>
+          <CreateBox
+            onBoxCreated={() => {
+              boxesData.refetch();
+              boxesTotalCount.refetch();
+            }}
+            isFirstBox={true}
+          />
+        </div>
       )}
 
       <div className="mx-auto grid w-[80%] grid-cols-2 gap-x-14 gap-y-6 sm:grid-cols-3 md:w-full md:grid-cols-4 md:gap-y-8 lg:grid-cols-5 xl:grid-cols-7">
@@ -165,7 +179,7 @@ const Boxes: React.FC<BoxesProps> = ({ setMode }) => {
             <div
               className={`grid ${
                 box?.entries.length > 1 ? "grid-cols-2 grid-rows-2" : "grid-cols-1"
-              } bg-white-50 aspect-square w-32 gap-3 rounded-lg border p-4 shadow-sm transition duration-150 ease-in-out group-hover:scale-105 dark:border-transparent dark:bg-grayColor lg:w-36`}
+              } bg-white-50 aspect-square w-32 gap-3 rounded-lg border border-gray-100 bg-white p-4  transition duration-150 ease-in-out group-hover:scale-105 dark:border-transparent dark:bg-darkColor lg:w-36`}
             >
               {box?.entries?.length == 1 ? (
                 <div className="overflow-hidden rounded-md bg-white">
@@ -224,12 +238,12 @@ const Boxes: React.FC<BoxesProps> = ({ setMode }) => {
           }
           previousLabel={<ChevronLeftIcon className="h-5 w-5" />}
           nextLabel={<ChevronRightIcon className="h-5 w-5" />}
-          previousLinkClassName="block duration-300 ease-in-out py-1.5 px-2.5 text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-grayColor dark:border-grayColor dark:text-white dark:hover:bg-darkColor"
+          previousLinkClassName="block duration-300 ease-in-out py-1.5 px-2.5 text-gray-500 bg-white rounded-l-lg border border-gray-100 hover:bg-gray-100 hover:text-gray-700 dark:bg-darkColor dark:border-transparent dark:text-white dark:hover:bg-darkColor"
           nextLinkClassName={
-            "block py-1.5 px-2.5 duration-300 ease-in-out text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-grayColor dark:border-grayColor dark:text-white dark:hover:bg-darkColor"
+            "block py-1.5 px-2.5 duration-300 ease-in-out text-gray-500 bg-white rounded-r-lg border border-gray-100 hover:bg-gray-100 hover:text-gray-700 dark:bg-darkColor dark:border-transparent dark:text-white dark:hover:bg-darkColor"
           }
           className="flex space-x-2"
-          pageLinkClassName="block py-1 px-2.5 text-gray-500 bg-white border border-gray-300 duration-300 ease-in-out hover:bg-gray-100 hover:text-gray-700 hover:text-gray-700 dark:bg-grayColor dark:border-grayColor dark:text-white dark:hover:bg-darkColor"
+          pageLinkClassName="block py-1 px-2.5 text-gray-500 bg-white border border-gray-100 duration-300 ease-in-out hover:bg-gray-100 hover:text-gray-700 hover:text-gray-700 dark:bg-darkColor dark:border-transparent dark:text-white dark:hover:bg-darkColor"
           activeLinkClassName="bg-blue-600 border-blue-600 text-gray-50 duration-300 ease-in-out hover:bg-blue-600 hover:text-white  dark:bg-blue-600 dark:border-blue-600 dark:text-white dark:hover:bg-blue-600"
         />
       </div>

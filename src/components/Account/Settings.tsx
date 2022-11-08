@@ -1,6 +1,6 @@
 // components/Profile.tsx
 
-import { PencilSquareIcon } from "@heroicons/react/24/solid";
+import { ExclamationCircleIcon, PencilSquareIcon } from "@heroicons/react/24/solid";
 import sha1 from "crypto-js/sha1";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
@@ -124,16 +124,16 @@ const Settings = () => {
 
   return (
     <div className="flex h-full items-center justify-center">
-      <div className="space-y-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="sm:mx-auto sm:w-full sm:max-w-md">
+      <div className="mx-auto w-full space-y-8 md:max-w-lg">
+        <div>
           <h2 className="mt-4 text-center text-3xl font-semibold text-gray-900 dark:text-white">
             Account Settings
           </h2>
         </div>
 
-        <div className="rounded-lg bg-white px-4 py-8 shadow dark:bg-darkerColor sm:px-10">
+        <div className="rounded-lg border border-gray-100 bg-white px-4 py-8 dark:border-transparent dark:bg-darkerColor sm:px-10">
           <div className="space-y-6">
-            <div className="relative mx-auto h-32 w-32 rounded-full bg-gray-100 dark:bg-gray-600">
+            <div className="relative mx-auto h-32 w-32 rounded-full bg-gray-100 dark:bg-grayColor">
               {image.length === 0 && (
                 <Image
                   className="absolute z-0 h-24 w-24 rounded-full"
@@ -153,23 +153,23 @@ const Settings = () => {
                 {({ imageList, onImageUpload }) => (
                   <>
                     {isLoading ? (
-                      <div className="absolute z-20 flex h-full w-full items-center justify-center rounded-full border bg-white p-1.5 text-gray-700 shadow-sm hover:bg-gray-200 dark:border-grayColor dark:bg-darkColor dark:text-white dark:hover:bg-grayColor">
+                      <div className="cursor absolute bottom-0 right-0 z-20 h-8 w-8 cursor-pointer rounded-full border border-gray-100 bg-white p-1.5 text-gray-700 shadow-sm hover:bg-gray-100 dark:border-transparent dark:bg-darkColor dark:hover:bg-grayColor">
                         <Spinner />
                       </div>
                     ) : (
                       <button
                         onClick={onImageUpload}
-                        className="cursor absolute bottom-0 right-0 z-20 h-8 w-8 cursor-pointer rounded-full border bg-white p-1.5 text-gray-700 shadow-sm hover:bg-gray-200 dark:border-grayColor dark:bg-darkColor dark:text-white dark:hover:bg-grayColor"
+                        className="cursor absolute bottom-0 right-0 z-20 h-8 w-8 cursor-pointer rounded-full border border-gray-100 bg-white p-1.5 text-gray-700 shadow-sm hover:bg-gray-100 dark:border-transparent dark:bg-darkColor dark:hover:bg-grayColor"
                       >
-                        <PencilSquareIcon />
+                        <PencilSquareIcon className="text-black dark:text-white" />
                       </button>
                     )}
 
                     {imageList?.map((image, index) => (
-                      <div key={index} className="image-item">
+                      <div key={index} className="absolute z-0 h-24 w-24 ">
                         <Image
                           src={image["data_url"]}
-                          className="absolute z-0 h-24 w-24 rounded-full"
+                          className="rounded-full"
                           priority
                           alt=""
                           layout="fill"
@@ -192,11 +192,7 @@ const Settings = () => {
                 <div className="relative mt-1 rounded-md shadow-sm">
                   <input
                     type="text"
-                    className={
-                      errors.username
-                        ? "block w-full appearance-none rounded-md border border-red-400 px-3 py-2 placeholder-red-400 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-red-500 sm:text-sm"
-                        : "block w-full appearance-none rounded-md border px-3 py-2 placeholder-gray-400 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 dark:border-darkColor dark:bg-darkColor dark:focus:border-blue-500 dark:focus:ring-blue-400 sm:text-sm"
-                    }
+                    className="input"
                     {...register("username", {
                       required: {
                         value: true,
@@ -205,10 +201,15 @@ const Settings = () => {
                       pattern: {
                         value: /^[a-zA-Z0-9]{5,}$/,
                         message:
-                          "* Username must be at least 5 characters long and contain only letters and numbers.",
+                          "Username must be at least 5 characters and contain only letters and numbers.",
                       },
                     })}
                   />
+                  {errors.username && (
+                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                      <ExclamationCircleIcon className="h-5 w-5 text-red-500" aria-hidden="true" />
+                    </div>
+                  )}
                 </div>
                 <div className="my-3 text-sm text-red-500">
                   {errors.username && errors.username.message}
@@ -226,23 +227,24 @@ const Settings = () => {
                 <div className="relative mt-1 rounded-md shadow-sm">
                   <input
                     type="text"
-                    className={
-                      errors.name
-                        ? "block w-full appearance-none rounded-md border border-red-400 px-3 py-2 placeholder-red-400 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-red-500 sm:text-sm"
-                        : "block w-full appearance-none rounded-md border px-3 py-2 placeholder-gray-400 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 dark:border-darkColor dark:bg-darkColor dark:focus:border-blue-500 dark:focus:ring-blue-400 sm:text-sm"
-                    }
+                    className="input"
                     {...register("name", {
                       required: {
                         value: true,
-                        message: "* Name is requiredd",
+                        message: "* Name is required",
                       },
                       pattern: {
                         value: /^[a-zA-Z ]{4,}$/,
                         message:
-                          "* Name must be at least 4 characters long and contain only letters.",
+                          "Name must be at least 4 characters long and contain only letters.",
                       },
                     })}
                   />
+                  {errors.name && (
+                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                      <ExclamationCircleIcon className="h-5 w-5 text-red-500" aria-hidden="true" />
+                    </div>
+                  )}
                 </div>
                 <div className="my-3 text-sm text-red-500">
                   {errors.name && errors.name.message}
@@ -263,7 +265,7 @@ const Settings = () => {
                     autoComplete="email"
                     disabled
                     value={session?.user?.email || ""}
-                    className="block w-full appearance-none rounded-md border px-3 py-2 placeholder-gray-400 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 dark:border-darkColor dark:bg-darkColor dark:focus:border-blue-500 dark:focus:ring-blue-400 sm:text-sm"
+                    className="input"
                   />
                 </div>
               </div>

@@ -1,6 +1,6 @@
 import { Dialog, Transition } from "@headlessui/react";
-import { CubeIcon, ExclamationCircleIcon } from "@heroicons/react/24/solid";
 import { PencilSquareIcon } from "@heroicons/react/20/solid";
+import { CubeIcon, ExclamationCircleIcon } from "@heroicons/react/24/solid";
 import router from "next/router";
 import { Fragment, useRef, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -13,9 +13,10 @@ type Inputs = {
 
 type Props = {
   onBoxCreated: () => void;
+  isFirstBox?: boolean;
 };
 
-const CreateBox: React.FC<Props> = ({ onBoxCreated }) => {
+const CreateBox = ({ onBoxCreated, isFirstBox }: Props) => {
   const { mutateAsync, isLoading } = trpc.useMutation("box.createBox", {
     onSuccess: () => {
       onBoxCreated();
@@ -50,7 +51,7 @@ const CreateBox: React.FC<Props> = ({ onBoxCreated }) => {
     return (
       <div
         onClick={() => setOpen(true)}
-        className="inline-flex items-center rounded-lg border bg-white p-[6px] shadow-sm focus:outline-none dark:border-transparent dark:bg-grayColor"
+        className="inline-flex items-center rounded-lg border  border-gray-100  bg-white p-[6px] shadow-sm focus:outline-none dark:border-transparent dark:bg-grayColor"
       >
         <Spinner />
       </div>
@@ -59,13 +60,24 @@ const CreateBox: React.FC<Props> = ({ onBoxCreated }) => {
 
   return (
     <>
-      <button
-        onClick={() => setOpen(true)}
-        type="button"
-        className="inline-flex items-center rounded-lg border bg-white p-3 shadow-sm focus:outline-none hover:bg-gray-200 dark:border-transparent dark:bg-grayColor dark:text-white dark:hover:bg-grayColor"
-      >
-        <PencilSquareIcon className="h-5 w-5 fill-gray-700 dark:fill-blue-50" />
-      </button>
+      {isFirstBox ? (
+        <button
+          onClick={() => setOpen(true)}
+          type="button"
+          className="inline-flex items-center rounded-lg bg-blue-600 px-4 py-1.5 font-medium  text-white focus:outline-none hover:bg-blue-700"
+        >
+          Create first box
+        </button>
+      ) : (
+        <button
+          onClick={() => setOpen(true)}
+          type="button"
+          className="inline-flex items-center rounded-lg border  border-gray-100  bg-white p-3  focus:outline-none hover:bg-gray-200 dark:border-transparent dark:bg-darkColor dark:text-white dark:hover:bg-grayColor"
+        >
+          <PencilSquareIcon className="h-5 w-5 fill-gray-700 dark:fill-blue-50" />
+        </button>
+      )}
+
       <Transition.Root show={open} as={Fragment}>
         <Dialog
           as="div"
@@ -125,11 +137,7 @@ const CreateBox: React.FC<Props> = ({ onBoxCreated }) => {
                         <div className="relative mt-2 rounded-md shadow-sm">
                           <input
                             type="text"
-                            className={
-                              errors.title
-                                ? "block w-full appearance-none rounded-md border border-red-400 px-3 py-2 placeholder-red-400 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-red-500 sm:text-sm"
-                                : "ng-white block w-full appearance-none rounded-md border px-3 py-2 placeholder-gray-400 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 dark:border-darkColor dark:bg-darkColor dark:focus:border-blue-500 dark:focus:ring-blue-400 sm:text-sm"
-                            }
+                            className="input"
                             {...register("title", {
                               required: {
                                 value: true,
@@ -138,7 +146,7 @@ const CreateBox: React.FC<Props> = ({ onBoxCreated }) => {
                               minLength: {
                                 value: 4,
                                 message: "Title must be at least 4 characters",
-                              }
+                              },
                             })}
                           />
                           {errors.title && (
@@ -160,7 +168,7 @@ const CreateBox: React.FC<Props> = ({ onBoxCreated }) => {
                 <div className="flex flex-col space-y-2 md:flex-row md:space-x-2 md:space-y-0">
                   <button
                     type="button"
-                    className="flex w-full items-center justify-center rounded-md border border-transparent bg-red-600 px-4 py-2 text-sm font-medium text-white shadow-sm focus:outline-none hover:bg-red-700"
+                    className="flex w-full items-center justify-center rounded-md border border-transparent bg-red-500 px-4 py-2 text-sm font-medium text-white shadow-sm focus:outline-none hover:bg-red-600"
                     onClick={() => {
                       setOpen(false);
                       reset();

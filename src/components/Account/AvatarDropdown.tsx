@@ -32,7 +32,7 @@ const AvatarDropdown = ({ session }: Props) => {
   return (
     <Menu as="div" className="relative inline-block text-left">
       <div>
-        <Menu.Button className="relative inline-flex h-8 w-8">
+        <Menu.Button className="relative inline-flex h-10 w-10">
           <div className="absolute top-0.5 left-0 h-full w-full">
             <Image
               src={session?.user?.image || ""}
