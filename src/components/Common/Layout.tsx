@@ -1,17 +1,18 @@
 // components/Layout.tsx
 
 import { useSession } from "next-auth/react";
+import router from "next/router";
+import { ReactNode } from "react";
 import Footer from "./Footer";
 import Header from "./Header";
 import Meta from "./Meta";
 import Spinner from "./Spinner";
-import router from "next/router";
 
 type Props = {
-  children: JSX.Element;
+  children: ReactNode;
 };
 
-const Layout: React.FC<Props> = ({ children }) => {
+const Layout = ({ children }: Props) => {
   const { data: session, status } = useSession();
 
   if (status === "loading") {
