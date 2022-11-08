@@ -31,7 +31,7 @@ const Header = ({ session }: Props) => {
           {session && (
             <div className="flex items-center md:hidden">
               <button
-                className="nav-link absolute z-20 flex h-10 w-10 cursor-pointer items-center justify-center"
+                className="nav-link absolute z-20 flex cursor-pointer items-center justify-center"
                 onClick={() => {
                   setShowSearchBar(!showSearhBar);
                 }}
