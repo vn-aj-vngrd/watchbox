@@ -1,18 +1,18 @@
 // components/Header.tsx
 
 import { HomeIcon, SquaresPlusIcon } from "@heroicons/react/20/solid";
-import router from "next/router";
-import ToggleTheme from "./ToggleTheme";
-import AvatarDropdown from "../Account/AvatarDropdown";
 import { Session } from "next-auth";
+import router from "next/router";
+import AvatarDropdown from "../Account/AvatarDropdown";
+import ToggleTheme from "./ToggleTheme";
 
 type Props = {
   session: Session | null;
 };
 
-const Header: React.FC<Props> = ({ session }) => {
+const Header = ({ session }: Props) => {
   return (
-    <header className="sticky top-0 z-10 bg-white py-3.5 dark:border-darkerColor dark:bg-darkerColor">
+    <header className="sticky top-0 z-10 bg-white py-2.5 dark:border-darkerColor dark:bg-darkerColor">
       <div className="mx-auto flex flex-wrap items-center justify-between px-4">
         <div>
           <button onClick={() => router.push("/")} className="hidden md:flex">
@@ -30,14 +30,14 @@ const Header: React.FC<Props> = ({ session }) => {
         </div>
 
         <div>
-          <div className="flex items-center space-x-5">
+          <div className="flex items-center justify-center space-x-5">
             {session ? (
               <>
                 <div>
                   <button
                     onClick={() => router.push("/")}
                     type="button"
-                    className="inline-flex items-center rounded-full border border-gray-300 bg-white p-1 shadow-sm focus:outline-none hover:bg-gray-200 dark:border-transparent dark:bg-darkColor dark:text-white dark:hover:bg-grayColor"
+                    className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-gray-300 bg-white shadow-sm focus:outline-none hover:bg-gray-200 dark:border-transparent dark:bg-darkColor dark:text-white dark:hover:bg-grayColor"
                   >
                     <HomeIcon className="h-5 w-5 fill-black dark:fill-white" />
                   </button>
