@@ -127,10 +127,10 @@ const SigninForm = () => {
 
       <div>
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-lg">
-          <div className="rounded-lg border border-gray-100 bg-white px-4 py-8 dark:border-transparent dark:bg-darkerColor sm:px-10">
+          <div className="rounded-lg border border-gray-100 bg-white p-8 dark:border-transparent dark:bg-darkerColor">
             {callback.isCallback && (
               <div
-                className="mb-4 flex rounded-lg bg-red-100 p-4 text-sm text-red-700 dark:bg-red-200 dark:text-red-800"
+                className="mb-4 flex rounded-lg bg-red-100 p-3.5 text-sm text-red-700 dark:bg-red-200 dark:text-red-800"
                 role="alert"
               >
                 <svg
@@ -241,13 +241,13 @@ const SigninForm = () => {
                       setIsLoading(true);
                       signIn("google");
                     }}
-                    className="inline-flex w-full justify-center rounded-md bg-gray-100 px-4 py-2 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-200 dark:border-darkerColor dark:bg-darkColor dark:text-white dark:hover:bg-grayColor"
+                    className="inline-flex w-full justify-center rounded-md bg-gray-100 p-3.5 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-200 dark:border-darkerColor dark:bg-darkColor dark:text-white dark:hover:bg-grayColor"
                   >
                     <span className="sr-only">Google</span>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
+                      width="20"
+                      height="20"
                       fill="currentColor"
                       viewBox="0 0 16 16"
                     >
@@ -262,13 +262,13 @@ const SigninForm = () => {
                       setIsLoading(true);
                       signIn("twitter");
                     }}
-                    className="inline-flex w-full justify-center rounded-md bg-gray-100 px-4 py-2 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-200 dark:border-darkerColor dark:bg-darkColor dark:text-white dark:hover:bg-grayColor"
+                    className="inline-flex w-full justify-center rounded-md bg-gray-100 p-3.5 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-200 dark:border-darkerColor dark:bg-darkColor dark:text-white dark:hover:bg-grayColor"
                   >
                     <span className="sr-only">Twitter</span>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
+                      width="20"
+                      height="20"
                       fill="currentColor"
                       viewBox="0 0 16 16"
                     >
@@ -283,13 +283,13 @@ const SigninForm = () => {
                       setIsLoading(true);
                       signIn("discord");
                     }}
-                    className="inline-flex w-full justify-center rounded-md bg-gray-100 px-4 py-2 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-200 dark:border-darkerColor dark:bg-darkColor dark:text-white dark:hover:bg-grayColor"
+                    className="inline-flex w-full justify-center rounded-md bg-gray-100 p-3.5 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-200 dark:border-darkerColor dark:bg-darkColor dark:text-white dark:hover:bg-grayColor"
                   >
                     <span className="sr-only">Discord</span>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
+                      width="20"
+                      height="20"
                       fill="currentColor"
                       className="bi bi-discord"
                       viewBox="0 0 16 16"
