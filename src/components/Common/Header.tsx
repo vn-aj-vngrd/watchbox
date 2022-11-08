@@ -30,18 +30,18 @@ const Header = ({ session }: Props) => {
 
           <div className="flex items-center md:hidden">
             <button
-              className="absolute flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-grayColor"
+              className="absolute flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-gray-100 dark:bg-grayColor"
               onClick={() => {
                 setShowSearchBar(!showSearhBar);
               }}
             >
-              <MagnifyingGlassIcon className="h-5 w-5 text-black dark:text-white" />
+              <MagnifyingGlassIcon className="text-blackdark:text-white h-5 w-5" />
             </button>
             {showSearhBar && (
               <div className="ml-2 transition-all duration-300 ease-in-out">
                 <input
                   type="text"
-                  className="flex w-[150px] items-center rounded-lg border border-gray-100 bg-gray-100 p-2 pl-10  text-xs text-black placeholder-black outline-none dark:border-transparent dark:bg-darkColor dark:text-white dark:placeholder-white "
+                  className="flex w-[150px] items-center rounded-lg border border-gray-100 bg-gray-200 p-2 pl-10  text-xs text-black placeholder-black outline-none dark:border-transparent dark:bg-darkColor dark:text-white dark:placeholder-white "
                   placeholder="Search WatchBox"
                 />
               </div>
