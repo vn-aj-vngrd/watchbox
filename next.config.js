@@ -18,6 +18,10 @@ module.exports = {
       "encrypted-tbn1.gstatic.com",
       "encrypted-tbn2.gstatic.com",
       "encrypted-tbn3.gstatic.com",
+      "res.cloudinary.com",
+      "lh3.googleusercontent.com",
+      "pbs.twimg.com",
+      "cdn.discordapp.com",
     ],
   },
 };
