@@ -13,7 +13,7 @@ const Spinner = ({ isGlobal }: Props) => {
       >
         <svg
           aria-hidden="true"
-          className="h-8 w-8 animate-spin fill-blue-600 dark:text-gray-600"
+          className="h-8 w-8 animate-spin fill-blue-600 text-gray-200 dark:text-gray-600"
           viewBox="0 0 100 101"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
@@ -36,7 +36,7 @@ const Spinner = ({ isGlobal }: Props) => {
     <div className="text-center">
       <div role="status">
         <svg
-          className="inline h-8 w-8 animate-spin fill-blue-600 dark:text-gray-600"
+          className="inline h-8 w-8 animate-spin fill-blue-600 text-gray-200 dark:text-gray-600"
           viewBox="0 0 100 101"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
