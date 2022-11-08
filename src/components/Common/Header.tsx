@@ -23,7 +23,7 @@ const Header = ({ session }: Props) => {
             className="flex items-center justify-center space-x-1"
           >
             <SquaresPlusIcon className="mr-3 h-7 w-7 text-blue-600" />
-            <h1 className="hidden items-center text-xl font-semibold text-black dark:text-white md:flex">
+            <h1 className="hidden items-center text-xl font-semibold text-gray-800 dark:text-white md:flex">
               WatchBox
             </h1>
           </button>
@@ -60,7 +60,7 @@ const Header = ({ session }: Props) => {
                 </div>
                 <input
                   type="text"
-                  className="block w-full rounded-lg bg-gray-100 p-2 pl-10 text-sm text-black placeholder-gray-500 outline-none dark:border-transparent dark:bg-darkColor dark:text-white dark:placeholder-gray-300"
+                  className="block w-full rounded-lg border border-gray-100 bg-white p-2 pl-10 text-sm text-black placeholder-gray-500 outline-none dark:border-transparent dark:bg-darkColor dark:text-white dark:placeholder-gray-300"
                   placeholder="Search WatchBox"
                 />
               </div>
@@ -76,9 +76,9 @@ const Header = ({ session }: Props) => {
                   <button
                     onClick={() => router.push("/")}
                     type="button"
-                    className=" hidden h-9 w-9 items-center justify-center rounded-full bg-gray-100 focus:outline-none hover:bg-gray-200 dark:border-transparent dark:bg-darkColor dark:text-white dark:hover:bg-grayColor md:inline-flex"
+                    className="nav-link hidden md:inline-flex"
                   >
-                    <HomeIcon className="h-6 w-6 fill-gray-800 dark:fill-white" />
+                    <HomeIcon className="nav-icon" />
                   </button>
                 </div>
 

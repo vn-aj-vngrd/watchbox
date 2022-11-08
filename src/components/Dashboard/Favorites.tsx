@@ -1,7 +1,12 @@
 // components/Favorites.tsx
 
 import { ChevronLeftIcon } from "@heroicons/react/24/outline";
-import { ChevronDownIcon, ChevronRightIcon, MagnifyingGlassIcon } from "@heroicons/react/24/solid";
+import {
+  ChevronDownIcon,
+  ChevronRightIcon,
+  HeartIcon,
+  MagnifyingGlassIcon,
+} from "@heroicons/react/24/solid";
 import Image from "next/image";
 import router from "next/router";
 import { useState } from "react";
@@ -146,6 +151,9 @@ const Favorites: React.FC<FavoritesProps> = ({ setMode }) => {
       )}
       {favoritesData.data?.length === 0 && (
         <div className="absolute top-[50%] right-0 left-0 text-center">
+          <div className="flex items-center justify-center">
+            <HeartIcon className="h-5 w-5 fill-red-500" />
+          </div>
           <h3 className="mt-2 font-medium text-black dark:text-white">No Favorites Found</h3>
           <p className="mt-1 text-sm text-gray-500 dark:text-gray-200">
             Get started by clicking the heart icon in the box.

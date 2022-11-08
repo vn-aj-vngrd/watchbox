@@ -1,7 +1,12 @@
 // components/Boxes.tsx
 
 import { ChevronLeftIcon } from "@heroicons/react/24/outline";
-import { ChevronDownIcon, ChevronRightIcon, MagnifyingGlassIcon } from "@heroicons/react/24/solid";
+import {
+  ChevronDownIcon,
+  ChevronRightIcon,
+  CubeIcon,
+  MagnifyingGlassIcon,
+} from "@heroicons/react/24/solid";
 import Image from "next/image";
 import router from "next/router";
 import { useState } from "react";
@@ -154,8 +159,9 @@ const Boxes = ({ setMode }: BoxesProps) => {
         </div>
       )}
       {boxesData.data?.length === 0 && (
-        <div className="absolute top-[50%] right-0 left-0 space-y-6 text-center">
-          <div>
+        <div className="absolute top-[50%] right-0 left-0 space-y-10 text-center">
+          <div className="flex flex-col items-center justify-center">
+            <CubeIcon className="h-5 w-5 fill-blue-500" />
             <h3 className="mt-2 font-medium text-black dark:text-white">No Boxes Found</h3>
             <p className="mt-1 text-sm text-gray-500 dark:text-gray-200">
               Get started by creating a new box.

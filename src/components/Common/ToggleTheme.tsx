@@ -19,24 +19,16 @@ const ToogleTheme = () => {
   if (currentTheme === "dark") {
     return (
       <>
-        <button
-          onClick={() => setTheme("light")}
-          type="button"
-          className="inline-flex h-9 w-9  items-center justify-center rounded-full  bg-gray-100 focus:outline-none hover:bg-gray-200 dark:border-transparent dark:bg-darkColor dark:text-white dark:hover:bg-grayColor"
-        >
-          <SunIcon className="h-5 w-5 fill-gray-800 dark:fill-white" />
+        <button onClick={() => setTheme("light")} type="button" className="nav-link inline-flex">
+          <SunIcon className="nav-icon" />
         </button>
       </>
     );
   } else {
     return (
       <>
-        <button
-          onClick={() => setTheme("dark")}
-          type="button"
-          className="inline-flex h-9 w-9 items-center justify-center rounded-full  bg-gray-100 focus:outline-none hover:bg-gray-200 dark:border-transparent dark:bg-darkColor dark:text-white dark:hover:bg-grayColor"
-        >
-          <MoonIcon className="h-5 w-5 fill-gray-800 dark:fill-white" />
+        <button onClick={() => setTheme("dark")} type="button" className="nav-link inline-flex">
+          <MoonIcon className="nav-icon" />
         </button>
       </>
     );

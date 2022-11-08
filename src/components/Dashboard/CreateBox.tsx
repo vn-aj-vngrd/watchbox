@@ -102,7 +102,7 @@ const CreateBox = ({ onBoxCreated, isFirstBox }: Props) => {
               />
             </svg>
           ) : (
-            <PencilSquareIcon className="h-5 w-5 fill-gray-700 dark:fill-blue-50" />
+            <PencilSquareIcon className="h-5 w-5 fill-gray-800 dark:fill-blue-50" />
           )}
         </button>
       )}
@@ -145,7 +145,7 @@ const CreateBox = ({ onBoxCreated, isFirstBox }: Props) => {
                 className="inline-block w-[90%] transform overflow-hidden rounded-lg bg-white p-10 text-left align-bottom shadow-xl transition-all dark:bg-darkerColor sm:my-8 sm:w-[90%] sm:align-middle md:w-[35rem]"
               >
                 <div className="mb-6">
-                  <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-gray-100 dark:bg-grayColor">
+                  <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-gray-100 dark:bg-darkColor">
                     <CubeIcon className="h-6 w-6 text-blue-600" aria-hidden="true" />
                   </div>
                   <div className="mt-3 sm:mt-5">
