@@ -43,21 +43,17 @@ export const boxRouter = createProtectedRouter()
     async resolve({ input, ctx }) {
       return ctx.prisma.user.findFirst({
         where: {
+          id: ctx.session.user.id,
           boxes: {
             some: {
               id: input.id,
             },
           },
         },
-        select: {
-          id: true,
-          username: true,
+        include: {
           boxes: {
-            select: {
-              id: true,
-              boxTitle: true,
-              created_at: true,
-              updated_at: true,
+            where: {
+              id: input.id,
             },
           },
         },
