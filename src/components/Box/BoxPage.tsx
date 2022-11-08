@@ -2,12 +2,18 @@ import { XCircleIcon } from "@heroicons/react/24/solid";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { trpc } from "../../utils/trpc";
+import Meta from "../Common/Meta";
 import PageAlert from "../Common/PageAlert";
 import Spinner from "../Common/Spinner";
 import Canvas from "./Canvas";
 import Components from "./Components";
 import Controls from "./Controls";
 import Header from "./Header";
+
+const description = [
+  "The page you are looking for does not exist.",
+  "Please check the URL and try again.",
+];
 
 const BoxPage = () => {
   const [sidePanel, setSidePanel] = useState(true);
@@ -20,6 +26,20 @@ const BoxPage = () => {
 
   if (getBox.isLoading || getFavoriteBox.isLoading) {
     return <Spinner isGlobal={true} />;
+  }
+
+  if (getBox.isSuccess && !getBox.data) {
+    return (
+      <>
+        <Meta title="Watchbox | 404" />
+        <PageAlert
+          elem={<p className="text-4xl font-extrabold text-red-600 sm:text-5xl">404</p>}
+          title="Page not found"
+          description={description}
+          btnTitle="Go back to home"
+        />
+      </>
+    );
   }
 
   if (getBox.isError || getFavoriteBox.isError) {
