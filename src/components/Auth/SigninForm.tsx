@@ -160,7 +160,7 @@ const SigninForm = () => {
                 >
                   Email Address
                 </label>
-                <div className="relative mt-1 rounded-md shadow-sm">
+                <div className="relative mt-2 rounded-md shadow-sm">
                   <input
                     type="text"
                     autoComplete="email"

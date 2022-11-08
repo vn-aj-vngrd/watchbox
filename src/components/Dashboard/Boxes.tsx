@@ -93,11 +93,11 @@ const Boxes: React.FC<BoxesProps> = ({ setMode }) => {
             </button>
 
             {openSort && (
-              <div className="absolute z-10 mt-2 w-56 divide-y divide-gray-200 rounded-lg  border-gray-100  bg-white shadow-sm dark:border-transparent dark:bg-darkColor">
+              <div className="absolute z-10 mt-2 w-56 divide-y divide-gray-200 rounded-lg border-gray-100 bg-white shadow-sm dark:border-transparent dark:bg-darkColor">
                 <ul>
                   {sortOptions?.map((item, index) => (
                     <li key={index}>
-                      <div className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-darkColor">
+                      <div className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-grayColor">
                         <div className="flex items-center space-x-4">
                           <div>
                             <input
@@ -133,7 +133,7 @@ const Boxes: React.FC<BoxesProps> = ({ setMode }) => {
                 id="searchInput"
                 name="searchInput"
                 onChange={(e) => onSearch(e)}
-                className="block w-full rounded-lg border border-gray-100 bg-white  p-3 pl-10 text-sm text-gray-800 placeholder-gray-600 outline-none dark:border-transparent dark:bg-darkColor dark:text-white dark:placeholder-white"
+                className="block w-full rounded-lg border border-gray-100 bg-white p-3 pl-10 text-sm text-gray-800 placeholder-gray-600 outline-none dark:border-transparent dark:bg-darkColor dark:text-white dark:placeholder-white"
                 placeholder="Search Box"
               />
             </div>
@@ -238,13 +238,13 @@ const Boxes: React.FC<BoxesProps> = ({ setMode }) => {
           }
           previousLabel={<ChevronLeftIcon className="h-5 w-5" />}
           nextLabel={<ChevronRightIcon className="h-5 w-5" />}
-          previousLinkClassName="block duration-300 ease-in-out py-1.5 px-2.5 text-gray-500 bg-white rounded-l-lg border border-gray-100 hover:bg-gray-100 hover:text-gray-700 dark:bg-darkColor dark:border-transparent dark:text-white dark:hover:bg-darkColor"
+          previousLinkClassName="block duration-300 ease-in-out py-1.5 px-2.5 text-gray-500 bg-white rounded-l-lg border border-gray-100 hover:bg-gray-100 hover:text-gray-700 dark:bg-darkColor dark:border-transparent dark:text-white dark:hover:bg-grayColor"
           nextLinkClassName={
-            "block py-1.5 px-2.5 duration-300 ease-in-out text-gray-500 bg-white rounded-r-lg border border-gray-100 hover:bg-gray-100 hover:text-gray-700 dark:bg-darkColor dark:border-transparent dark:text-white dark:hover:bg-darkColor"
+            "block py-1.5 px-2.5 duration-300 ease-in-out text-gray-500 bg-white rounded-r-lg border border-gray-100 hover:bg-gray-100 hover:text-gray-700 dark:bg-darkColor dark:border-transparent dark:text-white dark:hover:bg-grayColor"
           }
           className="flex space-x-2"
-          pageLinkClassName="block py-1 px-2.5 text-gray-500 bg-white border border-gray-100 duration-300 ease-in-out hover:bg-gray-100 hover:text-gray-700 hover:text-gray-700 dark:bg-darkColor dark:border-transparent dark:text-white dark:hover:bg-darkColor"
-          activeLinkClassName="bg-blue-600 border-blue-600 text-gray-50 duration-300 ease-in-out hover:bg-blue-600 hover:text-white  dark:bg-blue-600 dark:border-blue-600 dark:text-white dark:hover:bg-blue-600"
+          pageLinkClassName="block py-1 px-2.5 text-gray-500 bg-white border border-gray-100 duration-300 ease-in-out hover:bg-gray-100 hover:text-gray-700 hover:text-gray-700 dark:bg-darkColor dark:border-transparent dark:text-white dark:hover:bg-grayColor"
+          activeLinkClassName="bg-blue-600 border-blue-600 text-gray-50 duration-300 ease-in-out hover:bg-blue-600 hover:text-white dark:bg-blue-600 dark:border-blue-600 dark:text-white dark:hover:bg-blue-600"
         />
       </div>
     </div>
