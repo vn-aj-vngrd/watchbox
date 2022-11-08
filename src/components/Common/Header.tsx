@@ -22,31 +22,33 @@ const Header = ({ session }: Props) => {
             onClick={() => router.push("/")}
             className="flex items-center justify-center space-x-1"
           >
-            <SquaresPlusIcon className="mr-3 h-8 w-8 text-blue-600" />
-            <h1 className="hidden items-center text-xl font-semibold text-black dark:text-white md:flex">
+            <SquaresPlusIcon className="mr-3 h-7 w-7 text-blue-600" />
+            <h1 className="hidden items-center text-xl font-semibold text-gray-800 dark:text-white md:flex">
               WatchBox
             </h1>
           </button>
 
-          <div className="flex items-center md:hidden">
-            <button
-              className="absolute z-20 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-gray-100 dark:bg-grayColor"
-              onClick={() => {
-                setShowSearchBar(!showSearhBar);
-              }}
-            >
-              <MagnifyingGlassIcon className="text-blackdark:text-white h-5 w-5" />
-            </button>
-            {showSearhBar && (
-              <div className="absolute z-10 ml-2 transition-all duration-300 ease-in-out">
-                <input
-                  type="text"
-                  className="flex w-[150px] items-center rounded-lg border border-gray-100 bg-gray-200 p-2 pl-10  text-xs text-black placeholder-black outline-none dark:border-transparent dark:bg-darkColor dark:text-white dark:placeholder-white "
-                  placeholder="Search WatchBox"
-                />
-              </div>
-            )}
-          </div>
+          {session && (
+            <div className="flex items-center md:hidden">
+              <button
+                className="nav-link absolute z-20 flex h-10 w-10 cursor-pointer items-center justify-center"
+                onClick={() => {
+                  setShowSearchBar(!showSearhBar);
+                }}
+              >
+                <MagnifyingGlassIcon className="nav-icon" />
+              </button>
+              {showSearhBar && (
+                <div className="absolute z-10 ml-2 transition-all duration-300 ease-in-out">
+                  <input
+                    type="text"
+                    className="flex w-[165px] items-center rounded-lg border border-gray-100 bg-white p-2 pl-10 text-sm text-black placeholder-black outline-none dark:border-transparent dark:bg-grayColor dark:text-white dark:placeholder-white "
+                    placeholder="Search WatchBox"
+                  />
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
         {session && (
@@ -54,11 +56,11 @@ const Header = ({ session }: Props) => {
             <div className="hidden items-center md:flex">
               <div className="relative w-full">
                 <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                  <MagnifyingGlassIcon className="h-5 w-5 text-black dark:text-white" />
+                  <MagnifyingGlassIcon className="nav-icon" />
                 </div>
                 <input
                   type="text"
-                  className="block w-full rounded-lg border border-gray-100 bg-gray-100 p-2 pl-10 text-sm text-black placeholder-black outline-none dark:border-transparent dark:bg-darkColor dark:text-white dark:placeholder-white"
+                  className="block w-full rounded-lg border border-gray-100 bg-white p-2 pl-10 text-sm text-black placeholder-gray-500 outline-none dark:border-transparent dark:bg-darkColor dark:text-white dark:placeholder-gray-300"
                   placeholder="Search WatchBox"
                 />
               </div>
@@ -74,9 +76,9 @@ const Header = ({ session }: Props) => {
                   <button
                     onClick={() => router.push("/")}
                     type="button"
-                    className=" hidden h-10 w-10 items-center justify-center rounded-full bg-gray-100 focus:outline-none hover:bg-gray-100 dark:border-transparent dark:bg-darkColor dark:text-white dark:hover:bg-grayColor md:inline-flex"
+                    className="nav-link hidden md:inline-flex"
                   >
-                    <HomeIcon className="h-5 w-5 fill-black dark:fill-white" />
+                    <HomeIcon className="nav-icon" />
                   </button>
                 </div>
 
