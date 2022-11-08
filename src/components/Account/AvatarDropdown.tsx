@@ -25,70 +25,64 @@ const AvatarDropdown = ({ session }: Props) => {
     signOut({ redirect: true, callbackUrl: "/auth/signin" });
   };
 
-  if (isLoading) {
-    return <Spinner isGlobal={true} />;
-  }
-
   return (
-    <Menu as="div" className="relative inline-block text-left">
-      <Menu.Button className="flex h-9 w-9 items-center justify-center rounded-full bg-gray-100 focus:outline-none hover:bg-gray-200 dark:border-transparent dark:bg-darkColor dark:text-white dark:hover:bg-grayColor">
-        {session?.user?.image ? (
-          <button className="relative h-full w-full">
-            <Image
-              src={session?.user?.image || ""}
-              alt=""
-              layout="fill"
-              priority
-              objectFit="cover"
-              className="rounded-full"
-            />
-          </button>
-        ) : (
-          <UserIcon className="h-6 w-6 fill-gray-800 dark:fill-white" />
-        )}
-      </Menu.Button>
+    <>
+      {isLoading && <Spinner isGlobal={true} />}
 
-      <Transition
-        as={Fragment}
-        enter="transition ease-out duration-100"
-        enterFrom="transform opacity-0 scale-95"
-        enterTo="transform opacity-100 scale-100"
-        leave="transition ease-in duration-75"
-        leaveFrom="transform opacity-100 scale-100"
-        leaveTo="transform opacity-0 scale-95"
-      >
-        <Menu.Items className="absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:divide-grayColor dark:bg-darkColor">
-          <div className="px-4 py-3">
-            <p className="text-sm">Signed in as</p>
-            <p className="truncate text-sm font-medium text-blue-500 dark:text-blue-400">
-              {session?.user?.email}
-            </p>
-          </div>
-          <div className="py-1 ">
-            <Menu.Item>
-              <button
-                onClick={() => router.push("/account")}
-                className="flex w-full items-center px-4 py-2 text-left text-sm text-gray-900 hover:bg-gray-100 hover:text-gray-900 dark:text-white dark:hover:bg-grayColor"
-              >
-                <Cog8ToothIcon className="mr-2 h-7 w-7 rounded-full bg-gray-100 p-1 text-black dark:bg-grayColor dark:text-white" />
-                Account Settings
-              </button>
-            </Menu.Item>
-          </div>
-          <div className="py-1">
-            <Menu.Item>
-              <button
-                onClick={onClick}
-                className="flex w-full items-center px-4 py-2 text-left text-sm text-gray-900 hover:bg-gray-100 hover:text-gray-900 dark:text-white dark:hover:bg-grayColor"
-              >
-                <ArrowLeftOnRectangleIcon className="mr-2 h-7 w-7 rounded-full bg-gray-100 p-1 text-black dark:bg-grayColor dark:text-white" />
-                Sign Out
-              </button>
-            </Menu.Item>
-          </div>
-        </Menu.Items>
-      </Transition>
-    </Menu>
+      <Menu as="div" className="relative inline-block text-left">
+        <Menu.Button className="nav-link inline-flex">
+          {session?.user?.image ? (
+            <button className="relative h-full w-full">
+              <Image
+                src={session?.user?.image || ""}
+                alt=""
+                layout="fill"
+                priority
+                objectFit="cover"
+                className="rounded-full"
+              />
+            </button>
+          ) : (
+            <UserIcon className="nav-icon" />
+          )}
+        </Menu.Button>
+
+        <Transition
+          as={Fragment}
+          enter="transition ease-out duration-100"
+          enterFrom="transform opacity-0 scale-95"
+          enterTo="transform opacity-100 scale-100"
+          leave="transition ease-in duration-75"
+          leaveFrom="transform opacity-100 scale-100"
+          leaveTo="transform opacity-0 scale-95"
+        >
+          <Menu.Items className="absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:divide-grayColor dark:bg-darkColor">
+            <div className="px-4 py-3">
+              <p className="text-sm">Signed in as</p>
+              <p className="truncate text-sm font-medium text-blue-500 dark:text-blue-400">
+                {session?.user?.email}
+              </p>
+            </div>
+            <div className="py-1 ">
+              <Menu.Item>
+                <button onClick={() => router.push("/account")} className="account-link">
+                  <Cog8ToothIcon className="account-icon" />
+                  Account Settings
+                </button>
+              </Menu.Item>
+            </div>
+            <div className="py-1">
+              <Menu.Item>
+                <button onClick={onClick} className="account-link">
+                  <ArrowLeftOnRectangleIcon className="account-icon" />
+                  Sign Out
+                </button>
+              </Menu.Item>
+            </div>
+          </Menu.Items>
+        </Transition>
+      </Menu>
+    </>
   );
 };
 

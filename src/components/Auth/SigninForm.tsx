@@ -241,13 +241,13 @@ const SigninForm = () => {
                       setIsLoading(true);
                       signIn("google");
                     }}
-                    className="inline-flex w-full justify-center rounded-md bg-gray-100 p-2.5 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-200 dark:border-darkerColor dark:bg-darkColor dark:text-white dark:hover:bg-grayColor"
+                    className="social-link"
                   >
                     <span className="sr-only">Google</span>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      width="20"
-                      height="20"
+                      width="18"
+                      height="18"
                       fill="currentColor"
                       viewBox="0 0 16 16"
                     >
@@ -262,13 +262,13 @@ const SigninForm = () => {
                       setIsLoading(true);
                       signIn("twitter");
                     }}
-                    className="inline-flex w-full justify-center rounded-md bg-gray-100 p-2.5 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-200 dark:border-darkerColor dark:bg-darkColor dark:text-white dark:hover:bg-grayColor"
+                    className="social-link"
                   >
                     <span className="sr-only">Twitter</span>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      width="20"
-                      height="20"
+                      width="18"
+                      height="18"
                       fill="currentColor"
                       viewBox="0 0 16 16"
                     >
@@ -283,13 +283,13 @@ const SigninForm = () => {
                       setIsLoading(true);
                       signIn("discord");
                     }}
-                    className="inline-flex w-full justify-center rounded-md bg-gray-100 p-2.5 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-200 dark:border-darkerColor dark:bg-darkColor dark:text-white dark:hover:bg-grayColor"
+                    className="social-link"
                   >
                     <span className="sr-only">Discord</span>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      width="20"
-                      height="20"
+                      width="18"
+                      height="18"
                       fill="currentColor"
                       className="bi bi-discord"
                       viewBox="0 0 16 16"
