@@ -14,7 +14,9 @@ const Header = ({ session }: Props) => {
   return (
     <header className="sticky top-0 z-10 border-b border-gray-100 bg-white py-2.5 dark:border-b dark:border-grayColor dark:bg-darkerColor">
       <div className="mx-auto flex flex-wrap items-center justify-between px-4">
-        <div className="space-x-2m hidden items-center justify-center md:flex">
+        <div
+          className={`justify-centersession items-center space-x-2 ${session && "hidden md:flex"}`}
+        >
           <button onClick={() => router.push("/")} className="flex">
             <h1 className="flex items-center text-xl font-semibold text-black dark:text-white">
               <SquaresPlusIcon className="mr-3 h-6 w-6 text-blue-600" />

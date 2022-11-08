@@ -189,7 +189,7 @@ const Settings = () => {
                 >
                   Username
                 </label>
-                <div className="relative mt-1 rounded-md shadow-sm">
+                <div className="relative mt-2 rounded-md shadow-sm">
                   <input
                     type="text"
                     className="input"
@@ -224,7 +224,7 @@ const Settings = () => {
                 >
                   Name
                 </label>
-                <div className="relative mt-1 rounded-md shadow-sm">
+                <div className="relative mt-2 rounded-md shadow-sm">
                   <input
                     type="text"
                     className="input"
@@ -259,7 +259,7 @@ const Settings = () => {
                 >
                   Email
                 </label>
-                <div className="relative mt-1 rounded-md shadow-sm">
+                <div className="relative mt-2 rounded-md shadow-sm">
                   <input
                     type="email"
                     autoComplete="email"

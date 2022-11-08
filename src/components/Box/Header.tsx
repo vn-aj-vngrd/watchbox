@@ -117,7 +117,7 @@ const Header = ({ box, favoriteBox, id, refetch }: Props) => {
           {...register("boxTitle", {
             required: {
               value: true,
-              message: "* Box title is required",
+              message: "Box title is required",
             },
             minLength: {
               value: 4,
