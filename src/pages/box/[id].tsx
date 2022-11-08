@@ -24,18 +24,18 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     };
   }
 
-  const id = ctx?.params?.id;
-  const box = await prisma?.box?.findFirst({
-    where: {
-      id: id as string,
-    },
-  });
+  // const id = ctx?.params?.id;
+  // const box = await prisma?.box?.findFirst({
+  //   where: {
+  //     id: id as string,
+  //   },
+  // });
 
-  if (!box) {
-    return {
-      notFound: true,
-    };
-  }
+  // if (!box) {
+  //   return {
+  //     notFound: true,
+  //   };
+  // }
 
   return {
     props: {},
