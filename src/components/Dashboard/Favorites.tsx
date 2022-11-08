@@ -90,7 +90,7 @@ const Favorites: React.FC<FavoritesProps> = ({ setMode }) => {
               onClick={() => {
                 setOpenSort(!openSort);
               }}
-              className="inline-flex items-center rounded-lg border border-gray-100 bg-white p-3 text-center text-sm font-normal text-gray-600 outline-none dark:border-transparent dark:bg-darkColor dark:text-white"
+              className="inline-flex items-center rounded-lg border border-gray-100 bg-white p-3 text-center text-sm font-normal text-gray-600 outline-none hover:bg-gray-100 dark:border-transparent dark:bg-darkColor dark:text-white dark:hover:bg-grayColor"
               type="button"
             >
               Sort
@@ -98,7 +98,7 @@ const Favorites: React.FC<FavoritesProps> = ({ setMode }) => {
             </button>
 
             {openSort && (
-              <div className="absolute z-10 mt-2 w-56 divide-y divide-gray-200 rounded-lg border border-gray-100 bg-white shadow-sm dark:border-transparent dark:bg-darkColor">
+              <div className="absolute z-10 mt-2 w-56 rounded-lg border border-gray-100 bg-white dark:border-transparent dark:bg-darkColor">
                 <ul>
                   {sortOptions?.map((item, index) => (
                     <li key={index}>

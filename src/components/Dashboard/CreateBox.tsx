@@ -82,7 +82,7 @@ const CreateBox = ({ onBoxCreated, isFirstBox }: Props) => {
         <button
           onClick={() => setOpen(true)}
           type="button"
-          className="inline-flex items-center rounded-lg border border-gray-100 bg-white p-3 focus:outline-none hover:bg-gray-200 dark:border-transparent dark:bg-darkColor dark:text-white dark:hover:bg-grayColor"
+          className="inline-flex items-center rounded-lg border border-gray-100 bg-white p-3 focus:outline-none hover:bg-gray-100 dark:border-transparent dark:bg-darkColor dark:text-white dark:hover:bg-grayColor"
         >
           {isLoading ? (
             <svg
