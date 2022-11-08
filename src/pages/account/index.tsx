@@ -1,6 +1,6 @@
 import { GetServerSidePropsContext } from "next";
-import Meta from "../../components/Common/Meta";
 import Settings from "../../components/Account/Settings";
+import Meta from "../../components/Common/Meta";
 import { getServerSideSession } from "../../utils/session";
 
 const index = () => {
@@ -19,6 +19,15 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
     return {
       redirect: {
         destination: "/auth/signin",
+        permanent: false,
+      },
+    };
+  }
+
+  if (session.user?.isNewUser === true) {
+    return {
+      redirect: {
+        destination: "/auth/newuser",
         permanent: false,
       },
     };

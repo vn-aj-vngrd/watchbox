@@ -1,7 +1,7 @@
 // components/AvatarDropdown.tsx
 
 import { Menu, Transition } from "@headlessui/react";
-import { ArrowLeftOnRectangleIcon, Cog8ToothIcon } from "@heroicons/react/24/solid";
+import { ArrowLeftOnRectangleIcon, Cog8ToothIcon, UserIcon } from "@heroicons/react/24/solid";
 import { Session } from "next-auth";
 import { signOut } from "next-auth/react";
 import Image from "next/image";
@@ -31,9 +31,9 @@ const AvatarDropdown = ({ session }: Props) => {
 
   return (
     <Menu as="div" className="relative inline-block text-left">
-      <div>
-        <Menu.Button className="relative inline-flex h-10 w-10">
-          <div className="absolute top-0.5 left-0 h-full w-full">
+      <Menu.Button className="flex h-9 w-9 items-center justify-center rounded-full bg-gray-100 focus:outline-none hover:bg-gray-200 dark:border-transparent dark:bg-darkColor dark:text-white dark:hover:bg-grayColor">
+        {session?.user?.image ? (
+          <button className="relative h-full w-full">
             <Image
               src={session?.user?.image || ""}
               alt=""
@@ -42,9 +42,11 @@ const AvatarDropdown = ({ session }: Props) => {
               objectFit="cover"
               className="rounded-full"
             />
-          </div>
-        </Menu.Button>
-      </div>
+          </button>
+        ) : (
+          <UserIcon className="h-6 w-6 fill-gray-800 dark:fill-white" />
+        )}
+      </Menu.Button>
 
       <Transition
         as={Fragment}
@@ -68,7 +70,7 @@ const AvatarDropdown = ({ session }: Props) => {
                 onClick={() => router.push("/account")}
                 className="flex w-full items-center px-4 py-2 text-left text-sm text-gray-900 hover:bg-gray-100 hover:text-gray-900 dark:text-white dark:hover:bg-grayColor"
               >
-                <Cog8ToothIcon className="mr-2 h-6 w-6 rounded-full bg-gray-100 p-1 text-black dark:bg-grayColor dark:text-white" />
+                <Cog8ToothIcon className="mr-2 h-7 w-7 rounded-full bg-gray-100 p-1 text-black dark:bg-grayColor dark:text-white" />
                 Account Settings
               </button>
             </Menu.Item>
@@ -79,7 +81,7 @@ const AvatarDropdown = ({ session }: Props) => {
                 onClick={onClick}
                 className="flex w-full items-center px-4 py-2 text-left text-sm text-gray-900 hover:bg-gray-100 hover:text-gray-900 dark:text-white dark:hover:bg-grayColor"
               >
-                <ArrowLeftOnRectangleIcon className="mr-2 h-6 w-6 rounded-full bg-gray-100 p-1 text-black dark:bg-grayColor dark:text-white" />
+                <ArrowLeftOnRectangleIcon className="mr-2 h-7 w-7 rounded-full bg-gray-100 p-1 text-black dark:bg-grayColor dark:text-white" />
                 Sign Out
               </button>
             </Menu.Item>

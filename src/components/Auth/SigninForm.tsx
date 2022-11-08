@@ -241,7 +241,7 @@ const SigninForm = () => {
                       setIsLoading(true);
                       signIn("google");
                     }}
-                    className="inline-flex w-full justify-center rounded-md bg-gray-100 p-3.5 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-200 dark:border-darkerColor dark:bg-darkColor dark:text-white dark:hover:bg-grayColor"
+                    className="inline-flex w-full justify-center rounded-md bg-gray-100 p-2.5 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-200 dark:border-darkerColor dark:bg-darkColor dark:text-white dark:hover:bg-grayColor"
                   >
                     <span className="sr-only">Google</span>
                     <svg
@@ -262,7 +262,7 @@ const SigninForm = () => {
                       setIsLoading(true);
                       signIn("twitter");
                     }}
-                    className="inline-flex w-full justify-center rounded-md bg-gray-100 p-3.5 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-200 dark:border-darkerColor dark:bg-darkColor dark:text-white dark:hover:bg-grayColor"
+                    className="inline-flex w-full justify-center rounded-md bg-gray-100 p-2.5 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-200 dark:border-darkerColor dark:bg-darkColor dark:text-white dark:hover:bg-grayColor"
                   >
                     <span className="sr-only">Twitter</span>
                     <svg
@@ -283,7 +283,7 @@ const SigninForm = () => {
                       setIsLoading(true);
                       signIn("discord");
                     }}
-                    className="inline-flex w-full justify-center rounded-md bg-gray-100 p-3.5 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-200 dark:border-darkerColor dark:bg-darkColor dark:text-white dark:hover:bg-grayColor"
+                    className="inline-flex w-full justify-center rounded-md bg-gray-100 p-2.5 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-200 dark:border-darkerColor dark:bg-darkColor dark:text-white dark:hover:bg-grayColor"
                   >
                     <span className="sr-only">Discord</span>
                     <svg
