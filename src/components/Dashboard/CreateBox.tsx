@@ -66,7 +66,7 @@ const CreateBox = ({ onBoxCreated, isFirstBox }: Props) => {
           type="button"
           className="inline-flex items-center rounded-lg bg-blue-600 px-4 py-1.5 font-medium  text-white focus:outline-none hover:bg-blue-700"
         >
-          Create first box
+          Create your first box
         </button>
       ) : (
         <button
