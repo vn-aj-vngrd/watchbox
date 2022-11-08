@@ -7,7 +7,7 @@
     @apply text-black scrollbar-thin scrollbar-track-gray-400/20 scrollbar-thumb-blue-500;
   }
   body {
-    @apply bg-gray-50 dark:bg-[#111111] dark:text-white text-black;
+    @apply bg-gray-50 text-black dark:bg-[#18191a] dark:text-white;
   }
 
   input,
