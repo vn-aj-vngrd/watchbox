@@ -187,7 +187,7 @@ const Boxes = ({ setMode }: BoxesProps) => {
             <div
               className={`grid ${
                 box?.entries.length > 1 ? "grid-cols-2 grid-rows-2" : "grid-cols-1"
-              } bg-white-50 aspect-square w-32 gap-3 rounded-lg border border-gray-100 bg-white p-4  transition duration-150 ease-in-out group-hover:scale-105 dark:border-transparent dark:bg-darkColor lg:w-36`}
+              } bg-white-50 aspect-square w-32 gap-3 rounded-lg border border-gray-100 bg-white p-4 transition duration-150 ease-in-out group-hover:scale-105 dark:border-transparent dark:bg-darkColor lg:w-36`}
             >
               {box?.entries?.length == 1 ? (
                 <div className="overflow-hidden rounded-md bg-white">
@@ -219,7 +219,11 @@ const Boxes = ({ setMode }: BoxesProps) => {
             </div>
             <div className="bg-transparent p-2 text-center">
               <p className="font-normal text-gray-600 subpixel-antialiased dark:text-white">
-                {box?.boxTitle}
+                {box.boxTitle.length > 12 ? (
+                  <>{box?.boxTitle?.substring(0, 12)}...</>
+                ) : (
+                  <>{box?.boxTitle}</>
+                )}
               </p>
             </div>
           </button>
