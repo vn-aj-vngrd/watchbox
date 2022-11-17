@@ -4,18 +4,20 @@ import { httpBatchLink } from "@trpc/client/links/httpBatchLink";
 import { loggerLink } from "@trpc/client/links/loggerLink";
 import { withTRPC } from "@trpc/next";
 import { SessionProvider } from "next-auth/react";
+import { ThemeProvider } from "next-themes";
 import type { AppType } from "next/dist/shared/lib/utils";
+import NextNProgress from "nextjs-progressbar";
+import { Toaster } from "react-hot-toast";
 import superjson from "superjson";
 import Layout from "../components/Common/Layout";
 import type { AppRouter } from "../server/router";
-import { ThemeProvider } from "next-themes";
-import NextNProgress from "nextjs-progressbar";
 import "../styles/globals.css";
 
 const MyApp: AppType = ({ Component, pageProps: { session, ...pageProps } }) => {
   return (
     <SessionProvider session={session}>
-      <ThemeProvider attribute="class">
+      <ThemeProvider attribute="class" disableTransitionOnChange>
+        <Toaster position="bottom-right" reverseOrder={false} />
         <Layout>
           <>
             <NextNProgress

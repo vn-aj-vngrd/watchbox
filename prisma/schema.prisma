@@ -10,15 +10,15 @@ datasource db {
 }
 
 model Box {
-    id          String        @id @default(cuid())
-    userId      String
-    boxTitle    String
-    Entry       Entry[]
-    Component   Component[]
-    FavoriteBox FavoriteBox[]
-    created_at  DateTime      @default(now())
-    updated_at  DateTime      @default(now())
-    user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+    id            String        @id @default(cuid())
+    userId        String
+    boxTitle      String
+    entries       Entry[]
+    components    Component[]
+    favoriteBoxes FavoriteBox[]
+    created_at    DateTime      @default(now())
+    updated_at    DateTime      @default(now())
+    user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Entry {

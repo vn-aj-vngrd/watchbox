@@ -1,17 +1,17 @@
 // components/Profile.tsx
 
-import { PencilSquareIcon } from "@heroicons/react/20/solid";
+import { ExclamationCircleIcon, PencilSquareIcon } from "@heroicons/react/24/solid";
+import sha1 from "crypto-js/sha1";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
+import router from "next/router";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import ImageUploading, { ImageListType } from "react-images-uploading";
-import sha1 from "crypto-js/sha1";
-import { trpc } from "../../utils/trpc";
-import { env } from "../../env/client.mjs";
 import { v4 as uuidv4 } from "uuid";
+import { env } from "../../env/client.mjs";
+import { trpc } from "../../utils/trpc";
 import Spinner from "../Common/Spinner";
-import router from "next/router";
 import Deactivate from "./Deactivate";
 
 type Inputs = {
@@ -22,6 +22,7 @@ type Inputs = {
 const Settings = () => {
   const { mutate: updateUser, isLoading: isUpdating } = trpc.useMutation(["user.updateUser"], {
     onSuccess: () => {
+      setIsloading(false);
       document.dispatchEvent(new Event("visibilitychange"));
     },
     onError: (err) => {
@@ -41,6 +42,7 @@ const Settings = () => {
 
   const { data: session } = useSession();
   const [image, setImage] = useState<ImageListType>([]);
+  const [isLoading, setIsloading] = useState<boolean>(false);
 
   const {
     register,
@@ -58,6 +60,7 @@ const Settings = () => {
       username: session?.user?.username || " ",
       name: session?.user?.name || " ",
     });
+    setImage([]);
   }, [reset, session]);
 
   const onChange = (imageList: ImageListType) => {
@@ -66,6 +69,7 @@ const Settings = () => {
   };
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    setIsloading(true);
     const { username } = data;
     const { name } = data;
 
@@ -119,35 +123,26 @@ const Settings = () => {
   }
 
   return (
-    <div>
-      <div className="mt-8 space-y-8 py-12 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="sm:mx-auto sm:w-full sm:max-w-md">
+    <div className="flex h-full items-center justify-center">
+      <div className="mx-auto w-full space-y-8 md:max-w-lg">
+        <div>
           <h2 className="mt-4 text-center text-3xl font-semibold text-gray-900 dark:text-white">
             Account Settings
           </h2>
         </div>
 
-        <div className="rounded-lg bg-white px-4 py-8 shadow dark:bg-darkerColor sm:px-10">
+        <div className="rounded-lg border border-gray-100 bg-white px-4 py-8 dark:border-transparent dark:bg-darkerColor sm:px-10">
           <div className="space-y-6">
-            <div className="relative mx-auto h-32 w-32 rounded-full bg-gray-100 dark:bg-gray-600">
+            <div className="relative mx-auto h-32 w-32 rounded-full bg-gray-100 dark:bg-grayColor">
               {image.length === 0 && (
                 <Image
                   className="absolute z-0 h-24 w-24 rounded-full"
                   src={session?.user?.image || ""}
-                  loader={({ src }) => `${src}?w=500&q=100`}
                   alt=""
                   priority
                   layout="fill"
                 />
               )}
-
-              <label
-                htmlFor="preview"
-                className="cursor absolute bottom-0 right-0 z-10 h-8 w-8 cursor-pointer rounded-full border bg-white p-1.5 text-gray-700 shadow-sm dark:border-grayColor dark:bg-grayColor dark:text-white"
-              >
-                <PencilSquareIcon />
-              </label>
-              <input id="preview" type="file" className="hidden" />
 
               <ImageUploading
                 value={image}
@@ -155,26 +150,47 @@ const Settings = () => {
                 dataURLKey="data_url"
               >
                 {({ imageList, onImageUpload }) => (
-                  <div className="upload__image-wrapper">
-                    <button
-                      onClick={onImageUpload}
-                      className="cursor absolute bottom-0 right-0 z-20 h-8 w-8 cursor-pointer rounded-full border bg-white p-1.5 text-gray-700 shadow-sm hover:bg-gray-200 dark:border-grayColor dark:bg-darkColor dark:text-white dark:hover:bg-grayColor"
-                    >
-                      <PencilSquareIcon />
-                    </button>
+                  <>
+                    {isLoading ? (
+                      <div className="cursor absolute bottom-0 right-0 z-20 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-gray-100 bg-white p-1.5 text-gray-700 hover:bg-gray-100 dark:border-transparent dark:bg-darkColor dark:hover:bg-grayColor">
+                        <svg
+                          aria-hidden="true"
+                          className="h-5 w-5 animate-spin fill-blue-600 text-gray-200 dark:text-gray-600"
+                          viewBox="0 0 100 101"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                            fill="currentColor"
+                          />
+                          <path
+                            d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                            fill="currentFill"
+                          />
+                        </svg>
+                      </div>
+                    ) : (
+                      <button
+                        onClick={onImageUpload}
+                        className="cursor absolute bottom-0 right-0 z-20 h-8 w-8 cursor-pointer rounded-full border border-gray-100 bg-white p-1.5 text-gray-700 hover:bg-gray-100 dark:border-transparent dark:bg-darkColor dark:hover:bg-grayColor"
+                      >
+                        <PencilSquareIcon className="text-black dark:text-white" />
+                      </button>
+                    )}
 
                     {imageList?.map((image, index) => (
-                      <div key={index} className="image-item">
+                      <div key={index} className="absolute z-0 h-32 w-32 ">
                         <Image
                           src={image["data_url"]}
-                          className="absolute z-0 h-24 w-24 rounded-full"
+                          className="rounded-full"
                           priority
                           alt=""
                           layout="fill"
                         />
                       </div>
                     ))}
-                  </div>
+                  </>
                 )}
               </ImageUploading>
             </div>
@@ -187,14 +203,10 @@ const Settings = () => {
                 >
                   Username
                 </label>
-                <div className="relative mt-1 rounded-md shadow-sm">
+                <div className="relative mt-2 rounded-md">
                   <input
                     type="text"
-                    className={
-                      errors.username
-                        ? "block w-full appearance-none rounded-md border border-red-400 px-3 py-2 placeholder-red-400 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-red-500 sm:text-sm"
-                        : "block w-full appearance-none rounded-md border px-3 py-2 placeholder-gray-400 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 dark:border-darkColor dark:bg-darkColor dark:focus:border-blue-500 dark:focus:ring-blue-400 sm:text-sm"
-                    }
+                    className="input"
                     {...register("username", {
                       required: {
                         value: true,
@@ -203,10 +215,15 @@ const Settings = () => {
                       pattern: {
                         value: /^[a-zA-Z0-9]{5,}$/,
                         message:
-                          "* Username must be at least 5 characters long and contain only letters and numbers.",
+                          "Username must be at least 5 characters and contain only letters and numbers.",
                       },
                     })}
                   />
+                  {errors.username && (
+                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                      <ExclamationCircleIcon className="h-5 w-5 text-red-500" aria-hidden="true" />
+                    </div>
+                  )}
                 </div>
                 <div className="my-3 text-sm text-red-500">
                   {errors.username && errors.username.message}
@@ -221,26 +238,27 @@ const Settings = () => {
                 >
                   Name
                 </label>
-                <div className="relative mt-1 rounded-md shadow-sm">
+                <div className="relative mt-2 rounded-md">
                   <input
                     type="text"
-                    className={
-                      errors.name
-                        ? "block w-full appearance-none rounded-md border border-red-400 px-3 py-2 placeholder-red-400 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-red-500 sm:text-sm"
-                        : "block w-full appearance-none rounded-md border px-3 py-2 placeholder-gray-400 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 dark:border-darkColor dark:bg-darkColor dark:focus:border-blue-500 dark:focus:ring-blue-400 sm:text-sm"
-                    }
+                    className="input"
                     {...register("name", {
                       required: {
                         value: true,
-                        message: "* Name is requiredd",
+                        message: "* Name is required",
                       },
                       pattern: {
                         value: /^[a-zA-Z ]{4,}$/,
                         message:
-                          "* Name must be at least 4 characters long and contain only letters.",
+                          "Name must be at least 4 characters long and contain only letters.",
                       },
                     })}
                   />
+                  {errors.name && (
+                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                      <ExclamationCircleIcon className="h-5 w-5 text-red-500" aria-hidden="true" />
+                    </div>
+                  )}
                 </div>
                 <div className="my-3 text-sm text-red-500">
                   {errors.name && errors.name.message}
@@ -255,13 +273,13 @@ const Settings = () => {
                 >
                   Email
                 </label>
-                <div className="relative mt-1 rounded-md shadow-sm">
+                <div className="relative mt-2 rounded-md">
                   <input
                     type="email"
                     autoComplete="email"
                     disabled
                     value={session?.user?.email || ""}
-                    className="block w-full appearance-none rounded-md border px-3 py-2 placeholder-gray-400 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 dark:border-darkColor dark:bg-darkColor dark:focus:border-blue-500 dark:focus:ring-blue-400 sm:text-sm"
+                    className="input"
                   />
                 </div>
               </div>
@@ -280,7 +298,7 @@ const Settings = () => {
                     name_watch === session?.user?.name &&
                     image.length === 0
                       ? "hidden"
-                      : "mt-6 flex w-full items-center justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm focus:outline-none hover:bg-blue-700"
+                      : "mt-6 flex w-full items-center justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white focus:outline-none hover:bg-blue-700"
                   }
                 >
                   Save Changes

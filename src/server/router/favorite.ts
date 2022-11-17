@@ -14,7 +14,7 @@ export const favoriteRouter = createProtectedRouter()
         take: input.take,
         skip: input.skip,
         where: {
-          FavoriteBox: {
+          favoriteBoxes: {
             some: {
               userId: ctx.session.user.id,
             },
@@ -25,8 +25,8 @@ export const favoriteRouter = createProtectedRouter()
           },
         },
         include: {
-          Entry: true,
-          FavoriteBox: true,
+          entries: true,
+          favoriteBoxes: true,
         },
         orderBy: {
           created_at:
