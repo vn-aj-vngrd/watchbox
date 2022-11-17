@@ -1,38 +1,70 @@
-import { Box, FavoriteBox } from "@prisma/client";
-import { useState, useEffect } from "react";
+import { XCircleIcon } from "@heroicons/react/24/solid";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import { trpc } from "../../utils/trpc";
+import Meta from "../Common/Meta";
+import PageAlert from "../Common/PageAlert";
+import Spinner from "../Common/Spinner";
 import Canvas from "./Canvas";
 import Components from "./Components";
 import Controls from "./Controls";
 import Header from "./Header";
 import { env } from "../../env/client.mjs";
 
-type Props = {
-  box: Box | null | undefined;
-  favoriteBox: FavoriteBox | null | undefined;
-  id: string;
-};
+const description = [
+  "The page you are looking for does not exist.",
+  "Please check the URL and try again.",
+];
 
-const BoxPage = ({ box, favoriteBox, id }: Props) => {
+const BoxPage = () => {
   const [sidePanel, setSidePanel] = useState(true);
 
-  const searchMovies = async () => {
-    const req = await fetch(
-      `https://api.themoviedb.org/3/search/movie?api_key=${env.NEXT_PUBLIC_TMDB_API_KEY}&language=en-US&query=Iron%20Man&page=1&include_adult=true`,
-      {
-        method: "GET",
-      },
-    ).then((res) => res.json());
+  const router = useRouter();
+  const { id } = router.query;
 
-    const { results } = req;
-    console.log(results);
+  const getBox = trpc.useQuery(["box.getBox", { id: id as string }]);
+  const getFavoriteBox = trpc.useQuery(["favorite.getFavoriteBox", { boxId: id as string }]);
+
+  if (getBox.isLoading || getFavoriteBox.isLoading) {
+    return <Spinner isGlobal={true} />;
+  }
+
+  if (getBox.isSuccess && !getBox.data) {
+    return (
+      <>
+        <Meta title="Watchbox | 404" />
+        <PageAlert
+          elem={<p className="text-4xl font-extrabold text-red-600 sm:text-5xl">404</p>}
+          title="Page not found"
+          description={description}
+          btnTitle="Go back to home"
+        />
+      </>
+    );
+  }
+
+  if (getBox.isError || getFavoriteBox.isError) {
+    return (
+      <PageAlert
+        title="Something went wrong"
+        elem={
+          <h2 className="mb-10 flex justify-center">
+            <XCircleIcon className="h-12 w-12 text-red-500" />
+          </h2>
+        }
+        description={["There's a problem on our side. Please try again."]}
+        btnTitle="Go back to home"
+      />
+    );
+  }
+
+  const refetch = () => {
+    getBox.refetch();
+    getFavoriteBox.refetch();
   };
 
-  useEffect(() => {
-    searchMovies();
-  });
-
   return (
-    <div className="flex h-full w-full border-t border-b dark:border-darkColor">
+    <div className="flex h-full w-full">
       <div
         className={`flex h-full w-12 flex-col border-r transition-all ease-in-out dark:border-darkColor ${
           !sidePanel ? "md:w-12" : "md:w-72"
@@ -42,7 +74,12 @@ const BoxPage = ({ box, favoriteBox, id }: Props) => {
         <Components sidePanel={sidePanel} />
       </div>
       <div className="flex h-full grow flex-col">
-        <Header boxTitle={box?.boxTitle} favoriteBox={favoriteBox} id={id} />
+        <Header
+          box={getBox?.data}
+          favoriteBox={getFavoriteBox?.data}
+          id={id as string}
+          refetch={refetch}
+        />
         <Canvas />
       </div>
     </div>

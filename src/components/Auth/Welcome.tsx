@@ -1,17 +1,15 @@
 // components/Welcome.tsx
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+import { ArrowRightIcon, ExclamationCircleIcon, MegaphoneIcon } from "@heroicons/react/24/solid";
 import { useSession } from "next-auth/react";
+import router from "next/router";
+import { useEffect } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { trpc } from "../../utils/trpc";
 import PageAlert from "../Common/PageAlert";
 import Spinner from "../Common/Spinner";
-import Meta from "../Common/Meta";
-import router from "next/router";
-import { ArrowRightIcon, MegaphoneIcon } from "@heroicons/react/24/solid";
 import Confetti from "./Confetti";
-import { ExclamationCircleIcon } from "@heroicons/react/24/solid";
-import { useForm, SubmitHandler } from "react-hook-form";
-import { useEffect } from "react";
 const description = [
   "WatchBox streamlines and simplifies the process of creating movie and TV show lists for you to share with others or keep for yourself. ",
   "To get started, type you username below.",
@@ -57,64 +55,59 @@ const Welcome = () => {
 
   return (
     <>
-      <Meta title="Watchbox | Welcome" />
-      <div className="container relative mx-auto">
+      <div className="flex h-full flex-col items-center justify-center space-y-10">
+        <Confetti />
+
         <div>
-          <Confetti />
+          <PageAlert
+            elem={
+              <h2 className="mb-10 flex justify-center">
+                <MegaphoneIcon className="h-10 w-10 text-blue-600" />
+              </h2>
+            }
+            title={`Welcome, ${session?.user?.name?.split(" ")[0] || " User"}!`}
+            description={description}
+          />
         </div>
 
-        <PageAlert
-          elem={
-            <h2 className="flex justify-center mb-10">
-              <MegaphoneIcon className="w-10 h-10 text-blue-600" />
-            </h2>
-          }
-          title={`Welcome, ${session?.user?.name?.split(" ")[0] || " User"}!`}
-          description={description}
-        />
-
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="mx-auto max-w-xs mb-10 space-y-6">
+          <div className="mx-auto mb-10 max-w-xs">
             <div className="relative mt-1 rounded-md shadow-sm">
               <input
                 type="text"
                 placeholder="Type your username here"
-                className={
-                  errors.username
-                    ? "block w-full px-3 py-2 placeholder-red-400 border border-red-400 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-red-500 focus:border-blue-500 sm:text-sm"
-                    : "block w-full px-3 py-2 placeholder-gray-400 border border-gray-300 rounded-md shadow-sm appearance-none focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm dark:border-darkerColor dark:focus:border-blue-500 dark:focus:ring-blue-400"
-                }
+                className="input"
                 {...register("username", {
                   required: {
                     value: true,
-                    message: "* Please enter a username to continue.",
+                    message: "Enter a username to continue.",
                   },
                   pattern: {
                     value: /^[a-zA-Z0-9]{5,}$/,
                     message:
-                      "* Username must be at least 5 characters long and contain only letters and numbers.",
+                      "Username must be at least 5 characters long and contain only letters and numbers.",
                   },
                 })}
               />
               {errors.username && (
-                <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                  <ExclamationCircleIcon className="w-5 h-5 text-red-500" aria-hidden="true" />
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                  <ExclamationCircleIcon className="h-5 w-5 text-red-500" aria-hidden="true" />
                 </div>
               )}
             </div>
-            {error && <p className="text-sm text-red-500 mt-1">{error.message}</p>}
+            {error && <p className="mt-1 text-sm text-red-500">{error.message}</p>}
 
             {errors.username && (
-              <p className="text-sm text-red-500 mt-1">{errors.username.message}</p>
+              <p className="mt-2 ml-1 text-sm text-red-500">{errors.username.message}</p>
             )}
           </div>
 
           <div className="flex-col text-center">
             {isLoading ? (
-              <button className="inline-flex items-center px-4 py-2 mb-3 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-500 focus:outline-none">
+              <button className="mb-3 inline-flex items-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm focus:outline-none hover:bg-blue-500">
                 <svg
                   role="status"
-                  className="inline w-4 h-4 mr-3 text-white animate-spin"
+                  className="mr-3 inline h-4 w-4 animate-spin text-white"
                   viewBox="0 0 100 101"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
@@ -131,8 +124,8 @@ const Welcome = () => {
                 Loading
               </button>
             ) : (
-              <button className="inline-flex items-center px-4 py-2 mb-3 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-md shadow-sm hover:bg-blue-500 focus:outline-none">
-                Get Started <ArrowRightIcon className="w-5 h-5 ml-2" />
+              <button className="mb-3 inline-flex items-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm focus:outline-none hover:bg-blue-500">
+                Get Started <ArrowRightIcon className="ml-2 h-5 w-5" />
               </button>
             )}
 

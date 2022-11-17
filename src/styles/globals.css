@@ -7,7 +7,7 @@
     @apply text-black scrollbar-thin scrollbar-track-gray-400/20 scrollbar-thumb-blue-500;
   }
   body {
-    @apply bg-gray-50 dark:bg-[#111111] dark:text-white text-black;
+    @apply bg-gray-50 text-black dark:bg-[#18191a] dark:text-white;
   }
 
   input,
@@ -17,5 +17,31 @@
   select,
   a {
     -webkit-tap-highlight-color: transparent;
+  }
+}
+
+@layer components {
+  .input {
+    @apply block w-full appearance-none rounded-md border border-gray-100 bg-white px-3 py-2 focus:outline-none dark:border-darkColor dark:bg-darkColor sm:text-sm;
+  }
+
+  .social-link {
+    @apply inline-flex w-full justify-center rounded-md border border-gray-100 bg-white p-2.5 text-sm font-medium text-gray-600  hover:bg-gray-200 dark:border-darkerColor dark:bg-darkColor dark:text-white dark:hover:bg-grayColor;
+  }
+
+  .nav-link {
+    @apply h-9 w-9 items-center justify-center rounded-full border border-gray-100 bg-white focus:outline-none hover:bg-gray-100 dark:border-transparent dark:bg-darkColor dark:text-white dark:hover:bg-grayColor;
+  }
+
+  .nav-icon {
+    @apply h-5 w-5 fill-gray-800 dark:fill-white;
+  }
+
+  .account-link {
+    @apply flex w-full items-center px-4 py-2 text-left text-sm text-gray-900 hover:bg-gray-100 hover:text-gray-900 dark:text-white dark:hover:bg-grayColor;
+  }
+
+  .account-icon {
+    @apply mr-3 h-5 w-5;
   }
 }

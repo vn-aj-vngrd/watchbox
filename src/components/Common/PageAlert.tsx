@@ -11,7 +11,7 @@ type Props = {
 
 const PageAlert: React.FC<Props> = ({ elem, title, description, btnTitle }) => {
   return (
-    <div className="mx-auto my-auto flex max-w-max flex-col items-center justify-center text-center">
+    <div className="mx-auto my-auto flex h-full max-w-max flex-col items-center justify-center text-center">
       {elem && <>{elem}</>}
 
       <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-5xl">

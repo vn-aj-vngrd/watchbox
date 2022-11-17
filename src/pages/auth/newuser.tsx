@@ -1,12 +1,18 @@
 // src/auth/newuser.tsx
 
-import Welcome from "../../components/Auth/Welcome";
 import { GetServerSidePropsContext } from "next";
 import { Session } from "next-auth";
+import Welcome from "../../components/Auth/Welcome";
+import Meta from "../../components/Common/Meta";
 import { getServerSideSession } from "../../utils/session";
 
 const newuser = () => {
-  return <Welcome />;
+  return (
+    <>
+      <Meta title="Welcome" />
+      <Welcome />
+    </>
+  );
 };
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
