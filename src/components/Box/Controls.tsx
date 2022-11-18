@@ -109,7 +109,7 @@ const Contols = ({ sidePanel, setSidePanel }: Props) => {
       onKeyUp={onKeyUp.bind(this)}
     >
       <div
-        className={`flex h-fit flex-col items-center justify-center gap-3 border-b py-2 dark:border-darkColor ${
+        className={`flex h-fit flex-col items-center justify-center gap-3 border-b py-2 transition-all duration-500 ease-in-out dark:border-darkColor ${
           !sidePanel ? "md:h-fit md:flex-col md:py-2" : "md:h-12 md:flex-row md:py-0"
         }`}
       >
