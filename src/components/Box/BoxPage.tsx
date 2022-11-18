@@ -80,7 +80,7 @@ const BoxPage = () => {
   return (
     <div className="flex h-full w-full">
       <div
-        className={`flex h-full w-12 flex-col border-r transition-all ease-in-out dark:border-darkColor ${
+        className={`flex h-full w-12 flex-col border-r transition-all duration-500 ease-in-out dark:border-darkColor ${
           !sidePanel ? "md:w-12" : "md:w-72"
         }`}
       >
