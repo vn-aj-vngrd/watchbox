@@ -1,21 +1,117 @@
-// Imports
+import { useRef } from "react";
+import { motion } from "framer-motion";
+import { snap } from "popmotion";
 
-type Props = {
-  sidePanel: boolean;
+type CanvasElement = {
+  component: string;
+  x: number;
+  y: number;
 };
 
-const Components = ({ sidePanel }: Props) => {
+type Props = {
+  canvasDiv: React.RefObject<HTMLDivElement>;
+  sidePanel: boolean;
+  canvasElements: CanvasElement[];
+  setCanvasElements: React.Dispatch<React.SetStateAction<CanvasElement[]>>;
+};
+
+const Components: React.FC<Props> = ({
+  canvasDiv,
+  sidePanel,
+  canvasElements,
+  setCanvasElements,
+}) => {
+  const componentsDiv = useRef<HTMLDivElement>(null);
+  let canvasRef: DOMRect | undefined;
+  const snapTo = snap(10);
+
   return (
-    <div className="flex h-full justify-center scrollbar-thin scrollbar-track-gray-400/20 scrollbar-thumb-blue-500">
+    <div
+      ref={componentsDiv}
+      className="flex h-full justify-center scrollbar-thin scrollbar-track-gray-400/20 scrollbar-thumb-blue-500"
+    >
       <div
         className={`my-3 grid h-fit grid-cols-1 gap-3 ${
           !sidePanel ? "md:my-3 md:grid-cols-1 md:gap-3" : "md:my-4 md:grid-cols-2 md:gap-4"
         }`}
       >
-        <div
-          className={`flex h-10 w-10 select-none items-center justify-center rounded-md bg-gray-200 p-[6px] text-gray-700 dark:bg-darkColor dark:text-white ${
+        <motion.div
+          drag
+          dragSnapToOrigin
+          dragElastic={0}
+          whileDrag={{ scale: 0.5 }}
+          onDragStart={() => {
+            componentsDiv.current?.classList.remove("scrollbar-thin");
+            canvasRef = canvasDiv.current?.getBoundingClientRect();
+          }}
+          onDragEnd={(e, info) => {
+            componentsDiv.current?.classList.add("scrollbar-thin");
+            if (
+              canvasDiv.current &&
+              info.point.x - (canvasRef?.x ?? 0) > 0 &&
+              info.point.y - (canvasRef?.y ?? 0) > 0
+            ) {
+              setCanvasElements([
+                ...canvasElements,
+                {
+                  component: "text",
+                  x: snapTo(info.point.x - (canvasRef?.x ?? 0)),
+                  y: snapTo(info.point.y - (canvasRef?.y ?? 0)),
+                },
+              ]);
+            }
+          }}
+          className={`flex h-10 w-10 select-none items-center justify-center rounded-md bg-gray-200 p-2 text-gray-700 dark:bg-darkColor dark:text-white ${
             !sidePanel
-              ? "md:h-10 md:w-10 md:rounded-md md:p-[6px]"
+              ? "md:h-10 md:w-10 md:rounded-md md:p-2"
+              : "md:h-28 md:w-28 md:rounded-lg md:p-0"
+          }`}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="36"
+            height="36"
+            preserveAspectRatio="xMidYMid meet"
+            viewBox="0 0 24 24"
+          >
+            <g fill="none">
+              <path d="M0 0h24v24H0z" />
+              <path
+                fill="currentColor"
+                d="M5 3a1 1 0 0 0 0 2h6v15a1 1 0 1 0 2 0V5h6a1 1 0 1 0 0-2H5Z"
+              />
+            </g>
+          </svg>
+        </motion.div>
+        <motion.div
+          drag
+          dragSnapToOrigin
+          dragElastic={0}
+          whileDrag={{ scale: 0.5 }}
+          onDragStart={() => {
+            componentsDiv.current?.classList.remove("scrollbar-thin");
+            canvasRef = canvasDiv.current?.getBoundingClientRect();
+          }}
+          onDragEnd={(e, info) => {
+            componentsDiv.current?.classList.add("scrollbar-thin");
+            if (
+              canvasDiv.current &&
+              info.point.x - (canvasRef?.x ?? 0) > 0 &&
+              info.point.y - (canvasRef?.y ?? 0) > 0
+            ) {
+              setCanvasElements([
+                ...canvasElements,
+                {
+                  component: "entry",
+                  x: snapTo(info.point.x - (canvasRef?.x ?? 0)),
+                  y: snapTo(info.point.y - (canvasRef?.y ?? 0)),
+                },
+              ]);
+            }
+          }}
+          className={`flex h-10 w-10 select-none items-center justify-center rounded-md bg-gray-200 p-2 text-gray-700 dark:bg-darkColor dark:text-white ${
+            !sidePanel
+              ? "md:h-10 md:w-10 md:rounded-md md:p-2"
               : "md:h-28 md:w-28 md:rounded-lg md:p-0"
           }`}
         >
@@ -34,7 +130,7 @@ const Components = ({ sidePanel }: Props) => {
               />
             </g>
           </svg>
-        </div>
+        </motion.div>
       </div>
     </div>
   );
