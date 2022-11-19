@@ -7,14 +7,14 @@ type CanvasElement = {
 };
 
 type Props = {
-  canvasDiv: React.RefObject<HTMLDivElement>;
+  canvasRef: React.RefObject<HTMLDivElement>;
   canvasElements: CanvasElement[];
 };
 
-const Canvas: React.FC<Props> = ({ canvasDiv, canvasElements }) => {
+const Canvas: React.FC<Props> = ({ canvasRef, canvasElements }) => {
   return (
     <div
-      ref={canvasDiv}
+      ref={canvasRef}
       className="relative flex h-full select-none items-center justify-center scrollbar-thin scrollbar-track-gray-400/20 scrollbar-thumb-blue-500"
     >
       {canvasElements.length === 0 ? (
@@ -29,7 +29,9 @@ const Canvas: React.FC<Props> = ({ canvasDiv, canvasElements }) => {
                   className="absolute flex h-20 w-64 items-center justify-center rounded-md bg-gray-200 text-sm dark:bg-darkColor"
                   style={{ top: canvasElement.y - 40, left: canvasElement.x - 128 }}
                 >
-                  Text Component
+                  <div className="-mr-14 -mb-14 flex h-full w-full items-center justify-center pr-14 pb-14">
+                    Text Component
+                  </div>
                 </div>
               );
             case "entry":
@@ -39,7 +41,9 @@ const Canvas: React.FC<Props> = ({ canvasDiv, canvasElements }) => {
                   className="absolute flex h-20 w-64 items-center justify-center rounded-md bg-gray-200 text-sm dark:bg-darkColor"
                   style={{ top: canvasElement.y - 40, left: canvasElement.x - 128 }}
                 >
-                  Entry Component
+                  <div className="-mr-14 -mb-14 flex h-full w-full items-center justify-center pr-14 pb-14">
+                    Entry Component
+                  </div>
                 </div>
               );
           }
