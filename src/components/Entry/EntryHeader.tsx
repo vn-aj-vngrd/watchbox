@@ -24,7 +24,7 @@ type Inputs = {
 };
 
 const EntryHeader = ({ box, favoriteBox, id, refetch }: Props) => {
-  return <div className="flex h-12 items-center border-b pl-4 pr-2 dark:border-darkColor"></div>;
+  return <div className="flex h-12 items-center border-b pl-4 pr-2"></div>;
 };
 
 export default EntryHeader;
