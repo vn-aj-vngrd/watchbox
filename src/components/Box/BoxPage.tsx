@@ -31,7 +31,7 @@ const description = [
 const BoxPage = () => {
   const [sidePanel, setSidePanel] = useState(true);
   const [canvasElements, setCanvasElements] = useState<CanvasElement[]>([]);
-  const canvasDiv = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLDivElement>(null);
 
   const router = useRouter();
   const { id } = router.query;
@@ -86,7 +86,7 @@ const BoxPage = () => {
       >
         <Controls sidePanel={sidePanel} setSidePanel={setSidePanel} />
         <Components
-          canvasDiv={canvasDiv}
+          canvasRef={canvasRef}
           sidePanel={sidePanel}
           canvasElements={canvasElements}
           setCanvasElements={setCanvasElements}
@@ -99,7 +99,7 @@ const BoxPage = () => {
           id={id as string}
           refetch={refetch}
         />
-        <Canvas canvasDiv={canvasDiv} canvasElements={canvasElements} />
+        <Canvas canvasRef={canvasRef} canvasElements={canvasElements} />
       </div>
     </div>
   );
