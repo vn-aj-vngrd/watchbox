@@ -1,4 +1,5 @@
 // Imports
+import router from "next/router";
 
 type CanvasElement = {
   component: string;
@@ -34,13 +35,14 @@ const Canvas: React.FC<Props> = ({ canvasDiv, canvasElements }) => {
               );
             case "entry":
               return (
-                <div
+                <button
+                  // onClick={() => router.push(`/${}`)}
                   key={index}
                   className="absolute flex h-20 w-64 items-center justify-center rounded-md bg-gray-200 text-sm dark:bg-darkColor"
                   style={{ top: canvasElement.y - 40, left: canvasElement.x - 128 }}
                 >
                   Entry Component
-                </div>
+                </button>
               );
           }
         })
