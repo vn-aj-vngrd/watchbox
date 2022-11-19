@@ -98,8 +98,8 @@ const Components: React.FC<Props> = ({
               });
             } else if (
               canvasRect &&
-              canvasRect.y - info.point.y < 100 &&
-              canvasRect.y - info.point.y > -150
+              canvasRect.y - info.point.y < 40 &&
+              canvasRect.y - info.point.y > -60
             ) {
               canvasRef.current?.scrollTo({
                 top: canvasRef.current.scrollTop - (60 - info.point.y + canvasRect.y),
