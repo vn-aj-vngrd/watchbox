@@ -1,7 +1,12 @@
 // components/Boxes.tsx
 
 import { ChevronLeftIcon } from "@heroicons/react/24/outline";
-import { ChevronDownIcon, ChevronRightIcon, MagnifyingGlassIcon } from "@heroicons/react/24/solid";
+import {
+  ChevronDownIcon,
+  ChevronRightIcon,
+  CubeIcon,
+  MagnifyingGlassIcon,
+} from "@heroicons/react/24/solid";
 import Image from "next/image";
 import router from "next/router";
 import { useState } from "react";
@@ -62,7 +67,7 @@ const Boxes = ({ setMode }: BoxesProps) => {
   };
 
   return (
-    <div className="bg-rerd-5 w-full space-y-8 py-6">
+    <div className="w-full space-y-8 py-6">
       <div className="flex flex-col items-center justify-between space-y-4 md:flex-row">
         <div className="flex space-x-6">
           <button
@@ -85,7 +90,7 @@ const Boxes = ({ setMode }: BoxesProps) => {
               onClick={() => {
                 setOpenSort(!openSort);
               }}
-              className="inline-flex items-center rounded-lg border border-gray-100 bg-white p-3 text-center text-sm font-normal text-gray-600 outline-none dark:border-transparent dark:bg-darkColor dark:text-white"
+              className="inline-flex items-center rounded-lg border border-gray-100 bg-white p-3 text-center text-sm font-normal text-gray-600 outline-none hover:bg-gray-100 dark:border-transparent dark:bg-darkColor dark:text-white dark:hover:bg-grayColor"
               type="button"
             >
               Sort
@@ -93,7 +98,7 @@ const Boxes = ({ setMode }: BoxesProps) => {
             </button>
 
             {openSort && (
-              <div className="absolute z-10 mt-2 w-56 divide-y divide-gray-200 rounded-lg border-gray-100 bg-white shadow-sm dark:border-transparent dark:bg-darkColor">
+              <div className="absolute z-10 mt-2 w-56 rounded-lg border border-gray-100 bg-white dark:border-transparent dark:bg-darkColor">
                 <ul>
                   {sortOptions?.map((item, index) => (
                     <li key={index}>
@@ -131,7 +136,7 @@ const Boxes = ({ setMode }: BoxesProps) => {
               <input
                 type="text"
                 onChange={(e) => onSearch(e)}
-                className="block w-full rounded-lg border border-gray-100 bg-white p-3 pl-10 text-sm text-gray-800 placeholder-gray-600 outline-none dark:border-transparent dark:bg-darkColor dark:text-white dark:placeholder-white"
+                className="block w-full rounded-lg border border-gray-100 bg-white p-3 pl-10 text-sm text-gray-800 placeholder-gray-500 outline-none dark:border-transparent dark:bg-darkColor dark:text-white dark:placeholder-gray-300 "
                 placeholder="Search Box"
               />
             </div>
@@ -148,10 +153,15 @@ const Boxes = ({ setMode }: BoxesProps) => {
         </div>
       </div>
 
-      {boxesData.isLoading && <Spinner />}
+      {boxesData.isLoading && (
+        <div className="absolute top-[50%] right-0 left-0">
+          <Spinner />
+        </div>
+      )}
       {boxesData.data?.length === 0 && (
-        <div className="space-y-4 text-center">
-          <div>
+        <div className="absolute top-[50%] right-0 left-0 space-y-10 text-center">
+          <div className="flex flex-col items-center justify-center">
+            <CubeIcon className="h-5 w-5 fill-blue-600" />
             <h3 className="mt-2 font-medium text-black dark:text-white">No Boxes Found</h3>
             <p className="mt-1 text-sm text-gray-500 dark:text-gray-200">
               Get started by creating a new box.
@@ -220,8 +230,10 @@ const Boxes = ({ setMode }: BoxesProps) => {
         className={
           Math.ceil((boxesTotalCount.data && boxesTotalCount.data / itemsPerPage) || 0) > 0 &&
           Math.ceil((boxesData.data && boxesData.data.length / itemsPerPage) || 0) > 0 &&
-          !boxesData.isLoading
-            ? "flex justify-center"
+          !boxesData.isLoading &&
+          boxesTotalCount.data &&
+          boxesTotalCount.data > itemsPerPage
+            ? "absolute bottom-0 right-0 flex h-16 w-full items-center justify-center pb-5"
             : "hidden"
         }
       >
