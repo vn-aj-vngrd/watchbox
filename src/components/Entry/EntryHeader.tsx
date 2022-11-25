@@ -1,3 +1,4 @@
+import { ChevronLeftIcon } from "@heroicons/react/24/solid";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { trpc } from "../../utils/trpc";
@@ -37,14 +38,20 @@ const EntryHeader = ({ boxId, entryId, entryTitle, refetch, status }: Props) => 
   ]);
 
   return (
-    <div className="mx-auto flex h-12 w-full max-w-7xl justify-between border-b border-gray-200 py-10 dark:border-grayColor">
-      <nav className="flex" aria-label="Breadcrumb">
+    <div className="mx-auto flex w-full max-w-7xl flex-row justify-between border-b border-gray-200 py-2.5 dark:border-grayColor md:py-4">
+      <div className="flex md:hidden">
+        <button onClick={() => router.push(`/box/${boxId}`)} className="inline-flex items-center">
+          <ChevronLeftIcon className="mr-1 h-4 w-4 fill-gray-600" />
+          Back
+        </button>
+      </div>
+      <nav className="hidden md:flex" aria-label="Breadcrumb">
         <ol className="inline-flex items-center space-x-1 md:space-x-3">
           <li>
             <div className="flex items-center">
               <button
                 onClick={() => router.push(`/box/${boxId}`)}
-                className="text-md ml-1 font-medium text-gray-500 hover:text-blue-600 dark:text-white dark:hover:text-blue-600 md:ml-2"
+                className="text-md ml-1 font-medium text-black hover:text-blue-600 dark:text-white dark:hover:text-blue-600 md:ml-2"
               >
                 {getBoxTitle?.data?.boxTitle}
               </button>
@@ -64,9 +71,7 @@ const EntryHeader = ({ boxId, entryId, entryTitle, refetch, status }: Props) => 
                   clipRule="evenodd"
                 ></path>
               </svg>
-              <span className="text-md ml-1 font-medium text-gray-500 dark:text-white dark:hover:text-blue-600 md:ml-2">
-                {entryTitle}
-              </span>
+              <span className="text-md ml-1 font-medium text-blue-600 md:ml-2">{entryTitle}</span>
             </div>
           </li>
         </ol>
@@ -78,19 +83,19 @@ const EntryHeader = ({ boxId, entryId, entryTitle, refetch, status }: Props) => 
             <button
               onClick={showDropdown}
               type="button"
-              className="text-md inline-flex w-full justify-center rounded-md border border-transparent bg-gray-200 px-4 py-2 font-medium text-gray-500 shadow-sm"
+              className="text-md inline-flex w-[130px] items-center justify-center space-x-5 rounded-md border border-transparent bg-gray-100 px-4 py-1 font-medium text-gray-500 shadow-sm dark:bg-darkColor dark:text-white"
               id="options-menu"
               aria-expanded="true"
               aria-haspopup="true"
             >
-              {watchStatus[watchStatusIdx]}
+              <p className="mr-8">{watchStatus[watchStatusIdx]}</p>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
                 strokeWidth="1.5"
                 stroke="currentColor"
-                className="h-5 w-6 pt-0.5 pl-1"
+                className="absolute right-2 h-5 w-6"
               >
                 <path
                   strokeLinecap="round"
@@ -103,7 +108,7 @@ const EntryHeader = ({ boxId, entryId, entryTitle, refetch, status }: Props) => 
           {isShowDropdown ? (
             <>
               <div
-                className="absolute right-0 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                className="absolute right-0 z-20 mt-2 w-[130px] origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
                 role="menu"
                 aria-orientation="vertical"
                 aria-labelledby="options-menu"

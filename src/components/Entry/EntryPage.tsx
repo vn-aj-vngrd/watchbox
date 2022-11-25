@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import EntryHeader from "../Entry/EntryHeader";
+import Rating from "../Entry/Rating";
 import Review from "../Entry/Review";
 import Notes from "../Entry/Notes";
 import Metadata from "../Entry/Metadata";
@@ -18,6 +19,7 @@ const description = [
 const EntryPage = () => {
   const [isShowReview, setIsShowReview] = useState<boolean>(false);
   const [isShowNotes, setIsShowNotes] = useState<boolean>(false);
+  const [isShowRating, setIsShowRating] = useState<boolean>(false);
 
   const router = useRouter();
   const { id } = router.query;
@@ -29,7 +31,41 @@ const EntryPage = () => {
     },
   ]);
 
-  if (getEntry.isLoading) {
+  const updateRating = trpc.useMutation("entry.updateRating", {
+    onSuccess: () => {
+      refetch();
+      document.dispatchEvent(new Event("visibilitychange"));
+    },
+  });
+
+  const updateReview = trpc.useMutation("entry.updateReview", {
+    onSuccess: () => {
+      refetch();
+      document.dispatchEvent(new Event("visibilitychange"));
+    },
+  });
+
+  const updateNote = trpc.useMutation("entry.updateNote", {
+    onSuccess: () => {
+      refetch();
+      document.dispatchEvent(new Event("visibilitychange"));
+    },
+  });
+
+  useEffect(() => {
+    if (getEntry.isFetched) {
+      setIsShowReview(getEntry?.data?.review || getEntry?.data?.review !== "" ? true : false);
+      setIsShowNotes(getEntry?.data?.note || getEntry?.data?.note !== "" ? true : false);
+      setIsShowRating(getEntry?.data?.rating || getEntry?.data?.rating !== 0 ? true : false);
+    }
+  }, [getEntry.isFetched]);
+
+  if (
+    getEntry.isLoading ||
+    updateRating.isLoading ||
+    updateReview.isLoading ||
+    updateNote.isLoading
+  ) {
     return <Spinner isGlobal={true} />;
   }
 
@@ -66,17 +102,45 @@ const EntryPage = () => {
     getEntry.refetch();
   };
 
+  const triggerRating = () => {
+    if (isShowRating) {
+      setIsShowRating(!isShowRating);
+      updateRating.mutateAsync({
+        id: getEntry?.data?.id as string,
+        rating: 0,
+      });
+    } else {
+      setIsShowRating(!isShowRating);
+    }
+  };
+
   const triggerReview = () => {
-    setIsShowReview(!isShowReview);
+    if (isShowReview) {
+      setIsShowReview(!isShowReview);
+      updateReview.mutateAsync({
+        id: getEntry?.data?.id as string,
+        review: "",
+      });
+    } else {
+      setIsShowReview(!isShowReview);
+    }
   };
 
   const triggerNotes = () => {
-    setIsShowNotes(!isShowNotes);
+    if (isShowNotes) {
+      setIsShowNotes(!isShowNotes);
+      updateNote.mutateAsync({
+        id: getEntry?.data?.id as string,
+        note: "",
+      });
+    } else {
+      setIsShowNotes(!isShowNotes);
+    }
   };
 
   return (
-    <div className="flex h-full w-full overflow-y-auto">
-      <div className="flex h-full grow flex-col">
+    <div className="flex h-full">
+      <div className="flex flex-col">
         <EntryHeader
           boxId={getEntry?.data?.boxId}
           entryId={getEntry?.data?.id}
@@ -85,24 +149,42 @@ const EntryPage = () => {
           refetch={refetch}
         />
         <Metadata
+          triggerRating={triggerRating}
           triggerReview={triggerReview}
           triggerNotes={triggerNotes}
+          isStared={getEntry?.data?.rating ? true : false}
           isReviewed={getEntry?.data?.review ? true : false}
           isNoted={getEntry?.data?.note ? true : false}
         />
         <div className="mx-auto flex w-full max-w-7xl flex-row">
           <div className="sm:ml-30 md:ml-50 mx-auto flex max-w-7xl grow flex-col px-4 pt-1 lg:ml-60 xl:ml-60">
-            <hr />
-            {isShowReview || getEntry?.data?.review ? (
-              <Review
-                review={getEntry?.data?.review}
-                refetch={refetch}
-                entryId={getEntry?.data?.id}
-              />
+            {isShowRating ? (
+              <>
+                <hr />
+                <Rating
+                  refetch={refetch}
+                  rating={getEntry?.data?.rating}
+                  entryId={getEntry?.data?.id}
+                />
+              </>
             ) : null}
-            <hr />
-            {isShowNotes || getEntry?.data?.note ? (
-              <Notes note={getEntry?.data?.note} refetch={refetch} entryId={getEntry?.data?.id} />
+
+            {isShowReview ? (
+              <>
+                <hr />
+                <Review
+                  review={getEntry?.data?.review}
+                  refetch={refetch}
+                  entryId={getEntry?.data?.id}
+                />
+              </>
+            ) : null}
+
+            {isShowNotes ? (
+              <>
+                <hr />
+                <Notes note={getEntry?.data?.note} refetch={refetch} entryId={getEntry?.data?.id} />
+              </>
             ) : null}
           </div>
         </div>

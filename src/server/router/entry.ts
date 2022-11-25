@@ -67,4 +67,16 @@ export const entryRouter = createProtectedRouter()
         data: { note: input.note },
       });
     },
+  })
+  .mutation("updateRating", {
+    input: z.object({
+      id: z.string(),
+      rating: z.number(),
+    }),
+    resolve: async ({ input, ctx }) => {
+      return ctx.prisma.entry.update({
+        where: { id: input.id },
+        data: { rating: input.rating },
+      });
+    },
   });
