@@ -1,15 +1,7 @@
 import { GetServerSidePropsContext } from "next";
-import Meta from "../../components/Common/Meta";
-import { getServerSideSession } from "../../utils/session";
-import EntryPage from "../../components/Entry/EntryPage";
-import Spinner from "../../components/Common/Spinner";
-import { trpc } from "../../utils/trpc";
-import PageAlert from "../../components/Common/PageAlert";
-import { XCircleIcon } from "@heroicons/react/24/solid";
-
-type Props = {
-  id: string;
-};
+import { getServerSideSession } from "../../../utils/session";
+import Meta from "../../../components/Common/Meta";
+import EntryPage from "../../../components/Entry/EntryPage";
 
 const entry = (/*{ id }: Props*/) => {
   // const getBox = trpc.useQuery(["box.getBox", { id }]);

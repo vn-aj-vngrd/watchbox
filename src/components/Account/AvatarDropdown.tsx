@@ -32,7 +32,7 @@ const AvatarDropdown = ({ session }: Props) => {
       <Menu as="div" className="relative inline-block text-left">
         <Menu.Button className="nav-link inline-flex">
           {session?.user?.image ? (
-            <button className="relative h-full w-full">
+            <div className="relative h-full w-full">
               <Image
                 src={session?.user?.image || ""}
                 alt=""
@@ -41,7 +41,7 @@ const AvatarDropdown = ({ session }: Props) => {
                 objectFit="cover"
                 className="rounded-full"
               />
-            </button>
+            </div>
           ) : (
             <UserIcon className="nav-icon" />
           )}

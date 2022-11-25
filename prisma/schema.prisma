@@ -28,6 +28,7 @@ model Entry {
     image      String
     note       String
     review     String
+    status     Int
     rating     Int
     xAxis      Int
     yAxis      Int

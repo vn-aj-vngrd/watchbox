@@ -18,6 +18,10 @@
   a {
     -webkit-tap-highlight-color: transparent;
   }
+
+  textarea {
+    @apply border-none outline-none;
+  }
 }
 
 @layer components {

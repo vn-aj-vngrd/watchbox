@@ -1,133 +1,109 @@
-import { FavoriteBox } from "@prisma/client";
 import { useState } from "react";
-import { boxRouter } from "../../server/router/box";
-import Components from "../Box/Components";
-import Controls from "../Box/Controls";
-import Header from "../Box/Header";
-import { StarIcon, NewspaperIcon, EyeIcon } from "@heroicons/react/24/solid";
+import EntryHeader from "../Entry/EntryHeader";
+import Review from "../Entry/Review";
+import Notes from "../Entry/Notes";
+import Metadata from "../Entry/Metadata";
+import { trpc } from "../../utils/trpc";
+import { useRouter } from "next/router";
+import Spinner from "../Common/Spinner";
+import Meta from "../Common/Meta";
+import PageAlert from "../Common/PageAlert";
+import { XCircleIcon } from "@heroicons/react/24/solid";
 
-type Props = {
-  box:
-    | {
-        id: string;
-        username: string | null;
-        boxes: { id: string; created_at: Date; updated_at: Date; boxTitle: string }[];
-      }
-    | null
-    | undefined;
-  favoriteBox: FavoriteBox | null | undefined;
-  id: string;
-  refetch: () => void;
-};
+const description = [
+  "The page you are looking for does not exist.",
+  "Please check the URL and try again.",
+];
 
-const EntryPage = (/*{ box, favoriteBox, id, refetch }: Props*/) => {
+const EntryPage = () => {
+  const [isShowReview, setIsShowReview] = useState<boolean>(false);
+  const [isShowNotes, setIsShowNotes] = useState<boolean>(false);
+
+  const router = useRouter();
+  const { id } = router.query;
+
+  const getEntry = trpc.useQuery([
+    "entry.getEntry",
+    {
+      id: id as string,
+    },
+  ]);
+
+  if (getEntry.isLoading) {
+    return <Spinner isGlobal={true} />;
+  }
+
+  if (getEntry.isSuccess && !getEntry.data) {
+    return (
+      <>
+        <Meta title="Watchbox | 404" />
+        <PageAlert
+          elem={<p className="text-4xl font-extrabold text-red-600 sm:text-5xl">404</p>}
+          title="Page not found"
+          description={description}
+          btnTitle="Go back to home"
+        />
+      </>
+    );
+  }
+
+  if (getEntry.isError) {
+    return (
+      <PageAlert
+        title="Something went wrong"
+        elem={
+          <h2 className="mb-10 flex justify-center">
+            <XCircleIcon className="h-12 w-12 text-red-500" />
+          </h2>
+        }
+        description={["There's a problem on our side. Please try again."]}
+        btnTitle="Go back to home"
+      />
+    );
+  }
+
+  const refetch = () => {
+    getEntry.refetch();
+  };
+
+  const triggerReview = () => {
+    setIsShowReview(!isShowReview);
+  };
+
+  const triggerNotes = () => {
+    setIsShowNotes(!isShowNotes);
+  };
+
   return (
-    <div className="flex h-full w-full">
+    <div className="flex h-full w-full overflow-y-auto">
       <div className="flex h-full grow flex-col">
-        <div className="mx-auto flex w-full max-w-7xl flex-row p-4 px-4">
-          <div className="flex h-[260px] w-[173px] shrink-0 grow rounded-lg bg-gray-500 p-4 px-4 sm:h-[280px] sm:w-[186px] md:h-[300px] md:w-[200px] lg:h-[320px] lg:w-[213px]"></div>
-          <div className="ml-2 flex grow px-4 pt-4">
-            <div className="flex flex-col">
-              <b>
-                <p className="text-lg">West Side Story</p>
-              </b>
-              <p className="mt-2 text-sm">2021 ⚬ 2h 36m ⚬ Musical, Drama</p>
-              <p className="mt-2 text-sm">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec dictum fringilla
-                nulla et sagittis. Aliquam vestibulum dignissim sagittis. Etiam a varius eros.
-                Vivamus dictum, nisl vel volutpat commodo, quam tortor facilisis mi, at suscipit dui
-                erat sed lectus. Nulla libero lectus, vestibulum eu vehicula sagittis, lobortis non
-                nisi. Duis nulla mauris, scelerisque non feugiat non, convallis a ante. Praesent vel
-                ante a nibh posuere aliquam in in sapien.
-              </p>
-              <div className="mt-5 flex flex-row">
-                <div className="mr-5">
-                  <button className="inline-flex items-center rounded bg-gray-100 py-2 px-7 font-bold text-gray-800 hover:bg-gray-200 dark:bg-darkColor dark:hover:bg-grayColor">
-                    <StarIcon className="h-5 w-5 text-yellow-500" />
-                  </button>
-                  <p className="pt-1 pl-0.5 text-xs">Add a Review</p>
-                </div>
-                <div className="mr-5">
-                  <button className="inline-flex items-center rounded bg-gray-100 py-2 px-7 font-bold text-gray-800 hover:bg-gray-200 dark:bg-darkColor dark:hover:bg-grayColor">
-                    <NewspaperIcon className="h-5 w-5 dark:text-white" />
-                  </button>
-                  <p className="pt-1.5 pl-1.5 text-xs">Add a Note</p>
-                </div>
-                <div className="mr-5">
-                  <button className="inline-flex items-center rounded bg-gray-100 py-2 px-7 font-bold text-gray-800 hover:bg-gray-200 dark:bg-darkColor dark:hover:bg-grayColor">
-                    <EyeIcon className="h-5 w-5 dark:text-white" />
-                  </button>
-                  <p className="pt-1 pl-1.5 text-xs ">Watch Now</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="mx-auto flex w-full max-w-7xl flex-row ">
+        <EntryHeader
+          boxId={getEntry?.data?.boxId}
+          entryId={getEntry?.data?.id}
+          entryTitle={getEntry?.data?.entryTitle}
+          status={getEntry?.data?.status}
+          refetch={refetch}
+        />
+        <Metadata
+          triggerReview={triggerReview}
+          triggerNotes={triggerNotes}
+          isReviewed={getEntry?.data?.review ? true : false}
+          isNoted={getEntry?.data?.note ? true : false}
+        />
+        <div className="mx-auto flex w-full max-w-7xl flex-row">
           <div className="sm:ml-30 md:ml-50 mx-auto flex max-w-7xl grow flex-col px-4 pt-1 lg:ml-60 xl:ml-60">
-            <hr></hr>
-            <p className="pt-3.5 text-sm">My Review</p>
-            <div className="-ml-[2px] flex items-center py-2">
-              <button className="h-5 w-5 text-gray-300 hover:text-yellow-400 dark:text-gray-500 dark:hover:text-yellow-400">
-                <StarIcon />
-              </button>
-              <button className="h-5 w-5 text-gray-300 hover:text-yellow-400 dark:text-gray-500 dark:hover:text-yellow-400">
-                <StarIcon />
-              </button>
-              <button className="h-5 w-5 text-gray-300 hover:text-yellow-400 dark:text-gray-500 dark:hover:text-yellow-400">
-                <StarIcon />
-              </button>
-              <button className="h-5 w-5 text-gray-300 hover:text-yellow-400 dark:text-gray-500 dark:hover:text-yellow-400">
-                <StarIcon />
-              </button>
-              <button className="h-5 w-5 text-gray-300 hover:text-yellow-400 dark:text-gray-500 dark:hover:text-yellow-400">
-                <StarIcon />
-              </button>
-            </div>
-            <form className="pt-1">
-              <div className="mb-4 w-full rounded-lg bg-gray-100 pt-1 dark:border-darkColor dark:bg-darkColor">
-                <div className="rounded-t-lg bg-gray-100 px-4 py-2 dark:bg-darkColor">
-                  <textarea
-                    id="comment"
-                    rows={4}
-                    className="w-full bg-gray-100 px-1 py-1 text-sm focus:ring-0 dark:bg-darkColor dark:text-white dark:placeholder-gray-400"
-                    placeholder="Write a review..."
-                    required
-                  ></textarea>
-                </div>
-                <div className="flex items-center justify-between border-t px-3 py-2 dark:border-darkColor">
-                  <button
-                    type="submit"
-                    className="inline-flex items-center rounded-lg bg-blue-600 py-2.5 px-4 text-center text-xs font-medium text-white focus:ring-4 focus:ring-blue-200 hover:bg-blue-700 dark:focus:ring-blue-900"
-                  >
-                    Save Review
-                  </button>
-                </div>
-              </div>
-            </form>
-            <hr></hr>
-            <p className="py-2 text-sm">My Notes</p>
-            <form className="pt-1">
-              <div className="mb-4 w-full rounded-lg bg-gray-100 pt-1 dark:border-darkColor dark:bg-darkColor">
-                <div className="rounded-t-lg bg-gray-100 px-4 py-2 dark:bg-darkColor">
-                  <textarea
-                    id="comment"
-                    rows={4}
-                    className="w-full bg-gray-100 px-1 py-1 text-sm focus:ring-0 dark:bg-darkColor dark:text-white dark:placeholder-gray-400"
-                    placeholder="Write a review..."
-                    required
-                  ></textarea>
-                </div>
-                <div className="flex items-center justify-between border-t px-3 py-2 dark:border-darkColor">
-                  <button
-                    type="submit"
-                    className="inline-flex items-center rounded-lg bg-blue-600 py-2.5 px-4 text-center text-xs font-medium text-white focus:ring-4 focus:ring-blue-200 hover:bg-blue-700 dark:focus:ring-blue-900"
-                  >
-                    Save Note
-                  </button>
-                </div>
-              </div>
-            </form>
+            <hr />
+            {isShowReview || getEntry?.data?.review ? (
+              <Review
+                review={getEntry?.data?.review}
+                refetch={refetch}
+                entryId={getEntry?.data?.id}
+              />
+            ) : null}
+            <hr />
+            {isShowNotes || getEntry?.data?.note ? (
+              <Notes note={getEntry?.data?.note} refetch={refetch} entryId={getEntry?.data?.id} />
+            ) : null}
           </div>
         </div>
       </div>
