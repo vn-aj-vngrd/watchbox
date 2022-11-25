@@ -40,7 +40,7 @@ const Notes = ({ note, refetch, entryId }: Props) => {
 
   return (
     <>
-      <p className="py-2 text-sm">My Notes</p>
+      <p className="py-2 text-lg">My Notes</p>
       <form onSubmit={handleSubmit(onSubmit)} className="pt-1">
         <div className="mb-4 w-full rounded-lg bg-gray-100 pt-1 dark:border-darkColor dark:bg-darkColor">
           <div className="rounded-t-lg bg-gray-100 px-4 py-2 dark:bg-darkColor">

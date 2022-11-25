@@ -22,6 +22,7 @@ module.exports = {
       "lh3.googleusercontent.com",
       "pbs.twimg.com",
       "cdn.discordapp.com",
+      "www.themoviedb.org",
     ],
   },
 };

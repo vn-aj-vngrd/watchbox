@@ -1,5 +1,4 @@
 import { SubmitHandler, useForm } from "react-hook-form";
-import { StarIcon } from "@heroicons/react/24/solid";
 import { useEffect } from "react";
 import { trpc } from "../../utils/trpc";
 
@@ -41,7 +40,7 @@ const Review = ({ review, refetch, entryId }: Props) => {
 
   return (
     <>
-      <p className="pt-3.5 text-sm">My Review</p>
+      <p className="pt-3.5 text-lg">My Review</p>
       <form onSubmit={handleSubmit(onSubmit)} className="pt-3">
         <div className="mb-4 w-full rounded-lg bg-gray-100 pt-1 dark:border-darkColor dark:bg-darkColor">
           <div className="rounded-t-lg bg-gray-100 px-4 py-2 dark:bg-darkColor">
