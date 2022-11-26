@@ -1,5 +1,3 @@
-import { PlusIcon } from "@heroicons/react/20/solid";
-
 type CanvasElement = {
   component: string;
   x: number;
@@ -13,6 +11,7 @@ type Props = {
 
 const Canvas: React.FC<Props> = ({ canvasRef, canvasElements }) => {
   return (
+    // TODO: add right and bottom padding to canvas
     <div
       ref={canvasRef}
       className="relative flex h-full select-none items-center justify-center scrollbar-thin scrollbar-track-gray-400/20 scrollbar-thumb-blue-500"
@@ -24,24 +23,24 @@ const Canvas: React.FC<Props> = ({ canvasRef, canvasElements }) => {
           switch (canvasElement.component) {
             case "text":
               return (
-                <button
+                <div
                   key={index}
                   className="absolute flex h-20 w-72 items-center justify-center rounded-md bg-gray-200 text-sm dark:bg-darkColor"
                   style={{ top: canvasElement.y - 40, left: canvasElement.x - 144 }}
                 >
-                  <div className="pointer-events-none -mr-10 -mb-10 flex h-full w-full items-center justify-center pr-10 pb-10 text-neutral-700 dark:text-neutral-300">
+                  <div className="flex h-full w-full items-center justify-center text-neutral-700 dark:text-neutral-300">
                     Text Component
                   </div>
-                </button>
+                </div>
               );
             case "entry":
               return (
-                <button
+                <div
                   key={index}
                   className="absolute flex h-20 w-72 items-center justify-center overflow-hidden rounded-md bg-gray-200 text-sm dark:bg-darkColor"
                   style={{ top: canvasElement.y - 40, left: canvasElement.x - 144 }}
                 >
-                  <div className="absolute -left-6 -top-6 text-neutral-200 opacity-5">
+                  <div className="pointer-events-none absolute -left-6 -top-6 text-neutral-700 opacity-5 dark:text-neutral-200">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="104"
@@ -58,11 +57,13 @@ const Canvas: React.FC<Props> = ({ canvasRef, canvasElements }) => {
                       </g>
                     </svg>
                   </div>
-                  <div className="pointer-events-none -mr-10 -mb-10 flex h-full w-full items-center justify-center pr-10 pb-10 text-neutral-700 dark:text-neutral-300">
-                    <PlusIcon className="mr-1 h-5 w-5" />
-                    Add a movie
+                  <div className="flex h-full w-full items-center justify-center">
+                    <input
+                      className="h-full w-full bg-transparent text-center placeholder-neutral-700 outline-none dark:placeholder-neutral-300"
+                      placeholder="Search a movie"
+                    />
                   </div>
-                </button>
+                </div>
               );
           }
         })

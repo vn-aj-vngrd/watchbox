@@ -65,7 +65,7 @@ const Components: React.FC<Props> = ({
       canvasRect.x - info.point.x > -144
     ) {
       canvasRef.current?.scrollTo({
-        left: canvasRef.current.scrollLeft - 20 - (116 - info.point.x + canvasRect.x),
+        left: canvasRef.current.scrollLeft - 40 - (116 - info.point.x + canvasRect.x),
         behavior: "smooth",
       });
     }
@@ -103,6 +103,7 @@ const Components: React.FC<Props> = ({
           whileDrag={{ scale: 0.5 }}
           onDrag={(e, info) => {
             if (canvasRect == null) canvasRect = canvasRef.current?.getBoundingClientRect();
+            // TODO: scroll edges on drag
           }}
           onDragStart={() => {
             componentsDiv.current?.classList.remove("scrollbar-thin");
