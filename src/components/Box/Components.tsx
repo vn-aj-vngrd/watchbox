@@ -37,9 +37,9 @@ const Components: React.FC<Props> = ({
         {
           component,
           x: snapTo(
-            canvasRect.x + canvasRef.current.scrollLeft - info.point.x < 128 &&
-              canvasRect.x - info.point.x > -128
-              ? info.point.x - 256 + (256 - (info.point.x - canvasRect.x + 128))
+            canvasRect.x + canvasRef.current.scrollLeft - info.point.x < 144 &&
+              canvasRect.x - info.point.x > -144
+              ? info.point.x - 288 + (288 - (info.point.x - canvasRect.x + 116))
               : info.point.x - (canvasRect.x ?? 0) + canvasRef.current.scrollLeft,
           ),
           y: snapTo(
@@ -54,18 +54,18 @@ const Components: React.FC<Props> = ({
   }
 
   function scrollEdge(info: PanInfo) {
-    if (canvasRect && info.point.x > canvasRect.width + 128) {
+    if (canvasRect && info.point.x > canvasRect.width + 144) {
       canvasRef.current?.scrollTo({
-        left: canvasRef.current.scrollLeft + info.point.x - canvasRect.width - 128,
+        left: canvasRef.current.scrollLeft + info.point.x - canvasRect.width - 116,
         behavior: "smooth",
       });
     } else if (
       canvasRect &&
-      canvasRect.x - info.point.x < 128 &&
-      canvasRect.x - info.point.x > -128
+      canvasRect.x - info.point.x < 144 &&
+      canvasRect.x - info.point.x > -144
     ) {
       canvasRef.current?.scrollTo({
-        left: canvasRef.current.scrollLeft - 20 - (128 - info.point.x + canvasRect.x),
+        left: canvasRef.current.scrollLeft - 20 - (116 - info.point.x + canvasRect.x),
         behavior: "smooth",
       });
     }
