@@ -26,10 +26,10 @@ const Canvas: React.FC<Props> = ({ canvasRef, canvasElements }) => {
               return (
                 <div
                   key={index}
-                  className="absolute flex h-20 w-64 items-center justify-center rounded-md bg-gray-200 text-sm dark:bg-darkColor"
-                  style={{ top: canvasElement.y - 40, left: canvasElement.x - 128 }}
+                  className="absolute flex h-20 w-72 items-center justify-center rounded-md bg-gray-200 text-sm dark:bg-darkColor"
+                  style={{ top: canvasElement.y - 40, left: canvasElement.x - 144 }}
                 >
-                  <div className="-mr-14 -mb-14 flex h-full w-full items-center justify-center pr-14 pb-14">
+                  <div className="-mr-10 -mb-10 flex h-full w-full items-center justify-center pr-10 pb-10">
                     Text Component
                   </div>
                 </div>
@@ -38,10 +38,10 @@ const Canvas: React.FC<Props> = ({ canvasRef, canvasElements }) => {
               return (
                 <div
                   key={index}
-                  className="absolute flex h-20 w-64 items-center justify-center rounded-md bg-gray-200 text-sm dark:bg-darkColor"
-                  style={{ top: canvasElement.y - 40, left: canvasElement.x - 128 }}
+                  className="absolute flex h-20 w-72 items-center justify-center rounded-md bg-gray-200 text-sm dark:bg-darkColor"
+                  style={{ top: canvasElement.y - 40, left: canvasElement.x - 144 }}
                 >
-                  <div className="-mr-14 -mb-14 flex h-full w-full items-center justify-center pr-14 pb-14">
+                  <div className="-mr-10 -mb-10 flex h-full w-full items-center justify-center pr-10 pb-10">
                     Entry Component
                   </div>
                 </div>
