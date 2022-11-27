@@ -1,5 +1,6 @@
-// Imports
 import router from "next/router";
+import { useRef } from "react";
+import { useDraggable } from "react-use-draggable-scroll";
 
 type CanvasElement = {
   component: string;
@@ -13,10 +14,13 @@ type Props = {
 };
 
 const Canvas: React.FC<Props> = ({ canvasRef, canvasElements }) => {
+  const { events } = useDraggable(canvasRef as React.MutableRefObject<HTMLInputElement>);
+
   return (
     // TODO: add right and bottom padding to canvas
     <div
       ref={canvasRef}
+      {...events}
       className="relative flex h-full select-none items-center justify-center scrollbar-thin scrollbar-track-gray-400/20 scrollbar-thumb-blue-500"
     >
       {canvasElements.length === 0 ? (
