@@ -181,7 +181,7 @@ const EntryPage = () => {
               <>
                 <hr />
                 <Review
-                  review={getEntry?.data?.entry?.review}
+                  review={getEntry?.data?.entry?.review ?? ""}
                   refetch={refetch}
                   entryId={getEntry?.data?.id}
                 />
@@ -192,7 +192,7 @@ const EntryPage = () => {
               <>
                 <hr />
                 <Notes
-                  note={getEntry?.data?.entry?.note}
+                  note={getEntry?.data?.entry?.note ?? ""}
                   refetch={refetch}
                   entryId={getEntry?.data?.id}
                 />
