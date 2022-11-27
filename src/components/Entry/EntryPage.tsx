@@ -54,9 +54,15 @@ const EntryPage = () => {
 
   useEffect(() => {
     if (getEntry.isFetched) {
-      setIsShowReview(getEntry?.data?.review || getEntry?.data?.review !== "" ? true : false);
-      setIsShowNotes(getEntry?.data?.note || getEntry?.data?.note !== "" ? true : false);
-      setIsShowRating(getEntry?.data?.rating || getEntry?.data?.rating !== 0 ? true : false);
+      setIsShowReview(
+        getEntry?.data?.entry?.review || getEntry?.data?.entry?.review !== "" ? true : false,
+      );
+      setIsShowNotes(
+        getEntry?.data?.entry?.note || getEntry?.data?.entry?.note !== "" ? true : false,
+      );
+      setIsShowRating(
+        getEntry?.data?.entry?.rating || getEntry?.data?.entry?.rating !== 0 ? true : false,
+      );
     }
   }, [getEntry.isFetched]);
 
@@ -138,23 +144,25 @@ const EntryPage = () => {
     }
   };
 
+  console.log(getEntry);
+
   return (
     <div className="flex h-full">
       <div className="flex flex-col">
         <EntryHeader
           boxId={getEntry?.data?.boxId}
           entryId={getEntry?.data?.id}
-          entryTitle={getEntry?.data?.entryTitle}
-          status={getEntry?.data?.status}
+          entryTitle={getEntry?.data?.entry?.title}
+          status={getEntry?.data?.entry?.status}
           refetch={refetch}
         />
         <Metadata
           triggerRating={triggerRating}
           triggerReview={triggerReview}
           triggerNotes={triggerNotes}
-          isStared={getEntry?.data?.rating ? true : false}
-          isReviewed={getEntry?.data?.review ? true : false}
-          isNoted={getEntry?.data?.note ? true : false}
+          isStared={getEntry?.data?.entry?.rating ? true : false}
+          isReviewed={getEntry?.data?.entry?.review ? true : false}
+          isNoted={getEntry?.data?.entry?.note ? true : false}
         />
         <div className="mx-auto flex w-full max-w-7xl flex-row">
           <div className="sm:ml-30 md:ml-50 mx-auto flex max-w-7xl grow flex-col px-4 pt-1 lg:ml-60 xl:ml-60">
@@ -163,7 +171,7 @@ const EntryPage = () => {
                 <hr />
                 <Rating
                   refetch={refetch}
-                  rating={getEntry?.data?.rating}
+                  rating={getEntry?.data?.entry?.rating}
                   entryId={getEntry?.data?.id}
                 />
               </>
@@ -173,7 +181,7 @@ const EntryPage = () => {
               <>
                 <hr />
                 <Review
-                  review={getEntry?.data?.review}
+                  review={getEntry?.data?.entry?.review}
                   refetch={refetch}
                   entryId={getEntry?.data?.id}
                 />
@@ -183,7 +191,11 @@ const EntryPage = () => {
             {isShowNotes ? (
               <>
                 <hr />
-                <Notes note={getEntry?.data?.note} refetch={refetch} entryId={getEntry?.data?.id} />
+                <Notes
+                  note={getEntry?.data?.entry?.note}
+                  refetch={refetch}
+                  entryId={getEntry?.data?.id}
+                />
               </>
             ) : null}
           </div>

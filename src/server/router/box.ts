@@ -21,7 +21,13 @@ export const boxRouter = createProtectedRouter()
           },
         },
         include: {
-          entries: true,
+          components: {
+            include: {
+              text: true,
+              entry: true,
+              divider: true,
+            },
+          },
         },
         orderBy: {
           created_at:
