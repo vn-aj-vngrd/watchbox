@@ -7,12 +7,15 @@ export const entryRouter = createProtectedRouter()
       id: z.string(),
     }),
     resolve: async ({ input, ctx }) => {
-      return ctx.prisma.entry.findFirst({
+      return ctx.prisma.component.findFirst({
         where: {
           id: input.id,
           box: {
             userId: ctx.session.user.id,
           },
+        },
+        include: {
+          entry: true,
         },
       });
     },

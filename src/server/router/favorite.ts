@@ -25,7 +25,13 @@ export const favoriteRouter = createProtectedRouter()
           },
         },
         include: {
-          entries: true,
+          components: {
+            include: {
+              text: true,
+              entry: true,
+              divider: true,
+            },
+          },
           favoriteBoxes: true,
         },
         orderBy: {
