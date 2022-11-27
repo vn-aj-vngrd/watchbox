@@ -43,7 +43,7 @@ const Meta: React.FC<Props> = ({ title, isDoc }) => {
 
   return (
     <Head>
-      {title ? <title>{title}</title> : <title>WatchBox</title>}
+      {title ? <title>{title} | WatchBox</title> : <title>WatchBox</title>}
       <meta charSet="utf-8" />
       <meta content="width=device-width, initial-scale=1.0" name="viewport" />
       <meta name="title" content="WatchBox" />

@@ -176,6 +176,10 @@ const CreateBox = ({ onBoxCreated, isFirstBox }: Props) => {
                                 value: 4,
                                 message: "Title must be at least 4 characters",
                               },
+                              maxLength: {
+                                value: 20,
+                                message: "Title must be at most 20 characters",
+                              },
                             })}
                           />
                           {errors.title && (

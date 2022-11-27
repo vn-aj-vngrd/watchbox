@@ -35,6 +35,24 @@ export const entryRouter = createProtectedRouter()
       });
     },
   })
+  .mutation("createEntry", {
+    input: z.object({
+      componentId: z.string(),
+      movieId: z.string(),
+      title: z.string(),
+      image: z.string(),
+    }),
+    async resolve({ input, ctx }) {
+      return ctx.prisma.entry.create({
+        data: {
+          componentId: input.componentId,
+          movieId: input.movieId,
+          title: input.title,
+          image: input.image,
+        },
+      });
+    },
+  })
   .mutation("updateStatus", {
     input: z.object({
       id: z.string(),
