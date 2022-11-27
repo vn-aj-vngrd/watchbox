@@ -1,4 +1,3 @@
-import { Box, FavoriteBox } from "@prisma/client";
 import { useState, useRef } from "react";
 import { XCircleIcon } from "@heroicons/react/24/solid";
 import { useRouter } from "next/router";
@@ -10,18 +9,11 @@ import Canvas from "./Canvas";
 import Components from "./Components";
 import Controls from "./Controls";
 import Header from "./Header";
-import { env } from "../../env/client.mjs";
 
 type CanvasElement = {
   component: string;
   x: number;
   y: number;
-};
-
-type Props = {
-  box: Box | null | undefined;
-  favoriteBox: FavoriteBox | null | undefined;
-  id: string;
 };
 
 const description = [

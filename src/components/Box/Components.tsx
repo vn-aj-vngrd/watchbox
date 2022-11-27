@@ -101,7 +101,7 @@ const Components: React.FC<Props> = ({
           dragSnapToOrigin
           dragElastic={0}
           whileDrag={{ scale: 0.5 }}
-          onDrag={(e, info) => {
+          onDrag={() => {
             if (canvasRect == null) canvasRect = canvasRef.current?.getBoundingClientRect();
             // TODO: scroll edges on drag
           }}

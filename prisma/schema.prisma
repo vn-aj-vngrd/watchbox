@@ -21,7 +21,7 @@ model Box {
 }
 
 model Component {
-  id            String    @id @default(cuid())
+  id            String   @id @default(cuid())
   boxId         String
   componentName String
   xAxis         Int
@@ -29,9 +29,9 @@ model Component {
   text          Text?
   entry         Entry?
   divider       Divider?
-  created_at    DateTime  @default(now())
-  updated_at    DateTime  @default(now())
-  box           Box       @relation(fields: [boxId], references: [id], onDelete: Cascade)
+  created_at    DateTime @default(now())
+  updated_at    DateTime @default(now())
+  box           Box      @relation(fields: [boxId], references: [id], onDelete: Cascade)
 }
 
 model Text {
