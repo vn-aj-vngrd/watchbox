@@ -23,7 +23,11 @@ type Movie = {
 const Canvas = () => {
   const [title, setTitle] = useState("");
   const [movies, setMovies] = useState([]);
-  const [selectedMovie, setSelectedMovie] = useState<Movie>();
+  const [selectedMovie, setSelectedMovie] = useState<Movie | null>();
+
+  const escape = (str: string) => {
+    return (str + "").replace(/[\\"']/g, "\\$&").replace(/\u0000/g, "\\0");
+  };
 
   const getPopularMovies = async () => {
     const req = await fetch(
@@ -36,7 +40,7 @@ const Canvas = () => {
     results = results.slice(0, 10);
     setMovies(results);
     setTitle(results[0].original_title);
-    setSelectedMovie(results[0].id);
+    setSelectedMovie(results[0]);
   };
 
   const searchMovies = async () => {
@@ -60,12 +64,12 @@ const Canvas = () => {
     title === ""
       ? movies.map((movie: Movie) => movie)
       : movies.filter((movie: Movie) => {
-          return movie.original_title.toLowerCase().includes(title.trim().toLowerCase());
+          return movie.original_title.toLowerCase().includes(escape(title.trim().toLowerCase()));
         });
 
   const handleInputChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
-    title.length > 0 ? searchMovies() : getPopularMovies();
+    title.length > 0 ? searchMovies() : setSelectedMovie(null);
   };
 
   return (
@@ -73,8 +77,11 @@ const Canvas = () => {
       <div className="flex h-full select-none items-center justify-center text-sm text-gray-500 dark:text-neutral-400">
         Add your first entry
       </div>
-      <Combobox value={selectedMovie} onChange={setSelectedMovie}>
-        <Combobox.Input value={title} onChange={handleInputChange} />
+      <Combobox value={selectedMovie} onChange={setSelectedMovie} nullable>
+        <Combobox.Input
+          onChange={handleInputChange}
+          displayValue={(movie: Movie) => movie?.original_title ?? title}
+        />
         <Combobox.Options>
           {filteredMovies.map((movie: Movie) => (
             <Combobox.Option key={movie.id} value={movie}>
