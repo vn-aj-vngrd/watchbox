@@ -1,107 +1,128 @@
 generator client {
-    provider        = "prisma-client-js"
-    previewFeatures = ["referentialIntegrity"]
+  provider        = "prisma-client-js"
+  previewFeatures = ["referentialIntegrity"]
 }
 
 datasource db {
-    provider             = "cockroachdb"
-    url                  = env("DATABASE_URL")
-    referentialIntegrity = "prisma"
+  provider             = "cockroachdb"
+  url                  = env("DATABASE_URL")
+  referentialIntegrity = "prisma"
 }
 
 model Box {
-    id            String        @id @default(cuid())
-    userId        String
-    boxTitle      String
-    entries       Entry[]
-    components    Component[]
-    favoriteBoxes FavoriteBox[]
-    created_at    DateTime      @default(now())
-    updated_at    DateTime      @default(now())
-    user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
-
-model Entry {
-    id         String   @id @default(cuid())
-    boxId      String
-    entryTitle String
-    image      String
-    note       String
-    review     String
-    rating     Int
-    xAxis      Int
-    yAxis      Int
-    created_at DateTime @default(now())
-    updated_at DateTime @default(now())
-    box        Box      @relation(fields: [boxId], references: [id], onDelete: Cascade)
+  id            String        @id @default(cuid())
+  userId        String
+  boxTitle      String
+  components    Component[]
+  favoriteBoxes FavoriteBox[]
+  created_at    DateTime      @default(now())
+  updated_at    DateTime      @default(now())
+  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Component {
-    id            String   @id @default(cuid())
-    boxId         String
-    componentName String
-    xAxis         Int
-    yAxis         Int
-    created_at    DateTime @default(now())
-    updated_at    DateTime @default(now())
-    box           Box      @relation(fields: [boxId], references: [id], onDelete: Cascade)
+  id            String    @id @default(cuid())
+  boxId         String
+  componentName String
+  xAxis         Int
+  yAxis         Int
+  text          Text?
+  entry         Entry?
+  divider       Divider?
+  created_at    DateTime  @default(now())
+  updated_at    DateTime  @default(now())
+  box           Box       @relation(fields: [boxId], references: [id], onDelete: Cascade)
+}
+
+model Text {
+  id          String    @id @default(cuid())
+  componentId String    @unique
+  content     String
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @default(now())
+  component   Component @relation(fields: [componentId], references: [id], onDelete: Cascade)
+}
+
+model Entry {
+  id          String    @id @default(cuid())
+  componentId String    @unique
+  movieId     String
+  image       String
+  title       String
+  note        String
+  review      String
+  status      Int
+  rating      Int
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @default(now())
+  component   Component @relation(fields: [componentId], references: [id], onDelete: Cascade)
+}
+
+model Divider {
+  id          String    @id @default(cuid())
+  componentId String    @unique
+  orientation String
+  length      String
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @default(now())
+  component   Component @relation(fields: [componentId], references: [id], onDelete: Cascade)
 }
 
 model FavoriteBox {
-    id         String   @id @default(cuid())
-    userId     String
-    boxId      String
-    created_at DateTime @default(now())
-    user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-    box        Box      @relation(fields: [boxId], references: [id], onDelete: Cascade)
+  id         String   @id @default(cuid())
+  userId     String
+  boxId      String
+  created_at DateTime @default(now())
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  box        Box      @relation(fields: [boxId], references: [id], onDelete: Cascade)
 }
 
 model Account {
-    id                String  @id @default(cuid())
-    userId            String
-    type              String
-    provider          String
-    providerAccountId String
-    refresh_token     String?
-    access_token      String?
-    expires_at        Int?
-    token_type        String?
-    scope             String?
-    id_token          String?
-    session_state     String?
-    user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-    @@unique([provider, providerAccountId])
+  @@unique([provider, providerAccountId])
 }
 
 model Session {
-    id           String   @id @default(cuid())
-    sessionToken String   @unique
-    userId       String
-    expires      DateTime
-    user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model User {
-    id            String        @id @default(cuid())
-    name          String?
-    username      String?       @unique
-    email         String?       @unique
-    emailVerified DateTime?
-    image         String?
-    isNewUser     Boolean       @default(true)
-    accounts      Account[]
-    sessions      Session[]
-    boxes         Box[]
-    favoriteBoxes FavoriteBox[]
-    created_at    DateTime      @default(now())
-    updated_at    DateTime      @default(now())
+  id            String        @id @default(cuid())
+  name          String?
+  username      String?       @unique
+  email         String?       @unique
+  emailVerified DateTime?
+  image         String?
+  isNewUser     Boolean       @default(true)
+  accounts      Account[]
+  sessions      Session[]
+  boxes         Box[]
+  favoriteBoxes FavoriteBox[]
+  created_at    DateTime      @default(now())
+  updated_at    DateTime      @default(now())
 }
 
 model VerificationToken {
-    identifier String
-    token      String   @unique
-    expires    DateTime
+  identifier String
+  token      String   @unique
+  expires    DateTime
 
-    @@unique([identifier, token])
+  @@unique([identifier, token])
 }

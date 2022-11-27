@@ -1,9 +1,15 @@
+import { Menu, Transition } from "@headlessui/react";
 import { HeartIcon as OutlineHeartIcon } from "@heroicons/react/24/outline";
-import { HeartIcon as SolidHeartIcon, LinkIcon } from "@heroicons/react/24/solid";
+import {
+  HeartIcon as SolidHeartIcon,
+  LinkIcon,
+  CheckIcon,
+  EllipsisVerticalIcon,
+} from "@heroicons/react/24/solid";
 import { Box, FavoriteBox, User } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Fragment } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { server } from "../../config";
@@ -102,11 +108,11 @@ const Header = ({ box, favoriteBox, id, refetch }: Props) => {
 
   return (
     <div className="flex h-12 items-center border-b pl-4 pr-2 dark:border-darkColor">
-      <form onSubmit={handleSubmit(onSubmit)} className="flex h-full grow items-center space-x-2">
+      <form onSubmit={handleSubmit(onSubmit)} className="flex h-full grow items-center">
         <input
           type="text"
           disabled={session?.user?.id !== box?.id}
-          className="mt-px w-40 border-b border-b-transparent bg-transparent font-medium focus:border-b-gray-200 focus:outline-none hover:border-b-gray-200 dark:focus:border-b-darkColor dark:hover:border-b-darkColor md:w-64"
+          className="mt-px w-48 border-b border-b-transparent bg-transparent font-medium focus:border-b-gray-200 focus:outline-none hover:border-b-gray-200 dark:focus:border-b-darkColor dark:hover:border-b-darkColor md:w-64"
           {...register("boxTitle", {
             required: {
               value: true,
@@ -121,15 +127,12 @@ const Header = ({ box, favoriteBox, id, refetch }: Props) => {
         <div className=" text-sm text-red-500">{errors.boxTitle && errors.boxTitle.message}</div>
 
         {boxTitle_watch !== box?.boxes[0]?.boxTitle && !errors.boxTitle && (
-          <button
-            className="flex items-center rounded-md bg-blue-500 px-2 py-1 text-sm text-white"
-            type="submit"
-          >
+          <button className="flex h-full items-center" type="submit" disabled={isBoxTitleChanged}>
             {isBoxTitleChanged ? (
               <>
                 <svg
                   role="status"
-                  className="mr-2 inline-flex h-4 w-4 animate-spin text-white"
+                  className="ml-1 mt-px inline-flex h-4 w-4 animate-spin text-blue-500"
                   viewBox="0 0 100 101"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
@@ -143,15 +146,14 @@ const Header = ({ box, favoriteBox, id, refetch }: Props) => {
                     fill="currentColor"
                   />
                 </svg>
-                Saving
               </>
             ) : (
-              <>Save</>
+              <CheckIcon className="h-[22px] w-[22px] pt-px text-green-500" />
             )}
           </button>
         )}
       </form>
-      <div className="flex h-full items-center">
+      <div className="hidden h-full items-center md:flex">
         <button onClick={onFavoriteBox} className="flex h-full w-11 items-center justify-center">
           {favorite ? (
             <SolidHeartIcon className="h-5 w-5 text-red-500" />
@@ -168,16 +170,63 @@ const Header = ({ box, favoriteBox, id, refetch }: Props) => {
             }}
           />
         </button>
-        {session?.user?.id === box?.id && (
-          <div className="flex h-full w-11 items-center justify-center">
-            <DeleteBox onDeleteBox={onDeleteBox} />
-          </div>
-        )}
-
-        <div className="flex h-full w-11 items-center justify-center">
-          <Information box={box} />
-        </div>
+        {session?.user?.id === box?.id && <DeleteBox onDeleteBox={onDeleteBox} />}
+        <Information box={box} />
       </div>
+
+      <button
+        onClick={onFavoriteBox}
+        className="flex h-full w-11 items-center justify-center md:hidden"
+      >
+        {favorite ? (
+          <SolidHeartIcon className="h-5 w-5 text-red-500" />
+        ) : (
+          <OutlineHeartIcon className="h-5 w-5 dark:text-white" />
+        )}
+      </button>
+      <Menu as="div" className="flex md:hidden">
+        <Menu.Button className="flex h-full w-10 items-center justify-center">
+          <EllipsisVerticalIcon className="h-[22px] w-[22px]" />
+        </Menu.Button>
+        <Transition
+          as={Fragment}
+          enter="transition ease-out duration-100"
+          enterFrom="transform opacity-0 scale-95"
+          enterTo="transform opacity-100 scale-100"
+          leave="transition ease-in duration-75"
+          leaveFrom="transform opacity-100 scale-100"
+          leaveTo="transform opacity-0 scale-95"
+        >
+          <Menu.Items className="absolute right-3 z-50 mt-7 divide-y divide-gray-100 rounded-md border border-gray-100 bg-white dark:divide-grayColor dark:border-transparent dark:bg-darkColor">
+            <div className="rounded-t-md hover:bg-gray-100 dark:hover:bg-grayColor">
+              <Menu.Item>
+                <button
+                  className="flex items-center justify-start py-2 px-4"
+                  onClick={() => {
+                    navigator.clipboard.writeText(server + router.asPath);
+                    toast.success("Copied to clipboard");
+                  }}
+                >
+                  <LinkIcon className="h-[18px] w-[18px] dark:text-white" />
+                  <div className="w-24 px-3 pb-px text-left text-sm">Copy Link</div>
+                </button>
+              </Menu.Item>
+            </div>
+            {session?.user?.id === box?.id && (
+              <div className="hover:bg-gray-100 dark:hover:bg-grayColor">
+                <Menu.Item>
+                  <DeleteBox mobile onDeleteBox={onDeleteBox} />
+                </Menu.Item>
+              </div>
+            )}
+            <div className="rounded-b-md hover:bg-gray-100 dark:hover:bg-grayColor">
+              <Menu.Item>
+                <Information mobile box={box} />
+              </Menu.Item>
+            </div>
+          </Menu.Items>
+        </Transition>
+      </Menu>
     </div>
   );
 };

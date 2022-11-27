@@ -11,6 +11,7 @@ import Image from "next/image";
 import router from "next/router";
 import { useState } from "react";
 import ReactPaginate from "react-paginate";
+import entry from "../../pages/box/entry/[id]";
 import { trpc } from "../../utils/trpc";
 import Spinner from "../Common/Spinner";
 import CreateBox from "./CreateBox";
@@ -65,6 +66,8 @@ const Boxes = ({ setMode }: BoxesProps) => {
   const handlePageClick = (event: { selected: number }) => {
     setSkip(event.selected * itemsPerPage);
   };
+
+  console.log(boxesData);
 
   return (
     <div className="w-full space-y-8 py-6">
@@ -186,14 +189,16 @@ const Boxes = ({ setMode }: BoxesProps) => {
           >
             <div
               className={`grid ${
-                box?.entries.length > 1 ? "grid-cols-2 grid-rows-2" : "grid-cols-1"
-              } bg-white-50 aspect-square w-32 gap-3 rounded-lg border border-gray-100 bg-white p-4 transition duration-150 ease-in-out group-hover:scale-105 dark:border-transparent dark:bg-darkColor lg:w-36`}
+                box?.components.filter((x) => x.componentName === "Entry").length > 1
+                  ? "grid-cols-2 grid-rows-2"
+                  : "grid-cols-1"
+              } bg-white-50 aspect-square w-32 gap-3 rounded-lg border border-gray-100 bg-white p-4  transition duration-150 ease-in-out group-hover:scale-105 dark:border-transparent dark:bg-darkColor lg:w-36`}
             >
-              {box?.entries?.length == 1 ? (
+              {box?.components.filter((x) => x.componentName === "Entry").length == 1 ? (
                 <div className="overflow-hidden rounded-md bg-white">
                   <Image
                     className="object-cover"
-                    src={box?.entries[0]?.image || ""}
+                    src={box?.components[0]?.entry?.image || ""}
                     alt=""
                     width="1080"
                     height="1080"
@@ -202,18 +207,21 @@ const Boxes = ({ setMode }: BoxesProps) => {
                 </div>
               ) : (
                 <>
-                  {box?.entries?.slice(0, 4).map((item, index) => (
-                    <div key={index} className="overflow-hidden rounded-md bg-white">
-                      <Image
-                        className="object-cover"
-                        src={item.image || ""}
-                        alt=""
-                        width="1080"
-                        height="1080"
-                        layout="responsive"
-                      />
-                    </div>
-                  ))}
+                  {box?.components
+                    .filter((x) => x.componentName === "Entry")
+                    .slice(0, 4)
+                    .map((component, index) => (
+                      <div key={index} className="overflow-hidden rounded-md bg-white">
+                        <Image
+                          className="object-cover"
+                          src={component?.entry?.image || ""}
+                          alt=""
+                          width="1080"
+                          height="1080"
+                          layout="responsive"
+                        />
+                      </div>
+                    ))}
                 </>
               )}
             </div>

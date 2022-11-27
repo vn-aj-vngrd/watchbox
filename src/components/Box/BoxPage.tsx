@@ -1,6 +1,7 @@
+import { Box, FavoriteBox } from "@prisma/client";
+import { useState, useRef } from "react";
 import { XCircleIcon } from "@heroicons/react/24/solid";
 import { useRouter } from "next/router";
-import { useState } from "react";
 import { trpc } from "../../utils/trpc";
 import Meta from "../Common/Meta";
 import PageAlert from "../Common/PageAlert";
@@ -11,6 +12,18 @@ import Controls from "./Controls";
 import Header from "./Header";
 import { env } from "../../env/client.mjs";
 
+type CanvasElement = {
+  component: string;
+  x: number;
+  y: number;
+};
+
+type Props = {
+  box: Box | null | undefined;
+  favoriteBox: FavoriteBox | null | undefined;
+  id: string;
+};
+
 const description = [
   "The page you are looking for does not exist.",
   "Please check the URL and try again.",
@@ -18,6 +31,8 @@ const description = [
 
 const BoxPage = () => {
   const [sidePanel, setSidePanel] = useState(true);
+  const [canvasElements, setCanvasElements] = useState<CanvasElement[]>([]);
+  const canvasRef = useRef<HTMLDivElement>(null);
 
   const router = useRouter();
   const { id } = router.query;
@@ -66,12 +81,17 @@ const BoxPage = () => {
   return (
     <div className="flex h-full w-full">
       <div
-        className={`flex h-full w-12 flex-col border-r transition-all ease-in-out dark:border-darkColor ${
-          !sidePanel ? "md:w-12" : "md:w-72"
+        className={`flex h-full w-12 flex-col border-r transition-all duration-500 ease-in-out dark:border-darkColor ${
+          !sidePanel ? "md:w-12" : "md:w-[17rem]"
         }`}
       >
         <Controls sidePanel={sidePanel} setSidePanel={setSidePanel} />
-        <Components sidePanel={sidePanel} />
+        <Components
+          canvasRef={canvasRef}
+          sidePanel={sidePanel}
+          canvasElements={canvasElements}
+          setCanvasElements={setCanvasElements}
+        />
       </div>
       <div className="flex h-full grow flex-col">
         <Header
@@ -80,7 +100,7 @@ const BoxPage = () => {
           id={id as string}
           refetch={refetch}
         />
-        <Canvas />
+        <Canvas canvasRef={canvasRef} canvasElements={canvasElements} />
       </div>
     </div>
   );

@@ -60,7 +60,7 @@ const Header = ({ session }: Props) => {
                 </div>
                 <input
                   type="text"
-                  className="block w-full rounded-lg border border-gray-100 bg-white p-2 pl-10 text-sm text-black placeholder-gray-500 outline-none dark:border-transparent dark:bg-darkColor dark:text-white dark:placeholder-gray-300"
+                  className="block w-full rounded-lg border border-gray-100 bg-gray-100 p-2 pl-10 text-sm text-black placeholder-gray-500 outline-none dark:border-transparent dark:bg-darkColor dark:text-white dark:placeholder-gray-300"
                   placeholder="Search WatchBox"
                 />
               </div>

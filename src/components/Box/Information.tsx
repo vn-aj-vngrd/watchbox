@@ -7,16 +7,23 @@ import moment from "moment";
 import { Fragment } from "react";
 
 type Props = {
+  mobile?: boolean;
   box: (User & { boxes: Box[] }) | null | undefined;
 };
 
-const Information = ({ box }: Props) => {
+const Information = ({ mobile, box }: Props) => {
   return (
     <Menu as="div" className="relative inline-block text-left">
-      <Menu.Button className="flex">
-        <InformationCircleIcon className="h-[22px] w-[22px] dark:text-white" />
-      </Menu.Button>
-
+      {!mobile ? (
+        <Menu.Button className="flex h-11 w-11 items-center justify-center">
+          <InformationCircleIcon className="h-[22px] w-[22px] dark:text-white" />
+        </Menu.Button>
+      ) : (
+        <Menu.Button className="flex items-center justify-start py-2 px-4">
+          <InformationCircleIcon className="h-[22px] w-[22px] dark:text-white" />
+          <div className="w-24 px-3 pb-px text-left text-sm">Box Info</div>
+        </Menu.Button>
+      )}
       <Transition
         as={Fragment}
         enter="transition ease-out duration-100"
