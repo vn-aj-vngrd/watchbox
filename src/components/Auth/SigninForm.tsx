@@ -47,47 +47,12 @@ const SigninForm = () => {
         });
         break;
       case "CredentialsSignin":
-        setCallback({
-          isCallback: true,
-          message: "There has been a problem signing you in. Please try again later.",
-        });
-        break;
       case "Signin":
-        setCallback({
-          isCallback: true,
-          message: "There has been a problem signing you in. Please try again later.",
-        });
-        break;
       case "OAuthCallback":
-        setCallback({
-          isCallback: true,
-          message: "OAuth failed, please try again.",
-        });
-        break;
       case "OAuthCreateAccount":
-        setCallback({
-          isCallback: true,
-          message: "There has been a problem signing you in. Please try again later.",
-        });
-        break;
       case "EmailCreateAccount":
-        setCallback({
-          isCallback: true,
-          message: "There has been a problem signing you in. Please try again later.",
-        });
-        break;
       case "Callback":
-        setCallback({
-          isCallback: true,
-          message: "There has been a problem signing you in. Please try again later.",
-        });
-        break;
       case "OAuthSignin":
-        setCallback({
-          isCallback: true,
-          message: "There has been a problem signing you in. Please try again later.",
-        });
-        break;
       case "EmailSignin":
         setCallback({
           isCallback: true,
