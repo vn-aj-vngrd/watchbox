@@ -3,21 +3,18 @@ import EntryComponent from "./Components/EntryComponent";
 import TextComponent from "./Components/TextComponent";
 import { useState } from "react";
 import { useHotkeys, isHotkeyPressed } from "react-hotkeys-hook";
-
-type CanvasElement = {
-  component: string;
-  x: number;
-  y: number;
-};
+import { trpc } from "../../utils/trpc";
 
 type Props = {
+  id: string;
   canvasRef: React.RefObject<HTMLDivElement>;
-  canvasElements: CanvasElement[];
 };
 
-const Canvas: React.FC<Props> = ({ canvasRef, canvasElements }) => {
+const Canvas: React.FC<Props> = ({ id, canvasRef }) => {
   const { events } = useDraggable(canvasRef as React.MutableRefObject<HTMLInputElement>);
   const [shift, setShift] = useState(false);
+
+  const canvasElements = trpc.useQuery(["component.getComponents", { id }]);
 
   useHotkeys("shift", () => setShift(isHotkeyPressed("shift")), { keydown: true, keyup: true });
 
@@ -28,11 +25,11 @@ const Canvas: React.FC<Props> = ({ canvasRef, canvasElements }) => {
       {...events}
       className="relative flex h-full select-none items-center justify-center scrollbar-thin scrollbar-track-gray-400/20 scrollbar-thumb-blue-500"
     >
-      {canvasElements.length === 0 ? (
+      {canvasElements?.data?.length === 0 ? (
         <span className="text-sm text-gray-500 dark:text-neutral-400">Add your first entry</span>
       ) : (
-        canvasElements.map((canvasElement, index) => {
-          switch (canvasElement.component) {
+        canvasElements?.data?.map((canvasElement, index) => {
+          switch (canvasElement.componentName) {
             case "Text":
               return <TextComponent key={index} canvasElement={canvasElement} />;
             case "Entry":

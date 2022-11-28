@@ -1,59 +1,48 @@
 import { useRef } from "react";
 import { motion, PanInfo } from "framer-motion";
 import { snap } from "popmotion";
-
-type CanvasElement = {
-  component: string;
-  x: number;
-  y: number;
-};
+import { trpc } from "../../utils/trpc";
 
 type Props = {
+  id: string;
   canvasRef: React.RefObject<HTMLDivElement>;
   sidePanel: boolean;
-  canvasElements: CanvasElement[];
-  setCanvasElements: React.Dispatch<React.SetStateAction<CanvasElement[]>>;
 };
 
-const Components: React.FC<Props> = ({
-  canvasRef,
-  sidePanel,
-  canvasElements,
-  setCanvasElements,
-}) => {
+const Components: React.FC<Props> = ({ id, canvasRef, sidePanel }) => {
   const componentsDiv = useRef<HTMLDivElement>(null);
   let canvasRect: DOMRect | undefined;
   const snapTo = snap(10);
 
-  function addComponent(info: PanInfo, component: string) {
+  const { mutateAsync, isLoading } = trpc.useMutation("component.createComponent");
+
+  const addComponent = (info: PanInfo, component: string) => {
     if (
       canvasRef.current &&
       canvasRect?.x &&
       info.point.x - (canvasRect?.x ?? 0) > 0 &&
       info.point.y - (canvasRect?.y ?? 0) > 0
     ) {
-      setCanvasElements([
-        ...canvasElements,
-        {
-          component,
-          x: snapTo(
-            canvasRect.x + canvasRef.current.scrollLeft - info.point.x < 144 &&
-              canvasRect.x - info.point.x > -144
-              ? info.point.x - 288 + (288 - (info.point.x - canvasRect.x + 116))
-              : info.point.x - (canvasRect.x ?? 0) + canvasRef.current.scrollLeft,
-          ),
-          y: snapTo(
-            canvasRect.y + canvasRef.current.scrollTop - info.point.y < 40 &&
-              canvasRect.y - info.point.y > -40
-              ? info.point.y - 90 + (80 - (info.point.y - canvasRect.y + 40))
-              : info.point.y - (canvasRect?.y ?? 0) + canvasRef.current.scrollTop,
-          ),
-        },
-      ]);
+      mutateAsync({
+        boxId: id,
+        componentName: component,
+        xAxis: snapTo(
+          canvasRect.x + canvasRef.current.scrollLeft - info.point.x < 144 &&
+            canvasRect.x - info.point.x > -144
+            ? info.point.x - 288 + (288 - (info.point.x - canvasRect.x + 116))
+            : info.point.x - (canvasRect.x ?? 0) + canvasRef.current.scrollLeft,
+        ),
+        yAxis: snapTo(
+          canvasRect.y + canvasRef.current.scrollTop - info.point.y < 40 &&
+            canvasRect.y - info.point.y > -40
+            ? info.point.y - 90 + (80 - (info.point.y - canvasRect.y + 40))
+            : info.point.y - (canvasRect?.y ?? 0) + canvasRef.current.scrollTop,
+        ),
+      });
     }
-  }
+  };
 
-  function scrollEdge(info: PanInfo) {
+  const scrollEdge = (info: PanInfo) => {
     if (canvasRect && info.point.x > canvasRect.width + 144) {
       canvasRef.current?.scrollTo({
         left: canvasRef.current.scrollLeft + info.point.x - canvasRect.width - 116,
@@ -84,7 +73,7 @@ const Components: React.FC<Props> = ({
         behavior: "smooth",
       });
     }
-  }
+  };
 
   return (
     <div

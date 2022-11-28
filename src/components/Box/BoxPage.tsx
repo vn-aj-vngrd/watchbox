@@ -10,12 +10,6 @@ import Components from "./Components";
 import Controls from "./Controls";
 import Header from "./Header";
 
-type CanvasElement = {
-  component: string;
-  x: number;
-  y: number;
-};
-
 const description = [
   "The page you are looking for does not exist.",
   "Please check the URL and try again.",
@@ -23,7 +17,6 @@ const description = [
 
 const BoxPage = () => {
   const [sidePanel, setSidePanel] = useState(true);
-  const [canvasElements, setCanvasElements] = useState<CanvasElement[]>([]);
   const canvasRef = useRef<HTMLDivElement>(null);
 
   const router = useRouter();
@@ -78,12 +71,7 @@ const BoxPage = () => {
         }`}
       >
         <Controls sidePanel={sidePanel} setSidePanel={setSidePanel} />
-        <Components
-          canvasRef={canvasRef}
-          sidePanel={sidePanel}
-          canvasElements={canvasElements}
-          setCanvasElements={setCanvasElements}
-        />
+        <Components id={id as string} canvasRef={canvasRef} sidePanel={sidePanel} />
       </div>
       <div className="flex h-full grow flex-col">
         <Header
@@ -92,7 +80,7 @@ const BoxPage = () => {
           id={id as string}
           refetch={refetch}
         />
-        <Canvas canvasRef={canvasRef} canvasElements={canvasElements} />
+        <Canvas id={id as string} canvasRef={canvasRef} />
       </div>
     </div>
   );

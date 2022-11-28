@@ -4,15 +4,10 @@ import { Combobox } from "@headlessui/react";
 import router from "next/router";
 import { trpc } from "../../../utils/trpc";
 import { TrashIcon } from "@heroicons/react/24/solid";
-
-type CanvasElement = {
-  component: string;
-  x: number;
-  y: number;
-};
+import { Component } from "@prisma/client";
 
 type Props = {
-  canvasElement: CanvasElement;
+  canvasElement: Component;
   shift: boolean;
 };
 
@@ -33,11 +28,7 @@ type Movie = {
   vote_count: number;
 };
 
-// const { mutateAsync, isLoading } = trpc.useMutation("entry.createEntry", {
-//   onSuccess: () => {
-
-//   },
-// });
+// const { mutateAsync, isLoading } = trpc.useMutation("entry.createEntry");
 
 const EntryComponent = ({ canvasElement, shift }: Props) => {
   const [movies, setMovies] = useState([]);
@@ -100,7 +91,7 @@ const EntryComponent = ({ canvasElement, shift }: Props) => {
     <div
       // onClick={() => router.push(`/${}`)}
       className="absolute flex h-20 w-72 items-center justify-center rounded-md bg-gray-200 text-sm dark:bg-darkColor"
-      style={{ top: canvasElement.y - 40, left: canvasElement.x - 144 }}
+      style={{ top: canvasElement?.yAxis - 40, left: canvasElement?.xAxis - 144 }}
     >
       {shift && (
         <div className="absolute -right-3 -top-3">
