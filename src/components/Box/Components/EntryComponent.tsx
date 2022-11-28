@@ -3,6 +3,7 @@ import { env } from "../../../env/client.mjs";
 import { Combobox } from "@headlessui/react";
 import router from "next/router";
 import { trpc } from "../../../utils/trpc";
+import { TrashIcon } from "@heroicons/react/24/solid";
 
 type CanvasElement = {
   component: string;
@@ -38,7 +39,7 @@ type Movie = {
 //   },
 // });
 
-const EntryComponent = ({ canvasElement }: Props) => {
+const EntryComponent = ({ canvasElement, shift }: Props) => {
   const [movies, setMovies] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>();
 
@@ -101,8 +102,15 @@ const EntryComponent = ({ canvasElement }: Props) => {
       className="absolute flex h-20 w-72 items-center justify-center rounded-md bg-gray-200 text-sm dark:bg-darkColor"
       style={{ top: canvasElement.y - 40, left: canvasElement.x - 144 }}
     >
-      <div className="pointer-events-none absolute h-full w-full overflow-hidden">
-        <div className="absolute -left-6 -top-6 text-neutral-700 opacity-5 dark:text-neutral-200">
+      {shift && (
+        <div className="absolute -right-3 -top-3">
+          <button className="rounded-full bg-gray-200 p-[6px] shadow-md outline-none dark:bg-darkColor">
+            <TrashIcon className="h-[18px] w-[18px] text-red-500" />
+          </button>
+        </div>
+      )}
+      <div className="pointer-events-none absolute h-full w-full overflow-hidden rounded-md">
+        <div className="absolute -left-7 -top-7 text-neutral-700 opacity-5 dark:text-neutral-200">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="104"
@@ -126,7 +134,7 @@ const EntryComponent = ({ canvasElement }: Props) => {
             onChange={handleInputChange}
             displayValue={(movie: Movie) => movie?.original_title ?? ""}
             className="h-full w-full bg-transparent text-center placeholder-neutral-700 outline-none dark:placeholder-neutral-300"
-            placeholder="Search for a movie"
+            placeholder="Search for a movie..."
           />
           <Combobox.Options className="absolute top-20 z-20 mt-1 max-h-64 w-full rounded-md bg-gray-200 scrollbar-thin scrollbar-track-gray-400/20 scrollbar-thumb-blue-500 dark:bg-darkColor">
             {movies.map((movie: Movie) => (
