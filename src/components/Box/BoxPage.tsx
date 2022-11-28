@@ -24,6 +24,7 @@ const BoxPage = () => {
 
   const getBox = trpc.useQuery(["box.getBox", { id: id as string }]);
   const getFavoriteBox = trpc.useQuery(["favorite.getFavoriteBox", { boxId: id as string }]);
+  const getComponents = trpc.useQuery(["component.getComponents", { id: id as string }]);
 
   if (getBox.isLoading || getFavoriteBox.isLoading) {
     return <Spinner isGlobal={true} />;
@@ -58,9 +59,13 @@ const BoxPage = () => {
     );
   }
 
-  const refetch = () => {
+  const refetchBox = () => {
     getBox.refetch();
     getFavoriteBox.refetch();
+  };
+
+  const refetchCanvasElements = () => {
+    getComponents.refetch();
   };
 
   return (
@@ -71,16 +76,26 @@ const BoxPage = () => {
         }`}
       >
         <Controls sidePanel={sidePanel} setSidePanel={setSidePanel} />
-        <Components id={id as string} canvasRef={canvasRef} sidePanel={sidePanel} />
+        <Components
+          id={id as string}
+          canvasRef={canvasRef}
+          sidePanel={sidePanel}
+          refetch={refetchCanvasElements}
+        />
       </div>
       <div className="flex h-full grow flex-col">
         <Header
           box={getBox?.data}
           favoriteBox={getFavoriteBox?.data}
           id={id as string}
-          refetch={refetch}
+          refetch={refetchBox}
         />
-        <Canvas id={id as string} canvasRef={canvasRef} />
+        <Canvas
+          id={id as string}
+          canvasRef={canvasRef}
+          canvasElements={getComponents?.data}
+          isFetching={getComponents.isFetching}
+        />
       </div>
     </div>
   );

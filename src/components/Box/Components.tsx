@@ -7,23 +7,24 @@ type Props = {
   id: string;
   canvasRef: React.RefObject<HTMLDivElement>;
   sidePanel: boolean;
+  refetch: () => void;
 };
 
-const Components: React.FC<Props> = ({ id, canvasRef, sidePanel }) => {
+const Components: React.FC<Props> = ({ id, canvasRef, sidePanel, refetch }) => {
   const componentsDiv = useRef<HTMLDivElement>(null);
   let canvasRect: DOMRect | undefined;
   const snapTo = snap(10);
 
   const { mutateAsync, isLoading } = trpc.useMutation("component.createComponent");
 
-  const addComponent = (info: PanInfo, component: string) => {
+  const addComponent = async (info: PanInfo, component: string) => {
     if (
       canvasRef.current &&
       canvasRect?.x &&
       info.point.x - (canvasRect?.x ?? 0) > 0 &&
       info.point.y - (canvasRect?.y ?? 0) > 0
     ) {
-      mutateAsync({
+      await mutateAsync({
         boxId: id,
         componentName: component,
         xAxis: snapTo(
@@ -39,6 +40,7 @@ const Components: React.FC<Props> = ({ id, canvasRef, sidePanel }) => {
             : info.point.y - (canvasRect?.y ?? 0) + canvasRef.current.scrollTop,
         ),
       });
+      refetch();
     }
   };
 
