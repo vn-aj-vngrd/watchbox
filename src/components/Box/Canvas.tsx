@@ -10,11 +10,11 @@ type Props = {
   id: string;
   canvasRef: React.RefObject<HTMLDivElement>;
   canvasElements: Component[] | undefined;
-  isFetching: boolean;
+  isLoading: boolean;
   deleteComponent: (id: string) => void;
 };
 
-const Canvas: React.FC<Props> = ({ canvasRef, canvasElements, isFetching, deleteComponent }) => {
+const Canvas: React.FC<Props> = ({ canvasRef, canvasElements, isLoading, deleteComponent }) => {
   const { events } = useDraggable(canvasRef as React.MutableRefObject<HTMLInputElement>);
   const [shift, setShift] = useState(false);
 
@@ -27,12 +27,12 @@ const Canvas: React.FC<Props> = ({ canvasRef, canvasElements, isFetching, delete
       {...events}
       className="relative flex h-full select-none items-center justify-center scrollbar-thin scrollbar-track-gray-400/20 scrollbar-thumb-blue-500"
     >
-      {isFetching && (
+      {isLoading && (
         <div className="pointer-events-none absolute z-50">
           <Spinner />
         </div>
       )}
-      {canvasElements?.length === 0 && !isFetching ? (
+      {canvasElements?.length === 0 && !isLoading ? (
         <span className="text-sm text-gray-500 dark:text-neutral-400">Add your first entry</span>
       ) : (
         canvasElements?.map((canvasElement, index) => {
