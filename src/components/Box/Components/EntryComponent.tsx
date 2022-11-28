@@ -4,12 +4,17 @@ import { Combobox } from "@headlessui/react";
 import router from "next/router";
 import { trpc } from "../../../utils/trpc";
 import { TrashIcon } from "@heroicons/react/24/solid";
-import { Component } from "@prisma/client";
+import { Prisma } from "@prisma/client";
+
+type Component = Prisma.ComponentGetPayload<{
+  include: { text: true, entry: true, divider: true };
+}>
 
 type Props = {
-  canvasElement: Component;
+  entryComponent: Component;
   shift: boolean;
   deleteComponent: (id: string) => void;
+  refetch: () => void;
 };
 
 type Movie = {
@@ -29,29 +34,11 @@ type Movie = {
   vote_count: number;
 };
 
-// const { mutateAsync, isLoading } = trpc.useMutation("entry.createEntry");
-
-const EntryComponent = ({ canvasElement, shift, deleteComponent }: Props) => {
+const EntryComponent = ({ entryComponent, shift, deleteComponent, refetch }: Props) => {
   const [movies, setMovies] = useState([]);
-  const [selectedMovie, setSelectedMovie] = useState<Movie | null>();
+  const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
 
-  // XXX: delete this if not used
-  const escape = (str: string) => {
-    return (str + "").replace(/[\\"']/g, "\\$&").replace(/\u0000/g, "\\0");
-  };
-
-  const getPopularMovies = async () => {
-    const req = await fetch(
-      `https://api.themoviedb.org/3/movie/popular?api_key=${env.NEXT_PUBLIC_TMDB_API_KEY}&language=en-US&page=1&region=US`,
-      {
-        method: "GET",
-      },
-    ).then((res) => res.json());
-    let { results } = req;
-    results = results.slice(0, 10);
-    setMovies(results);
-    setSelectedMovie(results[0]);
-  };
+  const { mutateAsync, isLoading } = trpc.useMutation("entry.createEntry");
 
   const searchMovies = async (title: string) => {
     const req = await fetch(
@@ -65,39 +52,35 @@ const EntryComponent = ({ canvasElement, shift, deleteComponent }: Props) => {
     setMovies(results);
   };
 
-  useEffect(() => {
-    if (movies.length == 0) {
-      getPopularMovies();
-    }
-  });
-
   const handleInputChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     event.target.value.length > 0 ? await searchMovies(event.target.value) : setSelectedMovie(null);
   };
 
-  const handleMovieSelect = (movie: Movie) => {
-    setSelectedMovie(movie);
-    if (selectedMovie != null) {
-      // let { id, original_title, poster_path } = selectedMovie as Movie;
-      // mutateAsync({
-      //   componentId: ,
-      //   movieId: id.toString(),
-      //   title: original_title,
-      //   image: poster_path,
-      // });
+  const handleMovieSelect = async (movie: Movie) => {
+    if (movie != null) {
+      let { id, original_title, poster_path } = movie as Movie;
+      await mutateAsync({
+        componentId: entryComponent.id,
+        movieId: id.toString(),
+        title: original_title,
+        image: poster_path,
+      }).then(() => {
+        setSelectedMovie(movie);
+        refetch();
+      });
     }
   };
 
   return (
     <div
       // onClick={() => router.push(`/${}`)}
-      className="absolute flex h-20 w-72 items-center justify-center rounded-md bg-gray-200 text-sm dark:bg-darkColor"
-      style={{ top: canvasElement?.yAxis - 40, left: canvasElement?.xAxis - 144 }}
+      className={`absolute flex h-20 w-72 items-center justify-center rounded-md bg-gray-200 text-sm dark:bg-darkColor ${entryComponent?.entry?.movieId && "cursor-pointer"}`}
+      style={{ top: entryComponent?.yAxis - 40, left: entryComponent?.xAxis - 144 }}
     >
       {shift && (
         <div className="absolute -right-3 -top-3 z-20">
           <button
-            onClick={() => deleteComponent(canvasElement.id)}
+            onClick={() => deleteComponent(entryComponent.id)}
             className="rounded-full bg-gray-200 p-[6px] shadow-md outline-none dark:bg-darkColor"
           >
             <TrashIcon className="h-[18px] w-[18px] text-red-500" />
@@ -124,27 +107,33 @@ const EntryComponent = ({ canvasElement, shift, deleteComponent }: Props) => {
         </div>
       </div>
       <div className="flex h-full w-full items-center justify-center">
-        <Combobox value={selectedMovie} onChange={handleMovieSelect} nullable>
-          <Combobox.Input
-            onChange={handleInputChange}
-            displayValue={(movie: Movie) => movie?.original_title ?? ""}
-            className="h-full w-full bg-transparent text-center placeholder-neutral-700 outline-none dark:placeholder-neutral-300"
-            placeholder="Search for a movie..."
-          />
-          <Combobox.Options className="absolute top-20 z-20 mt-1 max-h-64 w-full rounded-md bg-gray-200 scrollbar-thin scrollbar-track-gray-400/20 scrollbar-thumb-blue-500 dark:bg-darkColor">
-            {movies.map((movie: Movie) => (
-              <Combobox.Option
-                key={movie.id}
-                value={movie}
-                className="y-2 rounded-md py-3 px-3 hover:cursor-pointer hover:bg-white hover:font-semibold hover:text-black active:bg-blue-500 active:text-white"
-              >
-                {movie.original_title +
-                  " • " +
-                  new Date(Date.parse(movie.release_date)).getFullYear()}
-              </Combobox.Option>
-            ))}
-          </Combobox.Options>
-        </Combobox>
+        {
+          entryComponent?.entry?.movieId ?
+          entryComponent?.entry?.title : 
+          // TODO: Load more results on scroll
+          // TODO: If searchMovies returns no results, substring the query iteratively and search again
+          <Combobox value={selectedMovie} onChange={handleMovieSelect} nullable>
+            <Combobox.Input
+              onChange={handleInputChange}
+              displayValue={(movie: Movie) => movie?.original_title ?? ""}
+              className="h-full w-full bg-transparent text-center placeholder-neutral-700 outline-none dark:placeholder-neutral-300"
+              placeholder="Search for a movie..."
+            />
+            <Combobox.Options className="absolute top-20 z-20 mt-1 max-h-64 w-full rounded-md bg-gray-200 scrollbar-thin scrollbar-track-gray-400/20 scrollbar-thumb-blue-500 dark:bg-darkColor">
+              {movies.map((movie: Movie) => (
+                <Combobox.Option
+                  key={movie.id}
+                  value={movie}
+                  className="y-2 rounded-md py-3 px-3 hover:cursor-pointer hover:bg-white hover:font-semibold hover:text-black active:bg-blue-500 active:text-white"
+                >
+                  {movie.original_title +
+                    " • " +
+                    new Date(Date.parse(movie.release_date)).getFullYear()}
+                </Combobox.Option>
+              ))}
+            </Combobox.Options>
+          </Combobox>
+        }
       </div>
     </div>
   );

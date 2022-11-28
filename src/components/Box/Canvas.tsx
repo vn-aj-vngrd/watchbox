@@ -3,8 +3,12 @@ import EntryComponent from "./Components/EntryComponent";
 import TextComponent from "./Components/TextComponent";
 import { useState } from "react";
 import { useHotkeys, isHotkeyPressed } from "react-hotkeys-hook";
-import { Component } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import Spinner from "../Common/Spinner";
+
+type Component = Prisma.ComponentGetPayload<{
+  include: { text: true, entry: true, divider: true };
+}>
 
 type Props = {
   id: string;
@@ -12,9 +16,10 @@ type Props = {
   canvasElements: Component[] | undefined;
   isLoading: boolean;
   deleteComponent: (id: string) => void;
+  refetch: () => void;
 };
 
-const Canvas: React.FC<Props> = ({ canvasRef, canvasElements, isLoading, deleteComponent }) => {
+const Canvas: React.FC<Props> = ({ canvasRef, canvasElements, isLoading, deleteComponent, refetch }) => {
   const { events } = useDraggable(canvasRef as React.MutableRefObject<HTMLInputElement>);
   const [shift, setShift] = useState(false);
 
@@ -35,23 +40,25 @@ const Canvas: React.FC<Props> = ({ canvasRef, canvasElements, isLoading, deleteC
       {canvasElements?.length === 0 && !isLoading ? (
         <span className="text-sm text-gray-500 dark:text-neutral-400">Add your first entry</span>
       ) : (
-        canvasElements?.map((canvasElement, index) => {
+        canvasElements?.map((canvasElement: Component, index) => {
           switch (canvasElement.componentName) {
             case "Text":
               return (
                 <TextComponent
                   key={index}
-                  canvasElement={canvasElement}
+                  textComponent={canvasElement}
                   deleteComponent={deleteComponent}
+                  refetch={refetch}
                 />
               );
             case "Entry":
               return (
                 <EntryComponent
                   key={index}
-                  canvasElement={canvasElement}
+                  entryComponent={canvasElement}
                   shift={shift}
                   deleteComponent={deleteComponent}
+                  refetch={refetch}
                 />
               );
           }
