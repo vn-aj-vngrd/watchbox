@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { env } from "../../../env/client.mjs";
 import { Combobox } from "@headlessui/react";
 import router from "next/router";
@@ -7,8 +7,8 @@ import { TrashIcon } from "@heroicons/react/24/solid";
 import { Prisma } from "@prisma/client";
 
 type Component = Prisma.ComponentGetPayload<{
-  include: { text: true, entry: true, divider: true };
-}>
+  include: { text: true; entry: true; divider: true };
+}>;
 
 type Props = {
   entryComponent: Component;
@@ -38,6 +38,7 @@ const EntryComponent = ({ entryComponent, shift, deleteComponent, refetch }: Pro
   const [movies, setMovies] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
 
+  // TODO: add isLoading to loader
   const { mutateAsync, isLoading } = trpc.useMutation("entry.createEntry");
 
   const searchMovies = async (title: string) => {
@@ -58,7 +59,7 @@ const EntryComponent = ({ entryComponent, shift, deleteComponent, refetch }: Pro
 
   const handleMovieSelect = async (movie: Movie) => {
     if (movie != null) {
-      let { id, original_title, poster_path } = movie as Movie;
+      const { id, original_title, poster_path } = movie as Movie;
       await mutateAsync({
         componentId: entryComponent.id,
         movieId: id.toString(),
@@ -74,7 +75,9 @@ const EntryComponent = ({ entryComponent, shift, deleteComponent, refetch }: Pro
   return (
     <div
       // onClick={() => router.push(`/${}`)}
-      className={`absolute flex h-20 w-72 items-center justify-center rounded-md bg-gray-200 text-sm dark:bg-darkColor ${entryComponent?.entry?.movieId && "cursor-pointer"}`}
+      className={`absolute flex h-20 w-72 items-center justify-center rounded-md bg-gray-200 text-sm dark:bg-darkColor ${
+        entryComponent?.entry?.movieId && "cursor-pointer"
+      }`}
       style={{ top: entryComponent?.yAxis - 40, left: entryComponent?.xAxis - 144 }}
     >
       {shift && (
@@ -107,9 +110,9 @@ const EntryComponent = ({ entryComponent, shift, deleteComponent, refetch }: Pro
         </div>
       </div>
       <div className="flex h-full w-full items-center justify-center">
-        {
-          entryComponent?.entry?.movieId ?
-          entryComponent?.entry?.title : 
+        {entryComponent?.entry?.movieId ? (
+          entryComponent?.entry?.title
+        ) : (
           // TODO: Load more results on scroll
           // TODO: If searchMovies returns no results, substring the query iteratively and search again
           <Combobox value={selectedMovie} onChange={handleMovieSelect} nullable>
@@ -133,7 +136,7 @@ const EntryComponent = ({ entryComponent, shift, deleteComponent, refetch }: Pro
               ))}
             </Combobox.Options>
           </Combobox>
-        }
+        )}
       </div>
     </div>
   );
