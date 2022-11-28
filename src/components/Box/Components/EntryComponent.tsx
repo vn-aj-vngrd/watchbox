@@ -95,7 +95,7 @@ const EntryComponent = ({ canvasElement, shift, deleteComponent }: Props) => {
       style={{ top: canvasElement?.yAxis - 40, left: canvasElement?.xAxis - 144 }}
     >
       {shift && (
-        <div className="absolute -right-3 -top-3">
+        <div className="absolute -right-3 -top-3 z-20">
           <button
             onClick={() => deleteComponent(canvasElement.id)}
             className="rounded-full bg-gray-200 p-[6px] shadow-md outline-none dark:bg-darkColor"
