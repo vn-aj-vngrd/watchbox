@@ -11,9 +11,10 @@ type Props = {
   canvasRef: React.RefObject<HTMLDivElement>;
   canvasElements: Component[] | undefined;
   isFetching: boolean;
+  deleteComponent: (id: string) => void;
 };
 
-const Canvas: React.FC<Props> = ({ canvasRef, canvasElements, isFetching }) => {
+const Canvas: React.FC<Props> = ({ canvasRef, canvasElements, isFetching, deleteComponent }) => {
   const { events } = useDraggable(canvasRef as React.MutableRefObject<HTMLInputElement>);
   const [shift, setShift] = useState(false);
 
@@ -37,9 +38,22 @@ const Canvas: React.FC<Props> = ({ canvasRef, canvasElements, isFetching }) => {
         canvasElements?.map((canvasElement, index) => {
           switch (canvasElement.componentName) {
             case "Text":
-              return <TextComponent key={index} canvasElement={canvasElement} />;
+              return (
+                <TextComponent
+                  key={index}
+                  canvasElement={canvasElement}
+                  deleteComponent={deleteComponent}
+                />
+              );
             case "Entry":
-              return <EntryComponent key={index} canvasElement={canvasElement} shift={shift} />;
+              return (
+                <EntryComponent
+                  key={index}
+                  canvasElement={canvasElement}
+                  shift={shift}
+                  deleteComponent={deleteComponent}
+                />
+              );
           }
         })
       )}

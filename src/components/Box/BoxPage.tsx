@@ -25,6 +25,16 @@ const BoxPage = () => {
   const getBox = trpc.useQuery(["box.getBox", { id: id as string }]);
   const getFavoriteBox = trpc.useQuery(["favorite.getFavoriteBox", { boxId: id as string }]);
   const getComponents = trpc.useQuery(["component.getComponents", { id: id as string }]);
+  // TODO: add isLoading to loader
+  const { mutateAsync, isLoading } = trpc.useMutation("component.deleteComponent");
+
+  const deleteComponent = async (id: string) => {
+    await mutateAsync({
+      id: id,
+    }).then(() => {
+      getComponents.refetch();
+    });
+  };
 
   if (getBox.isLoading || getFavoriteBox.isLoading) {
     return <Spinner isGlobal={true} />;
@@ -95,6 +105,7 @@ const BoxPage = () => {
           canvasRef={canvasRef}
           canvasElements={getComponents?.data}
           isFetching={getComponents.isFetching}
+          deleteComponent={deleteComponent}
         />
       </div>
     </div>

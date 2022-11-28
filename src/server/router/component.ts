@@ -39,4 +39,16 @@ export const componentRouter = createProtectedRouter()
         },
       });
     },
+  })
+  .mutation("deleteComponent", {
+    input: z.object({
+      id: z.string(),
+    }),
+    async resolve({ input, ctx }) {
+      return ctx.prisma.component.delete({
+        where: {
+          id: input.id,
+        },
+      });
+    },
   });

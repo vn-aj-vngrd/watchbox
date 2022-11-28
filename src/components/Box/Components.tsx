@@ -15,6 +15,7 @@ const Components: React.FC<Props> = ({ id, canvasRef, sidePanel, refetch }) => {
   let canvasRect: DOMRect | undefined;
   const snapTo = snap(10);
 
+  // TODO: add isLoading to loader
   const { mutateAsync, isLoading } = trpc.useMutation("component.createComponent");
 
   const addComponent = async (info: PanInfo, component: string) => {

@@ -9,6 +9,7 @@ import { Component } from "@prisma/client";
 type Props = {
   canvasElement: Component;
   shift: boolean;
+  deleteComponent: (id: string) => void;
 };
 
 type Movie = {
@@ -30,7 +31,7 @@ type Movie = {
 
 // const { mutateAsync, isLoading } = trpc.useMutation("entry.createEntry");
 
-const EntryComponent = ({ canvasElement, shift }: Props) => {
+const EntryComponent = ({ canvasElement, shift, deleteComponent }: Props) => {
   const [movies, setMovies] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>();
 
@@ -95,7 +96,10 @@ const EntryComponent = ({ canvasElement, shift }: Props) => {
     >
       {shift && (
         <div className="absolute -right-3 -top-3">
-          <button className="rounded-full bg-gray-200 p-[6px] shadow-md outline-none dark:bg-darkColor">
+          <button
+            onClick={() => deleteComponent(canvasElement.id)}
+            className="rounded-full bg-gray-200 p-[6px] shadow-md outline-none dark:bg-darkColor"
+          >
             <TrashIcon className="h-[18px] w-[18px] text-red-500" />
           </button>
         </div>
