@@ -7,16 +7,18 @@ type Props = {
   id: string;
   canvasRef: React.RefObject<HTMLDivElement>;
   sidePanel: boolean;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   refetch: () => void;
 };
 
-const Components: React.FC<Props> = ({ id, canvasRef, sidePanel, refetch }) => {
+const Components: React.FC<Props> = ({ id, canvasRef, sidePanel, setIsLoading, refetch }) => {
   const componentsDiv = useRef<HTMLDivElement>(null);
   let canvasRect: DOMRect | undefined;
   const snapTo = snap(10);
 
-  // TODO: add isLoading to loader
   const { mutateAsync, isLoading } = trpc.useMutation("component.createComponent");
+
+  setIsLoading(isLoading);
 
   const addComponent = async (info: PanInfo, component: string) => {
     if (
