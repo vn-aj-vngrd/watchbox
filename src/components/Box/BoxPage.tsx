@@ -17,6 +17,7 @@ const description = [
 
 const BoxPage = () => {
   const [sidePanel, setSidePanel] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const canvasRef = useRef<HTMLDivElement>(null);
 
   const router = useRouter();
@@ -91,6 +92,7 @@ const BoxPage = () => {
           id={id as string}
           canvasRef={canvasRef}
           sidePanel={sidePanel}
+          setIsLoading={setIsLoading}
           refetch={refetchCanvasElements}
         />
       </div>
@@ -105,7 +107,7 @@ const BoxPage = () => {
           id={id as string}
           canvasRef={canvasRef}
           canvasElements={getComponents?.data}
-          isLoading={getComponents.isFetching || deleteComponentMutation.isLoading}
+          isLoading={getComponents.isFetching || deleteComponentMutation.isLoading || isLoading}
           refetch={refetchCanvasElements}
           deleteComponent={deleteComponent}
         />
