@@ -12,6 +12,7 @@ type CanvasElement = {
 
 type Props = {
   canvasElement: CanvasElement;
+  shift: boolean;
 };
 
 type Movie = {

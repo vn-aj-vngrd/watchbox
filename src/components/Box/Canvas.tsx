@@ -1,6 +1,8 @@
 import { useDraggable } from "react-use-draggable-scroll";
 import EntryComponent from "./Components/EntryComponent";
 import TextComponent from "./Components/TextComponent";
+import { useState } from "react";
+import { useHotkeys, isHotkeyPressed } from "react-hotkeys-hook";
 
 type CanvasElement = {
   component: string;
@@ -15,6 +17,9 @@ type Props = {
 
 const Canvas: React.FC<Props> = ({ canvasRef, canvasElements }) => {
   const { events } = useDraggable(canvasRef as React.MutableRefObject<HTMLInputElement>);
+  const [shift, setShift] = useState(false);
+
+  useHotkeys("shift", () => setShift(isHotkeyPressed("shift")), { keydown: true, keyup: true });
 
   return (
     // TODO: add right and bottom padding to canvas
@@ -28,10 +33,10 @@ const Canvas: React.FC<Props> = ({ canvasRef, canvasElements }) => {
       ) : (
         canvasElements.map((canvasElement, index) => {
           switch (canvasElement.component) {
-            case "text":
+            case "Text":
               return <TextComponent key={index} canvasElement={canvasElement} />;
-            case "entry":
-              return <EntryComponent key={index} canvasElement={canvasElement} />;
+            case "Entry":
+              return <EntryComponent key={index} canvasElement={canvasElement} shift={shift} />;
           }
         })
       )}

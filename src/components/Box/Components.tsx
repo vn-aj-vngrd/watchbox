@@ -97,7 +97,7 @@ const Components: React.FC<Props> = ({
         }`}
       >
         <motion.div
-          drag
+          // drag
           dragSnapToOrigin
           dragElastic={0}
           whileDrag={{ scale: 0.5 }}
@@ -110,10 +110,10 @@ const Components: React.FC<Props> = ({
           }}
           onDragEnd={(e, info) => {
             componentsDiv.current?.classList.add("scrollbar-thin");
-            addComponent(info, "text");
+            addComponent(info, "Text");
             scrollEdge(info);
           }}
-          className={`flex h-10 w-10 select-none items-center justify-center rounded-md bg-gray-200 p-2 text-gray-700 dark:bg-darkColor dark:text-white ${
+          className={`flex h-10 w-10 cursor-not-allowed select-none items-center justify-center rounded-md bg-gray-200 p-2 text-gray-700 dark:bg-darkColor dark:text-white ${
             !sidePanel
               ? "md:h-10 md:w-10 md:rounded-md md:p-2"
               : "md:h-28 md:w-28 md:rounded-lg md:p-0"
@@ -140,13 +140,16 @@ const Components: React.FC<Props> = ({
           dragSnapToOrigin
           dragElastic={0}
           whileDrag={{ scale: 0.5 }}
+          onDrag={() => {
+            if (canvasRect == null) canvasRect = canvasRef.current?.getBoundingClientRect();
+            // TODO: scroll edges on drag
+          }}
           onDragStart={() => {
             componentsDiv.current?.classList.remove("scrollbar-thin");
-            canvasRect = canvasRef.current?.getBoundingClientRect();
           }}
           onDragEnd={(e, info) => {
             componentsDiv.current?.classList.add("scrollbar-thin");
-            addComponent(info, "entry");
+            addComponent(info, "Entry");
             scrollEdge(info);
           }}
           className={`flex h-10 w-10 select-none items-center justify-center rounded-md bg-gray-200 p-2 text-gray-700 dark:bg-darkColor dark:text-white ${
