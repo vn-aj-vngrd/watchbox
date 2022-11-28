@@ -2,9 +2,10 @@ import { Component } from "@prisma/client";
 
 type Props = {
   canvasElement: Component;
+  deleteComponent: (id: string) => void;
 };
 
-const TextComponent = ({ canvasElement }: Props) => {
+const TextComponent = ({ canvasElement, deleteComponent }: Props) => {
   return (
     <div
       className="absolute flex h-20 w-72 items-center justify-center rounded-md bg-gray-200 text-sm dark:bg-darkColor"
