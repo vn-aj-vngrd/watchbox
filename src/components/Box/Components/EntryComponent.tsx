@@ -14,6 +14,7 @@ type Props = {
   entryComponent: Component;
   shift: boolean;
   deleteComponent: (id: string) => void;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   refetch: () => void;
 };
 
@@ -34,12 +35,19 @@ type Movie = {
   vote_count: number;
 };
 
-const EntryComponent = ({ entryComponent, shift, deleteComponent, refetch }: Props) => {
+const EntryComponent = ({
+  entryComponent,
+  shift,
+  deleteComponent,
+  setIsLoading,
+  refetch,
+}: Props) => {
   const [movies, setMovies] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
 
-  // TODO: add isLoading to loader
   const { mutateAsync, isLoading } = trpc.useMutation("entry.createEntry");
+
+  setIsLoading(isLoading);
 
   const searchMovies = async (title: string) => {
     const req = await fetch(

@@ -108,6 +108,7 @@ const BoxPage = () => {
           canvasRef={canvasRef}
           canvasElements={getComponents?.data}
           isLoading={getComponents.isFetching || deleteComponentMutation.isLoading || isLoading}
+          setIsLoading={setIsLoading}
           refetch={refetchCanvasElements}
           deleteComponent={deleteComponent}
         />

@@ -7,19 +7,27 @@ import { Prisma } from "@prisma/client";
 import Spinner from "../Common/Spinner";
 
 type Component = Prisma.ComponentGetPayload<{
-  include: { text: true, entry: true, divider: true };
-}>
+  include: { text: true; entry: true; divider: true };
+}>;
 
 type Props = {
   id: string;
   canvasRef: React.RefObject<HTMLDivElement>;
   canvasElements: Component[] | undefined;
   isLoading: boolean;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   deleteComponent: (id: string) => void;
   refetch: () => void;
 };
 
-const Canvas: React.FC<Props> = ({ canvasRef, canvasElements, isLoading, deleteComponent, refetch }) => {
+const Canvas: React.FC<Props> = ({
+  canvasRef,
+  canvasElements,
+  isLoading,
+  setIsLoading,
+  deleteComponent,
+  refetch,
+}) => {
   const { events } = useDraggable(canvasRef as React.MutableRefObject<HTMLInputElement>);
   const [shift, setShift] = useState(false);
 
@@ -48,6 +56,7 @@ const Canvas: React.FC<Props> = ({ canvasRef, canvasElements, isLoading, deleteC
                   key={index}
                   textComponent={canvasElement}
                   deleteComponent={deleteComponent}
+                  setIsLoading={setIsLoading}
                   refetch={refetch}
                 />
               );
@@ -58,6 +67,7 @@ const Canvas: React.FC<Props> = ({ canvasRef, canvasElements, isLoading, deleteC
                   entryComponent={canvasElement}
                   shift={shift}
                   deleteComponent={deleteComponent}
+                  setIsLoading={setIsLoading}
                   refetch={refetch}
                 />
               );

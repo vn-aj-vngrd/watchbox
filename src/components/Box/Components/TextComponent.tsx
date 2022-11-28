@@ -3,10 +3,11 @@ import { Component } from "@prisma/client";
 type Props = {
   textComponent: Component;
   deleteComponent: (id: string) => void;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   refetch: () => void;
 };
 
-const TextComponent = ({ textComponent, deleteComponent, refetch }: Props) => {
+const TextComponent = ({ textComponent, deleteComponent, setIsLoading, refetch }: Props) => {
   return (
     <div
       className="absolute flex h-20 w-72 items-center justify-center rounded-md bg-gray-200 text-sm dark:bg-darkColor"
