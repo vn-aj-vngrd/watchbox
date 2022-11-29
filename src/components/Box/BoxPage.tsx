@@ -1,4 +1,3 @@
-import { Box, FavoriteBox } from "@prisma/client";
 import { useState, useRef } from "react";
 import { XCircleIcon } from "@heroicons/react/24/solid";
 import { useRouter } from "next/router";
@@ -11,18 +10,6 @@ import Components from "./Components";
 import Controls from "./Controls";
 import Header from "./Header";
 
-type CanvasElement = {
-  component: string;
-  x: number;
-  y: number;
-};
-
-type Props = {
-  box: Box | null | undefined;
-  favoriteBox: FavoriteBox | null | undefined;
-  id: string;
-};
-
 const description = [
   "The page you are looking for does not exist.",
   "Please check the URL and try again.",
@@ -30,7 +17,7 @@ const description = [
 
 const BoxPage = () => {
   const [sidePanel, setSidePanel] = useState(true);
-  const [canvasElements, setCanvasElements] = useState<CanvasElement[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const canvasRef = useRef<HTMLDivElement>(null);
 
   const router = useRouter();
@@ -38,6 +25,18 @@ const BoxPage = () => {
 
   const getBox = trpc.useQuery(["box.getBox", { id: id as string }]);
   const getFavoriteBox = trpc.useQuery(["favorite.getFavoriteBox", { boxId: id as string }]);
+  const getComponents = trpc.useQuery(["component.getComponents", { id: id as string }]);
+  const deleteComponentMutation = trpc.useMutation("component.deleteComponent");
+
+  const deleteComponent = async (id: string) => {
+    await deleteComponentMutation
+      .mutateAsync({
+        id: id,
+      })
+      .then(() => {
+        getComponents.refetch();
+      });
+  };
 
   if (getBox.isLoading || getFavoriteBox.isLoading) {
     return <Spinner isGlobal={true} />;
@@ -72,9 +71,13 @@ const BoxPage = () => {
     );
   }
 
-  const refetch = () => {
+  const refetchBox = () => {
     getBox.refetch();
     getFavoriteBox.refetch();
+  };
+
+  const refetchCanvasElements = () => {
+    getComponents.refetch();
   };
 
   return (
@@ -86,10 +89,11 @@ const BoxPage = () => {
       >
         <Controls sidePanel={sidePanel} setSidePanel={setSidePanel} />
         <Components
+          id={id as string}
           canvasRef={canvasRef}
           sidePanel={sidePanel}
-          canvasElements={canvasElements}
-          setCanvasElements={setCanvasElements}
+          setIsLoading={setIsLoading}
+          refetch={refetchCanvasElements}
         />
       </div>
       <div className="flex h-full grow flex-col">
@@ -97,9 +101,17 @@ const BoxPage = () => {
           box={getBox?.data}
           favoriteBox={getFavoriteBox?.data}
           id={id as string}
-          refetch={refetch}
+          refetch={refetchBox}
         />
-        <Canvas canvasRef={canvasRef} canvasElements={canvasElements} />
+        <Canvas
+          id={id as string}
+          canvasRef={canvasRef}
+          canvasElements={getComponents?.data}
+          isLoading={getComponents.isFetching || deleteComponentMutation.isLoading || isLoading}
+          setIsLoading={setIsLoading}
+          refetch={refetchCanvasElements}
+          deleteComponent={deleteComponent}
+        />
       </div>
     </div>
   );

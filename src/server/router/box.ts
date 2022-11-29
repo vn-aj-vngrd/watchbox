@@ -100,6 +100,7 @@ export const boxRouter = createProtectedRouter()
         },
         data: {
           boxTitle: input.boxTitle,
+          updated_at: new Date(),
         },
       });
     },

@@ -1,59 +1,53 @@
 import { useRef } from "react";
 import { motion, PanInfo } from "framer-motion";
 import { snap } from "popmotion";
-
-type CanvasElement = {
-  component: string;
-  x: number;
-  y: number;
-};
+import { trpc } from "../../utils/trpc";
 
 type Props = {
+  id: string;
   canvasRef: React.RefObject<HTMLDivElement>;
   sidePanel: boolean;
-  canvasElements: CanvasElement[];
-  setCanvasElements: React.Dispatch<React.SetStateAction<CanvasElement[]>>;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  refetch: () => void;
 };
 
-const Components: React.FC<Props> = ({
-  canvasRef,
-  sidePanel,
-  canvasElements,
-  setCanvasElements,
-}) => {
+const Components: React.FC<Props> = ({ id, canvasRef, sidePanel, setIsLoading, refetch }) => {
   const componentsDiv = useRef<HTMLDivElement>(null);
   let canvasRect: DOMRect | undefined;
   const snapTo = snap(10);
 
-  function addComponent(info: PanInfo, component: string) {
+  const { mutateAsync, isLoading } = trpc.useMutation("component.createComponent");
+
+  setIsLoading(isLoading);
+
+  const addComponent = async (info: PanInfo, component: string) => {
     if (
       canvasRef.current &&
       canvasRect?.x &&
       info.point.x - (canvasRect?.x ?? 0) > 0 &&
       info.point.y - (canvasRect?.y ?? 0) > 0
     ) {
-      setCanvasElements([
-        ...canvasElements,
-        {
-          component,
-          x: snapTo(
-            canvasRect.x + canvasRef.current.scrollLeft - info.point.x < 144 &&
-              canvasRect.x - info.point.x > -144
-              ? info.point.x - 288 + (288 - (info.point.x - canvasRect.x + 116))
-              : info.point.x - (canvasRect.x ?? 0) + canvasRef.current.scrollLeft,
-          ),
-          y: snapTo(
-            canvasRect.y + canvasRef.current.scrollTop - info.point.y < 40 &&
-              canvasRect.y - info.point.y > -40
-              ? info.point.y - 90 + (80 - (info.point.y - canvasRect.y + 40))
-              : info.point.y - (canvasRect?.y ?? 0) + canvasRef.current.scrollTop,
-          ),
-        },
-      ]);
+      await mutateAsync({
+        boxId: id,
+        componentName: component,
+        xAxis: snapTo(
+          canvasRect.x + canvasRef.current.scrollLeft - info.point.x < 144 &&
+            canvasRect.x - info.point.x > -144
+            ? info.point.x - 288 + (288 - (info.point.x - canvasRect.x + 116))
+            : info.point.x - (canvasRect.x ?? 0) + canvasRef.current.scrollLeft,
+        ),
+        yAxis: snapTo(
+          canvasRect.y + canvasRef.current.scrollTop - info.point.y < 40 &&
+            canvasRect.y - info.point.y > -40
+            ? info.point.y - 90 + (80 - (info.point.y - canvasRect.y + 40))
+            : info.point.y - (canvasRect?.y ?? 0) + canvasRef.current.scrollTop,
+        ),
+      });
+      refetch();
     }
-  }
+  };
 
-  function scrollEdge(info: PanInfo) {
+  const scrollEdge = (info: PanInfo) => {
     if (canvasRect && info.point.x > canvasRect.width + 144) {
       canvasRef.current?.scrollTo({
         left: canvasRef.current.scrollLeft + info.point.x - canvasRect.width - 116,
@@ -84,7 +78,7 @@ const Components: React.FC<Props> = ({
         behavior: "smooth",
       });
     }
-  }
+  };
 
   return (
     <div
@@ -97,11 +91,11 @@ const Components: React.FC<Props> = ({
         }`}
       >
         <motion.div
-          drag
+          // drag
           dragSnapToOrigin
           dragElastic={0}
           whileDrag={{ scale: 0.5 }}
-          onDrag={(e, info) => {
+          onDrag={() => {
             if (canvasRect == null) canvasRect = canvasRef.current?.getBoundingClientRect();
             // TODO: scroll edges on drag
           }}
@@ -110,10 +104,10 @@ const Components: React.FC<Props> = ({
           }}
           onDragEnd={(e, info) => {
             componentsDiv.current?.classList.add("scrollbar-thin");
-            addComponent(info, "text");
+            addComponent(info, "Text");
             scrollEdge(info);
           }}
-          className={`flex h-10 w-10 select-none items-center justify-center rounded-md bg-gray-200 p-2 text-gray-700 dark:bg-darkColor dark:text-white ${
+          className={`flex h-10 w-10 cursor-not-allowed select-none items-center justify-center rounded-md bg-gray-200 p-2 text-gray-700 dark:bg-darkColor dark:text-white ${
             !sidePanel
               ? "md:h-10 md:w-10 md:rounded-md md:p-2"
               : "md:h-28 md:w-28 md:rounded-lg md:p-0"
@@ -140,13 +134,16 @@ const Components: React.FC<Props> = ({
           dragSnapToOrigin
           dragElastic={0}
           whileDrag={{ scale: 0.5 }}
+          onDrag={() => {
+            if (canvasRect == null) canvasRect = canvasRef.current?.getBoundingClientRect();
+            // TODO: scroll edges on drag
+          }}
           onDragStart={() => {
             componentsDiv.current?.classList.remove("scrollbar-thin");
-            canvasRect = canvasRef.current?.getBoundingClientRect();
           }}
           onDragEnd={(e, info) => {
             componentsDiv.current?.classList.add("scrollbar-thin");
-            addComponent(info, "entry");
+            addComponent(info, "Entry");
             scrollEdge(info);
           }}
           className={`flex h-10 w-10 select-none items-center justify-center rounded-md bg-gray-200 p-2 text-gray-700 dark:bg-darkColor dark:text-white ${
