@@ -104,7 +104,7 @@ const Components: React.FC<Props> = ({ id, canvasRef, sidePanel, setIsLoading, r
             componentsDiv.current?.classList.add("scrollbar-thin");
             addComponent(info, "Text");
           }}
-          className={`flex h-10 w-10 cursor-not-allowed select-none items-center justify-center rounded-md bg-gray-200 p-2 text-gray-700 dark:bg-darkColor dark:text-white ${
+          className={`flex h-10 w-10 cursor-not-allowed items-center justify-center rounded-md bg-gray-200 p-2 text-gray-700 dark:bg-darkColor dark:text-white ${
             !sidePanel
               ? "md:h-10 md:w-10 md:rounded-md md:p-2"
               : "md:h-28 md:w-28 md:rounded-lg md:p-0"
@@ -142,7 +142,7 @@ const Components: React.FC<Props> = ({ id, canvasRef, sidePanel, setIsLoading, r
             componentsDiv.current?.classList.add("scrollbar-thin");
             addComponent(info, "Entry");
           }}
-          className={`flex h-10 w-10 select-none items-center justify-center rounded-md bg-gray-200 p-2 text-gray-700 dark:bg-darkColor dark:text-white ${
+          className={`flex h-10 w-10 items-center justify-center rounded-md bg-gray-200 p-2 text-gray-700 dark:bg-darkColor dark:text-white ${
             !sidePanel
               ? "md:h-10 md:w-10 md:rounded-md md:p-2"
               : "md:h-28 md:w-28 md:rounded-lg md:p-0"

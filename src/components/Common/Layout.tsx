@@ -23,7 +23,7 @@ const Layout = ({ children }: Props) => {
   return (
     <>
       <Meta />
-      <div className="flex h-screen flex-col justify-between">
+      <div className="flex h-screen select-none flex-col justify-between">
         <Header session={session} />
         <main
           className={`mx-auto w-full grow ${
