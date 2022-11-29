@@ -51,7 +51,6 @@ const Favorites: React.FC<FavoritesProps> = ({ setMode }) => {
       return;
     }
 
-    console.log(e.target.value);
     setSearchParam(e.target.value);
   };
 

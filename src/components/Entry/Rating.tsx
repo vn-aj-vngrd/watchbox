@@ -23,8 +23,6 @@ const Rating = ({ rating, refetch, entryId }: Props) => {
   const handleOnClick = (currentRating: number) => {
     setCurrentRating(currentRating);
 
-    console.log("current rating", currentRating);
-
     updateRating.mutateAsync({
       id: entryId as string,
       rating: currentRating,
