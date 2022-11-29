@@ -19,7 +19,7 @@ const Metadata = ({
   isNoted,
 }: Props) => {
   return (
-    <div className="mx-auto flex flex-col items-center py-4 md:flex-row md:items-start md:p-4 md:px-4">
+    <div className="mx-auto flex flex-col items-center py-4 md:max-w-7xl md:flex-row md:items-start md:p-4 md:px-4">
       <div className="relative flex h-[260px] w-[173px] shrink-0 grow rounded-md p-4 px-4 sm:h-[280px] sm:w-[186px] md:h-[300px] md:w-[200px] lg:h-[320px] lg:w-[213px]">
         <Image
           className="rounded-md"
