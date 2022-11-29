@@ -66,8 +66,6 @@ const Boxes = ({ setMode }: BoxesProps) => {
     setSkip(event.selected * itemsPerPage);
   };
 
-  console.log(boxesData);
-
   return (
     <div className="w-full space-y-8 py-6">
       <div className="flex flex-col items-center justify-between space-y-4 md:flex-row">

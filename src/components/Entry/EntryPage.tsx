@@ -31,8 +31,6 @@ const EntryPage = () => {
     },
   ]);
 
-  console.log("nikolai", getEntry);
-
   const updateRating = trpc.useMutation("entry.updateRating", {
     onSuccess: () => {
       refetch();
@@ -140,8 +138,6 @@ const EntryPage = () => {
       setIsShowNotes(!isShowNotes);
     }
   };
-
-  console.log(getEntry);
 
   return (
     <div className="flex h-full justify-center">

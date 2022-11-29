@@ -31,7 +31,6 @@ const Review = ({ review, refetch, entryId }: Props) => {
   }, [reset]);
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    console.log(data);
     updateReview.mutateAsync({
       id: entryId as string,
       review: data.review,
