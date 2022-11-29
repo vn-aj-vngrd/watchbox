@@ -51,7 +51,6 @@ const Favorites: React.FC<FavoritesProps> = ({ setMode }) => {
       return;
     }
 
-    console.log(e.target.value);
     setSearchParam(e.target.value);
   };
 
@@ -137,7 +136,7 @@ const Favorites: React.FC<FavoritesProps> = ({ setMode }) => {
                 type="text"
                 onChange={(e) => onSearch(e)}
                 className="text-gray-800d block w-full rounded-lg border border-gray-100 bg-white p-3 pl-10 text-sm placeholder-gray-500 outline-none dark:border-transparent dark:bg-darkColor dark:text-white dark:placeholder-gray-300 "
-                placeholder="Search Favorite"
+                placeholder="Search Favorites"
               />
             </div>
           </div>
@@ -170,14 +169,16 @@ const Favorites: React.FC<FavoritesProps> = ({ setMode }) => {
           >
             <div
               className={`grid ${
-                fav?.entries.length > 1 ? "grid-cols-2 grid-rows-2" : "grid-cols-1"
+                fav?.components.filter((x) => x.componentName === "Entry").length > 1
+                  ? "grid-cols-2 grid-rows-2"
+                  : "grid-cols-1"
               } bg-white-50 aspect-square w-32 gap-3 rounded-lg border border-gray-100 bg-white p-4 transition duration-150 ease-in-out group-hover:scale-105 dark:border-transparent dark:bg-darkColor lg:w-36`}
             >
-              {fav?.entries?.length == 1 ? (
+              {fav?.components.filter((x) => x.componentName === "Entry").length == 1 ? (
                 <div key={index} className="overflow-hidden rounded-md bg-white">
                   <Image
                     className="object-cover"
-                    src={fav?.entries[0]?.image || ""}
+                    src={fav?.components[0]?.entry?.image || ""}
                     alt=""
                     width="1080"
                     height="1080"
@@ -186,18 +187,21 @@ const Favorites: React.FC<FavoritesProps> = ({ setMode }) => {
                 </div>
               ) : (
                 <>
-                  {fav?.entries?.slice(0, 4).map((item, index) => (
-                    <div key={index} className="overflow-hidden rounded-md bg-white">
-                      <Image
-                        className="object-cover"
-                        src={item.image || ""}
-                        alt=""
-                        width="1080"
-                        height="1080"
-                        layout="responsive"
-                      />
-                    </div>
-                  ))}
+                  {fav?.components
+                    .filter((x) => x.componentName === "Entry")
+                    .slice(0, 4)
+                    .map((component, index) => (
+                      <div key={index} className="overflow-hidden rounded-md bg-white">
+                        <Image
+                          className="object-cover"
+                          src={component?.entry?.image || ""}
+                          alt=""
+                          width="1080"
+                          height="1080"
+                          layout="responsive"
+                        />
+                      </div>
+                    ))}
                 </>
               )}
             </div>

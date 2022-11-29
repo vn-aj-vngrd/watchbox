@@ -1,12 +1,13 @@
 import { GetServerSidePropsContext } from "next";
-import Meta from "../../components/Common/Meta";
-import { getServerSideSession } from "../../utils/session";
+import { getServerSideSession } from "../../../utils/session";
+import Meta from "../../../components/Common/Meta";
+import EntryPage from "../../../components/Entry/EntryPage";
 
 const entry = () => {
   return (
     <>
-      <Meta title="Entry" />
-      <p className="text-center">Entry</p>
+      <Meta title="WatchBox | Entry" />
+      <EntryPage />
     </>
   );
 };
