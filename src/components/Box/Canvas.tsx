@@ -41,8 +41,7 @@ const Canvas: React.FC<Props> = ({
       className="relative flex h-full select-none items-center justify-center scrollbar-thin scrollbar-track-gray-400/20 scrollbar-thumb-blue-500"
     >
       {isLoading && (
-        // TODO: absolutely center spinner in relation to viewport
-        <div className="pointer-events-none absolute z-50">
+        <div className="pointer-events-none fixed z-50">
           <Spinner />
         </div>
       )}
