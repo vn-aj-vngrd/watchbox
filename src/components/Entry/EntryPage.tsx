@@ -147,8 +147,8 @@ const EntryPage = () => {
   console.log(getEntry);
 
   return (
-    <div className="flex h-full justify-center overflow-y-auto">
-      <div className="flex flex-col">
+    <div className="flex h-full justify-center">
+      <div className="flex w-full flex-col">
         <EntryHeader
           boxId={getEntry?.data?.boxId}
           entryId={getEntry?.data?.id}
@@ -157,6 +157,7 @@ const EntryPage = () => {
           refetch={refetch}
         />
         <Metadata
+          movieId={getEntry?.data?.entry?.movieId}
           triggerRating={triggerRating}
           triggerReview={triggerReview}
           triggerNotes={triggerNotes}
