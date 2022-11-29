@@ -1,6 +1,6 @@
+import { useState, useRef } from "react";
 import { XCircleIcon } from "@heroicons/react/24/solid";
 import { useRouter } from "next/router";
-import { useState } from "react";
 import { trpc } from "../../utils/trpc";
 import Meta from "../Common/Meta";
 import PageAlert from "../Common/PageAlert";
@@ -17,12 +17,26 @@ const description = [
 
 const BoxPage = () => {
   const [sidePanel, setSidePanel] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const canvasRef = useRef<HTMLDivElement>(null);
 
   const router = useRouter();
   const { id } = router.query;
 
   const getBox = trpc.useQuery(["box.getBox", { id: id as string }]);
   const getFavoriteBox = trpc.useQuery(["favorite.getFavoriteBox", { boxId: id as string }]);
+  const getComponents = trpc.useQuery(["component.getComponents", { id: id as string }]);
+  const deleteComponentMutation = trpc.useMutation("component.deleteComponent");
+
+  const deleteComponent = async (id: string) => {
+    await deleteComponentMutation
+      .mutateAsync({
+        id: id,
+      })
+      .then(() => {
+        getComponents.refetch();
+      });
+  };
 
   if (getBox.isLoading || getFavoriteBox.isLoading) {
     return <Spinner isGlobal={true} />;
@@ -57,29 +71,47 @@ const BoxPage = () => {
     );
   }
 
-  const refetch = () => {
+  const refetchBox = () => {
     getBox.refetch();
     getFavoriteBox.refetch();
+  };
+
+  const refetchCanvasElements = () => {
+    getComponents.refetch();
   };
 
   return (
     <div className="flex h-full w-full">
       <div
-        className={`flex h-full w-12 flex-col border-r transition-all ease-in-out dark:border-darkColor ${
-          !sidePanel ? "md:w-12" : "md:w-72"
+        className={`flex h-full w-12 flex-col border-r transition-all duration-500 ease-in-out dark:border-darkColor ${
+          !sidePanel ? "md:w-12" : "md:w-[17rem]"
         }`}
       >
         <Controls sidePanel={sidePanel} setSidePanel={setSidePanel} />
-        <Components sidePanel={sidePanel} />
+        <Components
+          id={id as string}
+          canvasRef={canvasRef}
+          sidePanel={sidePanel}
+          setIsLoading={setIsLoading}
+          refetch={refetchCanvasElements}
+        />
       </div>
       <div className="flex h-full grow flex-col">
         <Header
           box={getBox?.data}
           favoriteBox={getFavoriteBox?.data}
           id={id as string}
-          refetch={refetch}
+          refetch={refetchBox}
         />
-        <Canvas />
+        <Canvas
+          id={id as string}
+          canvasRef={canvasRef}
+          canvasElements={getComponents?.data}
+          isLoading={getComponents.isFetching || deleteComponentMutation.isLoading || isLoading}
+          setIsLoading={setIsLoading}
+          refetch={refetchCanvasElements}
+          deleteComponent={deleteComponent}
+        />
       </div>
     </div>
   );

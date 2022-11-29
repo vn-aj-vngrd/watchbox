@@ -1,6 +1,6 @@
 // components/Profile.tsx
 
-import { ExclamationCircleIcon, PencilSquareIcon } from "@heroicons/react/24/solid";
+import { ExclamationCircleIcon, ArrowPathIcon } from "@heroicons/react/24/solid";
 import sha1 from "crypto-js/sha1";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
@@ -138,7 +138,7 @@ const Settings = () => {
                 <Image
                   className="absolute z-0 h-24 w-24 rounded-full"
                   src={session?.user?.image || ""}
-                  alt=""
+                  alt={session?.user?.name || ""}
                   priority
                   layout="fill"
                 />
@@ -175,7 +175,7 @@ const Settings = () => {
                         onClick={onImageUpload}
                         className="cursor absolute bottom-0 right-0 z-20 h-8 w-8 cursor-pointer rounded-full border border-gray-100 bg-white p-1.5 text-gray-700 hover:bg-gray-100 dark:border-transparent dark:bg-darkColor dark:hover:bg-grayColor"
                       >
-                        <PencilSquareIcon className="text-black dark:text-white" />
+                        <ArrowPathIcon className="text-black dark:text-white" />
                       </button>
                     )}
 
@@ -234,7 +234,7 @@ const Settings = () => {
               <div>
                 <label
                   htmlFor="username"
-                  className="text-gray- block text-sm font-medium dark:text-white"
+                  className="block text-sm font-medium text-gray-700 dark:text-white"
                 >
                   Name
                 </label>
@@ -294,11 +294,7 @@ const Settings = () => {
                     image.length === 0
                   }
                   className={
-                    username_watch === session?.user?.username &&
-                    name_watch === session?.user?.name &&
-                    image.length === 0
-                      ? "hidden"
-                      : "mt-6 flex w-full items-center justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white focus:outline-none hover:bg-blue-700"
+                    "mt-6 flex w-full items-center justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white focus:outline-none disabled:opacity-60 enabled:hover:bg-blue-700"
                   }
                 >
                   Save Changes

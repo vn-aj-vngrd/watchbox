@@ -23,11 +23,13 @@ const Layout = ({ children }: Props) => {
   return (
     <>
       <Meta />
-      <div className="flex h-screen flex-col justify-between">
+      <div className="flex h-screen select-none flex-col justify-between">
         <Header session={session} />
         <main
           className={`mx-auto w-full grow ${
-            pathname.includes("/box") ? "overflow-hidden" : "max-w-7xl px-4"
+            pathname.includes("/box") && !pathname.includes("/entry")
+              ? "overflow-hidden"
+              : "max-w-7xl px-4"
           }`}
         >
           {children}

@@ -24,6 +24,7 @@ export const serverSchema = z.object({
   CLOUDINARY_CLOUD_NAME: z.string(),
   CLOUDINARY_API_KEY: z.string(),
   CLOUDINARY_API_SECRET: z.string(),
+  TMDB_API_KEY: z.string(),
 });
 
 /**
@@ -36,6 +37,7 @@ export const clientSchema = z.object({
   NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME: z.string(),
   NEXT_PUBLIC_CLOUDINARY_API_KEY: z.string(),
   NEXT_PUBLIC_CLOUDINARY_SECRET: z.string(),
+  NEXT_PUBLIC_TMDB_API_KEY: z.string(),
 });
 
 /**
@@ -49,4 +51,5 @@ export const clientEnv = {
   NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
   NEXT_PUBLIC_CLOUDINARY_API_KEY: process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY,
   NEXT_PUBLIC_CLOUDINARY_SECRET: process.env.NEXT_PUBLIC_CLOUDINARY_SECRET,
+  NEXT_PUBLIC_TMDB_API_KEY: process.env.NEXT_PUBLIC_TMDB_API_KEY,
 };

@@ -1,6 +1,6 @@
-import { ChevronLeftIcon } from "@heroicons/react/24/solid";
 import { useState } from "react";
-// https://icon-sets.iconify.design/mingcute/
+import { ChevronLeftIcon } from "@heroicons/react/24/solid";
+import { useHotkeys } from "react-hotkeys-hook";
 
 type Props = {
   sidePanel: boolean;
@@ -76,9 +76,29 @@ const Contols = ({ sidePanel, setSidePanel }: Props) => {
   const [underline, setUnderline] = useState(false);
   const [alignment, setAlignment] = useState(0);
 
+  useHotkeys("ctrl+b", () => setBold((bold) => !bold), {
+    preventDefault: true,
+    enableOnFormTags: true,
+  });
+  useHotkeys("ctrl+i", () => setItalic((italic) => !italic), {
+    preventDefault: true,
+    enableOnFormTags: true,
+  });
+  useHotkeys("ctrl+u", () => setUnderline((underline) => !underline), {
+    preventDefault: true,
+    enableOnFormTags: true,
+  });
+  useHotkeys("ctrl+l", () => setAlignment(0), { preventDefault: true, enableOnFormTags: true });
+  useHotkeys("ctrl+e", () => setAlignment(1), { preventDefault: true, enableOnFormTags: true });
+  useHotkeys("ctrl+r", () => setAlignment(2), { preventDefault: true, enableOnFormTags: true });
+  useHotkeys("ctrl+[,ctrl+]", () => setSidePanel((sidePanel) => !sidePanel), {
+    preventDefault: true,
+    enableOnFormTags: true,
+  });
+
   return (
     <div
-      className={`flex h-fit flex-col items-center justify-center gap-3 border-b py-2 dark:border-darkColor ${
+      className={`flex h-fit flex-col items-center justify-center gap-3 border-b py-2 transition-all duration-500 ease-in-out dark:border-darkColor ${
         !sidePanel ? "md:h-fit md:flex-col md:py-2" : "md:h-12 md:flex-row md:py-0"
       }`}
     >
