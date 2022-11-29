@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import EntryHeader from "../Entry/EntryHeader";
-import Rating from "../Entry/Rating";
 import Review from "../Entry/Review";
 import Notes from "../Entry/Notes";
 import Metadata from "../Entry/Metadata";
@@ -19,7 +18,6 @@ const description = [
 const EntryPage = () => {
   const [isShowReview, setIsShowReview] = useState<boolean>(false);
   const [isShowNotes, setIsShowNotes] = useState<boolean>(false);
-  const [isShowRating, setIsShowRating] = useState<boolean>(false);
 
   const router = useRouter();
   const { id } = router.query;
@@ -30,13 +28,6 @@ const EntryPage = () => {
       id: id as string,
     },
   ]);
-
-  const updateRating = trpc.useMutation("entry.updateRating", {
-    onSuccess: () => {
-      refetch();
-      document.dispatchEvent(new Event("visibilitychange"));
-    },
-  });
 
   const updateReview = trpc.useMutation("entry.updateReview", {
     onSuccess: () => {
@@ -59,9 +50,6 @@ const EntryPage = () => {
       );
       setIsShowNotes(
         getEntry?.data?.entry?.note && getEntry?.data?.entry?.note !== "" ? true : false,
-      );
-      setIsShowRating(
-        getEntry?.data?.entry?.rating && getEntry?.data?.entry?.rating !== 0 ? true : false,
       );
     }
   }, [
@@ -108,18 +96,6 @@ const EntryPage = () => {
     getEntry.refetch();
   };
 
-  const triggerRating = () => {
-    if (isShowRating) {
-      setIsShowRating(!isShowRating);
-      updateRating.mutateAsync({
-        id: getEntry?.data?.entry?.id as string,
-        rating: 0,
-      });
-    } else {
-      setIsShowRating(!isShowRating);
-    }
-  };
-
   const triggerReview = () => {
     if (isShowReview) {
       setIsShowReview(!isShowReview);
@@ -155,26 +131,17 @@ const EntryPage = () => {
           refetch={refetch}
         />
         <Metadata
+          entryId={getEntry?.data?.entry?.id}
           movieId={getEntry?.data?.entry?.movieId}
-          triggerRating={triggerRating}
           triggerReview={triggerReview}
           triggerNotes={triggerNotes}
-          isStared={getEntry?.data?.entry?.rating ? true : false}
           isReviewed={getEntry?.data?.entry?.review ? true : false}
           isNoted={getEntry?.data?.entry?.note ? true : false}
+          refetch={refetch}
+          rating={getEntry?.data?.entry?.rating}
         />
         <div className="mx-auto flex w-full max-w-7xl flex-row">
           <div className="sm:ml-30 md:ml-50 mx-auto flex max-w-7xl grow flex-col px-4 pt-1 lg:ml-60 xl:ml-60">
-            {isShowRating ? (
-              <>
-                <Rating
-                  refetch={refetch}
-                  rating={getEntry?.data?.entry?.rating}
-                  entryId={getEntry?.data?.entry?.id}
-                />
-              </>
-            ) : null}
-
             {isShowReview ? (
               <>
                 <Review
