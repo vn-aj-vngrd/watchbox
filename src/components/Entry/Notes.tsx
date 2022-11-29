@@ -26,7 +26,7 @@ const Notes = ({ note, refetch, entryId }: Props) => {
 
   useEffect(() => {
     reset({
-      note: note || " ",
+      note: note || "",
     });
   }, [reset]);
 
@@ -40,29 +40,34 @@ const Notes = ({ note, refetch, entryId }: Props) => {
 
   return (
     <>
-      <p className="py-2 text-lg">My Notes</p>
-      <form onSubmit={handleSubmit(onSubmit)} className="pt-1">
-        <div className="mb-4 w-full rounded-lg bg-gray-100 pt-1 dark:border-darkColor dark:bg-darkColor">
-          <div className="rounded-t-lg bg-gray-100 px-4 py-2 dark:bg-darkColor">
-            <textarea
-              {...register("note")}
-              rows={4}
-              className="w-full bg-gray-100 px-1 py-1 text-sm dark:bg-darkColor dark:text-white dark:placeholder-gray-400"
-              placeholder="Write a note..."
-            ></textarea>
-          </div>
-          {note_watch !== note ? (
-            <div className="flex items-center justify-end border-t px-3 py-2 dark:border-darkColor">
+      <div className="border-t dark:border-darkColor">
+        <p className="pt-3 text-lg">My Notes</p>
+        <form onSubmit={handleSubmit(onSubmit)} className="pt-3">
+          <div className="mb-4 w-full rounded-lg bg-gray-100 dark:border-darkColor dark:bg-darkColor">
+            <div
+              className={`bg-gray-100 px-4 py-2 dark:bg-neutral-700 ${
+                note_watch !== note ? "rounded-t-lg" : "rounded-lg"
+              }`}
+            >
+              <textarea
+                {...register("note")}
+                rows={4}
+                className="w-full bg-gray-100 py-1 text-sm dark:bg-neutral-700 dark:text-white"
+                placeholder="Write a note..."
+              ></textarea>
+            </div>
+            <div className="dark:bg-dark flex items-center justify-end border-t px-3 py-2 dark:border-neutral-500">
               <button
                 type="submit"
-                className="inline-flex items-center rounded-lg bg-blue-600 py-2.5 px-4 text-center text-xs font-medium text-white focus:ring-4 focus:ring-blue-200 hover:bg-blue-700 dark:focus:ring-blue-900"
+                disabled={note_watch === note}
+                className="inline-flex w-28 items-center justify-center rounded-lg bg-blue-600 py-2.5 px-4 text-center text-xs font-medium focus:ring-4 focus:ring-blue-200 enabled:text-white disabled:bg-blue-600/60 disabled:text-white/60 enabled:hover:bg-blue-700 dark:focus:ring-blue-900"
               >
                 Save Note
               </button>
             </div>
-          ) : null}
-        </div>
-      </form>
+          </div>
+        </form>
+      </div>
     </>
   );
 };

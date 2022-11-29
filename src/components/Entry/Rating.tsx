@@ -23,6 +23,8 @@ const Rating = ({ rating, refetch, entryId }: Props) => {
   const handleOnClick = (currentRating: number) => {
     setCurrentRating(currentRating);
 
+    console.log("current rating", currentRating);
+
     updateRating.mutateAsync({
       id: entryId as string,
       rating: currentRating,
@@ -30,7 +32,7 @@ const Rating = ({ rating, refetch, entryId }: Props) => {
   };
 
   return (
-    <div>
+    <div className="border-t dark:border-darkColor">
       <p className="pt-3.5 text-lg">My Rating</p>
       <div className="my-3 flex items-center justify-start space-x-4">
         <div>
@@ -43,7 +45,9 @@ const Rating = ({ rating, refetch, entryId }: Props) => {
           />
         </div>
 
-        <p className="rounded-md bg-gray-200 px-4 py-0.5 text-black">{ratingDesc[currentRating]}</p>
+        <p className="flex items-center rounded-md  bg-gray-200 px-4 py-0.5 text-black">
+          {ratingDesc[currentRating]}
+        </p>
       </div>
     </div>
   );

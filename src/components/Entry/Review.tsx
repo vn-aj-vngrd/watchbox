@@ -26,7 +26,7 @@ const Review = ({ review, refetch, entryId }: Props) => {
 
   useEffect(() => {
     reset({
-      review: review || " ",
+      review: review || "",
     });
   }, [reset]);
 
@@ -40,29 +40,34 @@ const Review = ({ review, refetch, entryId }: Props) => {
 
   return (
     <>
-      <p className="pt-3.5 text-lg">My Review</p>
-      <form onSubmit={handleSubmit(onSubmit)} className="pt-3">
-        <div className="mb-4 w-full rounded-lg bg-gray-100 pt-1 dark:border-darkColor dark:bg-darkColor">
-          <div className="rounded-t-lg bg-gray-100 px-4 py-2 dark:bg-darkColor">
-            <textarea
-              {...register("review")}
-              rows={4}
-              className="w-full bg-gray-100 px-1 py-1 text-sm dark:bg-darkColor dark:text-white dark:placeholder-gray-400"
-              placeholder="Write a review..."
-            ></textarea>
-          </div>
-          {review_watch !== review ? (
-            <div className="flex items-center justify-end border-t px-3 py-2 dark:border-darkColor">
+      <div className="border-t border-darkColor">
+        <p className="pt-3 text-lg">My Review</p>
+        <form onSubmit={handleSubmit(onSubmit)} className="mb-2 pt-3 ">
+          <div className="mb-4 w-full rounded-lg bg-gray-100 dark:border-darkColor dark:bg-darkColor">
+            <div
+              className={`bg-gray-100 px-4 py-2 dark:bg-neutral-700 ${
+                review_watch !== review ? "rounded-t-lg" : "rounded-lg"
+              }`}
+            >
+              <textarea
+                {...register("review")}
+                rows={4}
+                className="w-full bg-gray-100 py-1 text-sm dark:bg-neutral-700 dark:text-white"
+                placeholder="Write a review..."
+              ></textarea>
+            </div>
+            <div className="dark:bg-dark flex items-center justify-end border-t px-3 py-2 dark:border-neutral-500">
               <button
                 type="submit"
-                className="inline-flex items-center rounded-lg bg-blue-600 py-2.5 px-4 text-center text-xs font-medium text-white  hover:bg-blue-700"
+                disabled={review_watch === review}
+                className="inline-flex w-28 justify-center rounded-lg bg-blue-600 py-2.5 px-4 text-xs font-medium focus:ring-4 focus:ring-blue-200 enabled:text-white disabled:bg-blue-600/60 disabled:text-white/60 enabled:hover:bg-blue-700 dark:focus:ring-blue-900"
               >
                 Save Review
               </button>
             </div>
-          ) : null}
-        </div>
-      </form>
+          </div>
+        </form>
+      </div>
     </>
   );
 };
