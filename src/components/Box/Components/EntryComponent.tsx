@@ -67,7 +67,7 @@ const EntryComponent = ({
 
   const handleMovieSelect = async (movie: Movie) => {
     if (movie != null) {
-      const { id, original_title, poster_path } = movie as Movie;
+      const { id, original_title, poster_path } = movie;
       await mutateAsync({
         componentId: entryComponent.id,
         movieId: id.toString(),
