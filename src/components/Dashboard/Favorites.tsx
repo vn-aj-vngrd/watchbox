@@ -208,7 +208,11 @@ const Favorites: React.FC<FavoritesProps> = ({ setMode }) => {
             </div>
             <div className="bg-transparent p-2 text-center">
               <p className="font-normal text-gray-600 subpixel-antialiased dark:text-white">
-                {fav?.boxTitle}
+                {fav.boxTitle.length > 12 ? (
+                  <>{fav?.boxTitle?.substring(0, 12)}...</>
+                ) : (
+                  <>{fav?.boxTitle}</>
+                )}
               </p>
             </div>
           </button>

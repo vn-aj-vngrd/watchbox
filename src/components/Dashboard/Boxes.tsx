@@ -227,7 +227,11 @@ const Boxes = ({ setMode }: BoxesProps) => {
             </div>
             <div className="bg-transparent p-2 text-center">
               <p className="font-normal text-gray-600 subpixel-antialiased dark:text-white">
-                {box?.boxTitle}
+                {box.boxTitle.length > 12 ? (
+                  <>{box?.boxTitle?.substring(0, 12)}...</>
+                ) : (
+                  <>{box?.boxTitle}</>
+                )}
               </p>
             </div>
           </button>

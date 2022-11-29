@@ -152,7 +152,7 @@ const Settings = () => {
                 {({ imageList, onImageUpload }) => (
                   <>
                     {isLoading ? (
-                      <div className="cursor absolute bottom-0 right-0 z-20 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-gray-100 bg-white p-1.5 text-gray-700 shadow-sm hover:bg-gray-100 dark:border-transparent dark:bg-darkColor dark:hover:bg-grayColor">
+                      <div className="cursor absolute bottom-0 right-0 z-20 flex h-8 w-8 cursor-pointer items-center justify-center rounded-full border border-gray-100 bg-white p-1.5 text-gray-700 hover:bg-gray-100 dark:border-transparent dark:bg-darkColor dark:hover:bg-grayColor">
                         <svg
                           aria-hidden="true"
                           className="h-5 w-5 animate-spin fill-blue-600 text-gray-200 dark:text-gray-600"
@@ -173,7 +173,7 @@ const Settings = () => {
                     ) : (
                       <button
                         onClick={onImageUpload}
-                        className="cursor absolute bottom-0 right-0 z-20 h-8 w-8 cursor-pointer rounded-full border border-gray-100 bg-white p-1.5 text-gray-700 shadow-sm hover:bg-gray-100 dark:border-transparent dark:bg-darkColor dark:hover:bg-grayColor"
+                        className="cursor absolute bottom-0 right-0 z-20 h-8 w-8 cursor-pointer rounded-full border border-gray-100 bg-white p-1.5 text-gray-700 hover:bg-gray-100 dark:border-transparent dark:bg-darkColor dark:hover:bg-grayColor"
                       >
                         <PencilSquareIcon className="text-black dark:text-white" />
                       </button>
@@ -203,7 +203,7 @@ const Settings = () => {
                 >
                   Username
                 </label>
-                <div className="relative mt-2 rounded-md shadow-sm">
+                <div className="relative mt-2 rounded-md">
                   <input
                     type="text"
                     className="input"
@@ -238,7 +238,7 @@ const Settings = () => {
                 >
                   Name
                 </label>
-                <div className="relative mt-2 rounded-md shadow-sm">
+                <div className="relative mt-2 rounded-md">
                   <input
                     type="text"
                     className="input"
@@ -273,7 +273,7 @@ const Settings = () => {
                 >
                   Email
                 </label>
-                <div className="relative mt-2 rounded-md shadow-sm">
+                <div className="relative mt-2 rounded-md">
                   <input
                     type="email"
                     autoComplete="email"
@@ -298,7 +298,7 @@ const Settings = () => {
                     name_watch === session?.user?.name &&
                     image.length === 0
                       ? "hidden"
-                      : "mt-6 flex w-full items-center justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm focus:outline-none hover:bg-blue-700"
+                      : "mt-6 flex w-full items-center justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white focus:outline-none hover:bg-blue-700"
                   }
                 >
                   Save Changes

@@ -113,6 +113,7 @@ const Header = ({ box, favoriteBox, id, refetch }: Props) => {
           type="text"
           disabled={session?.user?.id !== box?.id}
           className="mt-px w-48 border-b border-b-transparent bg-transparent font-medium focus:border-b-gray-200 focus:outline-none hover:border-b-gray-200 dark:focus:border-b-darkColor dark:hover:border-b-darkColor md:w-64"
+          // FIXME: Error messages overflow in mobile view
           {...register("boxTitle", {
             required: {
               value: true,
@@ -132,7 +133,7 @@ const Header = ({ box, favoriteBox, id, refetch }: Props) => {
               <>
                 <svg
                   role="status"
-                  className="ml-1 mt-px inline-flex h-4 w-4 animate-spin text-blue-500"
+                  className="ml-1 inline-flex h-4 w-4 animate-spin text-blue-500"
                   viewBox="0 0 100 101"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
@@ -148,7 +149,7 @@ const Header = ({ box, favoriteBox, id, refetch }: Props) => {
                 </svg>
               </>
             ) : (
-              <CheckIcon className="h-[22px] w-[22px] pt-px text-green-500" />
+              <CheckIcon className="h-6 w-6 text-blue-500" />
             )}
           </button>
         )}

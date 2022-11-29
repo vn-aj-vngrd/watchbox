@@ -13,11 +13,11 @@ const description = [
 const error = () => {
   return (
     <>
-      <Meta title="Watchbox | Sign In Error" />
+      <Meta title="Error" />
       <PageAlert
         elem={
-          <h2 className="flex justify-center mb-10">
-            <XCircleIcon className="w-12 h-12 text-red-500" />
+          <h2 className="mb-10 flex justify-center">
+            <XCircleIcon className="h-12 w-12 text-red-500" />
           </h2>
         }
         title="Sign in Error"
