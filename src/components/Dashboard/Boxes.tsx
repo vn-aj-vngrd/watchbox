@@ -198,7 +198,10 @@ const Boxes = ({ setMode }: BoxesProps) => {
                 <div className="overflow-hidden rounded-md bg-white">
                   <Image
                     className="object-cover"
-                    src={box?.components[0]?.entry?.image || ""}
+                    src={
+                      `https://www.themoviedb.org/t/p/w600_and_h900_bestv2/${box?.components[0]?.entry?.image}` ||
+                      ""
+                    }
                     alt=""
                     width="1080"
                     height="1080"
@@ -214,7 +217,10 @@ const Boxes = ({ setMode }: BoxesProps) => {
                       <div key={index} className="overflow-hidden rounded-md bg-white">
                         <Image
                           className="object-cover"
-                          src={component?.entry?.image || ""}
+                          src={
+                            `https://www.themoviedb.org/t/p/w600_and_h900_bestv2/${component?.entry?.image}` ||
+                            ""
+                          }
                           alt=""
                           width="1080"
                           height="1080"

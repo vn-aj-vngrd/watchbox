@@ -1,5 +1,8 @@
 import Image from "next/image";
 import { StarIcon, PencilIcon, NewspaperIcon, EyeIcon } from "@heroicons/react/24/solid";
+import { env } from "../../env/client.mjs";
+import { useEffect, useState } from "react";
+import Link from "next/link.js";
 
 type Props = {
   triggerRating: () => void;
@@ -8,6 +11,33 @@ type Props = {
   isStared: boolean;
   isReviewed: boolean;
   isNoted: boolean;
+  movieId: string | undefined;
+};
+
+type Genre = {
+  id: number;
+  name: string;
+};
+
+type Movie = {
+  adult: boolean;
+  backdrop_path: string;
+  belongs_to_collection: null;
+  genres: Genre[];
+  homepage: string;
+  id: number;
+  imdb_id: string;
+  original_language: string;
+  original_title: string;
+  overview: string;
+  popularity: number;
+  poster_path: string;
+  release_date: string;
+  runtime: number;
+  title: string;
+  video: boolean;
+  vote_average: number;
+  vote_count: number;
 };
 
 const Metadata = ({
@@ -17,20 +47,68 @@ const Metadata = ({
   isStared,
   isReviewed,
   isNoted,
+  movieId,
 }: Props) => {
+  const [movie, setMovie] = useState<Movie | null>(null);
+  const [watchProvider, setWatchProvider] = useState<string | null>(null);
+  const [hours, setHours] = useState<number>(0);
+  const [minutes, setMinutes] = useState<number>(0);
+  const [date, setDate] = useState<string>("");
+
+  const getDetails = async () => {
+    const req = await fetch(
+      `https://api.themoviedb.org/3/movie/${movieId}?api_key=${env.NEXT_PUBLIC_TMDB_API_KEY}&language=en-US`,
+      {
+        method: "GET",
+      },
+    ).then((res) => res.json());
+    setMovie(req);
+  };
+
+  const getWatchProviders = async () => {
+    const req = await fetch(
+      `https://api.themoviedb.org/3/movie/${movieId}/watch/providers?api_key=${env.NEXT_PUBLIC_TMDB_API_KEY}`,
+      {
+        method: "GET",
+      },
+    ).then((res) => res.json());
+    const { PH } = req.results;
+    const link = PH?.link;
+    setWatchProvider(link);
+  };
+
+  useEffect(() => {
+    if (movie === null) {
+      getDetails();
+      getWatchProviders();
+    } else {
+      if (minutes === 0) {
+        const { runtime } = movie;
+        const hours = Math.floor(runtime / 60);
+        const minutes = runtime % 60;
+        setHours(hours);
+        setMinutes(minutes);
+      }
+
+      if (date === "") {
+        setDate(new Date(Date.parse(movie?.release_date)).getFullYear().toString());
+      }
+    }
+  });
+
   return (
-    <div className="mx-auto flex flex-col items-center py-4 md:max-w-7xl md:flex-row md:items-start md:p-4 md:px-4">
-      <div className="relative flex h-[260px] w-[173px] shrink-0 grow rounded-md p-4 px-4 sm:h-[280px] sm:w-[186px] md:h-[300px] md:w-[200px] lg:h-[320px] lg:w-[213px]">
+    <div className="flex flex-col items-center py-4 md:flex-row md:items-start md:p-4 md:px-4">
+      <div className="relative flex h-[260px] w-[173px] shrink-0 rounded-md p-4 px-4 sm:h-[280px] sm:w-[186px] md:h-[300px] md:w-[200px] lg:h-[320px] lg:w-[213px]">
         <Image
           className="rounded-md"
-          src="https://www.themoviedb.org/t/p/w600_and_h900_bestv2/3Ib8vlWTrAKRrTWUrTrZPOMW4jp.jpg"
+          src={`https://www.themoviedb.org/t/p/w600_and_h900_bestv2/${movie?.poster_path}`}
           layout="fill"
         />
       </div>
       <div className="flex md:ml-2 md:px-4 md:pt-4">
         <div className="flex flex-col items-center md:items-start">
           <h3 className="mt-4 flex flex-row text-3xl font-bold sm:text-4xl md:mt-0 md:text-4xl lg:text-4xl xl:text-4xl">
-            West Side Story
+            {movie?.title}
           </h3>
           <div className="mt-2 inline-flex items-center space-x-2 text-sm">
             <div className="relative h-7 w-7">
@@ -39,16 +117,15 @@ const Metadata = ({
                 layout="fill"
               />
             </div>
-            <p> 2021 ⚬ 2h 36m ⚬ Musical, Drama</p>
+            <p>
+              {" "}
+              {date} • {(hours != 0 ? hours + "h " : "") + minutes + "m"} •{" "}
+              {movie?.genres.map((genre: Genre, index) =>
+                index < movie?.genres.length - 1 ? " " + genre.name + "," : " " + genre.name,
+              )}
+            </p>
           </div>
-          <p className="mt-2 pr-2 text-justify text-sm md:text-start">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec dictum fringilla nulla et
-            sagittis. Aliquam vestibulum dignissim sagittis. Etiam a varius eros. Vivamus dictum,
-            nisl vel volutpat commodo, quam tortor facilisis mi, at suscipit dui erat sed lectus.
-            Nulla libero lectus, vestibulum eu vehicula sagittis, lobortis non nisi. Duis nulla
-            mauris, scelerisque non feugiat non, convallis a ante. Praesent vel ante a nibh posuere
-            aliquam in in sapien.
-          </p>
+          <p className="mt-2 pr-2 text-justify text-sm md:text-start">{movie?.overview}</p>
           <div className="mt-5 flex space-x-6 text-center">
             <div>
               <button
@@ -105,10 +182,12 @@ const Metadata = ({
                 {isNoted ? "Remove Note" : "Add Note"}
               </p>
             </div>
-            <div>
-              <button className="inline-flex items-center rounded bg-gray-100 py-2 px-4 font-bold text-gray-800 hover:bg-gray-200 dark:bg-darkColor dark:hover:bg-grayColor md:py-4 md:px-7">
-                <EyeIcon className="h-5 w-5 dark:text-white" />
-              </button>
+            <div className="hover:cursor-pointer">
+              <a href={watchProvider || ""} target={"_blank"} rel={"noreferrer"}>
+                <div className="inline-flex items-center rounded bg-gray-100 py-2 px-4 font-bold text-gray-800 hover:bg-gray-200 dark:bg-darkColor dark:hover:bg-grayColor md:py-4 md:px-7">
+                  <EyeIcon className="h-5 w-5 dark:text-white" />
+                </div>
+              </a>
               <p className="hidden pt-1.5 text-xs md:block">Watch Now</p>
             </div>
           </div>
