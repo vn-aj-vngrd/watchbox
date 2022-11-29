@@ -137,7 +137,7 @@ const Favorites: React.FC<FavoritesProps> = ({ setMode }) => {
                 type="text"
                 onChange={(e) => onSearch(e)}
                 className="text-gray-800d block w-full rounded-lg border border-gray-100 bg-white p-3 pl-10 text-sm placeholder-gray-500 outline-none dark:border-transparent dark:bg-darkColor dark:text-white dark:placeholder-gray-300 "
-                placeholder="Search Favorite"
+                placeholder="Search Favorites"
               />
             </div>
           </div>

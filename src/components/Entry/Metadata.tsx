@@ -100,7 +100,7 @@ const Metadata = ({
     <div className="flex flex-col items-center py-4 md:flex-row md:items-start md:p-4 md:px-4">
       <div className="relative flex h-[260px] w-[173px] shrink-0 rounded-md p-4 px-4 sm:h-[280px] sm:w-[186px] md:h-[300px] md:w-[200px] lg:h-[320px] lg:w-[213px]">
         <Image
-          className="select-none rounded-md"
+          className="rounded-md"
           src={`https://www.themoviedb.org/t/p/w600_and_h900_bestv2/${movie?.poster_path}`}
           layout="fill"
         />
@@ -111,7 +111,7 @@ const Metadata = ({
             {movie?.title}
           </h3>
           <div className="mt-2 inline-flex items-center space-x-2 text-sm">
-            <div className="relative h-7 w-7 select-none">
+            <div className="relative h-7 w-7">
               <Image
                 src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_square_1-5bdc75aaebeb75dc7ae79426ddd9be3b2be1e342510f8202baf6bffa71d7f5c4.svg"
                 layout="fill"
@@ -142,7 +142,7 @@ const Metadata = ({
                   className={`h-5 w-5 dark:text-white ${isStared ? "text-white" : "text-gray-800"}`}
                 />
               </button>
-              <p className="hidden select-none pt-1.5 text-xs md:block">
+              <p className="hidden pt-1.5 text-xs md:block">
                 {isStared ? "Remove Rating" : "Add Rating"}
               </p>
             </div>
@@ -161,7 +161,7 @@ const Metadata = ({
                   }`}
                 />
               </button>
-              <p className="hidden select-none pt-1.5 text-xs md:block">
+              <p className="hidden pt-1.5 text-xs md:block">
                 {isReviewed ? "Remove Review" : "Add Review"}
               </p>
             </div>
@@ -178,7 +178,7 @@ const Metadata = ({
                   className={`h-5 w-5 dark:text-white ${isNoted ? "text-white" : "text-gray-800"}`}
                 />
               </button>
-              <p className="hidden select-none pt-1.5 text-xs md:block">
+              <p className="hidden pt-1.5 text-xs md:block">
                 {isNoted ? "Remove Note" : "Add Note"}
               </p>
             </div>
@@ -193,7 +193,7 @@ const Metadata = ({
                   <EyeIcon className="h-5 w-5 dark:text-white" />
                 </div>
               </a>
-              <p className="hidden select-none pt-1.5 text-xs md:block">Watch Now</p>
+              <p className="hidden pt-1.5 text-xs md:block">Watch Now</p>
             </div>
           </div>
         </div>

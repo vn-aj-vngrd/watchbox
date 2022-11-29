@@ -40,10 +40,7 @@ const EntryHeader = ({ boxId, entryId, entryTitle, refetch, status }: Props) => 
   return (
     <div className="mx-auto flex w-full max-w-7xl flex-row justify-between border-b border-gray-200 py-2.5 dark:border-grayColor md:py-4">
       <div className="flex md:hidden">
-        <button
-          onClick={() => router.push(`/box/${boxId}`)}
-          className="inline-flex select-none items-center"
-        >
+        <button onClick={() => router.push(`/box/${boxId}`)} className="inline-flex items-center">
           <ChevronLeftIcon className="mr-1 h-4 w-4 fill-gray-600" />
           Back
         </button>
@@ -54,7 +51,7 @@ const EntryHeader = ({ boxId, entryId, entryTitle, refetch, status }: Props) => 
             <div className="flex items-center">
               <button
                 onClick={() => router.push(`/box/${boxId}`)}
-                className="text-md ml-1 select-none font-medium text-black hover:text-blue-600 dark:text-white dark:hover:text-blue-600 md:ml-2"
+                className="text-md ml-1 font-medium text-black hover:text-blue-600 dark:text-white dark:hover:text-blue-600 md:ml-2"
               >
                 {getBoxTitle?.data?.boxTitle}
               </button>
@@ -74,9 +71,7 @@ const EntryHeader = ({ boxId, entryId, entryTitle, refetch, status }: Props) => 
                   clipRule="evenodd"
                 ></path>
               </svg>
-              <span className="text-md ml-1 select-none font-medium text-blue-600 md:ml-2">
-                {entryTitle}
-              </span>
+              <span className="text-md ml-1 font-medium text-blue-600 md:ml-2">{entryTitle}</span>
             </div>
           </li>
         </ol>
@@ -93,7 +88,7 @@ const EntryHeader = ({ boxId, entryId, entryTitle, refetch, status }: Props) => 
               aria-expanded="true"
               aria-haspopup="true"
             >
-              <p className="mr-8 select-none">{watchStatus[watchStatusIdx]}</p>
+              <p className="mr-8">{watchStatus[watchStatusIdx]}</p>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -130,7 +125,7 @@ const EntryHeader = ({ boxId, entryId, entryTitle, refetch, status }: Props) => 
                         setWatchStatusIdx(index);
                         setIsShowDropdown(false);
                       }}
-                      className="text-md block w-full select-none px-4 py-2 text-left text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                      className="text-md block w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100 hover:text-gray-900"
                       role="menuitem"
                     >
                       {item}

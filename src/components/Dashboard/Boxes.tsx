@@ -11,7 +11,6 @@ import Image from "next/image";
 import router from "next/router";
 import { useState } from "react";
 import ReactPaginate from "react-paginate";
-import entry from "../../pages/box/entry/[id]";
 import { trpc } from "../../utils/trpc";
 import Spinner from "../Common/Spinner";
 import CreateBox from "./CreateBox";

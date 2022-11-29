@@ -23,7 +23,7 @@ const Header = ({ session }: Props) => {
             className="flex items-center justify-center space-x-1"
           >
             <SquaresPlusIcon className="mr-3 h-7 w-7 text-blue-600" />
-            <h1 className="hidden select-none items-center text-xl font-semibold text-gray-800 dark:text-white md:flex">
+            <h1 className="hidden items-center text-xl font-semibold text-gray-800 dark:text-white md:flex">
               WatchBox
             </h1>
           </button>
@@ -60,7 +60,7 @@ const Header = ({ session }: Props) => {
                 </div>
                 <input
                   type="text"
-                  className="block w-full select-none rounded-lg border border-gray-100 bg-gray-100 p-2 pl-10 text-sm text-black placeholder-gray-500 outline-none dark:border-transparent dark:bg-darkColor dark:text-white dark:placeholder-gray-300"
+                  className="block w-full rounded-lg border border-gray-100 bg-gray-100 p-2 pl-10 text-sm text-black placeholder-gray-500 outline-none dark:border-transparent dark:bg-darkColor dark:text-white dark:placeholder-gray-300"
                   placeholder="Search WatchBox"
                 />
               </div>

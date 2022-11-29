@@ -38,7 +38,7 @@ const Canvas: React.FC<Props> = ({
     <div
       ref={canvasRef}
       {...events}
-      className="relative flex h-full select-none items-center justify-center scrollbar-thin scrollbar-track-gray-400/20 scrollbar-thumb-blue-500"
+      className="relative flex h-full items-center justify-center scrollbar-thin scrollbar-track-gray-400/20 scrollbar-thumb-blue-500"
     >
       {isLoading && (
         <div className="pointer-events-none fixed z-50">
