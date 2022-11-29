@@ -64,7 +64,12 @@ const EntryPage = () => {
         getEntry?.data?.entry?.rating && getEntry?.data?.entry?.rating !== 0 ? true : false,
       );
     }
-  }, [getEntry.isFetched]);
+  }, [
+    getEntry.isFetched,
+    getEntry?.data?.entry?.review,
+    getEntry?.data?.entry?.note,
+    getEntry?.data?.entry?.rating,
+  ]);
 
   if (getEntry.isLoading) {
     return <Spinner isGlobal={true} />;

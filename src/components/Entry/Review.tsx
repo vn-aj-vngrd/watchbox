@@ -28,7 +28,7 @@ const Review = ({ review, refetch, entryId }: Props) => {
     reset({
       review: review || "",
     });
-  }, [reset]);
+  }, [reset, review]);
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     updateReview.mutateAsync({
