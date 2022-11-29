@@ -31,6 +31,8 @@ const EntryPage = () => {
     },
   ]);
 
+  console.log("nikolai", getEntry);
+
   const updateRating = trpc.useMutation("entry.updateRating", {
     onSuccess: () => {
       refetch();
@@ -55,23 +57,18 @@ const EntryPage = () => {
   useEffect(() => {
     if (getEntry.isFetched) {
       setIsShowReview(
-        getEntry?.data?.entry?.review || getEntry?.data?.entry?.review !== "" ? true : false,
+        getEntry?.data?.entry?.review && getEntry?.data?.entry?.review !== "" ? true : false,
       );
       setIsShowNotes(
-        getEntry?.data?.entry?.note || getEntry?.data?.entry?.note !== "" ? true : false,
+        getEntry?.data?.entry?.note && getEntry?.data?.entry?.note !== "" ? true : false,
       );
       setIsShowRating(
-        getEntry?.data?.entry?.rating || getEntry?.data?.entry?.rating !== 0 ? true : false,
+        getEntry?.data?.entry?.rating && getEntry?.data?.entry?.rating !== 0 ? true : false,
       );
     }
   }, [getEntry.isFetched]);
 
-  if (
-    getEntry.isLoading ||
-    updateRating.isLoading ||
-    updateReview.isLoading ||
-    updateNote.isLoading
-  ) {
+  if (getEntry.isLoading) {
     return <Spinner isGlobal={true} />;
   }
 
@@ -112,7 +109,7 @@ const EntryPage = () => {
     if (isShowRating) {
       setIsShowRating(!isShowRating);
       updateRating.mutateAsync({
-        id: getEntry?.data?.id as string,
+        id: getEntry?.data?.entry?.id as string,
         rating: 0,
       });
     } else {
@@ -124,7 +121,7 @@ const EntryPage = () => {
     if (isShowReview) {
       setIsShowReview(!isShowReview);
       updateReview.mutateAsync({
-        id: getEntry?.data?.id as string,
+        id: getEntry?.data?.entry?.id as string,
         review: "",
       });
     } else {
@@ -136,7 +133,7 @@ const EntryPage = () => {
     if (isShowNotes) {
       setIsShowNotes(!isShowNotes);
       updateNote.mutateAsync({
-        id: getEntry?.data?.id as string,
+        id: getEntry?.data?.entry?.id as string,
         note: "",
       });
     } else {
@@ -151,7 +148,7 @@ const EntryPage = () => {
       <div className="flex w-full flex-col">
         <EntryHeader
           boxId={getEntry?.data?.boxId}
-          entryId={getEntry?.data?.id}
+          entryId={getEntry?.data?.entry?.id}
           entryTitle={getEntry?.data?.entry?.title}
           status={getEntry?.data?.entry?.status}
           refetch={refetch}
@@ -169,33 +166,30 @@ const EntryPage = () => {
           <div className="sm:ml-30 md:ml-50 mx-auto flex max-w-7xl grow flex-col px-4 pt-1 lg:ml-60 xl:ml-60">
             {isShowRating ? (
               <>
-                <hr />
                 <Rating
                   refetch={refetch}
                   rating={getEntry?.data?.entry?.rating}
-                  entryId={getEntry?.data?.id}
+                  entryId={getEntry?.data?.entry?.id}
                 />
               </>
             ) : null}
 
             {isShowReview ? (
               <>
-                <hr />
                 <Review
                   review={getEntry?.data?.entry?.review ?? ""}
                   refetch={refetch}
-                  entryId={getEntry?.data?.id}
+                  entryId={getEntry?.data?.entry?.id}
                 />
               </>
             ) : null}
 
             {isShowNotes ? (
               <>
-                <hr />
                 <Notes
                   note={getEntry?.data?.entry?.note ?? ""}
                   refetch={refetch}
-                  entryId={getEntry?.data?.id}
+                  entryId={getEntry?.data?.entry?.id}
                 />
               </>
             ) : null}
