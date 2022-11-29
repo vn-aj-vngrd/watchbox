@@ -1,6 +1,6 @@
 // components/Profile.tsx
 
-import { ExclamationCircleIcon, PencilSquareIcon } from "@heroicons/react/24/solid";
+import { ExclamationCircleIcon, ArrowPathIcon } from "@heroicons/react/24/solid";
 import sha1 from "crypto-js/sha1";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
@@ -175,7 +175,7 @@ const Settings = () => {
                         onClick={onImageUpload}
                         className="cursor absolute bottom-0 right-0 z-20 h-8 w-8 cursor-pointer rounded-full border border-gray-100 bg-white p-1.5 text-gray-700 hover:bg-gray-100 dark:border-transparent dark:bg-darkColor dark:hover:bg-grayColor"
                       >
-                        <PencilSquareIcon className="text-black dark:text-white" />
+                        <ArrowPathIcon className="text-black dark:text-white" />
                       </button>
                     )}
 
