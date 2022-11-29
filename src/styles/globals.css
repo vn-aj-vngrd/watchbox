@@ -21,6 +21,13 @@
 
   textarea {
     @apply border-none outline-none;
+    @apply placeholder-neutral-700;
+    @apply dark:placeholder-neutral-400;
+  }
+
+  input {
+    @apply placeholder-neutral-700;
+    @apply dark:placeholder-neutral-300;
   }
 }
 

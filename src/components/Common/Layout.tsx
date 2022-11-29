@@ -27,7 +27,7 @@ const Layout = ({ children }: Props) => {
         <Header session={session} />
         <main
           className={`mx-auto w-full grow ${
-            ["/box", "/box/entry"].some((path) => pathname.includes(path))
+            pathname.includes("/box") && !pathname.includes("/entry")
               ? "overflow-hidden"
               : "max-w-7xl px-4"
           }`}
