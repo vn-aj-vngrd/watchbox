@@ -1,8 +1,7 @@
 import Image from "next/image";
 import { StarIcon, PencilIcon, NewspaperIcon, EyeIcon } from "@heroicons/react/24/solid";
 import { env } from "../../env/client.mjs";
-import { useEffect, useState } from "react";
-import Link from "next/link.js";
+import { useEffect, useState, useCallback } from "react";
 
 type Props = {
   triggerRating: () => void;
@@ -55,7 +54,7 @@ const Metadata = ({
   const [minutes, setMinutes] = useState<number>(0);
   const [date, setDate] = useState<string>("");
 
-  const getDetails = async () => {
+  const getDetails = useCallback(async () => {
     const req = await fetch(
       `https://api.themoviedb.org/3/movie/${movieId}?api_key=${env.NEXT_PUBLIC_TMDB_API_KEY}&language=en-US`,
       {
@@ -63,9 +62,9 @@ const Metadata = ({
       },
     ).then((res) => res.json());
     setMovie(req);
-  };
+  }, [movieId]);
 
-  const getWatchProviders = async () => {
+  const getWatchProviders = useCallback(async () => {
     const req = await fetch(
       `https://api.themoviedb.org/3/movie/${movieId}/watch/providers?api_key=${env.NEXT_PUBLIC_TMDB_API_KEY}`,
       {
@@ -75,7 +74,7 @@ const Metadata = ({
     const { PH } = req.results;
     const link = PH?.link;
     setWatchProvider(link);
-  };
+  }, [movieId]);
 
   useEffect(() => {
     if (movie === null) {
@@ -94,11 +93,12 @@ const Metadata = ({
         setDate(new Date(Date.parse(movie?.release_date)).getFullYear().toString());
       }
     }
-  });
+  }, [date, getDetails, getWatchProviders, minutes, movie]);
 
   return (
     <div className="flex flex-col items-center py-4 md:flex-row md:items-start md:p-4 md:px-4">
       <div className="relative flex h-[260px] w-[173px] shrink-0 rounded-md p-4 px-4 sm:h-[280px] sm:w-[186px] md:h-[300px] md:w-[200px] lg:h-[320px] lg:w-[213px]">
+        {/* TODO: Add image loader */}
         <Image
           className="rounded-md"
           src={`https://www.themoviedb.org/t/p/w600_and_h900_bestv2/${movie?.poster_path}`}

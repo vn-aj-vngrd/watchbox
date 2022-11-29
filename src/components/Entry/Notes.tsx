@@ -28,7 +28,7 @@ const Notes = ({ note, refetch, entryId }: Props) => {
     reset({
       note: note || "",
     });
-  }, [reset]);
+  }, [reset, note]);
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     updateNote.mutateAsync({
