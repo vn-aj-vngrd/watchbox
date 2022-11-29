@@ -52,7 +52,7 @@ model Entry {
   note        String?
   review      String?
   status      Int       @default(0)
-  rating      Int       @default(0)
+  rating      Float     @default(0)
   created_at  DateTime  @default(now())
   updated_at  DateTime  @default(now())
   component   Component @relation(fields: [componentId], references: [id], onDelete: Cascade)

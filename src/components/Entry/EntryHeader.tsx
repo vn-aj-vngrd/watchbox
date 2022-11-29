@@ -41,7 +41,7 @@ const EntryHeader = ({ boxId, entryId, entryTitle, refetch, status }: Props) => 
     <div className="mx-auto flex w-full max-w-7xl flex-row justify-between border-b border-gray-200 py-2.5 dark:border-grayColor md:py-4">
       <div className="flex md:hidden">
         <button onClick={() => router.push(`/box/${boxId}`)} className="inline-flex items-center">
-          <ChevronLeftIcon className="mr-1 h-4 w-4 fill-gray-600" />
+          <ChevronLeftIcon className="mr-1 mt-0.5 h-4 w-4 fill-neutral-400" />
           Back
         </button>
       </div>
@@ -59,18 +59,7 @@ const EntryHeader = ({ boxId, entryId, entryTitle, refetch, status }: Props) => 
           </li>
           <li aria-current="page">
             <div className="flex items-center">
-              <svg
-                className="h-6 w-6 text-gray-400"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                  clipRule="evenodd"
-                ></path>
-              </svg>
+              <ChevronLeftIcon className="h-5 w-5 rotate-180 fill-neutral-400" />
               <span className="text-md ml-1 font-medium text-blue-600 md:ml-2">{entryTitle}</span>
             </div>
           </li>
@@ -80,15 +69,16 @@ const EntryHeader = ({ boxId, entryId, entryTitle, refetch, status }: Props) => 
       <div className="flex flex-row items-center justify-end">
         <div className="relative inline-block text-left">
           <div>
+            {/* TODO: Add color indicator to watch status */}
             <button
               onClick={showDropdown}
               type="button"
-              className="text-md inline-flex w-[130px] items-center justify-center space-x-5 rounded-md border border-transparent bg-gray-100 px-4 py-1 font-medium text-gray-500 shadow-sm dark:bg-darkColor dark:text-white"
+              className="text-md inline-flex w-fit items-center justify-center rounded-md border border-transparent bg-gray-100 py-1 pl-4 pr-10 font-medium text-gray-500 shadow-sm dark:bg-darkColor dark:text-white"
               id="options-menu"
               aria-expanded="true"
               aria-haspopup="true"
             >
-              <p className="mr-8">{watchStatus[watchStatusIdx]}</p>
+              {watchStatus[watchStatusIdx]}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -108,7 +98,7 @@ const EntryHeader = ({ boxId, entryId, entryTitle, refetch, status }: Props) => 
           {isShowDropdown ? (
             <>
               <div
-                className="absolute right-0 z-20 mt-2 w-[130px] origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                className="absolute right-0 z-20 mt-2 w-[130px] origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-darkColor"
                 role="menu"
                 aria-orientation="vertical"
                 aria-labelledby="options-menu"
@@ -125,7 +115,7 @@ const EntryHeader = ({ boxId, entryId, entryTitle, refetch, status }: Props) => 
                         setWatchStatusIdx(index);
                         setIsShowDropdown(false);
                       }}
-                      className="text-md block w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                      className="text-md block w-full px-4 py-2 text-left text-gray-900 hover:bg-gray-100 hover:text-gray-900 dark:text-white dark:hover:bg-grayColor"
                       role="menuitem"
                     >
                       {item}

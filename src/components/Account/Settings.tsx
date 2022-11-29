@@ -234,7 +234,7 @@ const Settings = () => {
               <div>
                 <label
                   htmlFor="username"
-                  className="text-gray- block text-sm font-medium dark:text-white"
+                  className="block text-sm font-medium text-gray-700 dark:text-white"
                 >
                   Name
                 </label>
@@ -294,11 +294,7 @@ const Settings = () => {
                     image.length === 0
                   }
                   className={
-                    username_watch === session?.user?.username &&
-                    name_watch === session?.user?.name &&
-                    image.length === 0
-                      ? "hidden"
-                      : "mt-6 flex w-full items-center justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white focus:outline-none hover:bg-blue-700"
+                    "mt-6 flex w-full items-center justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white focus:outline-none disabled:opacity-60 enabled:hover:bg-blue-700"
                   }
                 >
                   Save Changes
