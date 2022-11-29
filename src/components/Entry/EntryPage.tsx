@@ -147,7 +147,7 @@ const EntryPage = () => {
   console.log(getEntry);
 
   return (
-    <div className="flex h-full">
+    <div className="flex h-full justify-center overflow-y-auto">
       <div className="flex flex-col">
         <EntryHeader
           boxId={getEntry?.data?.boxId}
