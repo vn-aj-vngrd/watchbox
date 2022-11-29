@@ -35,7 +35,7 @@ const AvatarDropdown = ({ session }: Props) => {
             <div className="relative h-full w-full">
               <Image
                 src={session?.user?.image || ""}
-                alt=""
+                alt={session?.user?.name || ""}
                 layout="fill"
                 priority
                 objectFit="cover"

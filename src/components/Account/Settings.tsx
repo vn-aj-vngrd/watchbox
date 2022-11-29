@@ -138,7 +138,7 @@ const Settings = () => {
                 <Image
                   className="absolute z-0 h-24 w-24 rounded-full"
                   src={session?.user?.image || ""}
-                  alt=""
+                  alt={session?.user?.name || ""}
                   priority
                   layout="fill"
                 />

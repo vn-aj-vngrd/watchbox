@@ -103,6 +103,7 @@ const Metadata = ({
           className="rounded-md"
           src={`https://www.themoviedb.org/t/p/w600_and_h900_bestv2/${movie?.poster_path}`}
           layout="fill"
+          alt={movie?.title}
         />
       </div>
       <div className="flex md:ml-2 md:px-4 md:pt-4">
@@ -115,6 +116,7 @@ const Metadata = ({
               <Image
                 src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_square_1-5bdc75aaebeb75dc7ae79426ddd9be3b2be1e342510f8202baf6bffa71d7f5c4.svg"
                 layout="fill"
+                alt="TMDB Logo"
               />
             </div>
             <p>
