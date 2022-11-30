@@ -14,7 +14,6 @@ type Component = Prisma.ComponentGetPayload<{
 type Props = {
   entryComponent: Component;
   shift: boolean;
-  refetch: () => void;
 };
 
 type Movie = {
@@ -34,7 +33,7 @@ type Movie = {
   vote_count: number;
 };
 
-const EntryComponent = ({ entryComponent, shift, refetch }: Props) => {
+const EntryComponent = ({ entryComponent, shift }: Props) => {
   const [movies, setMovies] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
 
@@ -42,13 +41,9 @@ const EntryComponent = ({ entryComponent, shift, refetch }: Props) => {
   const deleteComponent = trpc.useMutation("component.deleteComponent");
 
   const removeComponent = async (id: string) => {
-    await deleteComponent
-      .mutateAsync({
-        id: id,
-      })
-      .then(() => {
-        refetch();
-      });
+    await deleteComponent.mutateAsync({
+      id: id,
+    });
   };
 
   const searchMovies = async (title: string) => {
@@ -79,7 +74,6 @@ const EntryComponent = ({ entryComponent, shift, refetch }: Props) => {
         })
         .then(() => {
           setSelectedMovie(movie);
-          refetch();
         });
     }
   };
