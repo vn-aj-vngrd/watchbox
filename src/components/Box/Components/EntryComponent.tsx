@@ -14,6 +14,7 @@ type Component = Prisma.ComponentGetPayload<{
 type Props = {
   entryComponent: Component;
   shift: boolean;
+  refetch: () => void;
 };
 
 type Movie = {
@@ -33,7 +34,7 @@ type Movie = {
   vote_count: number;
 };
 
-const EntryComponent = ({ entryComponent, shift }: Props) => {
+const EntryComponent = ({ entryComponent, shift, refetch }: Props) => {
   const [movies, setMovies] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
 
@@ -74,6 +75,7 @@ const EntryComponent = ({ entryComponent, shift }: Props) => {
         })
         .then(() => {
           setSelectedMovie(movie);
+          refetch();
         });
     }
   };
