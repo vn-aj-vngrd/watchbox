@@ -2,6 +2,7 @@ import { Combobox } from "@headlessui/react";
 import { TrashIcon } from "@heroicons/react/24/solid";
 import { Prisma } from "@prisma/client";
 import router from "next/router";
+import { useEffect } from "react";
 import { useState } from "react";
 import { env } from "../../../env/client.mjs";
 import { trpc } from "../../../utils/trpc";
@@ -41,6 +42,10 @@ const EntryComponent = ({ entryComponent, shift, deleteComponent, refetch }: Pro
   const [isLoading, setIsLoading] = useState(false);
 
   const createEntry = trpc.useMutation("entry.createEntry");
+
+  useEffect(() => {
+    setIsLoading(false);
+  }, []);
 
   const searchMovies = async (title: string) => {
     const req = await fetch(
