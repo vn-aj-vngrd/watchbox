@@ -6,7 +6,7 @@ import { getServerSideSession } from "../../utils/session";
 const account = () => {
   return (
     <>
-      <Meta title="Box" />
+      <Meta title="Box | WatchBox" />
       <BoxPage />
     </>
   );

@@ -2,7 +2,6 @@ import { Component } from "@prisma/client";
 
 type Props = {
   textComponent: Component;
-  deleteComponent: (id: string) => void;
   refetch: () => void;
 };
 

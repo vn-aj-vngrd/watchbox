@@ -5,7 +5,6 @@ import { useRouter } from "next/router";
 import { ReactNode } from "react";
 import Footer from "./Footer";
 import Header from "./Header";
-import Meta from "./Meta";
 
 type Props = {
   children: ReactNode;
@@ -17,7 +16,6 @@ const Layout = ({ children }: Props) => {
 
   return (
     <>
-      <Meta />
       <div className="flex h-screen select-none flex-col justify-between">
         <Header session={session} />
         <main
