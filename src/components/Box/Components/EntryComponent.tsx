@@ -1,10 +1,11 @@
-import { useState } from "react";
-import { env } from "../../../env/client.mjs";
 import { Combobox } from "@headlessui/react";
-import router from "next/router";
-import { trpc } from "../../../utils/trpc";
 import { TrashIcon } from "@heroicons/react/24/solid";
 import { Prisma } from "@prisma/client";
+import router from "next/router";
+import { useState } from "react";
+import { env } from "../../../env/client.mjs";
+import { trpc } from "../../../utils/trpc";
+import Spinner from "../../Common/Spinner";
 
 type Component = Prisma.ComponentGetPayload<{
   include: { text: true; entry: true; divider: true };
@@ -14,7 +15,6 @@ type Props = {
   entryComponent: Component;
   shift: boolean;
   deleteComponent: (id: string) => void;
-  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   refetch: () => void;
 };
 
@@ -35,19 +35,12 @@ type Movie = {
   vote_count: number;
 };
 
-const EntryComponent = ({
-  entryComponent,
-  shift,
-  deleteComponent,
-  setIsLoading,
-  refetch,
-}: Props) => {
+const EntryComponent = ({ entryComponent, shift, deleteComponent, refetch }: Props) => {
   const [movies, setMovies] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const { mutateAsync, isLoading } = trpc.useMutation("entry.createEntry");
-
-  setIsLoading(isLoading);
+  const createEntry = trpc.useMutation("entry.createEntry");
 
   const searchMovies = async (title: string) => {
     const req = await fetch(
@@ -68,15 +61,17 @@ const EntryComponent = ({
   const handleMovieSelect = async (movie: Movie) => {
     if (movie != null) {
       const { id, original_title, poster_path } = movie;
-      await mutateAsync({
-        componentId: entryComponent.id,
-        movieId: id.toString(),
-        title: original_title,
-        image: poster_path,
-      }).then(() => {
-        setSelectedMovie(movie);
-        refetch();
-      });
+      await createEntry
+        .mutateAsync({
+          componentId: entryComponent.id,
+          movieId: id.toString(),
+          title: original_title,
+          image: poster_path,
+        })
+        .then(() => {
+          setSelectedMovie(movie);
+          refetch();
+        });
     }
   };
 
@@ -95,7 +90,10 @@ const EntryComponent = ({
       {shift && (
         <div className="absolute -right-3 -top-3 z-20">
           <button
-            onClick={() => deleteComponent(entryComponent.id)}
+            onClick={() => {
+              if (!isLoading) deleteComponent(entryComponent.id);
+              setIsLoading(true);
+            }}
             className="rounded-full bg-gray-200 p-[6px] shadow-md outline-none dark:bg-darkColor"
           >
             <TrashIcon className="h-[18px] w-[18px] text-red-500" />
@@ -122,33 +120,43 @@ const EntryComponent = ({
         </div>
       </div>
       <div className="flex h-full w-full items-center justify-center">
-        {entryComponent?.entry?.movieId ? (
-          entryComponent?.entry?.title
-        ) : (
-          // TODO: Load more results on scroll
-          // TODO: If searchMovies returns no results, substring the query iteratively and search again
-          <Combobox value={selectedMovie} onChange={handleMovieSelect} nullable>
-            <Combobox.Input
-              onChange={handleInputChange}
-              displayValue={(movie: Movie) => movie?.original_title ?? ""}
-              className="h-full w-full bg-transparent text-center placeholder-neutral-700 outline-none dark:placeholder-neutral-300"
-              placeholder="Search for a movie..."
-            />
-            <Combobox.Options className="absolute top-20 z-20 mt-1 max-h-64 w-full rounded-md bg-gray-200 scrollbar-thin scrollbar-track-gray-400/20 scrollbar-thumb-blue-500 dark:bg-darkColor">
-              {movies.map((movie: Movie) => (
-                <Combobox.Option
-                  key={movie.id}
-                  value={movie}
-                  className="y-2 rounded-md py-3 px-3 hover:cursor-pointer hover:bg-white hover:font-semibold hover:text-black active:bg-blue-500 active:text-white"
-                >
-                  {movie.original_title +
-                    " • " +
-                    new Date(Date.parse(movie.release_date)).getFullYear()}
-                </Combobox.Option>
-              ))}
-            </Combobox.Options>
-          </Combobox>
-        )}
+        <>
+          {isLoading || createEntry.isLoading ? (
+            <div>
+              <Spinner />
+            </div>
+          ) : (
+            <>
+              {entryComponent?.entry?.movieId ? (
+                entryComponent?.entry?.title
+              ) : (
+                // TODO: Load more results on scroll
+                // TODO: If searchMovies returns no results, substring the query iteratively and search again
+                <Combobox value={selectedMovie} onChange={handleMovieSelect} nullable>
+                  <Combobox.Input
+                    onChange={handleInputChange}
+                    displayValue={(movie: Movie) => movie?.original_title ?? ""}
+                    className="h-full w-full bg-transparent text-center placeholder-neutral-700 outline-none dark:placeholder-neutral-300"
+                    placeholder="Search for a movie..."
+                  />
+                  <Combobox.Options className="absolute top-20 z-20 mt-1 max-h-64 w-full rounded-md bg-gray-200 scrollbar-thin scrollbar-track-gray-400/20 scrollbar-thumb-blue-500 dark:bg-darkColor">
+                    {movies.map((movie: Movie) => (
+                      <Combobox.Option
+                        key={movie.id}
+                        value={movie}
+                        className="y-2 rounded-md py-3 px-3 hover:cursor-pointer hover:bg-white hover:font-semibold hover:text-black active:bg-blue-500 active:text-white"
+                      >
+                        {movie.original_title +
+                          " • " +
+                          new Date(Date.parse(movie.release_date)).getFullYear()}
+                      </Combobox.Option>
+                    ))}
+                  </Combobox.Options>
+                </Combobox>
+              )}
+            </>
+          )}
+        </>
       </div>
     </div>
   );

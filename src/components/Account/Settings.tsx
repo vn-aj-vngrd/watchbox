@@ -1,6 +1,6 @@
-// components/Profile.tsx
+// components/Settings.tsx
 
-import { ExclamationCircleIcon, ArrowPathIcon } from "@heroicons/react/24/solid";
+import { ArrowPathIcon, ExclamationCircleIcon } from "@heroicons/react/24/solid";
 import sha1 from "crypto-js/sha1";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
@@ -134,7 +134,7 @@ const Settings = () => {
         <div className="rounded-lg border border-gray-100 bg-white px-4 py-8 dark:border-transparent dark:bg-darkerColor sm:px-10">
           <div className="space-y-6">
             <div className="relative mx-auto h-32 w-32 rounded-full bg-gray-100 dark:bg-grayColor">
-              {image.length === 0 && (
+              {image.length === 0 && session?.user?.image && (
                 <Image
                   className="absolute z-0 h-24 w-24 rounded-full"
                   src={session?.user?.image || ""}
