@@ -8,7 +8,7 @@ import { getServerSideSession } from "../../utils/session";
 const signin = () => {
   return (
     <>
-      <Meta title="Sign In" />
+      <Meta title="Sign In | WatchBox" />
       <SigninForm />
     </>
   );

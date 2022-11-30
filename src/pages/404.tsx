@@ -11,7 +11,7 @@ const description = [
 const Custom404 = () => {
   return (
     <>
-      <Meta title="404" />
+      <Meta title="404 | WatchBox" />
       <PageAlert
         elem={<p className="text-4xl font-extrabold text-red-600 sm:text-5xl">404</p>}
         title="Page not found"

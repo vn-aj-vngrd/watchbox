@@ -16,7 +16,7 @@ const Home: NextPage = () => {
 
   return (
     <>
-      <Meta />
+      <Meta title="WatchBox" />
       {session ? (
         <>
           <div className="h-full">

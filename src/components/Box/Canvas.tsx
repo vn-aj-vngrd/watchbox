@@ -1,8 +1,7 @@
 import { useDraggable } from "react-use-draggable-scroll";
 import EntryComponent from "./Components/EntryComponent";
-import TextComponent from "./Components/TextComponent";
 import { Prisma } from "@prisma/client";
-import { trpc } from "../../utils/trpc";
+import TextComponent from "./Components/TextComponent";
 
 type Component = Prisma.ComponentGetPayload<{
   include: { text: true; entry: true; divider: true };
@@ -19,18 +18,6 @@ type Props = {
 const Canvas: React.FC<Props> = ({ canvasRef, canvasElements, shift, refetch }) => {
   const { events } = useDraggable(canvasRef as React.MutableRefObject<HTMLInputElement>);
 
-  const deleteComponentMutation = trpc.useMutation("component.deleteComponent");
-
-  const deleteComponent = async (id: string) => {
-    await deleteComponentMutation
-      .mutateAsync({
-        id: id,
-      })
-      .then(() => {
-        refetch();
-      });
-  };
-
   return (
     // TODO: add right and bottom padding to canvas
     <div
@@ -44,21 +31,13 @@ const Canvas: React.FC<Props> = ({ canvasRef, canvasElements, shift, refetch }) 
         canvasElements?.map((canvasElement: Component, index) => {
           switch (canvasElement.componentName) {
             case "Text":
-              return (
-                <TextComponent
-                  key={index}
-                  textComponent={canvasElement}
-                  deleteComponent={deleteComponent}
-                  refetch={refetch}
-                />
-              );
+              return <TextComponent key={index} textComponent={canvasElement} refetch={refetch} />;
             case "Entry":
               return (
                 <EntryComponent
                   key={index}
                   entryComponent={canvasElement}
                   shift={shift}
-                  deleteComponent={deleteComponent}
                   refetch={refetch}
                 />
               );

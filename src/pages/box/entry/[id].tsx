@@ -6,7 +6,7 @@ import EntryPage from "../../../components/Entry/EntryPage";
 const entry = () => {
   return (
     <>
-      <Meta title="WatchBox | Entry" />
+      <Meta title="Entry | WatchBox" />
       <EntryPage />
     </>
   );

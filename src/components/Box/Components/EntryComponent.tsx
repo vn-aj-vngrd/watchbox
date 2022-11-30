@@ -2,7 +2,6 @@ import { Combobox } from "@headlessui/react";
 import { TrashIcon } from "@heroicons/react/24/solid";
 import { Prisma } from "@prisma/client";
 import router from "next/router";
-import { useEffect } from "react";
 import { useState } from "react";
 import { env } from "../../../env/client.mjs";
 import { trpc } from "../../../utils/trpc";
@@ -15,7 +14,6 @@ type Component = Prisma.ComponentGetPayload<{
 type Props = {
   entryComponent: Component;
   shift: boolean;
-  deleteComponent: (id: string) => void;
   refetch: () => void;
 };
 
@@ -36,16 +34,22 @@ type Movie = {
   vote_count: number;
 };
 
-const EntryComponent = ({ entryComponent, shift, deleteComponent, refetch }: Props) => {
+const EntryComponent = ({ entryComponent, shift, refetch }: Props) => {
   const [movies, setMovies] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
 
   const createEntry = trpc.useMutation("entry.createEntry");
+  const deleteComponent = trpc.useMutation("component.deleteComponent");
 
-  useEffect(() => {
-    setIsLoading(false);
-  }, []);
+  const removeComponent = async (id: string) => {
+    await deleteComponent
+      .mutateAsync({
+        id: id,
+      })
+      .then(() => {
+        refetch();
+      });
+  };
 
   const searchMovies = async (title: string) => {
     const req = await fetch(
@@ -80,6 +84,10 @@ const EntryComponent = ({ entryComponent, shift, deleteComponent, refetch }: Pro
     }
   };
 
+  if (deleteComponent.isSuccess) {
+    return <></>;
+  }
+
   return (
     <div
       onClick={
@@ -96,8 +104,7 @@ const EntryComponent = ({ entryComponent, shift, deleteComponent, refetch }: Pro
         <div className="absolute -right-3 -top-3 z-20">
           <button
             onClick={() => {
-              if (!isLoading) deleteComponent(entryComponent.id);
-              setIsLoading(true);
+              if (!deleteComponent.isLoading) removeComponent(entryComponent.id);
             }}
             className="rounded-full bg-gray-200 p-[6px] shadow-md outline-none dark:bg-darkColor"
           >
@@ -126,7 +133,7 @@ const EntryComponent = ({ entryComponent, shift, deleteComponent, refetch }: Pro
       </div>
       <div className="flex h-full w-full items-center justify-center">
         <>
-          {isLoading || createEntry.isLoading ? (
+          {deleteComponent.isLoading || createEntry.isLoading ? (
             <div>
               <Spinner />
             </div>
