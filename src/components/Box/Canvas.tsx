@@ -33,14 +33,7 @@ const Canvas: React.FC<Props> = ({ canvasRef, canvasElements, shift, refetch }) 
             case "Text":
               return <TextComponent key={index} textComponent={canvasElement} refetch={refetch} />;
             case "Entry":
-              return (
-                <EntryComponent
-                  key={index}
-                  entryComponent={canvasElement}
-                  shift={shift}
-                  refetch={refetch}
-                />
-              );
+              return <EntryComponent key={index} entryComponent={canvasElement} shift={shift} />;
           }
         })
       )}
