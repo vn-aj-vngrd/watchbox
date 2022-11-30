@@ -83,12 +83,12 @@ const EntryComponent = ({
   return (
     <div
       onClick={
-        entryComponent?.entry?.movieId
+        entryComponent?.entry?.movieId && !shift
           ? () => router.push(`entry/${entryComponent?.entry?.componentId}`)
           : undefined
       }
       className={`absolute flex h-20 w-72 items-center justify-center rounded-md bg-gray-200 text-sm dark:bg-darkColor ${
-        entryComponent?.entry?.movieId && "cursor-pointer"
+        entryComponent?.entry?.movieId && !shift && "cursor-pointer"
       }`}
       style={{ top: entryComponent?.yAxis - 40, left: entryComponent?.xAxis - 144 }}
     >
