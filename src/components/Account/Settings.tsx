@@ -276,10 +276,9 @@ const Settings = () => {
                 <div className="relative mt-2 rounded-md">
                   <input
                     type="email"
-                    autoComplete="email"
-                    disabled
                     value={session?.user?.email || ""}
                     className="input"
+                    disabled
                   />
                 </div>
               </div>
@@ -303,7 +302,7 @@ const Settings = () => {
             </form>
           </div>
 
-          <div className="mt-6">
+          <div className="mt-4">
             <Deactivate handleRemove={handleRemove} />
           </div>
         </div>
