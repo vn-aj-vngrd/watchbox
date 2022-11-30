@@ -169,12 +169,14 @@ const Favorites: React.FC<FavoritesProps> = ({ setMode }) => {
           >
             <div
               className={`grid ${
-                fav?.components.filter((x) => x.componentName === "Entry").length > 1
+                fav?.components.filter((x) => x.componentName === "Entry" && x.entry !== null)
+                  .length > 1
                   ? "grid-cols-2 grid-rows-2"
                   : "grid-cols-1"
               } bg-white-50 aspect-square w-32 gap-3 rounded-lg border border-gray-100 bg-white p-4 transition duration-150 ease-in-out group-hover:scale-105 dark:border-transparent dark:bg-darkColor lg:w-36`}
             >
-              {fav?.components.filter((x) => x.componentName === "Entry").length == 1 ? (
+              {fav?.components.filter((x) => x.componentName === "Entry" && x.entry !== null)
+                .length == 1 ? (
                 <div key={index} className="overflow-hidden rounded-md bg-white">
                   <Image
                     className="object-cover"
@@ -191,7 +193,7 @@ const Favorites: React.FC<FavoritesProps> = ({ setMode }) => {
               ) : (
                 <>
                   {fav?.components
-                    .filter((x) => x.componentName === "Entry")
+                    .filter((x) => x.componentName === "Entry" && x.entry !== null)
                     .slice(0, 4)
                     .map((component, index) => (
                       <div key={index} className="overflow-hidden rounded-md bg-white">
