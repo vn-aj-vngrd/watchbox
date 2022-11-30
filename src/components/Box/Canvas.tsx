@@ -2,6 +2,7 @@ import { useDraggable } from "react-use-draggable-scroll";
 import EntryComponent from "./Components/EntryComponent";
 import TextComponent from "./Components/TextComponent";
 import { Prisma } from "@prisma/client";
+import { trpc } from "../../utils/trpc";
 
 type Component = Prisma.ComponentGetPayload<{
   include: { text: true; entry: true; divider: true };
@@ -12,18 +13,23 @@ type Props = {
   canvasRef: React.RefObject<HTMLDivElement>;
   canvasElements: Component[] | undefined;
   shift: boolean;
-  deleteComponent: (id: string) => void;
   refetch: () => void;
 };
 
-const Canvas: React.FC<Props> = ({
-  canvasRef,
-  canvasElements,
-  shift,
-  deleteComponent,
-  refetch,
-}) => {
+const Canvas: React.FC<Props> = ({ canvasRef, canvasElements, shift, refetch }) => {
   const { events } = useDraggable(canvasRef as React.MutableRefObject<HTMLInputElement>);
+
+  const deleteComponentMutation = trpc.useMutation("component.deleteComponent");
+
+  const deleteComponent = async (id: string) => {
+    await deleteComponentMutation
+      .mutateAsync({
+        id: id,
+      })
+      .then(() => {
+        refetch();
+      });
+  };
 
   return (
     // TODO: add right and bottom padding to canvas
