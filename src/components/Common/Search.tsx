@@ -67,10 +67,8 @@ const Search = () => {
             <button
               key={box.id}
               onClick={() => router.push(`/box/${box.id}`)}
-              className="flex w-full items-center justify-between rounded p-2 text-gray-800 hover:bg-gray-100 dark:text-white dark:hover:bg-[#616161]"
+              className="flex w-full items-center space-x-4 rounded p-2 text-gray-800  hover:bg-gray-100  dark:text-white dark:hover:bg-[#616161]"
             >
-              <p className="text-start text-sm"> {box.boxTitle}</p>
-
               <div
                 className={`grid ${
                   box?.components.filter((x) => x.componentName === "Entry" && x.entry !== null)
@@ -116,6 +114,10 @@ const Search = () => {
                       ))}
                   </>
                 )}
+              </div>
+
+              <div className="">
+                <p className="text-start text-sm"> {box.boxTitle}</p>
               </div>
             </button>
           ))}
