@@ -90,6 +90,7 @@ const Search = () => {
                       width="1080"
                       height="1080"
                       layout="responsive"
+                      priority={true}
                     />
                   </div>
                 ) : (
@@ -109,6 +110,7 @@ const Search = () => {
                             width="1080"
                             height="1080"
                             layout="responsive"
+                            priority={true}
                           />
                         </div>
                       ))}
@@ -144,7 +146,7 @@ const Search = () => {
             )}
 
           {getGlobalBoxes?.isLoading && (
-            <div className="flex items-center justify-center p-2 text-xs">
+            <div className="flex items-center justify-center p-2 text-sm">
               <Spinner isSmall={true} />
             </div>
           )}

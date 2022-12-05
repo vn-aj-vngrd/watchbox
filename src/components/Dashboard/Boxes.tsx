@@ -208,6 +208,7 @@ const Boxes = ({ setMode }: BoxesProps) => {
                     width="1080"
                     height="1080"
                     layout="responsive"
+                    priority={true}
                   />
                 </div>
               ) : (
@@ -227,6 +228,7 @@ const Boxes = ({ setMode }: BoxesProps) => {
                           width="1080"
                           height="1080"
                           layout="responsive"
+                          priority={true}
                         />
                       </div>
                     ))}

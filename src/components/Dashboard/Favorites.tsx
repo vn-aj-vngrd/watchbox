@@ -188,6 +188,7 @@ const Favorites: React.FC<FavoritesProps> = ({ setMode }) => {
                     width="1080"
                     height="1080"
                     layout="responsive"
+                    priority={true}
                   />
                 </div>
               ) : (
@@ -207,6 +208,7 @@ const Favorites: React.FC<FavoritesProps> = ({ setMode }) => {
                           width="1080"
                           height="1080"
                           layout="responsive"
+                          priority={true}
                         />
                       </div>
                     ))}
