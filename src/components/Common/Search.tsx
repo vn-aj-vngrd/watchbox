@@ -4,12 +4,27 @@ import { trpc } from "../../utils/trpc";
 import Spinner from "./Spinner";
 import { useRouter } from "next/router";
 import Image from "next/image";
+import { Box, Component, Entry } from "@prisma/client";
+
+type BoxType = (Box & { components: (Component & { entry: Entry | null })[] })[] | undefined;
 
 const Search = () => {
+  const [take] = useState(10);
+  const [data, setData] = useState<BoxType>();
+  const [isSeeMore, setIsSeeMore] = useState(false);
   const [isShow, setIsShow] = useState(false);
   const [input, setInput] = useState("");
   const router = useRouter();
   const dynamicRoute = router.asPath;
+
+  const getGlobalBoxes = trpc.useMutation(["box.getGlobalBoxes"]);
+  const getGlobalBoxesCount = trpc.useMutation(["box.getGlobalBoxesCount"]);
+
+  useEffect(() => {
+    if (getGlobalBoxes.isSuccess) {
+      setData(getGlobalBoxes.data);
+    }
+  }, [getGlobalBoxes.data, getGlobalBoxes.isSuccess]);
 
   useEffect(() => {
     setIsShow(false);
@@ -17,11 +32,8 @@ const Search = () => {
   }, [dynamicRoute]);
 
   useEffect(() => {
-    document.body.addEventListener("click", () => setIsShow(false));
-  });
-
-  const getGlobalBoxes = trpc.useMutation(["box.getGlobalBoxes"]);
-  console.log(getGlobalBoxes.data);
+    document.body.addEventListener("click", () => setIsShow(isSeeMore));
+  }, [isSeeMore]);
 
   return (
     <div className="relative w-full">
@@ -34,9 +46,15 @@ const Search = () => {
         className="block w-full rounded-lg border border-gray-100 bg-gray-100 p-1.5 pl-10 text-sm text-black placeholder-gray-500 outline-none dark:border-transparent dark:bg-darkColor dark:text-white dark:placeholder-gray-300"
         placeholder="Search WatchBox"
         onChange={(event) => {
+          setIsSeeMore(false);
           setIsShow(event.target.value ? true : false);
           setInput(event.target.value);
+
           getGlobalBoxes.mutateAsync({
+            searchInput: event.target.value,
+            take,
+          });
+          getGlobalBoxesCount.mutateAsync({
             searchInput: event.target.value,
           });
         }}
@@ -44,14 +62,14 @@ const Search = () => {
       />
 
       {isShow ? (
-        <div className="absolute mt-2 w-full space-y-2 rounded-lg bg-white p-3 dark:bg-darkColor">
-          {getGlobalBoxes?.data?.map((box) => (
+        <div className="absolute mt-2 w-full space-y-2 rounded-lg border border-gray-100 bg-white p-3 pb-3 dark:border-none dark:bg-darkColor">
+          {data?.map((box) => (
             <button
               key={box.id}
               onClick={() => router.push(`/box/${box.id}`)}
-              className="flex w-full items-center justify-between rounded p-2 text-sm text-gray-800 hover:bg-gray-100 dark:text-white dark:hover:bg-grayColor"
+              className="flex w-full items-center justify-between rounded p-2 text-gray-800 hover:bg-gray-100 dark:text-white dark:hover:bg-[#616161]"
             >
-              <p className="text-start"> {box.boxTitle}</p>
+              <p className="text-start text-sm"> {box.boxTitle}</p>
 
               <div
                 className={`grid ${
@@ -59,39 +77,80 @@ const Search = () => {
                     .length > 1
                     ? "grid-cols-2 grid-rows-2"
                     : "grid-cols-1"
-                } bg-white-50 aspect-square w-12 gap-3 rounded-lg border border-gray-100 bg-white p-4  transition duration-150 ease-in-out group-hover:scale-105 dark:border-transparent dark:bg-darkColor lg:w-14`}
+                } bg-white-50 aspect-square w-12 gap-1.5 rounded-lg border border-gray-100 bg-white p-1.5  transition duration-150 ease-in-out group-hover:scale-105 dark:border-transparent dark:bg-grayColor`}
               >
-                {" "}
-                {box?.components
-                  .filter((x) => x.componentName === "Entry" && x.entry !== null)
-                  .slice(0, 4)
-                  .map((component, index) => (
-                    <div key={index} className="overflow-hidden rounded-md bg-white">
-                      <Image
-                        className="object-cover"
-                        src={
-                          `https://www.themoviedb.org/t/p/w600_and_h900_bestv2/${component?.entry?.image}` ||
-                          ""
-                        }
-                        alt=""
-                        width="1080"
-                        height="1080"
-                        layout="responsive"
-                      />
-                    </div>
-                  ))}
+                {box?.components.filter((x) => x.componentName === "Entry" && x.entry !== null)
+                  .length == 1 ? (
+                  <div className="overflow-hidden rounded-md bg-white">
+                    <Image
+                      className="object-cover"
+                      src={
+                        `https://www.themoviedb.org/t/p/w600_and_h900_bestv2/${box?.components[0]?.entry?.image}` ||
+                        ""
+                      }
+                      alt=""
+                      width="1080"
+                      height="1080"
+                      layout="responsive"
+                    />
+                  </div>
+                ) : (
+                  <>
+                    {box?.components
+                      .filter((x) => x.componentName === "Entry" && x.entry !== null)
+                      .slice(0, 4)
+                      .map((component, index) => (
+                        <div key={index} className="overflow-hidden rounded-md bg-white">
+                          <Image
+                            className="object-cover"
+                            src={
+                              `https://www.themoviedb.org/t/p/w600_and_h900_bestv2/${component?.entry?.image}` ||
+                              ""
+                            }
+                            alt=""
+                            width="1080"
+                            height="1080"
+                            layout="responsive"
+                          />
+                        </div>
+                      ))}
+                  </>
+                )}
               </div>
             </button>
           ))}
 
+          {getGlobalBoxes?.data &&
+            getGlobalBoxes?.data?.length !== 0 &&
+            getGlobalBoxesCount?.data &&
+            getGlobalBoxesCount?.data > getGlobalBoxes?.data?.length && (
+              <div className="flex w-full items-center justify-center">
+                <button
+                  onClick={() => {
+                    setIsSeeMore(true);
+
+                    getGlobalBoxes.mutateAsync({
+                      searchInput: input,
+                      take: take + 5,
+                    });
+                  }}
+                  className="rounded bg-blue-600 px-2 py-1 text-xs text-white"
+                >
+                  See More
+                </button>
+              </div>
+            )}
+
           {getGlobalBoxes?.isLoading && (
-            <div className="flex items-center justify-center">
-              <Spinner />
+            <div className="flex items-center justify-center p-2 text-xs">
+              <Spinner isSmall={true} />
             </div>
           )}
 
           {getGlobalBoxes?.data?.length === 0 && (
-            <p className="text-center text-sm">No boxes found.</p>
+            <div className="flex items-center justify-center p-2 text-sm">
+              <p>No boxes found.</p>
+            </div>
           )}
         </div>
       ) : null}

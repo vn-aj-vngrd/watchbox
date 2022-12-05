@@ -78,10 +78,11 @@ export const boxRouter = createProtectedRouter()
   .mutation("getGlobalBoxes", {
     input: z.object({
       searchInput: z.string().nullish(),
+      take: z.number(),
     }),
     async resolve({ input, ctx }) {
       return ctx.prisma.box.findMany({
-        take: 10,
+        take: input.take,
         where: {
           boxTitle: {
             contains: input.searchInput || undefined,
@@ -95,6 +96,22 @@ export const boxRouter = createProtectedRouter()
               entry: true,
             },
           },
+        },
+      });
+    },
+  })
+  .mutation("getGlobalBoxesCount", {
+    input: z.object({
+      searchInput: z.string().nullish(),
+    }),
+    async resolve({ input, ctx }) {
+      return ctx.prisma.box.count({
+        where: {
+          boxTitle: {
+            contains: input.searchInput || undefined,
+            mode: "insensitive",
+          },
+          isPublic: true,
         },
       });
     },

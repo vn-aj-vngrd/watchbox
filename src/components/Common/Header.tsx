@@ -24,13 +24,9 @@ const Header = ({ session }: Props) => {
             WatchBox
           </h1>
         </button>
-
-        <div className={`${session ? "flex md:hidden" : "hidden"}`}>
-          <Search />
-        </div>
       </div>
 
-      <div className={`${session ? "hidden md:flex" : "hidden"}`}>
+      <div className={`${session ? "flex" : "hidden"}`}>
         <Search />
       </div>
 
