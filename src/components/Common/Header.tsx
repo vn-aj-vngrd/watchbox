@@ -26,7 +26,7 @@ const Header = ({ session }: Props) => {
         </button>
       </div>
 
-      <div className={`${session ? "flex" : "hidden"}`}>
+      <div className={`${session && !session.user?.isNewUser ? "flex" : "hidden"}`}>
         <Search />
       </div>
 
