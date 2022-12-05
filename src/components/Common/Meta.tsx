@@ -34,7 +34,7 @@ const Meta = ({ title }: Props) => {
       />
       <meta property="og:title" content="WatchBox" />
       <meta property="og:image" content="/favicon/watchbox.png" />
-      <meta property="og:image:width" content="1080" />
+      <meta property="og:image:width" content="1920" />
       <meta property="og:image:height" content="1080" />
     </Head>
   );
