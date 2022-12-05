@@ -14,11 +14,11 @@ export const favoriteRouter = createProtectedRouter()
         take: input.take,
         skip: input.skip,
         where: {
-          favoriteBoxes: {
-            some: {
-              userId: ctx.session.user.id,
-            },
-          },
+          // favoriteBoxes: {
+          //   some: {
+          //     userId: ctx.session.user.id,
+          //   },
+          // },
           boxTitle: {
             contains: input.searchParam || undefined,
             mode: "insensitive",
