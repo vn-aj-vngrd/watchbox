@@ -49,7 +49,7 @@ export const boxRouter = createProtectedRouter()
     async resolve({ input, ctx }) {
       return ctx.prisma.user.findFirst({
         where: {
-          id: ctx.session.user.id,
+          // id: ctx.session.user.id,
           boxes: {
             some: {
               id: input.id,
@@ -71,6 +71,30 @@ export const boxRouter = createProtectedRouter()
       return ctx.prisma.box.count({
         where: {
           userId: ctx.session.user.id,
+        },
+      });
+    },
+  })
+  .mutation("getGlobalBoxes", {
+    input: z.object({
+      searchInput: z.string().nullish(),
+    }),
+    async resolve({ input, ctx }) {
+      return ctx.prisma.box.findMany({
+        take: 10,
+        where: {
+          boxTitle: {
+            contains: input.searchInput || undefined,
+            mode: "insensitive",
+          },
+          isPublic: true,
+        },
+        include: {
+          components: {
+            include: {
+              entry: true,
+            },
+          },
         },
       });
     },
