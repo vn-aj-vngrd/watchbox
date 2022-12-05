@@ -62,7 +62,7 @@ const Search = () => {
       />
 
       {isShow ? (
-        <div className="absolute mt-2 w-full space-y-2 rounded-lg border border-gray-100 bg-white p-3 pb-3 dark:border-none dark:bg-darkColor">
+        <div className="absolute mt-2 w-full space-y-2 rounded-lg border border-gray-100 bg-white p-3 pb-3 shadow-sm dark:border-none dark:bg-darkColor">
           {data?.map((box) => (
             <button
               key={box.id}
