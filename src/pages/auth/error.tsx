@@ -13,7 +13,7 @@ const description = [
 const error = () => {
   return (
     <>
-      <Meta title="Error" />
+      <Meta title="Error | WatchBox" />
       <PageAlert
         elem={
           <h2 className="mb-10 flex justify-center">

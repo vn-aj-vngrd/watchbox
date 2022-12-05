@@ -6,7 +6,6 @@ import Meta from "../components/Common/Meta";
 import Boxes from "../components/Dashboard/Boxes";
 import { Session } from "next-auth";
 import { useSession } from "next-auth/react";
-import Spinner from "../components/Common/Spinner";
 import { useState } from "react";
 import Favorites from "../components/Dashboard/Favorites";
 
@@ -17,16 +16,14 @@ const Home: NextPage = () => {
 
   return (
     <>
-      <Meta />
+      <Meta title="WatchBox" />
       {session ? (
         <>
           <div className="h-full">
             {mode === "boxes" ? <Boxes setMode={setMode} /> : <Favorites setMode={setMode} />}
           </div>
         </>
-      ) : (
-        <Spinner isGlobal={true} />
-      )}
+      ) : null}
     </>
   );
 };

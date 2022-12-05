@@ -9,6 +9,7 @@ import Canvas from "./Canvas";
 import Components from "./Components";
 import Controls from "./Controls";
 import Header from "./Header";
+import { useHotkeys, isHotkeyPressed } from "react-hotkeys-hook";
 
 const description = [
   "The page you are looking for does not exist.",
@@ -17,8 +18,10 @@ const description = [
 
 const BoxPage = () => {
   const [sidePanel, setSidePanel] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
   const canvasRef = useRef<HTMLDivElement>(null);
+  const [shift, setShift] = useState(false);
+
+  useHotkeys("shift", () => setShift(isHotkeyPressed("shift")), { keydown: true, keyup: true });
 
   const router = useRouter();
   const { id } = router.query;
@@ -26,17 +29,6 @@ const BoxPage = () => {
   const getBox = trpc.useQuery(["box.getBox", { id: id as string }]);
   const getFavoriteBox = trpc.useQuery(["favorite.getFavoriteBox", { boxId: id as string }]);
   const getComponents = trpc.useQuery(["component.getComponents", { id: id as string }]);
-  const deleteComponentMutation = trpc.useMutation("component.deleteComponent");
-
-  const deleteComponent = async (id: string) => {
-    await deleteComponentMutation
-      .mutateAsync({
-        id: id,
-      })
-      .then(() => {
-        getComponents.refetch();
-      });
-  };
 
   if (getBox.isLoading || getFavoriteBox.isLoading) {
     return <Spinner isGlobal={true} />;
@@ -92,7 +84,6 @@ const BoxPage = () => {
           id={id as string}
           canvasRef={canvasRef}
           sidePanel={sidePanel}
-          setIsLoading={setIsLoading}
           refetch={refetchCanvasElements}
         />
       </div>
@@ -107,10 +98,8 @@ const BoxPage = () => {
           id={id as string}
           canvasRef={canvasRef}
           canvasElements={getComponents?.data}
-          isLoading={getComponents.isFetching || deleteComponentMutation.isLoading || isLoading}
-          setIsLoading={setIsLoading}
+          shift={shift}
           refetch={refetchCanvasElements}
-          deleteComponent={deleteComponent}
         />
       </div>
     </div>
