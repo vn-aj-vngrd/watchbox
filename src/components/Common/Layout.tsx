@@ -5,24 +5,17 @@ import { useRouter } from "next/router";
 import { ReactNode } from "react";
 import Footer from "./Footer";
 import Header from "./Header";
-import Meta from "./Meta";
-import Spinner from "./Spinner";
 
 type Props = {
   children: ReactNode;
 };
 
 const Layout = ({ children }: Props) => {
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const { pathname } = useRouter();
-
-  if (status === "loading") {
-    return <Spinner isGlobal={true} />;
-  }
 
   return (
     <>
-      <Meta />
       <div className="flex h-screen select-none flex-col justify-between">
         <Header session={session} />
         <main

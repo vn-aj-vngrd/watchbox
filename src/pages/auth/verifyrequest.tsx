@@ -14,7 +14,7 @@ const description = [
 const verifyrequest = () => {
   return (
     <>
-      <Meta title="Verify Request" />
+      <Meta title="Verify Request | WatchBox" />
       <PageAlert
         elem={
           <h2 className="mb-10 flex justify-center">

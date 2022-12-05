@@ -9,7 +9,7 @@ import { getServerSideSession } from "../../utils/session";
 const newuser = () => {
   return (
     <>
-      <Meta title="Welcome" />
+      <Meta title="Welcome | WatchBox" />
       <Welcome />
     </>
   );
