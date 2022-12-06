@@ -125,10 +125,10 @@ const Settings = () => {
   }
 
   return (
-    <div className="flex h-full items-center justify-center">
+    <div className="flex h-full items-center justify-center py-6">
       <div className="mx-auto w-full space-y-8 md:max-w-lg">
         <div>
-          <h2 className="mt-4 text-center text-3xl font-semibold text-gray-900 dark:text-white">
+          <h2 className="text-center text-2xl font-semibold text-gray-900 dark:text-white md:text-3xl">
             Account Settings
           </h2>
         </div>

@@ -13,7 +13,7 @@ type Props = {
 
 const Header = ({ session }: Props) => {
   return (
-    <header className="sticky top-0 z-10 flex h-14 items-center justify-between border-b border-gray-100 bg-white px-5 dark:border-grayColor dark:bg-darkerColor">
+    <header className="sticky top-0 z-10 flex h-14 items-center justify-between border-b border-gray-100 bg-white py-1.5 px-5 dark:border-grayColor dark:bg-darkerColor">
       <div className="flex space-x-2">
         <button
           onClick={() => router.push("/")}

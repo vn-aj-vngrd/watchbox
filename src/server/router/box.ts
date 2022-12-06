@@ -81,23 +81,27 @@ export const boxRouter = createProtectedRouter()
       take: z.number(),
     }),
     async resolve({ input, ctx }) {
-      return ctx.prisma.box.findMany({
-        take: input.take,
-        where: {
-          boxTitle: {
-            contains: input.searchInput || undefined,
-            mode: "insensitive",
+      if (input.searchInput !== "") {
+        return ctx.prisma.box.findMany({
+          take: input.take,
+          where: {
+            boxTitle: {
+              contains: input.searchInput || "",
+              mode: "insensitive",
+            },
+            isPublic: true,
           },
-          isPublic: true,
-        },
-        include: {
-          components: {
-            include: {
-              entry: true,
+          include: {
+            components: {
+              include: {
+                entry: true,
+              },
             },
           },
-        },
-      });
+        });
+      }
+
+      return;
     },
   })
   .mutation("getGlobalBoxesCount", {

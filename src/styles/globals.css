@@ -55,4 +55,8 @@
   .account-icon {
     @apply mr-3 h-5 w-5;
   }
+
+  .scroll-bar {
+    @apply text-black scrollbar-thin scrollbar-track-gray-400/20 scrollbar-thumb-blue-500;
+  }
 }
