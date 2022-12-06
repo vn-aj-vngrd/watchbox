@@ -36,7 +36,7 @@ const Information = ({ mobile, box }: Props) => {
         <Menu.Items className="absolute right-0 mt-2 w-[22rem] origin-top-right divide-y divide-gray-100 rounded-md border border-gray-100 bg-white dark:divide-grayColor  dark:border-transparent dark:bg-darkColor">
           <Menu.Item>
             <div className="flex w-full items-center px-4 py-2 text-left text-sm text-gray-900 dark:text-white">
-              <span className="mr-1 font-semibold"> Owner: </span> {box?.name} ({box?.username})
+              <span className="mr-1 font-semibold"> Owner: </span> {box?.username})
             </div>
           </Menu.Item>
 

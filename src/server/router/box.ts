@@ -137,6 +137,7 @@ export const boxRouter = createProtectedRouter()
     input: z.object({
       id: z.string(),
       boxTitle: z.string(),
+      isPublic: z.boolean(),
     }),
     async resolve({ input, ctx }) {
       return ctx.prisma.box.update({
@@ -145,6 +146,7 @@ export const boxRouter = createProtectedRouter()
         },
         data: {
           boxTitle: input.boxTitle,
+          isPublic: input.isPublic,
           updated_at: new Date(),
         },
       });
