@@ -281,7 +281,7 @@ const Settings = () => {
                   }
                 >
                   {updateUser.isLoading || isLoading ? (
-                    <div className="flex items-center justify-center space-x-2">
+                    <div className="flex items-center justify-center space-x-3">
                       <Spinner isSmall={true} />
 
                       <p>Saving Changes</p>
