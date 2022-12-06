@@ -5,6 +5,7 @@ import {
   LinkIcon,
   CheckIcon,
   EllipsisVerticalIcon,
+  InformationCircleIcon,
 } from "@heroicons/react/24/solid";
 import { Box, FavoriteBox, User } from "@prisma/client";
 import { useSession } from "next-auth/react";
@@ -16,6 +17,7 @@ import { server } from "../../config";
 import { trpc } from "../../utils/trpc";
 import DeleteBox from "./DeleteBox";
 import Information from "./Information";
+import * as Popover from "@radix-ui/react-popover";
 
 type Props = {
   box: (User & { boxes: Box[] }) | null | undefined;
@@ -113,7 +115,6 @@ const Header = ({ box, favoriteBox, id, refetch }: Props) => {
           type="text"
           disabled={session?.user?.id !== box?.id}
           className="mt-px w-48 border-b border-b-transparent bg-transparent font-medium focus:border-b-gray-200 focus:outline-none hover:border-b-gray-200 dark:focus:border-b-darkColor dark:hover:border-b-darkColor md:w-64"
-          // FIXME: Error messages overflow in mobile view
           {...register("boxTitle", {
             required: {
               value: true,
@@ -125,7 +126,22 @@ const Header = ({ box, favoriteBox, id, refetch }: Props) => {
             },
           })}
         />
-        <div className=" text-sm text-red-500">{errors.boxTitle && errors.boxTitle.message}</div>
+        {errors.boxTitle && errors.boxTitle.message ? (
+          <Popover.Root>
+            <Popover.Trigger>
+              <InformationCircleIcon className="-ml-4 h-4 w-4 text-red-500" />
+            </Popover.Trigger>
+            <Popover.Content
+              align="center"
+              side="bottom"
+              sideOffset={4}
+              className="-ml-4 rounded-md bg-red-500 px-3 py-2 text-sm text-white"
+            >
+              <Popover.Arrow className="ml-4 fill-red-500" />
+              {errors.boxTitle && errors.boxTitle.message}
+            </Popover.Content>
+          </Popover.Root>
+        ) : null}
 
         {boxTitle_watch !== box?.boxes[0]?.boxTitle && !errors.boxTitle && (
           <button className="flex h-full items-center" type="submit" disabled={isBoxTitleChanged}>
