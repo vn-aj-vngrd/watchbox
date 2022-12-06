@@ -17,11 +17,11 @@ WatchBox is an open-source web application that gives you complete control over 
 
 - [ ] Export and import Boxes
 - [ ] Community forum for discussions
-- [ ] Integration of streaming services for automatic watch status updates
+- [ ] Integration with streaming services for automatic watch status updates
 
 ## Contributors
 
-- @vn-aj-vngrd | Van AJ Vanguardia
-- @teddzyb | Edwin Bartlett
-- @nikolaiii01 | Nikolai Franz
-- @heischichou | Jan Michael Garot
+- [@vn-aj-vngrd](https://github.com/vn-aj-vngrd) | Van AJ Vanguardia
+- [@teddzyb](https://github.com/teddzyb) | Edwin Bartlett
+- [@nikolaiii01](https://github.com/nikolaiii01) | Nikolai Franz
+- [@heischichou](https://github.com/heischichou) | Jan Michael Garot
