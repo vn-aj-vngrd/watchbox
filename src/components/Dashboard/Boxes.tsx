@@ -10,6 +10,7 @@ import {
 import Image from "next/image";
 import router from "next/router";
 import { useState } from "react";
+import OutsideClickHandler from "react-outside-click-handler";
 import ReactPaginate from "react-paginate";
 import { trpc } from "../../utils/trpc";
 import Spinner from "../Common/Spinner";
@@ -85,7 +86,11 @@ const Boxes = ({ setMode }: BoxesProps) => {
         </div>
 
         <div className="flex space-x-6">
-          <div>
+          <OutsideClickHandler
+            onOutsideClick={() => {
+              setOpenSort(false);
+            }}
+          >
             <button
               onClick={() => {
                 setOpenSort(!openSort);
@@ -126,7 +131,7 @@ const Boxes = ({ setMode }: BoxesProps) => {
                 </ul>
               </div>
             )}
-          </div>
+          </OutsideClickHandler>
 
           <div className="flex items-center">
             <div className="relative w-full">

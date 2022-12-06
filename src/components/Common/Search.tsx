@@ -176,13 +176,13 @@ const Search = () => {
         </div>
 
         {getGlobalBoxes?.isLoading && (
-          <div className={`flex w-full items-center justify-center p-2 text-sm`}>
+          <div className={`flex w-full items-center justify-center p-2 py-5 text-sm`}>
             <Spinner isSmall={true} />
           </div>
         )}
 
         {getGlobalBoxes?.data?.length === 0 && (
-          <div className="flex w-full items-center justify-center p-2 text-sm dark:text-white">
+          <div className="flex w-full items-center justify-center p-2 py-5 text-sm dark:text-white">
             <p>No boxes found.</p>
           </div>
         )}
