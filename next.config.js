@@ -10,9 +10,6 @@ module.exports = withPWA({
   // next.js config
   reactStrictMode: true,
   swcMinify: true,
-});
-
-module.exports = {
   images: {
     domains: [
       "encrypted-tbn1.gstatic.com",
@@ -25,4 +22,4 @@ module.exports = {
       "www.themoviedb.org",
     ],
   },
-};
+});
