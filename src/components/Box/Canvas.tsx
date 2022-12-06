@@ -12,10 +12,11 @@ type Props = {
   canvasRef: React.RefObject<HTMLDivElement>;
   canvasElements: Component[] | undefined;
   shift: boolean;
+  setShift: React.Dispatch<React.SetStateAction<boolean>>;
   refetch: () => void;
 };
 
-const Canvas: React.FC<Props> = ({ canvasRef, canvasElements, shift, refetch }) => {
+const Canvas: React.FC<Props> = ({ canvasRef, canvasElements, shift, setShift, refetch }) => {
   const { events } = useDraggable(canvasRef as React.MutableRefObject<HTMLInputElement>);
 
   return (
@@ -38,6 +39,7 @@ const Canvas: React.FC<Props> = ({ canvasRef, canvasElements, shift, refetch }) 
                   key={index}
                   entryComponent={canvasElement}
                   shift={shift}
+                  setShift={setShift}
                   refetch={refetch}
                 />
               );

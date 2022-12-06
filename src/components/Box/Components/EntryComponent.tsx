@@ -5,6 +5,8 @@ import router from "next/router";
 import { useState } from "react";
 import { env } from "../../../env/client.mjs";
 import { trpc } from "../../../utils/trpc";
+import { useLongPress, LongPressDetectEvents } from "use-long-press";
+import toast from "react-hot-toast";
 
 type Component = Prisma.ComponentGetPayload<{
   include: { text: true; entry: true; divider: true };
@@ -13,6 +15,7 @@ type Component = Prisma.ComponentGetPayload<{
 type Props = {
   entryComponent: Component;
   shift: boolean;
+  setShift: React.Dispatch<React.SetStateAction<boolean>>;
   refetch: () => void;
 };
 
@@ -33,17 +36,30 @@ type Movie = {
   vote_count: number;
 };
 
-const EntryComponent = ({ entryComponent, shift, refetch }: Props) => {
+const EntryComponent = ({ entryComponent, shift, setShift, refetch }: Props) => {
   const [movies, setMovies] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
 
   const createEntry = trpc.useMutation("entry.createEntry");
   const deleteComponent = trpc.useMutation("component.deleteComponent");
 
+  const bind = useLongPress(
+    () => {
+      setShift(!shift);
+    },
+    {
+      detect: LongPressDetectEvents.TOUCH,
+    },
+  );
+
   const removeComponent = async (id: string) => {
-    await deleteComponent.mutateAsync({
-      id: id,
-    });
+    await deleteComponent
+      .mutateAsync({
+        id: id,
+      })
+      .then(() => {
+        refetch();
+      });
   };
 
   const searchMovies = async (title: string) => {
@@ -62,6 +78,7 @@ const EntryComponent = ({ entryComponent, shift, refetch }: Props) => {
     event.target.value.length > 0 ? await searchMovies(event.target.value) : setSelectedMovie(null);
   };
 
+  // FIXME: Cursor pointer messes up after creating new component
   const handleMovieSelect = async (movie: Movie) => {
     if (movie != null) {
       const { id, original_title, poster_path } = movie;
@@ -70,7 +87,12 @@ const EntryComponent = ({ entryComponent, shift, refetch }: Props) => {
           componentId: entryComponent.id,
           movieId: id.toString(),
           title: original_title,
-          image: poster_path,
+          image: poster_path ?? "",
+        })
+        .catch(() => {
+          toast.error("Error");
+          setSelectedMovie(null);
+          refetch();
         })
         .then(() => {
           setSelectedMovie(movie);
@@ -85,13 +107,14 @@ const EntryComponent = ({ entryComponent, shift, refetch }: Props) => {
 
   return (
     <div
+      {...bind()}
       onClick={
         entryComponent?.entry?.movieId && !shift
           ? () => router.push(`entry/${entryComponent?.entry?.componentId}`)
           : undefined
       }
       className={`absolute flex h-20 w-72 items-center justify-center rounded-md bg-gray-200 text-sm dark:bg-darkColor ${
-        entryComponent?.entry?.movieId && !shift && "cursor-pointer"
+        entryComponent?.entry && !shift && "cursor-pointer"
       }`}
       style={{ top: entryComponent?.yAxis - 40, left: entryComponent?.xAxis - 144 }}
     >

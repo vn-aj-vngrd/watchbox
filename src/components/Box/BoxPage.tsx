@@ -100,6 +100,7 @@ const BoxPage = () => {
           canvasRef={canvasRef}
           canvasElements={getComponents?.data}
           shift={shift}
+          setShift={setShift}
           refetch={refetchCanvasElements}
         />
       </div>
