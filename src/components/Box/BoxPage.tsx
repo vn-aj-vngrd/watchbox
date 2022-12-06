@@ -10,6 +10,7 @@ import Components from "./Components";
 import Controls from "./Controls";
 import Header from "./Header";
 import { useHotkeys, isHotkeyPressed } from "react-hotkeys-hook";
+import { useSession } from "next-auth/react";
 
 const description = [
   "The page you are looking for does not exist.",
@@ -20,6 +21,7 @@ const BoxPage = () => {
   const [sidePanel, setSidePanel] = useState(true);
   const canvasRef = useRef<HTMLDivElement>(null);
   const [shift, setShift] = useState(false);
+  const { data: session } = useSession();
 
   useHotkeys("shift", () => setShift(isHotkeyPressed("shift")), { keydown: true, keyup: true });
 
@@ -74,19 +76,22 @@ const BoxPage = () => {
 
   return (
     <div className="flex h-full w-full">
-      <div
-        className={`flex h-full w-12 flex-col border-r transition-all duration-500 ease-in-out dark:border-darkColor ${
-          !sidePanel ? "md:w-12" : "md:w-[17rem]"
-        }`}
-      >
-        <Controls sidePanel={sidePanel} setSidePanel={setSidePanel} />
-        <Components
-          id={id as string}
-          canvasRef={canvasRef}
-          sidePanel={sidePanel}
-          refetch={refetchCanvasElements}
-        />
-      </div>
+      {session?.user?.id === getBox.data?.id && (
+        <div
+          className={`flex h-full w-12 flex-col border-r transition-all duration-500 ease-in-out dark:border-darkColor ${
+            !sidePanel ? "md:w-12" : "md:w-[17rem]"
+          }`}
+        >
+          <Controls sidePanel={sidePanel} setSidePanel={setSidePanel} />
+          <Components
+            id={id as string}
+            canvasRef={canvasRef}
+            sidePanel={sidePanel}
+            refetch={refetchCanvasElements}
+          />
+        </div>
+      )}
+
       <div className="flex h-full grow flex-col">
         <Header
           box={getBox?.data}
@@ -96,6 +101,7 @@ const BoxPage = () => {
         />
         <Canvas
           id={id as string}
+          userId={getBox?.data?.id as string}
           canvasRef={canvasRef}
           canvasElements={getComponents?.data}
           shift={shift}

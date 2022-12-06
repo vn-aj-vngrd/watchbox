@@ -5,6 +5,8 @@ import {
   LinkIcon,
   CheckIcon,
   EllipsisVerticalIcon,
+  LockClosedIcon,
+  LockOpenIcon,
 } from "@heroicons/react/24/solid";
 import { Box, FavoriteBox, User } from "@prisma/client";
 import { useSession } from "next-auth/react";
@@ -59,6 +61,7 @@ const Header = ({ box, favoriteBox, id, refetch }: Props) => {
   });
 
   const [favorite, setFavorite] = useState<boolean>(false);
+  const [isPublic, setIsPublic] = useState<boolean>(false);
   const [isBoxTitleChanged, setIsBoxTitleChanged] = useState<boolean>(false);
   const {
     register,
@@ -72,6 +75,7 @@ const Header = ({ box, favoriteBox, id, refetch }: Props) => {
 
   useEffect(() => {
     setFavorite(favoriteBox !== null && favoriteBox !== undefined ? true : false);
+    setIsPublic(box?.boxes[0]?.isPublic ? true : false);
     setIsBoxTitleChanged(false);
     reset({ boxTitle: box?.boxes[0]?.boxTitle || "" });
   }, [favoriteBox, box, reset]);
@@ -83,13 +87,28 @@ const Header = ({ box, favoriteBox, id, refetch }: Props) => {
       });
 
       setFavorite(false);
+      toast.success("Removed from favorites");
+
       return;
     }
 
     addFavoriteBox.mutateAsync({
       boxId: id,
     });
+
     setFavorite(true);
+    toast.success("Added to favorites");
+  };
+
+  const onLockUnlock = () => {
+    updateBox.mutateAsync({
+      id,
+      boxTitle: box?.boxes[0]?.boxTitle as string,
+      isPublic: !isPublic,
+    });
+
+    setIsPublic(!isPublic);
+    toast.success(isPublic ? "Box is now private" : "Box is now public");
   };
 
   const onDeleteBox = () => {
@@ -98,17 +117,18 @@ const Header = ({ box, favoriteBox, id, refetch }: Props) => {
     });
   };
 
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+  const onUpdateBoxTitle: SubmitHandler<Inputs> = async (data) => {
     setIsBoxTitleChanged(true);
     updateBox.mutateAsync({
       id,
       boxTitle: data.boxTitle.charAt(0).toUpperCase() + data.boxTitle.slice(1),
+      isPublic,
     });
   };
 
   return (
     <div className="flex h-12 items-center border-b pl-4 pr-2 dark:border-darkColor">
-      <form onSubmit={handleSubmit(onSubmit)} className="flex h-full grow items-center">
+      <form onSubmit={handleSubmit(onUpdateBoxTitle)} className="flex h-full grow items-center">
         <input
           type="text"
           disabled={session?.user?.id !== box?.id}
@@ -162,6 +182,15 @@ const Header = ({ box, favoriteBox, id, refetch }: Props) => {
             <OutlineHeartIcon className="h-5 w-5 dark:text-white" />
           )}
         </button>
+        {session?.user?.id === box?.id && (
+          <button onClick={onLockUnlock} className="flex h-full w-11 items-center justify-center">
+            {isPublic ? (
+              <LockOpenIcon className="h-5 w-5 dark:text-white" />
+            ) : (
+              <LockClosedIcon className="h-5 w-5 text-blue-500" />
+            )}
+          </button>
+        )}
         <button className="flex h-full w-11 items-center justify-center">
           <LinkIcon
             className="h-[18px] w-[18px] dark:text-white"
@@ -185,6 +214,20 @@ const Header = ({ box, favoriteBox, id, refetch }: Props) => {
           <OutlineHeartIcon className="h-5 w-5 dark:text-white" />
         )}
       </button>
+
+      {session?.user?.id === box?.id && (
+        <button
+          onClick={onLockUnlock}
+          className="flex h-full w-11 items-center justify-center md:hidden"
+        >
+          {isPublic ? (
+            <LockOpenIcon className="h-5 w-5 dark:text-white" />
+          ) : (
+            <LockClosedIcon className="h-5 w-5 text-blue-500" />
+          )}
+        </button>
+      )}
+
       <Menu as="div" className="flex md:hidden">
         <Menu.Button className="flex h-full w-10 items-center justify-center">
           <EllipsisVerticalIcon className="h-[22px] w-[22px]" />
