@@ -10,7 +10,7 @@ WatchBox is an open-source web application that gives you complete control over 
 
 - Create & share movie collections (Boxes)
 - Track your watch status
-- Rate and review entries, and view other users' ratings and reviews
+- Rate and review movies, and view other users' ratings and reviews
 - Auto-generated movie metadata
 
 ## Backlog
