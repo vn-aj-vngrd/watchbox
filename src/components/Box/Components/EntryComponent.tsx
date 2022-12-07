@@ -101,10 +101,6 @@ const EntryComponent = ({ entryComponent, shift, setShift, refetch }: Props) => 
     }
   };
 
-  if (deleteComponent.isSuccess) {
-    return <></>;
-  }
-
   return (
     <div
       {...bind()}
