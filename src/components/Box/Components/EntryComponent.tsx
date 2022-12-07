@@ -130,6 +130,7 @@ const EntryComponent = ({ entryComponent, shift, setShift, refetch }: Props) => 
           </button>
         </div>
       )}
+      {/* TODO: Add movie image when movie is selected */}
       <div className="pointer-events-none absolute h-full w-full overflow-hidden rounded-md">
         <div className="absolute -left-7 -top-7 text-neutral-700 opacity-5 dark:text-neutral-200">
           <svg

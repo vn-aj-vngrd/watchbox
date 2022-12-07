@@ -188,12 +188,12 @@ const Boxes = ({ setMode }: BoxesProps) => {
                   .length > 1
                   ? "grid-cols-2 grid-rows-2"
                   : "grid-cols-1"
-              } bg-white-50 aspect-square w-32 gap-3 rounded-lg border border-gray-100 bg-white p-4  transition duration-150 ease-in-out group-hover:scale-105 dark:border-transparent dark:bg-darkColor lg:w-36`}
+              } bg-white-50 aspect-square w-32 gap-3 rounded-lg border border-gray-100 bg-white p-3.5 transition duration-150 ease-in-out group-hover:scale-105 dark:border-transparent dark:bg-darkColor lg:w-36`}
             >
               {{
                 0: <CubeIcon className="h-full w-full fill-gray-100 p-6 dark:fill-neutral-600" />,
                 1: (
-                  <div className="overflow-hidden rounded-md bg-white">
+                  <div className="overflow-hidden rounded-md">
                     <Image
                       className="object-cover"
                       src={
@@ -213,10 +213,10 @@ const Boxes = ({ setMode }: BoxesProps) => {
               ] || (
                 <>
                   {box?.components
-                    .filter((x) => x.componentName === "Entry" && x.entry !== null)
+                    .filter((x) => x.componentName === "Entry" && x.entry?.image !== "")
                     .slice(0, 4)
                     .map((component, index) => (
-                      <div key={index} className="overflow-hidden rounded-md bg-white">
+                      <div key={index} className="overflow-hidden rounded-md">
                         <Image
                           className="object-cover"
                           src={
@@ -233,7 +233,7 @@ const Boxes = ({ setMode }: BoxesProps) => {
                 </>
               )}
             </div>
-            <div className="bg-transparent p-2 text-center">
+            <div className="bg-transparent py-2 text-center">
               <p className="font-normal text-gray-600 subpixel-antialiased dark:text-white">
                 {box.boxTitle.length > 12 ? (
                   <>{box?.boxTitle?.substring(0, 12)}...</>
