@@ -185,12 +185,13 @@ const Metadata = ({
           <p className="mt-2 select-text pr-2 text-justify text-sm md:text-start">
             {movie?.overview}
           </p>
+          {/* TODO: Add a remove button beside rating */}
           <StarRating
             allowHover={true}
             onClick={handleOnClick}
             initialValue={currentRating}
             allowFraction={true}
-            className="my-2"
+            className="my-2 -ml-0.5"
             onPointerEnter={() => setHovering(true)}
             onPointerLeave={() => setHovering(false)}
             SVGclassName={`inline-block h-8`}
