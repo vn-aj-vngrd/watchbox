@@ -1,21 +1,19 @@
 import { Component } from "@prisma/client";
 import { TrashIcon } from "@heroicons/react/24/solid";
-import { useRef } from "react";
 import { trpc } from "../../../utils/trpc";
 import { useLongPress, LongPressDetectEvents } from "use-long-press";
 import { motion, PanInfo } from "framer-motion";
 import { snap } from "popmotion";
 
 type Props = {
-  textComponent: Component;
+  dividerComponent: Component;
   canvasRef: React.RefObject<HTMLDivElement>;
   shift: boolean;
   setShift: React.Dispatch<React.SetStateAction<boolean>>;
   refetch: () => void;
 };
 
-const TextComponent = ({ textComponent, canvasRef, shift, setShift, refetch }: Props) => {
-  const spanRef = useRef(null);
+const DividerComponent = ({ dividerComponent, canvasRef, shift, setShift, refetch }: Props) => {
   let canvasRect: DOMRect | undefined;
   const snapTo = snap(10);
 
@@ -30,20 +28,6 @@ const TextComponent = ({ textComponent, canvasRef, shift, setShift, refetch }: P
       detect: LongPressDetectEvents.TOUCH,
     },
   );
-
-  // TODO: Fix text highlighting
-  const handleMouseUp = () => {
-    if (spanRef.current) {
-      // Create a range object that includes the span's text
-      const range = document.createRange();
-      range.selectNode(spanRef.current);
-
-      // Select the text in the range
-      const selection = window.getSelection();
-      selection?.removeAllRanges();
-      selection?.addRange(range);
-    }
-  };
 
   const removeComponent = async (id: string) => {
     await deleteComponent
@@ -63,7 +47,7 @@ const TextComponent = ({ textComponent, canvasRef, shift, setShift, refetch }: P
       info.point.y - (canvasRect?.y ?? 0) > 0
     ) {
       await updateComponent.mutateAsync({
-        id: textComponent.id,
+        id: dividerComponent.id,
         xAxis: snapTo(info.point.x - (canvasRect?.x ?? 0)),
         yAxis: snapTo(info.point.y - (canvasRect?.y ?? 0)),
       });
@@ -81,14 +65,14 @@ const TextComponent = ({ textComponent, canvasRef, shift, setShift, refetch }: P
         updateTextComponent(info);
       }}
       {...bind()}
-      style={{ top: textComponent?.yAxis - 40, left: textComponent?.xAxis - 144 }}
+      style={{ top: dividerComponent?.yAxis - 40, left: dividerComponent?.xAxis - 144 }}
       className="absolute"
     >
       {shift && (
         <div className="absolute -right-5 -top-5 z-20">
           <button
             onClick={() => {
-              if (!deleteComponent.isLoading) removeComponent(textComponent.id);
+              if (!deleteComponent.isLoading) removeComponent(dividerComponent.id);
             }}
             className="rounded-full bg-gray-200 p-[6px] shadow-md shadow-gray-300 outline-none dark:bg-darkColor dark:shadow-black/20"
           >
@@ -96,19 +80,9 @@ const TextComponent = ({ textComponent, canvasRef, shift, setShift, refetch }: P
           </button>
         </div>
       )}
-      <span
-        ref={spanRef}
-        //onMouseUp={handleMouseUp}
-        className={`justify-left text-md items-center whitespace-nowrap rounded-md bg-transparent p-1 focus:outline focus:outline-2 focus:outline-blue-500 ${
-          shift && "outline-2 hover:cursor-move hover:outline hover:outline-blue-500"
-        }`}
-        contentEditable
-        style={{ top: textComponent?.yAxis - 40, left: textComponent?.xAxis - 144 }}
-      >
-        Add a Text...
-      </span>
+      <div className="w-10 resize-y border-b border-gray-400"></div>
     </motion.div>
   );
 };
 
-export default TextComponent;
+export default DividerComponent;
