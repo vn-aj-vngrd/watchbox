@@ -19,6 +19,7 @@ const description = [
 const BoxPage = () => {
   const [sidePanel, setSidePanel] = useState(true);
   const canvasRef = useRef<HTMLDivElement>(null);
+  const canvasSizeRef = useRef<HTMLDivElement>(null);
   const [shift, setShift] = useState(false);
 
   useHotkeys("shift", () => setShift(true), { keydown: true, keyup: false }, [shift]);
@@ -84,6 +85,7 @@ const BoxPage = () => {
         <Components
           id={id as string}
           canvasRef={canvasRef}
+          canvasSizeRef={canvasSizeRef}
           sidePanel={sidePanel}
           refetch={refetchCanvasElements}
         />
@@ -98,6 +100,7 @@ const BoxPage = () => {
         <Canvas
           id={id as string}
           canvasRef={canvasRef}
+          canvasSizeRef={canvasSizeRef}
           canvasElements={getComponents?.data}
           shift={shift}
           setShift={setShift}

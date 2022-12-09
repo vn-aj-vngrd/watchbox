@@ -7,6 +7,8 @@ import { env } from "../../../env/client.mjs";
 import { trpc } from "../../../utils/trpc";
 import { useLongPress, LongPressDetectEvents } from "use-long-press";
 import toast from "react-hot-toast";
+import { motion, PanInfo } from "framer-motion";
+import { snap } from "popmotion";
 
 type Component = Prisma.ComponentGetPayload<{
   include: { text: true; entry: true; divider: true };
@@ -14,6 +16,7 @@ type Component = Prisma.ComponentGetPayload<{
 
 type Props = {
   entryComponent: Component;
+  canvasRef: React.RefObject<HTMLDivElement>;
   shift: boolean;
   setShift: React.Dispatch<React.SetStateAction<boolean>>;
   refetch: () => void;
@@ -36,12 +39,15 @@ type Movie = {
   vote_count: number;
 };
 
-const EntryComponent = ({ entryComponent, shift, setShift, refetch }: Props) => {
+const EntryComponent = ({ entryComponent, canvasRef, shift, setShift, refetch }: Props) => {
   const [movies, setMovies] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
+  let canvasRect: DOMRect | undefined;
+  const snapTo = snap(10);
 
   const createEntry = trpc.useMutation("entry.createEntry");
   const deleteComponent = trpc.useMutation("component.deleteComponent");
+  const updateComponent = trpc.useMutation("component.updateComponent");
 
   const bind = useLongPress(
     () => {
@@ -101,15 +107,40 @@ const EntryComponent = ({ entryComponent, shift, setShift, refetch }: Props) => 
     }
   };
 
+  const updateEntryComponent = async (info: PanInfo) => {
+    if (
+      canvasRef.current &&
+      canvasRect?.x &&
+      info.point.x - (canvasRect?.x ?? 0) > 0 &&
+      info.point.y - (canvasRect?.y ?? 0) > 0
+    ) {
+      await updateComponent.mutateAsync({
+        id: entryComponent.id,
+        xAxis: snapTo(info.point.x - (canvasRect?.x ?? 0)),
+        yAxis: snapTo(info.point.y - (canvasRect?.y ?? 0)),
+      });
+    }
+  };
+
   return (
-    <div
+    <motion.div
+      drag={shift}
+      dragMomentum={false}
+      onDrag={() => {
+        if (canvasRect == null) canvasRect = canvasRef.current?.getBoundingClientRect();
+      }}
+      onDragEnd={(e, info) => {
+        updateEntryComponent(info);
+      }}
       {...bind()}
       onClick={
         entryComponent?.entry?.movieId && !shift
           ? () => router.push(`entry/${entryComponent?.entry?.componentId}`)
           : undefined
       }
-      className={`absolute flex h-20 w-72 items-center justify-center rounded-md bg-gray-200 text-sm dark:bg-darkColor ${
+      className={`${
+        shift && "outline-2 hover:cursor-move hover:outline hover:outline-blue-500"
+      } absolute flex h-20 w-72 items-center justify-center rounded-md bg-gray-200 text-sm dark:bg-darkColor ${
         entryComponent?.entry && !shift && "cursor-pointer"
       }`}
       style={{ top: entryComponent?.yAxis - 40, left: entryComponent?.xAxis - 144 }}
@@ -120,7 +151,7 @@ const EntryComponent = ({ entryComponent, shift, setShift, refetch }: Props) => 
             onClick={() => {
               if (!deleteComponent.isLoading) removeComponent(entryComponent.id);
             }}
-            className="rounded-full bg-gray-200 p-[6px] shadow-md outline-none dark:bg-darkColor"
+            className="rounded-full bg-gray-200 p-[6px] shadow-md shadow-gray-300 outline-none dark:bg-darkColor dark:shadow-black/20"
           >
             <TrashIcon className="h-[18px] w-[18px] text-red-500" />
           </button>
@@ -199,7 +230,7 @@ const EntryComponent = ({ entryComponent, shift, setShift, refetch }: Props) => 
           )}
         </>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

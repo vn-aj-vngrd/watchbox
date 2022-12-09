@@ -40,6 +40,25 @@ export const componentRouter = createProtectedRouter()
       });
     },
   })
+  .mutation("updateComponent", {
+    input: z.object({
+      id: z.string(),
+      xAxis: z.number(),
+      yAxis: z.number(),
+    }),
+    async resolve({ input, ctx }) {
+      return ctx.prisma.component.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          xAxis: input.xAxis,
+          yAxis: input.yAxis,
+          updated_at: new Date(),
+        },
+      });
+    },
+  })
   .mutation("deleteComponent", {
     input: z.object({
       id: z.string(),
