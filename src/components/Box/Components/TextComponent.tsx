@@ -5,6 +5,7 @@ import { trpc } from "../../../utils/trpc";
 import { useLongPress, LongPressDetectEvents } from "use-long-press";
 import { motion, PanInfo } from "framer-motion";
 import { snap } from "popmotion";
+import { calculatePoint } from "../Helpers";
 
 type Props = {
   textComponent: Component;
@@ -64,8 +65,20 @@ const TextComponent = ({ textComponent, canvasRef, shift, setShift, refetch }: P
     ) {
       await updateComponent.mutateAsync({
         id: textComponent.id,
-        xAxis: snapTo(info.point.x - (canvasRect?.x ?? 0)),
-        yAxis: snapTo(info.point.y - (canvasRect?.y ?? 0)),
+        xAxis: snapTo(
+          calculatePoint(
+            canvasRect.x,
+            canvasRef.current.scrollLeft,
+            info.point.x,
+            34.5,
+            69,
+            116,
+            100,
+          ),
+        ),
+        yAxis: snapTo(
+          calculatePoint(canvasRect.y, canvasRef.current.scrollTop, info.point.y, 18, 36, 40, 30),
+        ),
       });
     }
   };

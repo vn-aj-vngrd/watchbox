@@ -4,6 +4,9 @@ import { trpc } from "../../../utils/trpc";
 import { useLongPress, LongPressDetectEvents } from "use-long-press";
 import { motion, PanInfo } from "framer-motion";
 import { snap } from "popmotion";
+import { Resizable } from "re-resizable";
+import { useState } from "react";
+import { calculatePoint } from "../Helpers";
 
 type Props = {
   dividerComponent: Component;
@@ -14,6 +17,7 @@ type Props = {
 };
 
 const DividerComponent = ({ dividerComponent, canvasRef, shift, setShift, refetch }: Props) => {
+  const [state, setState] = useState({ width: 320, height: 2 });
   let canvasRect: DOMRect | undefined;
   const snapTo = snap(10);
 
@@ -39,7 +43,7 @@ const DividerComponent = ({ dividerComponent, canvasRef, shift, setShift, refetc
       });
   };
 
-  const updateTextComponent = async (info: PanInfo) => {
+  const updateDividerComponent = async (info: PanInfo) => {
     if (
       canvasRef.current &&
       canvasRect?.x &&
@@ -48,8 +52,28 @@ const DividerComponent = ({ dividerComponent, canvasRef, shift, setShift, refetc
     ) {
       await updateComponent.mutateAsync({
         id: dividerComponent.id,
-        xAxis: snapTo(info.point.x - (canvasRect?.x ?? 0)),
-        yAxis: snapTo(info.point.y - (canvasRect?.y ?? 0)),
+        xAxis: snapTo(
+          calculatePoint(
+            canvasRect.x,
+            canvasRef.current.scrollLeft,
+            info.point.x,
+            160,
+            320,
+            116,
+            -10,
+          ),
+        ),
+        yAxis: snapTo(
+          calculatePoint(
+            canvasRect.y,
+            canvasRef.current.scrollTop,
+            info.point.y,
+            1.25,
+            2.5,
+            40,
+            41,
+          ),
+        ),
       });
     }
   };
@@ -62,7 +86,7 @@ const DividerComponent = ({ dividerComponent, canvasRef, shift, setShift, refetc
         if (canvasRect == null) canvasRect = canvasRef.current?.getBoundingClientRect();
       }}
       onDragEnd={(e, info) => {
-        updateTextComponent(info);
+        updateDividerComponent(info);
       }}
       {...bind()}
       style={{ top: dividerComponent?.yAxis - 40, left: dividerComponent?.xAxis - 144 }}
@@ -80,7 +104,26 @@ const DividerComponent = ({ dividerComponent, canvasRef, shift, setShift, refetc
           </button>
         </div>
       )}
-      <div className="w-10 resize-y border-b border-gray-400"></div>
+      <Resizable
+        className="h-[2.5px] w-80 resize-y bg-gray-200"
+        size={{ width: state.width, height: state.height }}
+        enable={{
+          right: true,
+          bottom: false,
+          top: false,
+          left: false,
+          topRight: false,
+          bottomRight: false,
+          bottomLeft: false,
+          topLeft: false,
+        }}
+        onResizeStop={(e, direction, ref, d) => {
+          setState({
+            width: state.width + d.width,
+            height: state.height + d.height,
+          });
+        }}
+      ></Resizable>
     </motion.div>
   );
 };
