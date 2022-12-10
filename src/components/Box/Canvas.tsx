@@ -3,6 +3,7 @@ import EntryComponent from "./Components/EntryComponent";
 import { Prisma } from "@prisma/client";
 import TextComponent from "./Components/TextComponent";
 import { useEffect } from "react";
+import DividerComponent from "./Components/DividerComponent";
 
 type Component = Prisma.ComponentGetPayload<{
   include: { text: true; entry: true; divider: true };
@@ -72,6 +73,17 @@ const Canvas: React.FC<Props> = ({
                   canvasRef={canvasRef}
                   shift={shift}
                   setShift={setShift}
+                  refetch={refetch}
+                />
+              );
+            case "Divider":
+              return (
+                <DividerComponent
+                  key={index}
+                  shift={shift}
+                  setShift={setShift}
+                  dividerComponent={canvasElement}
+                  canvasRef={canvasRef}
                   refetch={refetch}
                 />
               );

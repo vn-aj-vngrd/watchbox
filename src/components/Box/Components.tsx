@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { motion, PanInfo } from "framer-motion";
 import { snap } from "popmotion";
 import { trpc } from "../../utils/trpc";
+import { calculatePoint } from "./Helpers";
 
 type Props = {
   id: string;
@@ -19,74 +20,66 @@ const Components: React.FC<Props> = ({ id, canvasRef, canvasSizeRef, sidePanel, 
   const createComponent = trpc.useMutation("component.createComponent");
 
   // TODO: mobile optimization
-  const addEntryComponent = async (info: PanInfo, component: string) => {
+  const addComponent = async (info: PanInfo, component: string) => {
     if (
       canvasRef.current &&
       canvasRect?.x &&
       info.point.x - (canvasRect?.x ?? 0) > 0 &&
       info.point.y - (canvasRect?.y ?? 0) > 0
     ) {
-      console.log("canvasRect.x", canvasRect.x);
-      console.log("canvasRef.current.scrollLeft", canvasRef.current.scrollLeft);
-      console.log("info.point.x", info.point.x);
+      const componentDetails: {
+        [key: string]: {
+          x: {
+            componentHalf: number;
+            componentFull: number;
+            edgeOffset: number;
+            offset: number;
+          };
+          y: {
+            componentHalf: number;
+            componentFull: number;
+            edgeOffset: number;
+            offset: number;
+          };
+        };
+      } = {
+        Text: {
+          x: { componentHalf: 34.5, componentFull: 69, edgeOffset: 116, offset: 100 },
+          y: { componentHalf: 18, componentFull: 36, edgeOffset: 40, offset: 30 },
+        },
+        Entry: {
+          x: { componentHalf: 144, componentFull: 288, edgeOffset: 116, offset: 0 },
+          y: { componentHalf: 40, componentFull: 80, edgeOffset: 40, offset: 0 },
+        },
+        Divider: {
+          x: { componentHalf: 160, componentFull: 320, edgeOffset: 116, offset: -10 },
+          y: { componentHalf: 1.25, componentFull: 2.5, edgeOffset: 40, offset: 41 },
+        },
+      };
       await createComponent.mutateAsync({
         boxId: id,
         componentName: component,
         xAxis: snapTo(
-          canvasRect.x + canvasRef.current.scrollLeft - info.point.x < 144 &&
-            canvasRect.x - info.point.x > -144
-            ? info.point.x - 288 + (288 - (info.point.x - canvasRect.x + 116))
-            : info.point.x - (canvasRect.x ?? 0) + canvasRef.current.scrollLeft,
+          calculatePoint(
+            canvasRect.x,
+            canvasRef.current.scrollLeft,
+            info.point.x,
+            componentDetails[component]?.x.componentHalf,
+            componentDetails[component]?.x.componentFull,
+            componentDetails[component]?.x.edgeOffset,
+            componentDetails[component]?.x.offset,
+          ),
         ),
         yAxis: snapTo(
-          canvasRect.y + canvasRef.current.scrollTop - info.point.y < 40 &&
-            canvasRect.y - info.point.y > -40
-            ? info.point.y - 90 + (80 - (info.point.y - canvasRect.y + 40))
-            : info.point.y - (canvasRect?.y ?? 0) + canvasRef.current.scrollTop,
-        ),
-      });
-      if (canvasSizeRef.current)
-        canvasSizeRef.current.style.width = canvasSizeRef.current?.clientWidth - 15 + "px";
-      if (canvasSizeRef.current)
-        canvasSizeRef.current.style.height = canvasSizeRef.current?.clientHeight - 10 + "px";
-      refetch();
-    } else {
-      if (canvasSizeRef.current && canvasRef.current) {
-        canvasSizeRef.current.style.width = "auto";
-        canvasSizeRef.current.style.height = "auto";
-        canvasSizeRef.current.style.width =
-          canvasRef.current.scrollWidth +
-          (canvasRef.current.scrollWidth > canvasRef.current.clientWidth ? 16 : 0) +
-          "px";
-        canvasSizeRef.current.style.height =
-          canvasRef.current.scrollHeight +
-          (canvasRef.current.scrollHeight > canvasRef.current.clientHeight ? 16 : 0) +
-          "px";
-      }
-    }
-  };
-
-  const addTextComponent = async (info: PanInfo, component: string) => {
-    if (
-      canvasRef.current &&
-      canvasRect?.x &&
-      info.point.x - (canvasRect?.x ?? 0) > 0 &&
-      info.point.y - (canvasRect?.y ?? 0) > 0
-    ) {
-      await createComponent.mutateAsync({
-        boxId: id,
-        componentName: component,
-        xAxis: snapTo(
-          canvasRect.x + canvasRef.current.scrollLeft - info.point.x < 34.5 &&
-            canvasRect.x - info.point.x > -34.5
-            ? info.point.x - 69 + (69 - (info.point.x - canvasRect.x + 116))
-            : info.point.x - (canvasRect.x ?? 0) + canvasRef.current.scrollLeft + 100,
-        ),
-        yAxis: snapTo(
-          canvasRect.y + canvasRef.current.scrollTop - info.point.y < 18 &&
-            canvasRect.y - info.point.y > -18
-            ? info.point.y - 36 + (36 - (info.point.y - canvasRect.y + 40))
-            : info.point.y - (canvasRect?.y ?? 0) + canvasRef.current.scrollTop + 30,
+          calculatePoint(
+            canvasRect.y,
+            canvasRef.current.scrollTop,
+            info.point.y,
+            componentDetails[component]?.y.componentHalf,
+            componentDetails[component]?.y.componentFull,
+            componentDetails[component]?.y.edgeOffset,
+            componentDetails[component]?.y.offset,
+          ),
         ),
       });
       refetch();
@@ -103,33 +96,6 @@ const Components: React.FC<Props> = ({ id, canvasRef, canvasSizeRef, sidePanel, 
           (canvasRef.current.scrollHeight > canvasRef.current.clientHeight ? 16 : 0) +
           "px";
       }
-    }
-  };
-
-  const addDividerComponent = async (info: PanInfo, component: string) => {
-    if (
-      canvasRef.current &&
-      canvasRect?.x &&
-      info.point.x - (canvasRect?.x ?? 0) > 0 &&
-      info.point.y - (canvasRect?.y ?? 0) > 0
-    ) {
-      await createComponent.mutateAsync({
-        boxId: id,
-        componentName: component,
-        xAxis: snapTo(
-          canvasRect.x + canvasRef.current.scrollLeft - info.point.x < 34.5 &&
-            canvasRect.x - info.point.x > -34.5
-            ? info.point.x - 69 + (69 - (info.point.x - canvasRect.x + 116))
-            : info.point.x - (canvasRect.x ?? 0) + canvasRef.current.scrollLeft + 100,
-        ),
-        yAxis: snapTo(
-          canvasRect.y + canvasRef.current.scrollTop - info.point.y < 18 &&
-            canvasRect.y - info.point.y > -18
-            ? info.point.y - 36 + (36 - (info.point.y - canvasRect.y + 40))
-            : info.point.y - (canvasRect?.y ?? 0) + canvasRef.current.scrollTop + 30,
-        ),
-      });
-      refetch();
     }
   };
 
@@ -137,9 +103,13 @@ const Components: React.FC<Props> = ({ id, canvasRef, canvasSizeRef, sidePanel, 
   // TODO: Add padding to left and bottom
   const scrollEdge = (info: PanInfo) => {
     // right
-    if (canvasRect && canvasRef.current && info.point.x > canvasRect.width + 144) {
+    if (canvasRect && canvasRef.current && info.point.x > canvasRect.width + 200) {
       if (canvasSizeRef.current)
-        canvasSizeRef.current.style.width = canvasSizeRef.current?.clientWidth + 20 + "px";
+        canvasSizeRef.current.style.width =
+          canvasRef.current?.scrollWidth <=
+          canvasRef.current?.clientWidth + canvasRef.current.scrollLeft
+            ? canvasSizeRef.current?.clientWidth + 20 + "px"
+            : canvasSizeRef.current.style.width;
       canvasRef.current.scrollLeft += 20;
     }
     // left
@@ -147,7 +117,7 @@ const Components: React.FC<Props> = ({ id, canvasRef, canvasSizeRef, sidePanel, 
       canvasRect &&
       canvasRef.current &&
       canvasRect.x - info.point.x < 0 &&
-      canvasRect.x - info.point.x > -144
+      canvasRect.x - info.point.x > -200
     ) {
       if (canvasSizeRef.current)
         canvasSizeRef.current.style.width =
@@ -160,7 +130,11 @@ const Components: React.FC<Props> = ({ id, canvasRef, canvasSizeRef, sidePanel, 
     // bottom
     if (canvasRect && canvasRef.current && info.point.y > canvasRect.height + 40) {
       if (canvasSizeRef.current)
-        canvasSizeRef.current.style.height = canvasSizeRef.current?.clientHeight + 15 + "px";
+        canvasSizeRef.current.style.height =
+          canvasRef.current?.scrollHeight <=
+          canvasRef.current?.clientHeight + canvasRef.current.scrollTop
+            ? canvasSizeRef.current?.clientHeight + 20 + "px"
+            : canvasSizeRef.current.style.height;
       canvasRef.current.scrollTop += 15;
     }
     // top
@@ -204,7 +178,7 @@ const Components: React.FC<Props> = ({ id, canvasRef, canvasSizeRef, sidePanel, 
           }}
           onDragEnd={(e, info) => {
             componentsDiv.current?.classList.add("scrollbar-thin");
-            addTextComponent(info, "Text");
+            addComponent(info, "Text");
           }}
           className={`flex h-10 w-10 items-center justify-center rounded-md bg-gray-200 p-2 text-gray-700 dark:bg-darkColor dark:text-white ${
             !sidePanel
@@ -242,7 +216,7 @@ const Components: React.FC<Props> = ({ id, canvasRef, canvasSizeRef, sidePanel, 
           }}
           onDragEnd={(e, info) => {
             componentsDiv.current?.classList.add("scrollbar-thin");
-            addEntryComponent(info, "Entry");
+            addComponent(info, "Entry");
           }}
           className={`flex h-10 w-10 items-center justify-center rounded-md bg-gray-200 p-2 text-gray-700 dark:bg-darkColor dark:text-white ${
             !sidePanel
@@ -280,7 +254,7 @@ const Components: React.FC<Props> = ({ id, canvasRef, canvasSizeRef, sidePanel, 
           }}
           onDragEnd={(e, info) => {
             componentsDiv.current?.classList.add("scrollbar-thin");
-            addDividerComponent(info, "Divider");
+            addComponent(info, "Divider");
           }}
           className={`flex h-10 w-10 items-center justify-center rounded-md bg-gray-200 p-2 text-gray-700 dark:bg-darkColor dark:text-white ${
             !sidePanel

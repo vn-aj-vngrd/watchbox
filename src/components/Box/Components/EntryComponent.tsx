@@ -9,6 +9,7 @@ import { useLongPress, LongPressDetectEvents } from "use-long-press";
 import toast from "react-hot-toast";
 import { motion, PanInfo } from "framer-motion";
 import { snap } from "popmotion";
+import { calculatePoint } from "../Helpers";
 
 type Component = Prisma.ComponentGetPayload<{
   include: { text: true; entry: true; divider: true };
@@ -116,8 +117,20 @@ const EntryComponent = ({ entryComponent, canvasRef, shift, setShift, refetch }:
     ) {
       await updateComponent.mutateAsync({
         id: entryComponent.id,
-        xAxis: snapTo(info.point.x - (canvasRect?.x ?? 0)),
-        yAxis: snapTo(info.point.y - (canvasRect?.y ?? 0)),
+        xAxis: snapTo(
+          calculatePoint(
+            canvasRect.x,
+            canvasRef.current.scrollLeft,
+            info.point.x,
+            144,
+            288,
+            116,
+            0,
+          ),
+        ),
+        yAxis: snapTo(
+          calculatePoint(canvasRect.y, canvasRef.current.scrollTop, info.point.y, 40, 80, 40, 0),
+        ),
       });
     }
   };
