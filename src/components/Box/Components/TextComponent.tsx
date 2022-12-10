@@ -35,14 +35,13 @@ const TextComponent = ({ textComponent, canvasRef, shift, setShift, refetch }: P
   // TODO: Fix text highlighting
   const handleMouseUp = () => {
     if (spanRef.current) {
-      // Create a range object that includes the span's text
       const range = document.createRange();
-      range.selectNode(spanRef.current);
-
-      // Select the text in the range
+      range.selectNodeContents(spanRef.current);
       const selection = window.getSelection();
-      selection?.removeAllRanges();
-      selection?.addRange(range);
+      if (selection) {
+        selection.removeAllRanges();
+        selection.addRange(range);
+      }
     }
   };
 

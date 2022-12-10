@@ -3,16 +3,29 @@ import { motion, PanInfo } from "framer-motion";
 import { snap } from "popmotion";
 import { trpc } from "../../utils/trpc";
 import { calculatePoint } from "./Helpers";
+import { Prisma } from "@prisma/client";
+
+type Component = Prisma.ComponentGetPayload<{
+  include: { text: true; entry: true; divider: true };
+}>;
 
 type Props = {
   id: string;
   canvasRef: React.RefObject<HTMLDivElement>;
   canvasSizeRef: React.RefObject<HTMLDivElement>;
+  addStateComponent: (component: Component) => void;
   sidePanel: boolean;
   refetch: () => void;
 };
 
-const Components: React.FC<Props> = ({ id, canvasRef, canvasSizeRef, sidePanel, refetch }) => {
+const Components: React.FC<Props> = ({
+  id,
+  canvasRef,
+  canvasSizeRef,
+  addStateComponent,
+  sidePanel,
+  refetch,
+}) => {
   const componentsDiv = useRef<HTMLDivElement>(null);
   let canvasRect: DOMRect | undefined;
   const snapTo = snap(10);
@@ -56,8 +69,10 @@ const Components: React.FC<Props> = ({ id, canvasRef, canvasSizeRef, sidePanel, 
           y: { componentHalf: 1.25, componentFull: 2.5, edgeOffset: 40, offset: 41 },
         },
       };
-      await createComponent.mutateAsync({
-        boxId: id,
+
+      addStateComponent({
+        id: "temp",
+        boxId: "temp",
         componentName: component,
         xAxis: snapTo(
           calculatePoint(
@@ -81,8 +96,43 @@ const Components: React.FC<Props> = ({ id, canvasRef, canvasSizeRef, sidePanel, 
             componentDetails[component]?.y.offset,
           ),
         ),
+        text: null,
+        entry: null,
+        divider: null,
+        created_at: new Date(),
+        updated_at: new Date(),
       });
-      refetch();
+
+      await createComponent
+        .mutateAsync({
+          boxId: id,
+          componentName: component,
+          xAxis: snapTo(
+            calculatePoint(
+              canvasRect.x,
+              canvasRef.current.scrollLeft,
+              info.point.x,
+              componentDetails[component]?.x.componentHalf,
+              componentDetails[component]?.x.componentFull,
+              componentDetails[component]?.x.edgeOffset,
+              componentDetails[component]?.x.offset,
+            ),
+          ),
+          yAxis: snapTo(
+            calculatePoint(
+              canvasRect.y,
+              canvasRef.current.scrollTop,
+              info.point.y,
+              componentDetails[component]?.y.componentHalf,
+              componentDetails[component]?.y.componentFull,
+              componentDetails[component]?.y.edgeOffset,
+              componentDetails[component]?.y.offset,
+            ),
+          ),
+        })
+        .then((res) => {
+          // update state element with new ids
+        });
     } else {
       if (canvasSizeRef.current && canvasRef.current) {
         canvasSizeRef.current.style.width = "auto";
