@@ -17,6 +17,7 @@ type Component = Prisma.ComponentGetPayload<{
 
 type Props = {
   entryComponent: Component;
+  removeEntry: (id: string) => void;
   canvasRef: React.RefObject<HTMLDivElement>;
   shift: boolean;
   setShift: React.Dispatch<React.SetStateAction<boolean>>;
@@ -40,7 +41,14 @@ type Movie = {
   vote_count: number;
 };
 
-const EntryComponent = ({ entryComponent, canvasRef, shift, setShift, refetch }: Props) => {
+const EntryComponent = ({
+  entryComponent,
+  removeEntry,
+  canvasRef,
+  shift,
+  setShift,
+  refetch,
+}: Props) => {
   const [movies, setMovies] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
   let canvasRect: DOMRect | undefined;
@@ -60,13 +68,13 @@ const EntryComponent = ({ entryComponent, canvasRef, shift, setShift, refetch }:
   );
 
   const removeComponent = async (id: string) => {
-    await deleteComponent
-      .mutateAsync({
-        id: id,
-      })
-      .then(() => {
-        refetch();
-      });
+    removeEntry(id);
+    await deleteComponent.mutateAsync({
+      id: id,
+    });
+    // .then(() => {
+    //   refetch();
+    // });
   };
 
   const searchMovies = async (title: string) => {

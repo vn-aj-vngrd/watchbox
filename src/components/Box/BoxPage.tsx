@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { XCircleIcon } from "@heroicons/react/24/solid";
 import { useRouter } from "next/router";
 import { trpc } from "../../utils/trpc";
@@ -10,6 +10,11 @@ import Components from "./Components";
 import Controls from "./Controls";
 import Header from "./Header";
 import { useHotkeys } from "react-hotkeys-hook";
+import { Prisma } from "@prisma/client";
+
+type Component = Prisma.ComponentGetPayload<{
+  include: { text: true; entry: true; divider: true };
+}>;
 
 const description = [
   "The page you are looking for does not exist.",
@@ -22,6 +27,8 @@ const BoxPage = () => {
   const canvasSizeRef = useRef<HTMLDivElement>(null);
   const [shift, setShift] = useState(false);
 
+  const [canvasElements, setCanvasElements] = useState<Component[]>([]);
+
   useHotkeys("shift", () => setShift(true), { keydown: true, keyup: false }, [shift]);
   useHotkeys("shift", () => setShift(false), { keydown: false, keyup: true }, [shift]);
 
@@ -31,6 +38,20 @@ const BoxPage = () => {
   const getBox = trpc.useQuery(["box.getBox", { id: id as string }]);
   const getFavoriteBox = trpc.useQuery(["favorite.getFavoriteBox", { boxId: id as string }]);
   const getComponents = trpc.useQuery(["component.getComponents", { id: id as string }]);
+
+  useEffect(() => {
+    if (getComponents.isSuccess) {
+      setCanvasElements(getComponents.data);
+    }
+  }, [getComponents.isSuccess]);
+
+  const addComponent = (component: Component) => {
+    setCanvasElements((prev) => [...prev, component]);
+  };
+
+  const deleteComponent = (id: string) => {
+    setCanvasElements((prev) => prev?.filter((component) => component.id !== id));
+  };
 
   if (getBox.isLoading || getFavoriteBox.isLoading) {
     return <Spinner isGlobal={true} />;
@@ -86,6 +107,7 @@ const BoxPage = () => {
           id={id as string}
           canvasRef={canvasRef}
           canvasSizeRef={canvasSizeRef}
+          addStateComponent={addComponent}
           sidePanel={sidePanel}
           refetch={refetchCanvasElements}
         />
@@ -101,7 +123,8 @@ const BoxPage = () => {
           id={id as string}
           canvasRef={canvasRef}
           canvasSizeRef={canvasSizeRef}
-          canvasElements={getComponents?.data}
+          canvasElements={canvasElements}
+          deleteComponent={deleteComponent}
           shift={shift}
           setShift={setShift}
           refetch={refetchCanvasElements}
