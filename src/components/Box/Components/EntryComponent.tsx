@@ -9,7 +9,7 @@ import { useLongPress, LongPressDetectEvents } from "use-long-press";
 import toast from "react-hot-toast";
 import { motion, PanInfo } from "framer-motion";
 import { snap } from "popmotion";
-import { calculatePoint, resetCavasSize } from "../Helpers";
+import { calculatePoint, resetCavasSize, scrollEdge } from "../Helpers";
 
 type Component = Prisma.ComponentGetPayload<{
   include: { text: true; entry: true; divider: true };
@@ -171,11 +171,13 @@ const EntryComponent = ({
     <motion.div
       drag={shift}
       dragMomentum={false}
-      dragSnapToOrigin={true}
+      dragSnapToOrigin
       dragElastic={0}
       dragConstraints={canvasRef}
-      onDrag={() => {
+      onDrag={(e, info) => {
         if (canvasRect == null) canvasRect = canvasRef.current?.getBoundingClientRect();
+        // FIXME: Weirdass
+        scrollEdge(info, canvasRect, canvasSizeRef, canvasRef);
       }}
       onDragEnd={(e, info) => {
         updateEntryComponent(info);

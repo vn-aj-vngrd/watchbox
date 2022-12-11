@@ -29,3 +29,64 @@ export const resetCavasSize = (
       "px";
   }
 };
+
+import { PanInfo } from "framer-motion";
+
+// TODO: optimize for mobile
+export const scrollEdge = (
+  info: PanInfo,
+  canvasRect: DOMRect | undefined,
+  canvasSizeRef: React.RefObject<HTMLDivElement>,
+  canvasRef: React.RefObject<HTMLDivElement>,
+) => {
+  // right
+  if (canvasRect && canvasRef.current && info.point.x > canvasRect.width + 200) {
+    if (canvasSizeRef.current)
+      canvasSizeRef.current.style.width =
+        canvasRef.current?.scrollWidth <=
+        canvasRef.current?.clientWidth + canvasRef.current.scrollLeft
+          ? canvasSizeRef.current?.clientWidth + 20 + "px"
+          : canvasSizeRef.current.style.width;
+    canvasRef.current.scrollLeft += 20;
+  }
+  // left
+  if (
+    canvasRect &&
+    canvasRef.current &&
+    canvasRect.x - info.point.x < 0 &&
+    canvasRect.x - info.point.x > -200
+  ) {
+    if (canvasSizeRef.current)
+      canvasSizeRef.current.style.width =
+        parseInt(canvasSizeRef.current.style.width) === canvasRef.current.scrollWidth
+          ? canvasSizeRef.current?.clientWidth - 20 + "px"
+          : canvasRef.current?.scrollWidth + "px";
+
+    canvasRef.current.scrollLeft -= 20;
+  }
+  // bottom
+  if (canvasRect && canvasRef.current && info.point.y > canvasRect.height + 40) {
+    if (canvasSizeRef.current)
+      canvasSizeRef.current.style.height =
+        canvasRef.current?.scrollHeight <=
+        canvasRef.current?.clientHeight + canvasRef.current.scrollTop
+          ? canvasSizeRef.current?.clientHeight + 20 + "px"
+          : canvasSizeRef.current.style.height;
+    canvasRef.current.scrollTop += 15;
+  }
+  // top
+  if (
+    canvasRect &&
+    canvasRef.current &&
+    canvasRect.y - info.point.y < 0 &&
+    canvasRect.y - info.point.y > -40
+  ) {
+    if (canvasSizeRef.current)
+      canvasSizeRef.current.style.height =
+        parseInt(canvasSizeRef.current.style.height) === canvasRef.current.scrollHeight
+          ? canvasSizeRef.current?.clientHeight - 15 + "px"
+          : canvasRef.current?.scrollHeight + "px";
+
+    canvasRef.current.scrollTop -= 15;
+  }
+};
