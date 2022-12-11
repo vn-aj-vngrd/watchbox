@@ -6,10 +6,10 @@ type Props = {
   title?: string;
 };
 
-const Meta = ({ title }: Props) => {
+const Meta = ({ title = "WatchBox" }: Props) => {
   return (
     <Head>
-      <title> {title} </title>
+      <title>{title}</title>
       <meta charSet="utf-8" />
       <meta content="width=device-width, initial-scale=1.0" name="viewport" />
       <meta name="title" content="WatchBox" />

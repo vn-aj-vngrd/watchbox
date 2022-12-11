@@ -2,7 +2,6 @@ import { useState, useRef, useEffect } from "react";
 import { XCircleIcon } from "@heroicons/react/24/solid";
 import { useRouter } from "next/router";
 import { trpc } from "../../utils/trpc";
-import Meta from "../Common/Meta";
 import PageAlert from "../Common/PageAlert";
 import Spinner from "../Common/Spinner";
 import Canvas from "./Canvas";
@@ -71,7 +70,6 @@ const BoxPage = () => {
   if (getBox.isSuccess && !getBox.data) {
     return (
       <>
-        <Meta title="Watchbox | 404" />
         <PageAlert
           elem={<p className="text-4xl font-extrabold text-red-600 sm:text-5xl">404</p>}
           title="Page not found"
