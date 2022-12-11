@@ -4,6 +4,7 @@ import { snap } from "popmotion";
 import { trpc } from "../../utils/trpc";
 import { calculatePoint } from "./Helpers";
 import { Prisma } from "@prisma/client";
+import { v4 as uuidv4 } from "uuid";
 
 type Component = Prisma.ComponentGetPayload<{
   include: { text: true; entry: true; divider: true };
@@ -14,8 +15,8 @@ type Props = {
   canvasRef: React.RefObject<HTMLDivElement>;
   canvasSizeRef: React.RefObject<HTMLDivElement>;
   addStateComponent: (component: Component) => void;
+  updateStateComponent: (component: Component) => void;
   sidePanel: boolean;
-  refetch: () => void;
 };
 
 const Components: React.FC<Props> = ({
@@ -23,8 +24,8 @@ const Components: React.FC<Props> = ({
   canvasRef,
   canvasSizeRef,
   addStateComponent,
+  updateStateComponent,
   sidePanel,
-  refetch,
 }) => {
   const componentsDiv = useRef<HTMLDivElement>(null);
   let canvasRect: DOMRect | undefined;
@@ -70,9 +71,10 @@ const Components: React.FC<Props> = ({
         },
       };
 
-      addStateComponent({
-        id: "temp",
-        boxId: "temp",
+      const uuid = uuidv4();
+      const tempComponent = {
+        id: uuid,
+        boxId: id,
         componentName: component,
         xAxis: snapTo(
           calculatePoint(
@@ -101,7 +103,9 @@ const Components: React.FC<Props> = ({
         divider: null,
         created_at: new Date(),
         updated_at: new Date(),
-      });
+      };
+
+      addStateComponent(tempComponent);
 
       await createComponent
         .mutateAsync({
@@ -131,9 +135,16 @@ const Components: React.FC<Props> = ({
           ),
         })
         .then((res) => {
-          // update state element with new ids
+          updateStateComponent(
+            Object.assign(tempComponent, {
+              id: res.id,
+              created_at: res.created_at,
+              updated_at: res.updated_at,
+            }),
+          );
         });
     } else {
+      // TODO: Add this to Helpers.tsx
       if (canvasSizeRef.current && canvasRef.current) {
         canvasSizeRef.current.style.width = "auto";
         canvasSizeRef.current.style.height = "auto";

@@ -1,4 +1,4 @@
-import { Component } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import { TrashIcon } from "@heroicons/react/24/solid";
 import { trpc } from "../../../utils/trpc";
 import { useLongPress, LongPressDetectEvents } from "use-long-press";
@@ -7,6 +7,10 @@ import { snap } from "popmotion";
 import { Resizable } from "re-resizable";
 import { useState } from "react";
 import { calculatePoint } from "../Helpers";
+
+type Component = Prisma.ComponentGetPayload<{
+  include: { text: true; entry: true; divider: true };
+}>;
 
 type Props = {
   dividerComponent: Component;

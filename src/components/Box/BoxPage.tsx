@@ -43,7 +43,7 @@ const BoxPage = () => {
     if (getComponents.isSuccess) {
       setCanvasElements(getComponents.data);
     }
-  }, [getComponents.isSuccess]);
+  }, [getComponents.isSuccess, getComponents.data]);
 
   const addComponent = (component: Component) => {
     setCanvasElements((prev) => [...prev, component]);
@@ -51,6 +51,17 @@ const BoxPage = () => {
 
   const deleteComponent = (id: string) => {
     setCanvasElements((prev) => prev?.filter((component) => component.id !== id));
+  };
+
+  const updateComponent = (component: Component) => {
+    setCanvasElements((prev) =>
+      prev?.map((prevComponent) => {
+        if (prevComponent.id === component.id) {
+          return component;
+        }
+        return prevComponent;
+      }),
+    );
   };
 
   if (getBox.isLoading || getFavoriteBox.isLoading) {
@@ -108,8 +119,8 @@ const BoxPage = () => {
           canvasRef={canvasRef}
           canvasSizeRef={canvasSizeRef}
           addStateComponent={addComponent}
+          updateStateComponent={updateComponent}
           sidePanel={sidePanel}
-          refetch={refetchCanvasElements}
         />
       </div>
       <div className="flex h-full grow flex-col">
@@ -124,7 +135,8 @@ const BoxPage = () => {
           canvasRef={canvasRef}
           canvasSizeRef={canvasSizeRef}
           canvasElements={canvasElements}
-          deleteComponent={deleteComponent}
+          removeStateComponent={deleteComponent}
+          updateStateComponent={updateComponent}
           shift={shift}
           setShift={setShift}
           refetch={refetchCanvasElements}
