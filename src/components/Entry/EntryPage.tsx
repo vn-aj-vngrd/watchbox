@@ -6,7 +6,6 @@ import Metadata from "../Entry/Metadata";
 import { trpc } from "../../utils/trpc";
 import { useRouter } from "next/router";
 import Spinner from "../Common/Spinner";
-import Meta from "../Common/Meta";
 import PageAlert from "../Common/PageAlert";
 import { XCircleIcon } from "@heroicons/react/24/solid";
 
@@ -66,7 +65,6 @@ const EntryPage = () => {
   if (getEntry.isSuccess && !getEntry.data) {
     return (
       <>
-        <Meta title="Watchbox | 404" />
         <PageAlert
           elem={<p className="text-4xl font-extrabold text-red-600 sm:text-5xl">404</p>}
           title="Page not found"
