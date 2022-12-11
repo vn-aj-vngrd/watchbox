@@ -32,7 +32,7 @@ export const resetCavasSize = (
 
 import { PanInfo } from "framer-motion";
 
-// TODO: optimize for mobile
+// TODO: Optimize for mobile
 export const scrollEdge = (
   info: PanInfo,
   canvasRect: DOMRect | undefined,

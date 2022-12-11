@@ -110,6 +110,7 @@ const Header = ({ box, favoriteBox, id, refetch }: Props) => {
 
   return (
     <div className="flex h-12 items-center border-b pl-4 pr-2 dark:border-darkColor">
+      {/* TODO: Try onBlur on the input instead of onSubmit for better UX */}
       <form onSubmit={handleSubmit(onSubmit)} className="flex h-full grow items-center">
         <input
           type="text"
