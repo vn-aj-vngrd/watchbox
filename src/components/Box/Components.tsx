@@ -33,7 +33,7 @@ const Components: React.FC<Props> = ({
 
   const createComponent = trpc.useMutation("component.createComponent");
 
-  // TODO: mobile optimization
+  // TODO: Optimizate for mobile
   const addComponent = async (info: PanInfo, component: string) => {
     if (
       canvasRef.current &&
