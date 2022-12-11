@@ -14,7 +14,8 @@ type Props = {
   canvasRef: React.RefObject<HTMLDivElement>;
   canvasSizeRef: React.RefObject<HTMLDivElement>;
   canvasElements: Component[] | undefined;
-  deleteComponent: (id: string) => void;
+  removeStateComponent: (id: string) => void;
+  updateStateComponent: (component: Component) => void;
   shift: boolean;
   setShift: React.Dispatch<React.SetStateAction<boolean>>;
   refetch: () => void;
@@ -24,7 +25,8 @@ const Canvas: React.FC<Props> = ({
   canvasRef,
   canvasSizeRef,
   canvasElements,
-  deleteComponent,
+  removeStateComponent,
+  updateStateComponent,
   shift,
   setShift,
   refetch,
@@ -72,7 +74,8 @@ const Canvas: React.FC<Props> = ({
                 <EntryComponent
                   key={index}
                   entryComponent={canvasElement}
-                  removeEntry={deleteComponent}
+                  removeStateComponent={removeStateComponent}
+                  updateStateComponent={updateStateComponent}
                   canvasRef={canvasRef}
                   shift={shift}
                   setShift={setShift}
