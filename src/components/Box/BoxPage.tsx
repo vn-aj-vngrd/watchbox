@@ -45,22 +45,40 @@ const BoxPage = () => {
   }, [getComponents.isSuccess, getComponents.data]);
 
   const addComponent = (component: Component) => {
-    setCanvasElements((prev) => [...prev, component]);
+    return new Promise<void>((resolve) => {
+      setCanvasElements((prev) => [...prev, component]);
+      resolve();
+    });
   };
 
   const deleteComponent = (id: string) => {
-    setCanvasElements((prev) => prev?.filter((component) => component.id !== id));
+    return new Promise<void>((resolve) => {
+      setCanvasElements((prev) => prev?.filter((component) => component.id !== id));
+      resolve();
+    });
   };
 
   const updateComponent = (component: Component) => {
-    setCanvasElements((prev) =>
-      prev?.map((prevComponent) => {
-        if (prevComponent.id === component.id) {
-          return component;
-        }
-        return prevComponent;
-      }),
-    );
+    return new Promise<void>((resolve) => {
+      setCanvasElements((prev) =>
+        prev?.map((prevComponent) => {
+          if (prevComponent.id === component.id) {
+            return component;
+          }
+          return prevComponent;
+        }),
+      );
+      resolve();
+    });
+  };
+
+  const refetchBox = () => {
+    getBox.refetch();
+    getFavoriteBox.refetch();
+  };
+
+  const refetchCanvasElements = () => {
+    getComponents.refetch();
   };
 
   if (getBox.isLoading || getFavoriteBox.isLoading) {
@@ -94,15 +112,6 @@ const BoxPage = () => {
       />
     );
   }
-
-  const refetchBox = () => {
-    getBox.refetch();
-    getFavoriteBox.refetch();
-  };
-
-  const refetchCanvasElements = () => {
-    getComponents.refetch();
-  };
 
   return (
     <div className="flex h-full w-full">

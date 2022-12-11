@@ -9,7 +9,7 @@ import { useLongPress, LongPressDetectEvents } from "use-long-press";
 import toast from "react-hot-toast";
 import { motion, PanInfo } from "framer-motion";
 import { snap } from "popmotion";
-import { calculatePoint } from "../Helpers";
+import { calculatePoint, resetCavasSize } from "../Helpers";
 
 type Component = Prisma.ComponentGetPayload<{
   include: { text: true; entry: true; divider: true };
@@ -17,9 +17,10 @@ type Component = Prisma.ComponentGetPayload<{
 
 type Props = {
   entryComponent: Component;
-  removeStateComponent: (id: string) => void;
-  updateStateComponent: (component: Component) => void;
+  removeStateComponent: (id: string) => Promise<void>;
+  updateStateComponent: (component: Component) => Promise<void>;
   canvasRef: React.RefObject<HTMLDivElement>;
+  canvasSizeRef: React.RefObject<HTMLDivElement>;
   shift: boolean;
   setShift: React.Dispatch<React.SetStateAction<boolean>>;
   refetch: () => void;
@@ -47,6 +48,7 @@ const EntryComponent = ({
   removeStateComponent,
   updateStateComponent,
   canvasRef,
+  canvasSizeRef,
   shift,
   setShift,
   refetch,
@@ -61,7 +63,9 @@ const EntryComponent = ({
   const updateComponent = trpc.useMutation("component.updateComponent");
 
   const removeComponent = async (id: string) => {
-    removeStateComponent(id);
+    removeStateComponent(id).then(() => {
+      resetCavasSize(canvasSizeRef, canvasRef);
+    });
     await deleteComponent.mutateAsync({
       id: id,
     });
@@ -91,7 +95,10 @@ const EntryComponent = ({
             calculatePoint(canvasRect.y, canvasRef.current.scrollTop, info.point.y, 40, 80, 40, 0),
           ),
         }),
-      );
+      ).then(() => {
+        resetCavasSize(canvasSizeRef, canvasRef);
+      });
+
       await updateComponent.mutateAsync({
         id: entryComponent.id,
         xAxis: snapTo(

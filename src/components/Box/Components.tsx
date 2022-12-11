@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { motion, PanInfo } from "framer-motion";
 import { snap } from "popmotion";
 import { trpc } from "../../utils/trpc";
-import { calculatePoint } from "./Helpers";
+import { calculatePoint, resetCavasSize } from "./Helpers";
 import { Prisma } from "@prisma/client";
 import { v4 as uuidv4 } from "uuid";
 
@@ -14,8 +14,8 @@ type Props = {
   id: string;
   canvasRef: React.RefObject<HTMLDivElement>;
   canvasSizeRef: React.RefObject<HTMLDivElement>;
-  addStateComponent: (component: Component) => void;
-  updateStateComponent: (component: Component) => void;
+  addStateComponent: (component: Component) => Promise<void>;
+  updateStateComponent: (component: Component) => Promise<void>;
   sidePanel: boolean;
 };
 
@@ -105,7 +105,9 @@ const Components: React.FC<Props> = ({
         updated_at: new Date(),
       };
 
-      addStateComponent(tempComponent);
+      addStateComponent(tempComponent).then(() => {
+        resetCavasSize(canvasSizeRef, canvasRef);
+      });
 
       await createComponent
         .mutateAsync({
@@ -144,19 +146,7 @@ const Components: React.FC<Props> = ({
           );
         });
     } else {
-      // TODO: Add this to Helpers.tsx
-      if (canvasSizeRef.current && canvasRef.current) {
-        canvasSizeRef.current.style.width = "auto";
-        canvasSizeRef.current.style.height = "auto";
-        canvasSizeRef.current.style.width =
-          canvasRef.current.scrollWidth +
-          (canvasRef.current.scrollWidth > canvasRef.current.clientWidth ? 16 : 0) +
-          "px";
-        canvasSizeRef.current.style.height =
-          canvasRef.current.scrollHeight +
-          (canvasRef.current.scrollHeight > canvasRef.current.clientHeight ? 16 : 0) +
-          "px";
-      }
+      resetCavasSize(canvasSizeRef, canvasRef);
     }
   };
 
