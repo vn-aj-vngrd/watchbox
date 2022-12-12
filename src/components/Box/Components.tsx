@@ -25,6 +25,9 @@ const Components: React.FC<Props> = ({ id, canvasRef, sidePanel, refetch }) => {
       info.point.x - (canvasRect?.x ?? 0) > 0 &&
       info.point.y - (canvasRect?.y ?? 0) > 0
     ) {
+      console.log("canvasRect.x", canvasRect.x);
+      console.log("canvasRef.current.scrollLeft", canvasRef.current.scrollLeft);
+      console.log("info.point.x", info.point.x);
       await createComponent.mutateAsync({
         boxId: id,
         componentName: component,

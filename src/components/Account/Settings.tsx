@@ -138,6 +138,7 @@ const Settings = () => {
             <div className="relative mx-auto h-32 w-32 rounded-full bg-gray-100 dark:bg-grayColor">
               {image.length === 0 && session?.user?.image && (
                 <Image
+                  draggable={false}
                   className="absolute z-0 h-24 w-24 rounded-full"
                   src={session?.user?.image || ""}
                   alt={session?.user?.name || ""}

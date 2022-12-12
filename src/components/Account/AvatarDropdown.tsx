@@ -34,6 +34,7 @@ const AvatarDropdown = ({ session }: Props) => {
           {session?.user?.image ? (
             <div className="relative h-full w-full">
               <Image
+                draggable={false}
                 src={session?.user?.image || ""}
                 alt={session?.user?.name || ""}
                 layout="fill"

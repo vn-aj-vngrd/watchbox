@@ -133,13 +133,33 @@ const Metadata = ({
   return (
     <div className="flex flex-col items-center py-4 md:flex-row md:items-start">
       <div className="relative flex h-[260px] w-[173px] shrink-0 rounded-md p-4 sm:h-[280px] sm:w-[186px] md:h-[300px] md:w-[200px] lg:h-[320px] lg:w-[213px]">
-        {/* TODO: Add image loader */}
-        <Image
-          className="rounded-md"
-          src={`https://www.themoviedb.org/t/p/w600_and_h900_bestv2/${movie?.poster_path}`}
-          layout="fill"
-          alt={movie?.title}
-        />
+        {movie?.poster_path ? (
+          <Image
+            draggable={false}
+            className="rounded-md"
+            src={`https://www.themoviedb.org/t/p/w600_and_h900_bestv2/${movie?.poster_path}`}
+            layout="fill"
+            alt={movie?.title}
+          />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center rounded-md bg-gray-100 text-gray-200 dark:bg-darkColor dark:text-neutral-500">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="6em"
+              height="6em"
+              preserveAspectRatio="xMidYMid meet"
+              viewBox="0 0 24 24"
+            >
+              <g fill="none">
+                <path d="M24 0v24H0V0h24ZM12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035c-.01-.004-.019-.001-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427c-.002-.01-.009-.017-.017-.018Zm.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093c.012.004.023 0 .029-.008l.004-.014l-.034-.614c-.003-.012-.01-.02-.02-.022Zm-.715.002a.023.023 0 0 0-.027.006l-.006.014l-.034.614c0 .012.007.02.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01l-.184-.092Z" />
+                <path
+                  fill="currentColor"
+                  d="M12 2c5.523 0 10 4.477 10 10a9.982 9.982 0 0 1-3.76 7.814l-.239.186H20a1 1 0 0 1 .117 1.993L20 22h-8C6.477 22 2 17.523 2 12S6.477 2 12 2Zm0 2a8 8 0 1 0 0 16a8 8 0 0 0 0-16Zm0 10a2 2 0 1 1 0 4a2 2 0 0 1 0-4Zm-4-4a2 2 0 1 1 0 4a2 2 0 0 1 0-4Zm8 0a2 2 0 1 1 0 4a2 2 0 0 1 0-4Zm-4-4a2 2 0 1 1 0 4a2 2 0 0 1 0-4Z"
+                />
+              </g>
+            </svg>
+          </div>
+        )}
       </div>
       <div className="flex md:ml-4 md:px-4 md:pt-4">
         <div className="flex flex-col items-center md:items-start">
@@ -149,6 +169,7 @@ const Metadata = ({
           <div className="mt-2 inline-flex items-center space-x-2 text-sm">
             <div className="relative h-7 w-7">
               <Image
+                draggable={false}
                 src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_square_1-5bdc75aaebeb75dc7ae79426ddd9be3b2be1e342510f8202baf6bffa71d7f5c4.svg"
                 layout="fill"
                 alt="TMDB Logo"
@@ -164,12 +185,13 @@ const Metadata = ({
           <p className="mt-2 select-text pr-2 text-justify text-sm md:text-start">
             {movie?.overview}
           </p>
+          {/* TODO: Add a remove button beside rating */}
           <StarRating
             allowHover={true}
             onClick={handleOnClick}
             initialValue={currentRating}
             allowFraction={true}
-            className="my-2"
+            className="my-2 -ml-0.5"
             onPointerEnter={() => setHovering(true)}
             onPointerLeave={() => setHovering(false)}
             SVGclassName={`inline-block h-8`}
