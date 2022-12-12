@@ -68,26 +68,10 @@ const DividerComponent = ({
       updateStateComponent(
         Object.assign(dividerComponent, {
           xAxis: snapTo(
-            calculatePoint(
-              canvasRect.x,
-              canvasRef.current.scrollLeft,
-              info.point.x,
-              160,
-              320,
-              116,
-              -10,
-            ),
+            calculatePoint(canvasRect.x, canvasRef.current.scrollLeft, info.point.x, 160, 320, 88),
           ),
           yAxis: snapTo(
-            calculatePoint(
-              canvasRect.y,
-              canvasRef.current.scrollTop,
-              info.point.y,
-              1.25,
-              2.5,
-              40,
-              41,
-            ),
+            calculatePoint(canvasRect.y, canvasRef.current.scrollTop, info.point.y, 1.25, 2.5, 20),
           ),
         }),
       ).then(() => {
@@ -97,26 +81,10 @@ const DividerComponent = ({
       await updateComponent.mutateAsync({
         id: dividerComponent.id,
         xAxis: snapTo(
-          calculatePoint(
-            canvasRect.x,
-            canvasRef.current.scrollLeft,
-            info.point.x,
-            160,
-            320,
-            116,
-            -10,
-          ),
+          calculatePoint(canvasRect.x, canvasRef.current.scrollLeft, info.point.x, 160, 320, 88),
         ),
         yAxis: snapTo(
-          calculatePoint(
-            canvasRect.y,
-            canvasRef.current.scrollTop,
-            info.point.y,
-            1.25,
-            2.5,
-            40,
-            41,
-          ),
+          calculatePoint(canvasRect.y, canvasRef.current.scrollTop, info.point.y, 1.25, 2.5, 20),
         ),
       });
     }
@@ -137,7 +105,7 @@ const DividerComponent = ({
         updateDividerComponent(info);
       }}
       {...bind()}
-      style={{ top: dividerComponent?.yAxis - 40, left: dividerComponent?.xAxis - 144 }}
+      style={{ top: dividerComponent?.yAxis - 1.25, left: dividerComponent?.xAxis - 160 }}
       className="absolute"
     >
       {shift && (
@@ -154,7 +122,7 @@ const DividerComponent = ({
         </div>
       )}
       <Resizable
-        className="h-[2.5px] w-80 resize-y bg-gray-200"
+        className="h-[2.5px] w-80 resize-y rounded-full bg-gray-200 dark:bg-darkColor"
         size={{ width: state.width, height: state.height }}
         enable={{
           right: true,

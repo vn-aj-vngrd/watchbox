@@ -1,6 +1,6 @@
 import { Prisma } from "@prisma/client";
 import { TrashIcon } from "@heroicons/react/24/solid";
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import { trpc } from "../../../utils/trpc";
 import { useLongPress, LongPressDetectEvents } from "use-long-press";
 import { motion, PanInfo } from "framer-motion";
@@ -20,6 +20,7 @@ type Props = {
   temp: string[];
   shift: boolean;
   setShift: React.Dispatch<React.SetStateAction<boolean>>;
+  setTemp: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
 const TextComponent = ({
@@ -31,6 +32,7 @@ const TextComponent = ({
   temp,
   shift,
   setShift,
+  setTemp,
 }: Props) => {
   const spanRef = useRef<HTMLSpanElement>(null);
   let canvasRect: DOMRect | undefined;
@@ -38,6 +40,7 @@ const TextComponent = ({
 
   const deleteComponent = trpc.useMutation("component.deleteComponent");
   const updateComponent = trpc.useMutation("component.updateComponent");
+  const createText = trpc.useMutation("text.createText");
   const updateText = trpc.useMutation("text.updateText");
 
   const bind = useLongPress(
@@ -48,19 +51,6 @@ const TextComponent = ({
       detect: LongPressDetectEvents.TOUCH,
     },
   );
-
-  // TODO: Fix text highlighting
-  const handleMouseUp = () => {
-    if (spanRef.current) {
-      const range = document.createRange();
-      range.selectNodeContents(spanRef.current);
-      const selection = window.getSelection();
-      if (selection) {
-        selection.removeAllRanges();
-        selection.addRange(range);
-      }
-    }
-  };
 
   const removeComponent = async (id: string) => {
     removeStateComponent(id).then(() => {
@@ -81,18 +71,10 @@ const TextComponent = ({
       updateStateComponent(
         Object.assign(textComponent, {
           xAxis: snapTo(
-            calculatePoint(
-              canvasRect.x,
-              canvasRef.current.scrollLeft,
-              info.point.x,
-              34.5,
-              69,
-              116,
-              100,
-            ),
+            calculatePoint(canvasRect.x, canvasRef.current.scrollLeft, info.point.x, 48, 96, 210),
           ),
           yAxis: snapTo(
-            calculatePoint(canvasRect.y, canvasRef.current.scrollTop, info.point.y, 18, 36, 40, 30),
+            calculatePoint(canvasRect.y, canvasRef.current.scrollTop, info.point.y, 14, 28, 70),
           ),
         }),
       ).then(() => {
@@ -102,27 +84,44 @@ const TextComponent = ({
       await updateComponent.mutateAsync({
         id: textComponent.id,
         xAxis: snapTo(
-          calculatePoint(
-            canvasRect.x,
-            canvasRef.current.scrollLeft,
-            info.point.x,
-            34.5,
-            69,
-            116,
-            100,
-          ),
+          calculatePoint(canvasRect.x, canvasRef.current.scrollLeft, info.point.x, 48, 96, 210),
         ),
         yAxis: snapTo(
-          calculatePoint(canvasRect.y, canvasRef.current.scrollTop, info.point.y, 18, 36, 40, 30),
+          calculatePoint(canvasRect.y, canvasRef.current.scrollTop, info.point.y, 14, 28, 70),
         ),
       });
     }
   };
 
-  const handleBlur = () => {
+  const handleBlur = async () => {
+    if (temp.includes(textComponent.id)) return;
+
     const text = spanRef.current?.innerText;
 
-    if (textComponent.text) {
+    if (textComponent.text === null) {
+      await createText
+        .mutateAsync({
+          componentId: textComponent.id,
+          content: text || "",
+        })
+        .then((res) => {
+          updateStateComponent(
+            Object.assign(textComponent, {
+              text: {
+                ...textComponent.text,
+                id: res.id,
+                componentId: res.componentId,
+                content: res.content,
+                created_at: res.created_at,
+                updated_at: res.updated_at,
+              },
+            }),
+          );
+        })
+        .then(() => {
+          setTemp((prev) => prev.filter((item) => item !== textComponent.text?.id));
+        });
+    } else {
       updateStateComponent(
         Object.assign(textComponent, {
           text: {
@@ -151,14 +150,11 @@ const TextComponent = ({
         scrollEdge(info, canvasRect, canvasSizeRef, canvasRef);
       }}
       onDragEnd={(e, info) => {
-        // FIXME: Offset needs update
         updateTextComponent(info);
       }}
       {...bind()}
-      style={{ top: textComponent?.yAxis - 40, left: textComponent?.xAxis - 144 }}
-      className={`absolute flex rounded-md ${
-        shift && "outline-2 hover:cursor-move hover:outline hover:outline-blue-500"
-      }`}
+      style={{ top: textComponent?.yAxis - 14, left: textComponent?.xAxis - 48 }}
+      className="absolute flex rounded-md"
     >
       {shift && (
         <div className="absolute -right-5 -top-5 z-20">
@@ -175,14 +171,14 @@ const TextComponent = ({
       )}
       <span
         ref={spanRef}
-        // onMouseUp={handleMouseUp}
         onBlur={handleBlur}
-        className={`justify-left text-md items-center whitespace-nowrap rounded-md bg-transparent py-1 px-2 outline-none`}
-        contentEditable
+        className={`justify-left py-.5 items-center whitespace-nowrap rounded-md bg-transparent px-1.5 text-lg outline-none focus:outline-2 focus:outline-blue-500 ${
+          shift && "outline-2 hover:cursor-move hover:outline hover:outline-blue-500"
+        }`}
         spellCheck="false"
-        style={{ top: textComponent?.yAxis - 40, left: textComponent?.xAxis - 144 }}
+        contentEditable
       >
-        {textComponent.text?.content || "Add Text"}
+        {textComponent.text?.content || "Add a Text"}
       </span>
     </motion.div>
   );
