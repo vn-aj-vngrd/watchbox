@@ -1,5 +1,5 @@
 import { Transition } from "@headlessui/react";
-import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
+import { MagnifyingGlassIcon, CubeIcon } from "@heroicons/react/24/solid";
 import { Box, Component, Entry } from "@prisma/client";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -98,7 +98,55 @@ const Search = () => {
                     : "grid-cols-1"
                 } bg-white-50 aspect-square w-12 gap-1 rounded-lg border border-gray-100 bg-white p-1 transition duration-150 ease-in-out group-hover:scale-105 dark:border-transparent dark:bg-grayColor`}
               >
-                {box?.components.filter((x) => x.componentName === "Entry" && x.entry !== null)
+                {{
+                  0: (
+                    <div className="overflow-hidden rounded">
+                      <CubeIcon className="h-full w-full fill-gray-100 p-1 dark:fill-neutral-500" />
+                    </div>
+                  ),
+                  1: (
+                    <div className="overflow-hidden rounded bg-white">
+                      <Image
+                        className="object-cover"
+                        src={
+                          `https://www.themoviedb.org/t/p/w600_and_h900_bestv2/${box?.components[0]?.entry?.image}` ||
+                          ""
+                        }
+                        alt=""
+                        width="1080"
+                        height="1080"
+                        layout="responsive"
+                        priority={true}
+                      />
+                    </div>
+                  ),
+                }[
+                  box?.components.filter((x) => x.componentName === "Entry" && x.entry !== null)
+                    .length
+                ] || (
+                  <>
+                    {box?.components
+                      .filter((x) => x.componentName === "Entry" && x.entry !== null)
+                      .slice(0, 4)
+                      .map((component, index) => (
+                        <div key={index} className="overflow-hidden rounded bg-white">
+                          <Image
+                            className="object-cover"
+                            src={
+                              `https://www.themoviedb.org/t/p/w600_and_h900_bestv2/${component?.entry?.image}` ||
+                              ""
+                            }
+                            alt=""
+                            width="1080"
+                            height="1080"
+                            layout="responsive"
+                            priority={true}
+                          />
+                        </div>
+                      ))}
+                  </>
+                )}
+                {/* {box?.components.filter((x) => x.componentName === "Entry" && x.entry !== null)
                   .length == 1 ? (
                   <div className="overflow-hidden rounded bg-white">
                     <Image
@@ -136,7 +184,7 @@ const Search = () => {
                         </div>
                       ))}
                   </>
-                )}
+                )} */}
               </div>
 
               <div>
