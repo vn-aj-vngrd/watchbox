@@ -8,6 +8,7 @@ import Canvas from "./Canvas";
 import Components from "./Components";
 import Controls from "./Controls";
 import Header from "./Header";
+import { useSession } from "next-auth/react";
 import { useHotkeys } from "react-hotkeys-hook";
 import { Prisma } from "@prisma/client";
 
@@ -25,6 +26,7 @@ const BoxPage = () => {
   const canvasRef = useRef<HTMLDivElement>(null);
   const canvasSizeRef = useRef<HTMLDivElement>(null);
   const [shift, setShift] = useState(false);
+  const { data: session } = useSession();
 
   const [canvasElements, setCanvasElements] = useState<Component[]>([]);
 
@@ -115,21 +117,24 @@ const BoxPage = () => {
 
   return (
     <div className="flex h-full w-full">
-      <div
-        className={`flex h-full w-12 flex-col border-r transition-all duration-500 ease-in-out dark:border-darkColor ${
-          !sidePanel ? "md:w-12" : "md:w-[17rem]"
-        }`}
-      >
-        <Controls sidePanel={sidePanel} setSidePanel={setSidePanel} />
-        <Components
-          id={id as string}
-          canvasRef={canvasRef}
-          canvasSizeRef={canvasSizeRef}
-          addStateComponent={addComponent}
-          updateStateComponent={updateComponent}
-          sidePanel={sidePanel}
-        />
-      </div>
+      {session?.user?.id === getBox.data?.id && (
+        <div
+          className={`flex h-full w-12 flex-col border-r transition-all duration-500 ease-in-out dark:border-darkColor ${
+            !sidePanel ? "md:w-12" : "md:w-[17rem]"
+          }`}
+        >
+          <Controls sidePanel={sidePanel} setSidePanel={setSidePanel} />
+          <Components
+            id={id as string}
+            canvasRef={canvasRef}
+            canvasSizeRef={canvasSizeRef}
+            addStateComponent={addComponent}
+            updateStateComponent={updateComponent}
+            sidePanel={sidePanel}
+          />
+        </div>
+      )}
+
       <div className="flex h-full grow flex-col">
         <Header
           box={getBox?.data}
@@ -139,6 +144,7 @@ const BoxPage = () => {
         />
         <Canvas
           id={id as string}
+          userId={getBox?.data?.id as string}
           canvasRef={canvasRef}
           canvasSizeRef={canvasSizeRef}
           canvasElements={canvasElements}
