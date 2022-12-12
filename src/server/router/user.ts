@@ -14,7 +14,7 @@ export const userRouter = createProtectedRouter()
       });
 
       if (check) {
-        throw new Error("* Username already taken");
+        throw new Error("Username was already taken.");
       }
 
       return ctx.prisma.user.update({
@@ -35,6 +35,19 @@ export const userRouter = createProtectedRouter()
       url: z.string(),
     }),
     async resolve({ ctx, input }) {
+      const check = await ctx.prisma.user.findFirst({
+        where: {
+          username: input.username,
+          NOT: {
+            id: ctx.session.user.id,
+          },
+        },
+      });
+
+      if (check) {
+        throw new Error("Username was already taken.");
+      }
+
       return ctx.prisma.user.update({
         where: {
           id: ctx.session.user.id,

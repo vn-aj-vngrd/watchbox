@@ -73,7 +73,6 @@ const CreateBox = ({ onBoxCreated, isFirstBox }: Props) => {
             </svg>
           ) : (
             <>
-              {" "}
               <PencilSquareIcon className="h-5 w-5 fill-white" /> <p> Create your first box</p>
             </>
           )}
