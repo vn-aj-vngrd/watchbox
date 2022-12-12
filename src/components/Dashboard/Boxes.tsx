@@ -8,6 +8,7 @@ import {
 import Image from "next/image";
 import router from "next/router";
 import { useState } from "react";
+import OutsideClickHandler from "react-outside-click-handler";
 import ReactPaginate from "react-paginate";
 import { trpc } from "../../utils/trpc";
 import Spinner from "../Common/Spinner";
@@ -83,7 +84,11 @@ const Boxes = ({ setMode }: BoxesProps) => {
         </div>
 
         <div className="flex space-x-6">
-          <div>
+          <OutsideClickHandler
+            onOutsideClick={() => {
+              setOpenSort(false);
+            }}
+          >
             <button
               onClick={() => {
                 setOpenSort(!openSort);
@@ -124,7 +129,7 @@ const Boxes = ({ setMode }: BoxesProps) => {
                 </ul>
               </div>
             )}
-          </div>
+          </OutsideClickHandler>
 
           <div className="flex items-center">
             <div className="relative w-full">
@@ -152,10 +157,13 @@ const Boxes = ({ setMode }: BoxesProps) => {
       </div>
 
       {boxesData.isLoading && (
-        <div className="absolute top-[50%] right-0 left-0">
-          <Spinner />
+        <div className="absolute top-[50%] left-0 right-0 ml-auto mr-auto">
+          <div className="flex items-center justify-center">
+            <Spinner />
+          </div>
         </div>
       )}
+
       {boxesData.data?.length === 0 && (
         <div className="absolute top-[50%] right-0 left-0 space-y-10 text-center">
           <div className="flex flex-col items-center justify-center">
@@ -227,6 +235,7 @@ const Boxes = ({ setMode }: BoxesProps) => {
                           width="1080"
                           height="1080"
                           layout="responsive"
+                          priority={true}
                         />
                       </div>
                     ))}

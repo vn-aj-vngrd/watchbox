@@ -4,6 +4,7 @@ import { Prisma } from "@prisma/client";
 import TextComponent from "./Components/TextComponent";
 import { useEffect } from "react";
 import DividerComponent from "./Components/DividerComponent";
+import { useSession } from "next-auth/react";
 
 type Component = Prisma.ComponentGetPayload<{
   include: { text: true; entry: true; divider: true };
@@ -11,6 +12,7 @@ type Component = Prisma.ComponentGetPayload<{
 
 type Props = {
   id: string;
+  userId: string;
   canvasRef: React.RefObject<HTMLDivElement>;
   canvasSizeRef: React.RefObject<HTMLDivElement>;
   canvasElements: Component[] | undefined;
@@ -22,6 +24,7 @@ type Props = {
 };
 
 const Canvas: React.FC<Props> = ({
+  userId,
   canvasRef,
   canvasSizeRef,
   canvasElements,
@@ -31,6 +34,7 @@ const Canvas: React.FC<Props> = ({
   setShift,
   refetch,
 }) => {
+  const { data: session } = useSession();
   const { events } = useDraggable(canvasRef as React.MutableRefObject<HTMLInputElement>) || {};
 
   useEffect(() => {
@@ -54,7 +58,13 @@ const Canvas: React.FC<Props> = ({
     >
       <div ref={canvasSizeRef} className="absolute top-0 left-0 -z-50" />
       {canvasElements?.length === 0 ? (
-        <span className="text-sm text-gray-500 dark:text-neutral-400">Add your first entry</span>
+        <span className="text-sm text-gray-500 dark:text-neutral-400">
+          {session?.user?.id === userId ? (
+            <>Add your first entry.</>
+          ) : (
+            <>Owner has not added any changes yet.</>
+          )}
+        </span>
       ) : (
         canvasElements?.map((canvasElement: Component, index) => {
           switch (canvasElement.componentName) {
