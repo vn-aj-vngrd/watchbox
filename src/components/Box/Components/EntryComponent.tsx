@@ -9,7 +9,7 @@ import { useLongPress, LongPressDetectEvents } from "use-long-press";
 import toast from "react-hot-toast";
 import { motion, PanInfo } from "framer-motion";
 import { snap } from "popmotion";
-import { calculatePoint, resetCavasSize, scrollEdge } from "../Helpers";
+import { calculatePoint, resetCanvasSize, scrollEdge } from "../Helpers";
 
 type Component = Prisma.ComponentGetPayload<{
   include: { text: true; entry: true; divider: true };
@@ -22,6 +22,7 @@ type Props = {
   canvasRef: React.RefObject<HTMLDivElement>;
   canvasSizeRef: React.RefObject<HTMLDivElement>;
   shift: boolean;
+  temp: string[];
   setShift: React.Dispatch<React.SetStateAction<boolean>>;
   refetch: () => void;
 };
@@ -50,6 +51,7 @@ const EntryComponent = ({
   canvasRef,
   canvasSizeRef,
   shift,
+  temp,
   setShift,
   refetch,
 }: Props) => {
@@ -64,7 +66,7 @@ const EntryComponent = ({
 
   const removeComponent = async (id: string) => {
     removeStateComponent(id).then(() => {
-      resetCavasSize(canvasSizeRef, canvasRef);
+      resetCanvasSize(canvasSizeRef, canvasRef);
     });
     await deleteComponent.mutateAsync({
       id: id,
@@ -96,7 +98,7 @@ const EntryComponent = ({
           ),
         }),
       ).then(() => {
-        resetCavasSize(canvasSizeRef, canvasRef);
+        resetCanvasSize(canvasSizeRef, canvasRef);
       });
 
       await updateComponent.mutateAsync({
@@ -169,14 +171,13 @@ const EntryComponent = ({
 
   return (
     <motion.div
-      drag={shift}
+      drag={shift && !temp.includes(entryComponent.id)}
       dragMomentum={false}
       dragSnapToOrigin
       dragElastic={0}
       dragConstraints={canvasRef}
       onDrag={(e, info) => {
         if (canvasRect == null) canvasRect = canvasRef.current?.getBoundingClientRect();
-        // FIXME: Weirdass
         scrollEdge(info, canvasRect, canvasSizeRef, canvasRef);
       }}
       onDragEnd={(e, info) => {
@@ -198,10 +199,11 @@ const EntryComponent = ({
       {shift && (
         <div className="absolute -right-3 -top-3 z-20">
           <button
+            disabled={!shift || temp.includes(entryComponent.id)}
             onClick={() => {
               removeComponent(entryComponent.id);
             }}
-            className="rounded-full bg-gray-200 p-[6px] shadow-md shadow-gray-300 outline-none dark:bg-darkColor dark:shadow-black/20"
+            className="rounded-full bg-gray-200 p-[6px] shadow-md shadow-gray-300 outline-none disabled:opacity-50 dark:bg-darkColor dark:shadow-black/20"
           >
             <TrashIcon className="h-[18px] w-[18px] text-red-500" />
           </button>
@@ -238,6 +240,7 @@ const EntryComponent = ({
               <Combobox.Input
                 onChange={handleInputChange}
                 displayValue={(movie: Movie) => movie?.original_title ?? ""}
+                disabled={shift}
                 className="h-full w-full bg-transparent text-center placeholder-neutral-700 outline-none dark:placeholder-neutral-300"
                 placeholder="Search for a movie..."
               />

@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { motion, PanInfo } from "framer-motion";
 import { snap } from "popmotion";
 import { trpc } from "../../utils/trpc";
-import { calculatePoint, resetCavasSize, scrollEdge } from "./Helpers";
+import { calculatePoint, resetCanvasSize, scrollEdge } from "./Helpers";
 import { Prisma } from "@prisma/client";
 import { v4 as uuidv4 } from "uuid";
 
@@ -17,6 +17,7 @@ type Props = {
   addStateComponent: (component: Component) => Promise<void>;
   updateStateComponent: (component: Component) => Promise<void>;
   sidePanel: boolean;
+  setTemp: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
 const Components: React.FC<Props> = ({
@@ -26,12 +27,14 @@ const Components: React.FC<Props> = ({
   addStateComponent,
   updateStateComponent,
   sidePanel,
+  setTemp,
 }) => {
   const componentsDiv = useRef<HTMLDivElement>(null);
   let canvasRect: DOMRect | undefined;
   const snapTo = snap(10);
 
   const createComponent = trpc.useMutation("component.createComponent");
+  const createText = trpc.useMutation("text.createText");
 
   // TODO: Optimizate for mobile
   const addComponent = async (info: PanInfo, component: string) => {
@@ -98,7 +101,16 @@ const Components: React.FC<Props> = ({
             componentDetails[component]?.y.offset,
           ),
         ),
-        text: null,
+        text:
+          component === "Text"
+            ? {
+                id: uuidv4(),
+                componentId: uuid,
+                content: "",
+                created_at: new Date(),
+                updated_at: new Date(),
+              }
+            : null,
         entry: null,
         divider: null,
         created_at: new Date(),
@@ -106,7 +118,8 @@ const Components: React.FC<Props> = ({
       };
 
       addStateComponent(tempComponent).then(() => {
-        resetCavasSize(canvasSizeRef, canvasRef);
+        setTemp((prev) => [...prev, uuid]);
+        resetCanvasSize(canvasSizeRef, canvasRef);
       });
 
       await createComponent
@@ -136,17 +149,38 @@ const Components: React.FC<Props> = ({
             ),
           ),
         })
-        .then((res) => {
+        .then(async (componentRes) => {
           updateStateComponent(
             Object.assign(tempComponent, {
-              id: res.id,
-              created_at: res.created_at,
-              updated_at: res.updated_at,
+              id: componentRes.id,
+              created_at: componentRes.created_at,
+              updated_at: componentRes.updated_at,
             }),
-          );
+          ).then(() => {
+            setTemp((prev) => prev.filter((item) => item !== uuid));
+          });
+
+          await createText
+            .mutateAsync({
+              componentId: componentRes.id,
+              content: "",
+            })
+            .then((textRes) => {
+              updateStateComponent(
+                Object.assign(tempComponent, {
+                  text: {
+                    id: textRes.id,
+                    componentId: textRes.componentId,
+                    content: textRes.content,
+                    created_at: textRes.created_at,
+                    updated_at: textRes.updated_at,
+                  },
+                }),
+              );
+            });
         });
     } else {
-      resetCavasSize(canvasSizeRef, canvasRef);
+      resetCanvasSize(canvasSizeRef, canvasRef);
     }
   };
 
@@ -173,7 +207,7 @@ const Components: React.FC<Props> = ({
           onDragStart={() => {
             componentsDiv.current?.classList.remove("scrollbar-thin");
           }}
-          onDragEnd={(e, info) => {
+          onDragEnd={async (e, info) => {
             componentsDiv.current?.classList.add("scrollbar-thin");
             addComponent(info, "Text");
           }}
