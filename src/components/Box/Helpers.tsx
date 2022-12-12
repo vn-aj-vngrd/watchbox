@@ -12,7 +12,7 @@ export const calculatePoint = (
     : infoPoint - (canvasRect ?? 0) + scroll + offset;
 };
 
-export const resetCavasSize = (
+export const resetCanvasSize = (
   canvasSizeRef: React.RefObject<HTMLDivElement>,
   canvasRef: React.RefObject<HTMLDivElement>,
 ) => {

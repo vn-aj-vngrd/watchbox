@@ -22,11 +22,12 @@ const description = [
 ];
 
 const BoxPage = () => {
+  const { data: session } = useSession();
   const [sidePanel, setSidePanel] = useState(true);
+  const [shift, setShift] = useState(false);
+  const [temp, setTemp] = useState<string[]>([]);
   const canvasRef = useRef<HTMLDivElement>(null);
   const canvasSizeRef = useRef<HTMLDivElement>(null);
-  const [shift, setShift] = useState(false);
-  const { data: session } = useSession();
 
   const [canvasElements, setCanvasElements] = useState<Component[]>([]);
 
@@ -131,6 +132,7 @@ const BoxPage = () => {
             addStateComponent={addComponent}
             updateStateComponent={updateComponent}
             sidePanel={sidePanel}
+            setTemp={setTemp}
           />
         </div>
       )}
@@ -148,9 +150,10 @@ const BoxPage = () => {
           canvasRef={canvasRef}
           canvasSizeRef={canvasSizeRef}
           canvasElements={canvasElements}
+          shift={shift}
+          temp={temp}
           removeStateComponent={deleteComponent}
           updateStateComponent={updateComponent}
-          shift={shift}
           setShift={setShift}
           refetch={refetchCanvasElements}
         />

@@ -16,9 +16,10 @@ type Props = {
   canvasRef: React.RefObject<HTMLDivElement>;
   canvasSizeRef: React.RefObject<HTMLDivElement>;
   canvasElements: Component[] | undefined;
+  shift: boolean;
+  temp: string[];
   removeStateComponent: (id: string) => Promise<void>;
   updateStateComponent: (component: Component) => Promise<void>;
-  shift: boolean;
   setShift: React.Dispatch<React.SetStateAction<boolean>>;
   refetch: () => void;
 };
@@ -28,9 +29,10 @@ const Canvas: React.FC<Props> = ({
   canvasRef,
   canvasSizeRef,
   canvasElements,
+  shift,
+  temp,
   removeStateComponent,
   updateStateComponent,
-  shift,
   setShift,
   refetch,
 }) => {
@@ -72,11 +74,14 @@ const Canvas: React.FC<Props> = ({
               return (
                 <TextComponent
                   key={index}
+                  textComponent={canvasElement}
+                  removeStateComponent={removeStateComponent}
+                  updateStateComponent={updateStateComponent}
+                  canvasRef={canvasRef}
+                  canvasSizeRef={canvasSizeRef}
+                  temp={temp}
                   shift={shift}
                   setShift={setShift}
-                  textComponent={canvasElement}
-                  canvasRef={canvasRef}
-                  refetch={refetch}
                 />
               );
             case "Entry":
@@ -88,6 +93,7 @@ const Canvas: React.FC<Props> = ({
                   updateStateComponent={updateStateComponent}
                   canvasRef={canvasRef}
                   canvasSizeRef={canvasSizeRef}
+                  temp={temp}
                   shift={shift}
                   setShift={setShift}
                   refetch={refetch}
@@ -97,11 +103,14 @@ const Canvas: React.FC<Props> = ({
               return (
                 <DividerComponent
                   key={index}
+                  dividerComponent={canvasElement}
+                  removeStateComponent={removeStateComponent}
+                  updateStateComponent={updateStateComponent}
+                  canvasRef={canvasRef}
+                  canvasSizeRef={canvasSizeRef}
+                  temp={temp}
                   shift={shift}
                   setShift={setShift}
-                  dividerComponent={canvasElement}
-                  canvasRef={canvasRef}
-                  refetch={refetch}
                 />
               );
           }

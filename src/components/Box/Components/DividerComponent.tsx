@@ -6,7 +6,7 @@ import { motion, PanInfo } from "framer-motion";
 import { snap } from "popmotion";
 import { Resizable } from "re-resizable";
 import { useState } from "react";
-import { calculatePoint } from "../Helpers";
+import { calculatePoint, resetCanvasSize, scrollEdge } from "../Helpers";
 
 type Component = Prisma.ComponentGetPayload<{
   include: { text: true; entry: true; divider: true };
@@ -14,14 +14,26 @@ type Component = Prisma.ComponentGetPayload<{
 
 type Props = {
   dividerComponent: Component;
+  removeStateComponent: (id: string) => Promise<void>;
+  updateStateComponent: (component: Component) => Promise<void>;
   canvasRef: React.RefObject<HTMLDivElement>;
+  canvasSizeRef: React.RefObject<HTMLDivElement>;
+  temp: string[];
   shift: boolean;
   setShift: React.Dispatch<React.SetStateAction<boolean>>;
-  refetch: () => void;
 };
 
-const DividerComponent = ({ dividerComponent, canvasRef, shift, setShift, refetch }: Props) => {
-  const [state, setState] = useState({ width: 320, height: 2 });
+const DividerComponent = ({
+  dividerComponent,
+  removeStateComponent,
+  updateStateComponent,
+  canvasRef,
+  canvasSizeRef,
+  temp,
+  shift,
+  setShift,
+}: Props) => {
+  const [state, setState] = useState({ width: 320, height: 2.5 });
   let canvasRect: DOMRect | undefined;
   const snapTo = snap(10);
 
@@ -38,13 +50,12 @@ const DividerComponent = ({ dividerComponent, canvasRef, shift, setShift, refetc
   );
 
   const removeComponent = async (id: string) => {
-    await deleteComponent
-      .mutateAsync({
-        id: id,
-      })
-      .then(() => {
-        refetch();
-      });
+    removeStateComponent(id).then(() => {
+      resetCanvasSize(canvasSizeRef, canvasRef);
+    });
+    await deleteComponent.mutateAsync({
+      id: id,
+    });
   };
 
   const updateDividerComponent = async (info: PanInfo) => {
@@ -54,6 +65,35 @@ const DividerComponent = ({ dividerComponent, canvasRef, shift, setShift, refetc
       info.point.x - (canvasRect?.x ?? 0) > 0 &&
       info.point.y - (canvasRect?.y ?? 0) > 0
     ) {
+      updateStateComponent(
+        Object.assign(dividerComponent, {
+          xAxis: snapTo(
+            calculatePoint(
+              canvasRect.x,
+              canvasRef.current.scrollLeft,
+              info.point.x,
+              160,
+              320,
+              116,
+              -10,
+            ),
+          ),
+          yAxis: snapTo(
+            calculatePoint(
+              canvasRect.y,
+              canvasRef.current.scrollTop,
+              info.point.y,
+              1.25,
+              2.5,
+              40,
+              41,
+            ),
+          ),
+        }),
+      ).then(() => {
+        resetCanvasSize(canvasSizeRef, canvasRef);
+      });
+
       await updateComponent.mutateAsync({
         id: dividerComponent.id,
         xAxis: snapTo(
@@ -84,10 +124,14 @@ const DividerComponent = ({ dividerComponent, canvasRef, shift, setShift, refetc
 
   return (
     <motion.div
-      drag={shift}
+      drag={shift && !temp.includes(dividerComponent.id)}
       dragMomentum={false}
-      onDrag={() => {
+      dragSnapToOrigin
+      dragElastic={0}
+      dragConstraints={canvasRef}
+      onDrag={(e, info) => {
         if (canvasRect == null) canvasRect = canvasRef.current?.getBoundingClientRect();
+        scrollEdge(info, canvasRect, canvasSizeRef, canvasRef);
       }}
       onDragEnd={(e, info) => {
         updateDividerComponent(info);
@@ -99,10 +143,11 @@ const DividerComponent = ({ dividerComponent, canvasRef, shift, setShift, refetc
       {shift && (
         <div className="absolute -right-5 -top-5 z-20">
           <button
+            disabled={!shift || temp.includes(dividerComponent.id)}
             onClick={() => {
               if (!deleteComponent.isLoading) removeComponent(dividerComponent.id);
             }}
-            className="rounded-full bg-gray-200 p-[6px] shadow-md shadow-gray-300 outline-none dark:bg-darkColor dark:shadow-black/20"
+            className="rounded-full bg-gray-200 p-[6px] shadow-md shadow-gray-300 outline-none disabled:opacity-50 dark:bg-darkColor dark:shadow-black/20"
           >
             <TrashIcon className="h-[18px] w-[18px] text-red-500" />
           </button>
@@ -121,12 +166,12 @@ const DividerComponent = ({ dividerComponent, canvasRef, shift, setShift, refetc
           bottomLeft: false,
           topLeft: false,
         }}
-        onResizeStop={(e, direction, ref, d) => {
-          setState({
-            width: state.width + d.width,
-            height: state.height + d.height,
-          });
-        }}
+        // onResizeStop={(e, direction, ref, d) => {
+        //   setState({
+        //     width: state.width + d.width,
+        //     height: state.height + d.height,
+        //   });
+        // }}
       ></Resizable>
     </motion.div>
   );

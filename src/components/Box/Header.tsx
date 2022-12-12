@@ -1,12 +1,12 @@
 import { Menu, Transition } from "@headlessui/react";
+import { LinkIcon } from "@heroicons/react/20/solid";
 import { HeartIcon as OutlineHeartIcon } from "@heroicons/react/24/outline";
 import {
   HeartIcon as SolidHeartIcon,
-  LinkIcon,
   CheckIcon,
   EllipsisVerticalIcon,
   LockClosedIcon,
-  LockOpenIcon,
+  GlobeAsiaAustraliaIcon,
   InformationCircleIcon,
 } from "@heroicons/react/24/solid";
 import { Box, FavoriteBox, User } from "@prisma/client";
@@ -191,39 +191,10 @@ const Header = ({ box, favoriteBox, id, refetch }: Props) => {
           </button>
         )}
       </form>
-      <div className="hidden h-full items-center md:flex">
-        <button onClick={onFavoriteBox} className="flex h-full w-11 items-center justify-center">
-          {favorite ? (
-            <SolidHeartIcon className="h-5 w-5 text-red-500" />
-          ) : (
-            <OutlineHeartIcon className="h-5 w-5 dark:text-white" />
-          )}
-        </button>
-        {session?.user?.id === box?.id && (
-          <button onClick={onLockUnlock} className="flex h-full w-11 items-center justify-center">
-            {isPublic ? (
-              <LockOpenIcon className="h-5 w-5 dark:text-white" />
-            ) : (
-              <LockClosedIcon className="h-5 w-5 text-blue-500" />
-            )}
-          </button>
-        )}
-        <button className="flex h-full w-11 items-center justify-center">
-          <LinkIcon
-            className="h-[18px] w-[18px] dark:text-white"
-            onClick={() => {
-              navigator.clipboard.writeText(server + router.asPath);
-              toast.success("Copied to clipboard");
-            }}
-          />
-        </button>
-        {session?.user?.id === box?.id && <DeleteBox onDeleteBox={onDeleteBox} />}
-        <Information box={box} />
-      </div>
 
       <button
         onClick={onFavoriteBox}
-        className="flex h-full w-11 items-center justify-center md:hidden"
+        className="flex h-full w-10 items-center justify-center md:w-12"
       >
         {favorite ? (
           <SolidHeartIcon className="h-5 w-5 text-red-500" />
@@ -232,20 +203,17 @@ const Header = ({ box, favoriteBox, id, refetch }: Props) => {
         )}
       </button>
 
-      {session?.user?.id === box?.id && (
-        <button
-          onClick={onLockUnlock}
-          className="flex h-full w-11 items-center justify-center md:hidden"
-        >
-          {isPublic ? (
-            <LockOpenIcon className="h-5 w-5 dark:text-white" />
-          ) : (
-            <LockClosedIcon className="h-5 w-5 text-blue-500" />
-          )}
-        </button>
-      )}
+      <button
+        className="flex h-full w-10 items-center justify-center md:w-12"
+        onClick={() => {
+          navigator.clipboard.writeText(server + router.asPath);
+          toast.success("Copied to clipboard");
+        }}
+      >
+        <LinkIcon className="h-5 w-5 dark:text-white" />
+      </button>
 
-      <Menu as="div" className="flex md:hidden">
+      <Menu as="div" className="flex">
         <Menu.Button className="flex h-full w-10 items-center justify-center">
           <EllipsisVerticalIcon className="h-[22px] w-[22px]" />
         </Menu.Button>
@@ -259,20 +227,25 @@ const Header = ({ box, favoriteBox, id, refetch }: Props) => {
           leaveTo="transform opacity-0 scale-95"
         >
           <Menu.Items className="absolute right-3 z-50 mt-7 divide-y divide-gray-100 rounded-md border border-gray-100 bg-white dark:divide-grayColor dark:border-transparent dark:bg-darkColor">
-            <div className="rounded-t-md hover:bg-gray-100 dark:hover:bg-grayColor">
-              <Menu.Item>
-                <button
-                  className="flex items-center justify-start py-2 px-4"
-                  onClick={() => {
-                    navigator.clipboard.writeText(server + router.asPath);
-                    toast.success("Copied to clipboard");
-                  }}
-                >
-                  <LinkIcon className="h-[18px] w-[18px] dark:text-white" />
-                  <div className="w-24 px-3 pb-px text-left text-sm">Copy Link</div>
-                </button>
-              </Menu.Item>
-            </div>
+            {session?.user?.id === box?.id && (
+              <div className="rounded-t-md hover:bg-gray-100 dark:hover:bg-grayColor">
+                <Menu.Item>
+                  <button
+                    onClick={onLockUnlock}
+                    className="flex w-full items-center justify-start py-2 px-4"
+                  >
+                    {isPublic ? (
+                      <GlobeAsiaAustraliaIcon className="h-5 w-5 dark:text-white" />
+                    ) : (
+                      <LockClosedIcon className="h-5 w-5 dark:text-white" />
+                    )}
+                    <div className="px-3 pb-px text-left text-sm">
+                      {isPublic ? "Make Private" : "Make Public"}
+                    </div>
+                  </button>
+                </Menu.Item>
+              </div>
+            )}
             {session?.user?.id === box?.id && (
               <div className="hover:bg-gray-100 dark:hover:bg-grayColor">
                 <Menu.Item>
