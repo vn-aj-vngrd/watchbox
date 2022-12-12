@@ -22,19 +22,6 @@ export const componentRouter = createProtectedRouter()
       });
     },
   })
-  .mutation("verifyComponent", {
-    input: z.object({
-      id: z.string(),
-    }),
-    async resolve({ input, ctx }) {
-      const component = await ctx.prisma.component.findFirst({
-        where: {
-          id: input.id,
-        },
-      });
-      return component ? true : false;
-    },
-  })
   .mutation("createComponent", {
     input: z.object({
       boxId: z.string(),
