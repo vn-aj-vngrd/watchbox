@@ -18,6 +18,7 @@ type Props = {
   canvasElements: Component[] | undefined;
   shift: boolean;
   temp: string[];
+  setTemp: React.Dispatch<React.SetStateAction<string[]>>;
   removeStateComponent: (id: string) => Promise<void>;
   updateStateComponent: (component: Component) => Promise<void>;
   setShift: React.Dispatch<React.SetStateAction<boolean>>;
@@ -31,6 +32,7 @@ const Canvas: React.FC<Props> = ({
   canvasElements,
   shift,
   temp,
+  setTemp,
   removeStateComponent,
   updateStateComponent,
   setShift,
@@ -82,6 +84,7 @@ const Canvas: React.FC<Props> = ({
                   temp={temp}
                   shift={shift}
                   setShift={setShift}
+                  setTemp={setTemp}
                 />
               );
             case "Entry":

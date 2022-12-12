@@ -83,18 +83,10 @@ const EntryComponent = ({
       updateStateComponent(
         Object.assign(entryComponent, {
           xAxis: snapTo(
-            calculatePoint(
-              canvasRect.x,
-              canvasRef.current.scrollLeft,
-              info.point.x,
-              144,
-              288,
-              116,
-              0,
-            ),
+            calculatePoint(canvasRect.x, canvasRef.current.scrollLeft, info.point.x, 144, 288, 116),
           ),
           yAxis: snapTo(
-            calculatePoint(canvasRect.y, canvasRef.current.scrollTop, info.point.y, 40, 80, 40, 0),
+            calculatePoint(canvasRect.y, canvasRef.current.scrollTop, info.point.y, 40, 80, 40),
           ),
         }),
       ).then(() => {
@@ -104,18 +96,10 @@ const EntryComponent = ({
       await updateComponent.mutateAsync({
         id: entryComponent.id,
         xAxis: snapTo(
-          calculatePoint(
-            canvasRect.x,
-            canvasRef.current.scrollLeft,
-            info.point.x,
-            144,
-            288,
-            116,
-            0,
-          ),
+          calculatePoint(canvasRect.x, canvasRef.current.scrollLeft, info.point.x, 144, 288, 116),
         ),
         yAxis: snapTo(
-          calculatePoint(canvasRect.y, canvasRef.current.scrollTop, info.point.y, 40, 80, 40, 0),
+          calculatePoint(canvasRect.y, canvasRef.current.scrollTop, info.point.y, 40, 80, 40),
         ),
       });
     }

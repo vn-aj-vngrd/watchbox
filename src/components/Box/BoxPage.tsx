@@ -152,6 +152,7 @@ const BoxPage = () => {
           canvasElements={canvasElements}
           shift={shift}
           temp={temp}
+          setTemp={setTemp}
           removeStateComponent={deleteComponent}
           updateStateComponent={updateComponent}
           setShift={setShift}

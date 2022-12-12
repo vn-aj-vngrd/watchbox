@@ -34,7 +34,6 @@ const Components: React.FC<Props> = ({
   const snapTo = snap(10);
 
   const createComponent = trpc.useMutation("component.createComponent");
-  const createText = trpc.useMutation("text.createText");
 
   // TODO: Optimizate for mobile
   const addComponent = async (info: PanInfo, component: string) => {
@@ -49,28 +48,26 @@ const Components: React.FC<Props> = ({
           x: {
             componentHalf: number;
             componentFull: number;
-            edgeOffset: number;
             offset: number;
           };
           y: {
             componentHalf: number;
             componentFull: number;
-            edgeOffset: number;
             offset: number;
           };
         };
       } = {
         Text: {
-          x: { componentHalf: 34.5, componentFull: 69, edgeOffset: 116, offset: 100 },
-          y: { componentHalf: 18, componentFull: 36, edgeOffset: 40, offset: 30 },
+          x: { componentHalf: 48, componentFull: 96, offset: 210 },
+          y: { componentHalf: 14, componentFull: 28, offset: 70 },
         },
         Entry: {
-          x: { componentHalf: 144, componentFull: 288, edgeOffset: 116, offset: 0 },
-          y: { componentHalf: 40, componentFull: 80, edgeOffset: 40, offset: 0 },
+          x: { componentHalf: 144, componentFull: 288, offset: 116 },
+          y: { componentHalf: 40, componentFull: 80, offset: 40 },
         },
         Divider: {
-          x: { componentHalf: 160, componentFull: 320, edgeOffset: 116, offset: -10 },
-          y: { componentHalf: 1.25, componentFull: 2.5, edgeOffset: 40, offset: 41 },
+          x: { componentHalf: 160, componentFull: 320, offset: 88 },
+          y: { componentHalf: 1.25, componentFull: 2.5, offset: 20 },
         },
       };
 
@@ -86,7 +83,6 @@ const Components: React.FC<Props> = ({
             info.point.x,
             componentDetails[component]?.x.componentHalf,
             componentDetails[component]?.x.componentFull,
-            componentDetails[component]?.x.edgeOffset,
             componentDetails[component]?.x.offset,
           ),
         ),
@@ -97,20 +93,10 @@ const Components: React.FC<Props> = ({
             info.point.y,
             componentDetails[component]?.y.componentHalf,
             componentDetails[component]?.y.componentFull,
-            componentDetails[component]?.y.edgeOffset,
             componentDetails[component]?.y.offset,
           ),
         ),
-        text:
-          component === "Text"
-            ? {
-                id: uuidv4(),
-                componentId: uuid,
-                content: "",
-                created_at: new Date(),
-                updated_at: new Date(),
-              }
-            : null,
+        text: null,
         entry: null,
         divider: null,
         created_at: new Date(),
@@ -133,7 +119,6 @@ const Components: React.FC<Props> = ({
               info.point.x,
               componentDetails[component]?.x.componentHalf,
               componentDetails[component]?.x.componentFull,
-              componentDetails[component]?.x.edgeOffset,
               componentDetails[component]?.x.offset,
             ),
           ),
@@ -144,40 +129,20 @@ const Components: React.FC<Props> = ({
               info.point.y,
               componentDetails[component]?.y.componentHalf,
               componentDetails[component]?.y.componentFull,
-              componentDetails[component]?.y.edgeOffset,
               componentDetails[component]?.y.offset,
             ),
           ),
         })
-        .then(async (componentRes) => {
+        .then(async (res) => {
           updateStateComponent(
             Object.assign(tempComponent, {
-              id: componentRes.id,
-              created_at: componentRes.created_at,
-              updated_at: componentRes.updated_at,
+              id: res.id,
+              created_at: res.created_at,
+              updated_at: res.updated_at,
             }),
           ).then(() => {
             setTemp((prev) => prev.filter((item) => item !== uuid));
           });
-
-          await createText
-            .mutateAsync({
-              componentId: componentRes.id,
-              content: "",
-            })
-            .then((textRes) => {
-              updateStateComponent(
-                Object.assign(tempComponent, {
-                  text: {
-                    id: textRes.id,
-                    componentId: textRes.componentId,
-                    content: textRes.content,
-                    created_at: textRes.created_at,
-                    updated_at: textRes.updated_at,
-                  },
-                }),
-              );
-            });
         });
     } else {
       resetCanvasSize(canvasSizeRef, canvasRef);
