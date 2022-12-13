@@ -1,6 +1,6 @@
 import { Prisma } from "@prisma/client";
 import { TrashIcon } from "@heroicons/react/24/solid";
-import { useRef, useEffect } from "react";
+import { useRef } from "react";
 import { trpc } from "../../../utils/trpc";
 import { useLongPress, LongPressDetectEvents } from "use-long-press";
 import { motion, PanInfo } from "framer-motion";
@@ -154,20 +154,18 @@ const TextComponent = ({
       }}
       {...bind()}
       style={{ top: textComponent?.yAxis - 14, left: textComponent?.xAxis - 48 }}
-      className="absolute flex rounded-md"
+      className="absolute flex items-center justify-center"
     >
       {shift && (
-        <div className="absolute -right-5 -top-5 z-20">
-          <button
-            disabled={!shift || temp.includes(textComponent.id)}
-            onClick={() => {
-              removeComponent(textComponent.id);
-            }}
-            className="rounded-full bg-gray-200 p-[6px] shadow-md shadow-gray-300 outline-none disabled:opacity-50 dark:bg-darkColor dark:shadow-black/20"
-          >
-            <TrashIcon className="h-[18px] w-[18px] text-red-500" />
-          </button>
-        </div>
+        <button
+          disabled={!shift || temp.includes(textComponent.id)}
+          onClick={() => {
+            removeComponent(textComponent.id);
+          }}
+          className="absolute -right-5 -top-5 z-20 h-7 w-7 rounded-full bg-gray-200 p-1.5 shadow-md shadow-gray-300 outline-none disabled:opacity-50 dark:bg-darkColor dark:shadow-black/20"
+        >
+          <TrashIcon className="h-4 w-4 text-red-500" />
+        </button>
       )}
       <span
         ref={spanRef}
