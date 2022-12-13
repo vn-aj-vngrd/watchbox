@@ -33,7 +33,7 @@ const DividerComponent = ({
   shift,
   setShift,
 }: Props) => {
-  const [state, setState] = useState({ width: 320, height: 2.5 });
+  const [state, setState] = useState({ width: 296, height: 3 });
   let canvasRect: DOMRect | undefined;
   const snapTo = snap(10);
 
@@ -68,10 +68,10 @@ const DividerComponent = ({
       updateStateComponent(
         Object.assign(dividerComponent, {
           xAxis: snapTo(
-            calculatePoint(canvasRect.x, canvasRef.current.scrollLeft, info.point.x, 168, 336, 88),
+            calculatePoint(canvasRect.x, canvasRef.current.scrollLeft, info.point.x, 148, 296, 88),
           ),
           yAxis: snapTo(
-            calculatePoint(canvasRect.y, canvasRef.current.scrollTop, info.point.y, 9.25, 18.5, 20),
+            calculatePoint(canvasRect.y, canvasRef.current.scrollTop, info.point.y, 10, 20, 20),
           ),
         }),
       ).then(() => {
@@ -106,9 +106,7 @@ const DividerComponent = ({
       }}
       {...bind()}
       style={{ top: dividerComponent?.yAxis - 9.25, left: dividerComponent?.xAxis - 168 }}
-      className={`group absolute flex items-center justify-center rounded-md p-2 ${
-        shift && "hover:cursor-move"
-      }`}
+      className="absolute"
     >
       {shift && (
         <button
@@ -122,8 +120,8 @@ const DividerComponent = ({
         </button>
       )}
       <Resizable
-        className={`h-[2.5px] w-80 resize-y rounded-full bg-gray-200 dark:bg-darkColor ${
-          shift && "group-hover:bg-blue-500"
+        className={`group flex cursor-auto resize-y items-center justify-center py-2.5 ${
+          shift && "hover:cursor-move"
         }`}
         size={{ width: state.width, height: state.height }}
         enable={{
@@ -142,7 +140,13 @@ const DividerComponent = ({
         //     height: state.height + d.height,
         //   });
         // }}
-      ></Resizable>
+      >
+        <div
+          className={`h-[3px] w-full rounded-full bg-gray-200 dark:bg-darkColor ${
+            shift && "group-hover:bg-blue-500"
+          }`}
+        />
+      </Resizable>
     </motion.div>
   );
 };
