@@ -1,6 +1,13 @@
 import { useState } from "react";
 import { ChevronLeftIcon } from "@heroicons/react/24/solid";
 import { useHotkeys } from "react-hotkeys-hook";
+import { Icon } from "@iconify/react";
+import boldFill from "@iconify/icons-mingcute/bold-fill";
+import italicFill from "@iconify/icons-mingcute/italic-fill";
+import underlineFill from "@iconify/icons-mingcute/underline-fill";
+import alignLeftFill from "@iconify/icons-mingcute/align-left-fill";
+import alignCenterFill from "@iconify/icons-mingcute/align-center-fill";
+import alignRightFill from "@iconify/icons-mingcute/align-right-fill";
 
 type Props = {
   sidePanel: boolean;
@@ -8,69 +15,6 @@ type Props = {
 };
 
 const Contols = ({ sidePanel, setSidePanel }: Props) => {
-  const alignments = [
-    {
-      id: "left",
-      icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          preserveAspectRatio="xMidYMid meet"
-          viewBox="0 0 24 24"
-        >
-          <g fill="none">
-            <path d="M0 0h24v24H0z" />
-            <path
-              fill="currentColor"
-              d="M14 17.5a1.5 1.5 0 0 1 .144 2.993L14 20.5H4a1.5 1.5 0 0 1-.144-2.993L4 17.5h10Zm6-5a1.5 1.5 0 0 1 0 3H4a1.5 1.5 0 0 1 0-3h16Zm-6-5a1.5 1.5 0 0 1 .144 2.993L14 10.5H4a1.5 1.5 0 0 1-.144-2.993L4 7.5h10Zm6-5a1.5 1.5 0 0 1 .144 2.993L20 5.5H4a1.5 1.5 0 0 1-.144-2.993L4 2.5h16Z"
-            />
-          </g>
-        </svg>
-      ),
-    },
-    {
-      id: "center",
-      icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          preserveAspectRatio="xMidYMid meet"
-          viewBox="0 0 24 24"
-        >
-          <g fill="none">
-            <path d="M0 0h24v24H0z" />
-            <path
-              fill="currentColor"
-              d="M17 17.5a1.5 1.5 0 0 1 .144 2.993L17 20.5H7a1.5 1.5 0 0 1-.144-2.993L7 17.5h10Zm3-5a1.5 1.5 0 0 1 0 3H4a1.5 1.5 0 0 1 0-3h16Zm-3-5a1.5 1.5 0 0 1 .144 2.993L17 10.5H7a1.5 1.5 0 0 1-.144-2.993L7 7.5h10Zm3-5a1.5 1.5 0 0 1 .144 2.993L20 5.5H4a1.5 1.5 0 0 1-.144-2.993L4 2.5h16Z"
-            />
-          </g>
-        </svg>
-      ),
-    },
-    {
-      id: "right",
-      icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          preserveAspectRatio="xMidYMid meet"
-          viewBox="0 0 24 24"
-        >
-          <g fill="none">
-            <path d="M0 0h24v24H0z" />
-            <path
-              fill="currentColor"
-              d="M20 17.5a1.5 1.5 0 0 1 .144 2.993L20 20.5H10a1.5 1.5 0 0 1-.144-2.993L10 17.5h10Zm0-5a1.5 1.5 0 0 1 0 3H4a1.5 1.5 0 0 1 0-3h16Zm0-5a1.5 1.5 0 0 1 .144 2.993L20 10.5H10a1.5 1.5 0 0 1-.144-2.993L10 7.5h10Zm0-5a1.5 1.5 0 0 1 .144 2.993L20 5.5H4a1.5 1.5 0 0 1-.144-2.993L4 2.5h16Z"
-            />
-          </g>
-        </svg>
-      ),
-    },
-  ];
-
   const [bold, setBold] = useState(false);
   const [italic, setItalic] = useState(false);
   const [underline, setUnderline] = useState(false);
@@ -108,21 +52,7 @@ const Contols = ({ sidePanel, setSidePanel }: Props) => {
           bold ? "bg-gray-200 dark:bg-darkColor" : ""
         }`}
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          preserveAspectRatio="xMidYMid meet"
-          viewBox="0 0 24 24"
-        >
-          <g fill="none">
-            <path d="M0 0h24v24H0z" />
-            <path
-              fill="currentColor"
-              d="M13 2.5a5.5 5.5 0 0 1 4.213 9.036a5.5 5.5 0 0 1-2.992 9.96L14 21.5H6.1a1.6 1.6 0 0 1-1.593-1.454L4.5 19.9V4.1a1.6 1.6 0 0 1 1.454-1.593L6.1 2.5H13Zm1 11H7.5v5H14a2.5 2.5 0 0 0 0-5Zm-1-8H7.5v5H13a2.5 2.5 0 0 0 0-5Z"
-            />
-          </g>
-        </svg>
+        <Icon icon={boldFill} />
       </button>
       <button
         onClick={() => setItalic(!italic)}
@@ -130,21 +60,7 @@ const Contols = ({ sidePanel, setSidePanel }: Props) => {
           italic ? "bg-gray-200 dark:bg-darkColor" : ""
         }`}
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          preserveAspectRatio="xMidYMid meet"
-          viewBox="0 0 24 24"
-        >
-          <g fill="none">
-            <path d="M0 0h24v24H0z" />
-            <path
-              fill="currentColor"
-              d="M16 2.5h-6a1.5 1.5 0 0 0 0 3h1.3l-1.624 13H8a1.5 1.5 0 0 0 0 3h6a1.5 1.5 0 0 0 0-3h-1.3l1.624-13H16a1.5 1.5 0 0 0 0-3Z"
-            />
-          </g>
-        </svg>
+        <Icon icon={italicFill} />
       </button>
       <button
         onClick={() => setUnderline(!underline)}
@@ -152,27 +68,19 @@ const Contols = ({ sidePanel, setSidePanel }: Props) => {
           underline ? "bg-gray-200 dark:bg-darkColor" : ""
         }`}
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          preserveAspectRatio="xMidYMid meet"
-          viewBox="0 0 24 24"
-        >
-          <g fill="none">
-            <path d="M0 0h24v24H0z" />
-            <path
-              fill="currentColor"
-              d="M18 18.5a1.5 1.5 0 0 1 .144 2.993L18 21.5H6a1.5 1.5 0 0 1-.144-2.993L6 18.5h12Zm-1-16a1.5 1.5 0 0 1 1.493 1.356L18.5 4v7a6.5 6.5 0 0 1-12.996.233L5.5 11V4a1.5 1.5 0 0 1 2.993-.144L8.5 4v7a3.5 3.5 0 0 0 6.995.192L15.5 11V4A1.5 1.5 0 0 1 17 2.5Z"
-            />
-          </g>
-        </svg>
+        <Icon icon={underlineFill} />
       </button>
       <button
         onClick={() => setAlignment(alignment < 2 ? alignment + 1 : 0)}
         className="flex h-8 w-8 items-center justify-center rounded-md font-bold focus:outline-none hover:bg-gray-200 dark:border-transparent dark:text-white dark:hover:bg-darkColor"
       >
-        {alignments[alignment]?.icon}
+        {
+          {
+            0: <Icon icon={alignLeftFill} />,
+            1: <Icon icon={alignCenterFill} />,
+            2: <Icon icon={alignRightFill} />,
+          }[alignment]
+        }
       </button>
       <button
         onClick={() => setSidePanel(!sidePanel)}
