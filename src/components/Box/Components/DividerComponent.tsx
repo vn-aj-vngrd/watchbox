@@ -68,10 +68,10 @@ const DividerComponent = ({
       updateStateComponent(
         Object.assign(dividerComponent, {
           xAxis: snapTo(
-            calculatePoint(canvasRect.x, canvasRef.current.scrollLeft, info.point.x, 160, 320, 88),
+            calculatePoint(canvasRect.x, canvasRef.current.scrollLeft, info.point.x, 168, 336, 88),
           ),
           yAxis: snapTo(
-            calculatePoint(canvasRect.y, canvasRef.current.scrollTop, info.point.y, 1.25, 2.5, 20),
+            calculatePoint(canvasRect.y, canvasRef.current.scrollTop, info.point.y, 9.25, 18.5, 20),
           ),
         }),
       ).then(() => {
@@ -81,10 +81,10 @@ const DividerComponent = ({
       await updateComponent.mutateAsync({
         id: dividerComponent.id,
         xAxis: snapTo(
-          calculatePoint(canvasRect.x, canvasRef.current.scrollLeft, info.point.x, 160, 320, 88),
+          calculatePoint(canvasRect.x, canvasRef.current.scrollLeft, info.point.x, 168, 336, 88),
         ),
         yAxis: snapTo(
-          calculatePoint(canvasRect.y, canvasRef.current.scrollTop, info.point.y, 1.25, 2.5, 20),
+          calculatePoint(canvasRect.y, canvasRef.current.scrollTop, info.point.y, 9.25, 18.5, 20),
         ),
       });
     }
@@ -105,8 +105,10 @@ const DividerComponent = ({
         updateDividerComponent(info);
       }}
       {...bind()}
-      style={{ top: dividerComponent?.yAxis - 1.25, left: dividerComponent?.xAxis - 160 }}
-      className="absolute flex items-center justify-center"
+      style={{ top: dividerComponent?.yAxis - 9.25, left: dividerComponent?.xAxis - 168 }}
+      className={`group absolute flex items-center justify-center rounded-md p-2 ${
+        shift && "hover:cursor-move"
+      }`}
     >
       {shift && (
         <button
@@ -114,13 +116,15 @@ const DividerComponent = ({
           onClick={() => {
             if (!deleteComponent.isLoading) removeComponent(dividerComponent.id);
           }}
-          className="group absolute -top-5 -right-5 z-20 rounded-full bg-gray-200 p-1.5 shadow-md shadow-gray-300 outline-none dark:bg-darkColor dark:shadow-black/20"
+          className="group absolute -top-3 -right-3 z-20 rounded-full bg-gray-200 p-1.5 shadow-md shadow-gray-300 outline-none dark:bg-darkColor dark:shadow-black/20"
         >
           <TrashIcon className="h-4 w-4 text-red-500 group-disabled:opacity-50" />
         </button>
       )}
       <Resizable
-        className="h-[2.5px] w-80 resize-y rounded-full bg-gray-200 dark:bg-darkColor"
+        className={`h-[2.5px] w-80 resize-y rounded-full bg-gray-200 dark:bg-darkColor ${
+          shift && "group-hover:bg-blue-500"
+        }`}
         size={{ width: state.width, height: state.height }}
         enable={{
           right: true,
