@@ -66,8 +66,8 @@ const Components: React.FC<Props> = ({
           y: { componentHalf: 40, componentFull: 80, offset: 40 },
         },
         Divider: {
-          x: { componentHalf: 160, componentFull: 320, offset: 88 },
-          y: { componentHalf: 1.25, componentFull: 2.5, offset: 20 },
+          x: { componentHalf: 168, componentFull: 336, offset: 88 },
+          y: { componentHalf: 9.25, componentFull: 18.5, offset: 20 },
         },
       };
 
