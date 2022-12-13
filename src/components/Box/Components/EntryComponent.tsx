@@ -130,7 +130,6 @@ const EntryComponent = ({
     event.target.value.length > 0 ? await searchMovies(event.target.value) : setSelectedMovie(null);
   };
 
-  // FIXME: Cursor pointer messes up after creating new component
   const handleMovieSelect = async (movie: Movie) => {
     if (movie != null) {
       const { id, original_title, poster_path } = movie;
@@ -174,10 +173,8 @@ const EntryComponent = ({
           : undefined
       }
       className={`${
-        shift && "outline-2 hover:cursor-move hover:outline hover:outline-blue-500"
-      } absolute flex h-20 w-72 items-center justify-center rounded-md bg-gray-200 text-sm dark:bg-darkColor ${
-        entryComponent?.entry && !shift && "cursor-pointer"
-      }`}
+        shift && "outline-2 hover:outline hover:outline-blue-500"
+      } absolute flex h-20 w-72 items-center justify-center rounded-md bg-gray-200 text-sm dark:bg-darkColor`}
       style={{ top: entryComponent?.yAxis - 40, left: entryComponent?.xAxis - 144 }}
     >
       {shift && (
@@ -211,19 +208,25 @@ const EntryComponent = ({
           </svg>
         </div>
       </div>
-      <div className="flex h-full w-full items-center justify-center">
+      <div
+        className={`flex h-full w-full items-center justify-center ${
+          shift && "hover:cursor-move"
+        } ${entryComponent?.entry && !shift && "hover:cursor-pointer"}`}
+      >
         <>
           {entryComponent?.entry?.movieId ? (
             entryComponent?.entry?.title
           ) : (
             // TODO: Load more results on scroll
             // TODO: If searchMovies returns no results, substring the query iteratively and search again
-            <Combobox value={selectedMovie} onChange={handleMovieSelect} nullable>
+            <Combobox disabled={shift} value={selectedMovie} onChange={handleMovieSelect} nullable>
               <Combobox.Input
                 onChange={handleInputChange}
                 displayValue={(movie: Movie) => movie?.original_title ?? ""}
                 disabled={shift}
-                className="h-full w-full bg-transparent text-center placeholder-neutral-700 outline-none dark:placeholder-neutral-300"
+                className={`h-full w-full bg-transparent text-center placeholder-neutral-700 outline-none dark:placeholder-neutral-300 ${
+                  shift && "hover:cursor-move"
+                }`}
                 placeholder="Search for a movie..."
               />
               <Combobox.Options className="absolute top-20 z-20 mt-1 max-h-64 w-full rounded-md bg-gray-200 scrollbar-thin scrollbar-track-gray-400/20 scrollbar-thumb-blue-500 dark:bg-darkColor">

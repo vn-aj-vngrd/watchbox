@@ -170,11 +170,11 @@ const TextComponent = ({
       <span
         ref={spanRef}
         onBlur={handleBlur}
-        className={`justify-left py-.5 items-center whitespace-nowrap rounded-md bg-transparent px-1.5 text-lg outline-none focus:outline-2 focus:outline-blue-500 ${
+        className={`justify-left cursor-text items-center whitespace-nowrap rounded-md bg-transparent px-1 text-lg outline-none focus:outline-2 focus:outline-blue-500 ${
           shift && "outline-2 hover:cursor-move hover:outline hover:outline-blue-500"
         }`}
         spellCheck="false"
-        contentEditable
+        contentEditable={!shift}
       >
         {textComponent.text?.content || "Add a Text"}
       </span>
