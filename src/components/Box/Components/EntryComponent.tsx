@@ -181,17 +181,15 @@ const EntryComponent = ({
       style={{ top: entryComponent?.yAxis - 40, left: entryComponent?.xAxis - 144 }}
     >
       {shift && (
-        <div className="absolute -right-3 -top-3 z-20">
-          <button
-            disabled={!shift || temp.includes(entryComponent.id)}
-            onClick={() => {
-              removeComponent(entryComponent.id);
-            }}
-            className="rounded-full bg-gray-200 p-[6px] shadow-md shadow-gray-300 outline-none disabled:opacity-50 dark:bg-darkColor dark:shadow-black/20"
-          >
-            <TrashIcon className="h-[18px] w-[18px] text-red-500" />
-          </button>
-        </div>
+        <button
+          disabled={!shift || temp.includes(entryComponent.id)}
+          onClick={() => {
+            removeComponent(entryComponent.id);
+          }}
+          className="group absolute -top-3 -right-3 z-20 rounded-full bg-gray-200 p-1.5 shadow-md shadow-gray-300 outline-none dark:bg-darkColor dark:shadow-black/20"
+        >
+          <TrashIcon className="h-4 w-4 text-red-500 group-disabled:opacity-50" />
+        </button>
       )}
       {/* TODO: Add movie image when movie is selected */}
       <div className="pointer-events-none absolute h-full w-full overflow-hidden rounded-md">

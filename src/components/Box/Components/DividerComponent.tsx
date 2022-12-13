@@ -106,20 +106,18 @@ const DividerComponent = ({
       }}
       {...bind()}
       style={{ top: dividerComponent?.yAxis - 1.25, left: dividerComponent?.xAxis - 160 }}
-      className="absolute"
+      className="absolute flex items-center justify-center"
     >
       {shift && (
-        <div className="absolute -right-5 -top-5 z-20">
-          <button
-            disabled={!shift || temp.includes(dividerComponent.id)}
-            onClick={() => {
-              if (!deleteComponent.isLoading) removeComponent(dividerComponent.id);
-            }}
-            className="rounded-full bg-gray-200 p-[6px] shadow-md shadow-gray-300 outline-none disabled:opacity-50 dark:bg-darkColor dark:shadow-black/20"
-          >
-            <TrashIcon className="h-[18px] w-[18px] text-red-500" />
-          </button>
-        </div>
+        <button
+          disabled={!shift || temp.includes(dividerComponent.id)}
+          onClick={() => {
+            if (!deleteComponent.isLoading) removeComponent(dividerComponent.id);
+          }}
+          className="group absolute -top-5 -right-5 z-20 rounded-full bg-gray-200 p-1.5 shadow-md shadow-gray-300 outline-none dark:bg-darkColor dark:shadow-black/20"
+        >
+          <TrashIcon className="h-4 w-4 text-red-500 group-disabled:opacity-50" />
+        </button>
       )}
       <Resizable
         className="h-[2.5px] w-80 resize-y rounded-full bg-gray-200 dark:bg-darkColor"
