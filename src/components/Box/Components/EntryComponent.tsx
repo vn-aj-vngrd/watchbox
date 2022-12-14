@@ -7,7 +7,7 @@ import { env } from "../../../env/client.mjs";
 import { trpc } from "../../../utils/trpc";
 import { useLongPress, LongPressDetectEvents } from "use-long-press";
 import toast from "react-hot-toast";
-import { motion, PanInfo, useDragControls } from "framer-motion";
+import { motion, PanInfo } from "framer-motion";
 import { snap } from "popmotion";
 import { calculatePoint, resetCanvasSize, scrollEdge } from "../Helpers";
 import { Icon } from "@iconify/react";
@@ -73,7 +73,6 @@ const EntryComponent = ({
 }: Props) => {
   const [movies, setMovies] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
-  const controls = useDragControls();
   let canvasRect: DOMRect | undefined;
   const snapTo = snap(10);
 
@@ -182,14 +181,12 @@ const EntryComponent = ({
   return (
     <motion.div
       drag={shift && !temp.includes(entryComponent.id.startsWith("tmp-") ? entryComponent.id : "")}
-      dragControls={controls}
       dragMomentum={false}
       dragSnapToOrigin
       dragElastic={0}
       dragConstraints={canvasRef}
       onDrag={(e, info) => {
         if (canvasRect == null) canvasRect = canvasRef.current?.getBoundingClientRect();
-        controls.start(e, { snapToCursor: true });
         scrollEdge(info, canvasRect, canvasSizeRef, canvasRef);
       }}
       onDragEnd={(e, info) => {
