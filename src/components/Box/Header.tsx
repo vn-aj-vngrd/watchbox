@@ -27,10 +27,11 @@ type Props = {
   box: (User & { boxes: Box[] }) | null | undefined;
   favoriteBox: FavoriteBox | null | undefined;
   id: string;
+  temp: string[];
   refetch: () => void;
 };
 
-const Header = ({ box, favoriteBox, id, refetch }: Props) => {
+const Header = ({ box, favoriteBox, id, temp, refetch }: Props) => {
   const { data: session } = useSession();
   const router = useRouter();
   const spanRef = useRef<HTMLSpanElement>(null);
@@ -107,7 +108,7 @@ const Header = ({ box, favoriteBox, id, refetch }: Props) => {
     });
   };
 
-  const handleBlur = () => {
+  const handleBlur = (event: React.FocusEvent<HTMLSpanElement>) => {
     const title = spanRef.current?.innerText;
 
     if (spanRef.current && title === "") {
@@ -127,6 +128,10 @@ const Header = ({ box, favoriteBox, id, refetch }: Props) => {
       boxTitle: title as string,
       isPublic: isPublic,
     });
+
+    if (!spanRef.current?.contains(event.relatedTarget)) {
+      window.getSelection()?.removeAllRanges();
+    }
   };
 
   return (
@@ -158,8 +163,13 @@ const Header = ({ box, favoriteBox, id, refetch }: Props) => {
             </Popover.Content>
           </Popover.Root>
         ) : (
-          <CheckCircleIcon className="mt-0.5 mr-2 h-4 w-4 dark:text-green-500" />
-          // <ArrowPathIcon className="w-4 h-4 mt-0.5 mr-2 dark:text-amber-500 animate-pulse" />
+          <>
+            {temp.length > 0 ? (
+              <ArrowPathIcon className="mt-0.5 mr-2 h-4 w-4 animate-spin text-blue-500" />
+            ) : (
+              <CheckCircleIcon className="mt-0.5 mr-2 h-4 w-4 text-blue-500" />
+            )}
+          </>
         )}
       </div>
 

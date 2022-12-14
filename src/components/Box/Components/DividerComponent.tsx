@@ -21,6 +21,7 @@ type Props = {
   temp: string[];
   shift: boolean;
   setShift: React.Dispatch<React.SetStateAction<boolean>>;
+  setTemp: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
 const DividerComponent = ({
@@ -32,6 +33,7 @@ const DividerComponent = ({
   temp,
   shift,
   setShift,
+  setTemp,
 }: Props) => {
   const [state, setState] = useState({ width: 296, height: 3 });
   let canvasRect: DOMRect | undefined;
@@ -50,12 +52,17 @@ const DividerComponent = ({
   );
 
   const removeComponent = async (id: string) => {
+    setTemp((prev) => [...prev, dividerComponent.id]);
     removeStateComponent(id).then(() => {
       resetCanvasSize(canvasSizeRef, canvasRef);
     });
-    await deleteComponent.mutateAsync({
-      id: id,
-    });
+    await deleteComponent
+      .mutateAsync({
+        id: id,
+      })
+      .then(() => {
+        setTemp((prev) => prev.filter((item) => item !== dividerComponent.id));
+      });
   };
 
   const updateDividerComponent = async (info: PanInfo) => {
@@ -65,6 +72,7 @@ const DividerComponent = ({
       info.point.x - (canvasRect?.x ?? 0) > 0 &&
       info.point.y - (canvasRect?.y ?? 0) > 0
     ) {
+      setTemp((prev) => [...prev, dividerComponent.id]);
       updateStateComponent(
         Object.assign(dividerComponent, {
           xAxis: snapTo(
@@ -78,21 +86,27 @@ const DividerComponent = ({
         resetCanvasSize(canvasSizeRef, canvasRef);
       });
 
-      await updateComponent.mutateAsync({
-        id: dividerComponent.id,
-        xAxis: snapTo(
-          calculatePoint(canvasRect.x, canvasRef.current.scrollLeft, info.point.x, 168, 336, 88),
-        ),
-        yAxis: snapTo(
-          calculatePoint(canvasRect.y, canvasRef.current.scrollTop, info.point.y, 9.25, 18.5, 20),
-        ),
-      });
+      await updateComponent
+        .mutateAsync({
+          id: dividerComponent.id,
+          xAxis: snapTo(
+            calculatePoint(canvasRect.x, canvasRef.current.scrollLeft, info.point.x, 168, 336, 88),
+          ),
+          yAxis: snapTo(
+            calculatePoint(canvasRect.y, canvasRef.current.scrollTop, info.point.y, 9.25, 18.5, 20),
+          ),
+        })
+        .then(() => {
+          setTemp((prev) => prev.filter((item) => item !== dividerComponent.id));
+        });
     }
   };
 
   return (
     <motion.div
-      drag={shift && !temp.includes(dividerComponent.id)}
+      drag={
+        shift && !temp.includes(dividerComponent.id.startsWith("tmp-") ? dividerComponent.id : "")
+      }
       dragMomentum={false}
       dragSnapToOrigin
       dragElastic={0}

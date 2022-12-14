@@ -27,6 +27,7 @@ type Props = {
   temp: string[];
   setShift: React.Dispatch<React.SetStateAction<boolean>>;
   refetch: () => void;
+  setTemp: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
 type Movie = {
@@ -56,6 +57,7 @@ const EntryComponent = ({
   temp,
   setShift,
   refetch,
+  setTemp,
 }: Props) => {
   const [movies, setMovies] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
@@ -67,12 +69,17 @@ const EntryComponent = ({
   const updateComponent = trpc.useMutation("component.updateComponent");
 
   const removeComponent = async (id: string) => {
+    setTemp((prev) => [...prev, entryComponent.id]);
     removeStateComponent(id).then(() => {
       resetCanvasSize(canvasSizeRef, canvasRef);
     });
-    await deleteComponent.mutateAsync({
-      id: id,
-    });
+    await deleteComponent
+      .mutateAsync({
+        id: id,
+      })
+      .then(() => {
+        setTemp((prev) => prev.filter((item) => item !== entryComponent.id));
+      });
   };
 
   const updateEntryComponent = async (info: PanInfo) => {
@@ -82,6 +89,7 @@ const EntryComponent = ({
       info.point.x - (canvasRect?.x ?? 0) > 0 &&
       info.point.y - (canvasRect?.y ?? 0) > 0
     ) {
+      setTemp((prev) => [...prev, entryComponent.id]);
       updateStateComponent(
         Object.assign(entryComponent, {
           xAxis: snapTo(
@@ -95,15 +103,19 @@ const EntryComponent = ({
         resetCanvasSize(canvasSizeRef, canvasRef);
       });
 
-      await updateComponent.mutateAsync({
-        id: entryComponent.id,
-        xAxis: snapTo(
-          calculatePoint(canvasRect.x, canvasRef.current.scrollLeft, info.point.x, 144, 288, 116),
-        ),
-        yAxis: snapTo(
-          calculatePoint(canvasRect.y, canvasRef.current.scrollTop, info.point.y, 40, 80, 40),
-        ),
-      });
+      await updateComponent
+        .mutateAsync({
+          id: entryComponent.id,
+          xAxis: snapTo(
+            calculatePoint(canvasRect.x, canvasRef.current.scrollLeft, info.point.x, 144, 288, 116),
+          ),
+          yAxis: snapTo(
+            calculatePoint(canvasRect.y, canvasRef.current.scrollTop, info.point.y, 40, 80, 40),
+          ),
+        })
+        .then(() => {
+          setTemp((prev) => prev.filter((item) => item !== entryComponent.id));
+        });
     }
   };
 
@@ -156,7 +168,7 @@ const EntryComponent = ({
 
   return (
     <motion.div
-      drag={shift && !temp.includes(entryComponent.id)}
+      drag={shift && !temp.includes(entryComponent.id.startsWith("tmp-") ? entryComponent.id : "")}
       dragMomentum={false}
       dragSnapToOrigin
       dragElastic={0}

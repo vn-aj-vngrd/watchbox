@@ -68,6 +68,7 @@ const TextComponent = ({
       info.point.x - (canvasRect?.x ?? 0) > 0 &&
       info.point.y - (canvasRect?.y ?? 0) > 0
     ) {
+      setTemp((prev) => [...prev, textComponent.id]);
       updateStateComponent(
         Object.assign(textComponent, {
           xAxis: snapTo(
@@ -81,22 +82,27 @@ const TextComponent = ({
         resetCanvasSize(canvasSizeRef, canvasRef);
       });
 
-      await updateComponent.mutateAsync({
-        id: textComponent.id,
-        xAxis: snapTo(
-          calculatePoint(canvasRect.x, canvasRef.current.scrollLeft, info.point.x, 48, 96, 210),
-        ),
-        yAxis: snapTo(
-          calculatePoint(canvasRect.y, canvasRef.current.scrollTop, info.point.y, 14, 28, 70),
-        ),
-      });
+      await updateComponent
+        .mutateAsync({
+          id: textComponent.id,
+          xAxis: snapTo(
+            calculatePoint(canvasRect.x, canvasRef.current.scrollLeft, info.point.x, 48, 96, 210),
+          ),
+          yAxis: snapTo(
+            calculatePoint(canvasRect.y, canvasRef.current.scrollTop, info.point.y, 14, 28, 70),
+          ),
+        })
+        .then(() => {
+          setTemp((prev) => prev.filter((item) => item !== textComponent.id));
+        });
     }
   };
 
-  const handleBlur = async () => {
+  const handleBlur = async (event: React.FocusEvent<HTMLSpanElement>) => {
     if (temp.includes(textComponent.id)) return;
 
     const text = spanRef.current?.innerText;
+    if (text === textComponent.text?.content) return;
 
     if (textComponent.text === null) {
       await createText
@@ -122,6 +128,7 @@ const TextComponent = ({
           setTemp((prev) => prev.filter((item) => item !== textComponent.text?.id));
         });
     } else {
+      setTemp((prev) => [...prev, textComponent.id]);
       updateStateComponent(
         Object.assign(textComponent, {
           text: {
@@ -131,16 +138,24 @@ const TextComponent = ({
         }),
       );
 
-      updateText.mutateAsync({
-        id: textComponent.text.id,
-        content: text || "",
-      });
+      updateText
+        .mutateAsync({
+          id: textComponent.text.id,
+          content: text || "",
+        })
+        .then(() => {
+          setTemp((prev) => prev.filter((item) => item !== textComponent.id));
+        });
+    }
+
+    if (!spanRef.current?.contains(event.relatedTarget)) {
+      window.getSelection()?.removeAllRanges();
     }
   };
 
   return (
     <motion.div
-      drag={shift && !temp.includes(textComponent.id)}
+      drag={shift && !temp.includes(textComponent.id.startsWith("tmp-") ? textComponent.id : "")}
       dragMomentum={false}
       dragSnapToOrigin
       dragElastic={0}
@@ -177,7 +192,9 @@ const TextComponent = ({
         contentEditable={!shift}
         suppressContentEditableWarning
       >
-        {textComponent.text?.content || "Add a Text"}
+        {textComponent.text && textComponent.text?.content !== ""
+          ? textComponent.text?.content
+          : "Add a Text"}
       </span>
     </motion.div>
   );

@@ -75,7 +75,7 @@ const Components: React.FC<Props> = ({
         },
       };
 
-      const uuid = uuidv4();
+      const uuid = "tmp-" + uuidv4();
       const tempComponent = {
         id: uuid,
         boxId: id,

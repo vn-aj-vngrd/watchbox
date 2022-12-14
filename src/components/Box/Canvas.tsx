@@ -100,6 +100,7 @@ const Canvas: React.FC<Props> = ({
                   shift={shift}
                   setShift={setShift}
                   refetch={refetch}
+                  setTemp={setTemp}
                 />
               );
             case "Divider":
@@ -114,6 +115,7 @@ const Canvas: React.FC<Props> = ({
                   temp={temp}
                   shift={shift}
                   setShift={setShift}
+                  setTemp={setTemp}
                 />
               );
           }
