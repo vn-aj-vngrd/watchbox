@@ -53,12 +53,18 @@ const TextComponent = ({
   );
 
   const removeComponent = async (id: string) => {
+    setTemp((prev) => [...prev, textComponent.id]);
+
     removeStateComponent(id).then(() => {
       resetCanvasSize(canvasSizeRef, canvasRef);
     });
-    await deleteComponent.mutateAsync({
-      id: id,
-    });
+    await deleteComponent
+      .mutateAsync({
+        id: id,
+      })
+      .then(() => {
+        setTemp((prev) => prev.filter((item) => item !== textComponent.id));
+      });
   };
 
   const updateTextComponent = async (info: PanInfo) => {
@@ -100,11 +106,19 @@ const TextComponent = ({
 
   const handleBlur = async (event: React.FocusEvent<HTMLSpanElement>) => {
     if (temp.includes(textComponent.id)) return;
-
     const text = spanRef.current?.innerText;
     if (text === textComponent.text?.content) return;
 
     if (textComponent.text === null) {
+      updateStateComponent(
+        Object.assign(textComponent, {
+          text: {
+            componentId: textComponent.id,
+            content: text || "",
+          },
+        }),
+      );
+
       await createText
         .mutateAsync({
           componentId: textComponent.id,
@@ -116,8 +130,6 @@ const TextComponent = ({
               text: {
                 ...textComponent.text,
                 id: res.id,
-                componentId: res.componentId,
-                content: res.content,
                 created_at: res.created_at,
                 updated_at: res.updated_at,
               },
