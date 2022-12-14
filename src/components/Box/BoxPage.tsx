@@ -142,6 +142,7 @@ const BoxPage = () => {
           box={getBox?.data}
           favoriteBox={getFavoriteBox?.data}
           id={id as string}
+          temp={temp}
           refetch={refetchBox}
         />
         <Canvas
