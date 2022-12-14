@@ -175,6 +175,7 @@ const TextComponent = ({
         }`}
         spellCheck="false"
         contentEditable={!shift}
+        suppressContentEditableWarning
       >
         {textComponent.text?.content || "Add a Text"}
       </span>
