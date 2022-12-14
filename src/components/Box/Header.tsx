@@ -230,13 +230,13 @@ const Header = ({ box, favoriteBox, id, temp, refetch }: Props) => {
             {session?.user?.id === box?.id && (
               <div className="hover:bg-gray-100 dark:hover:bg-grayColor">
                 <Menu.Item>
-                  <DeleteBox mobile onDeleteBox={onDeleteBox} />
+                  <DeleteBox onDeleteBox={onDeleteBox} />
                 </Menu.Item>
               </div>
             )}
             <div className="rounded-b-md hover:bg-gray-100 dark:hover:bg-grayColor">
               <Menu.Item>
-                <Information mobile box={box} />
+                <Information box={box} />
               </Menu.Item>
             </div>
           </Menu.Items>
