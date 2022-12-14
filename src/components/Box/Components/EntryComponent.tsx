@@ -12,10 +12,39 @@ import { snap } from "popmotion";
 import { calculatePoint, resetCanvasSize, scrollEdge } from "../Helpers";
 import { Icon } from "@iconify/react";
 import movieLine from "@iconify/icons-mingcute/movie-line";
+import Image from "next/image.js";
 
 type Component = Prisma.ComponentGetPayload<{
   include: { text: true; entry: true; divider: true };
 }>;
+
+type Movie = {
+  adult: boolean;
+  backdrop_path: string;
+  belongs_to_collection: null;
+  homepage: string;
+  id: number;
+  imdb_id: string;
+  original_language: string;
+  original_title: string;
+  overview: string;
+  popularity: number;
+  poster_path: string;
+  release_date: string;
+  runtime: number;
+  title: string;
+  video: boolean;
+  vote_average: number;
+  vote_count: number;
+};
+
+const watchStatus = [
+  { color: "bg-gray-500" },
+  { color: "bg-blue-500" },
+  { color: "bg-orange-500" },
+  { color: "bg-green-500" },
+  { color: "bg-red-500" },
+];
 
 type Props = {
   entryComponent: Component;
@@ -28,23 +57,6 @@ type Props = {
   setShift: React.Dispatch<React.SetStateAction<boolean>>;
   refetch: () => void;
   setTemp: React.Dispatch<React.SetStateAction<string[]>>;
-};
-
-type Movie = {
-  adult: boolean;
-  backdrop_path: string;
-  genre_ids: number[];
-  id: number;
-  original_language: string;
-  original_title: string;
-  overview: string;
-  popularity: number;
-  poster_path: string;
-  release_date: string;
-  title: string;
-  video: boolean;
-  vote_average: number;
-  vote_count: number;
 };
 
 const EntryComponent = ({
@@ -202,17 +214,33 @@ const EntryComponent = ({
           <TrashIcon className="h-4 w-4 text-red-500 group-disabled:opacity-50" />
         </button>
       )}
-      {/* TODO: Add movie image when movie is selected */}
-      <div className="pointer-events-none absolute h-full w-full overflow-hidden rounded-md">
-        <div className="absolute -left-7 -top-7 text-neutral-700 opacity-5 dark:text-neutral-200">
-          <Icon icon={movieLine} width="104" />
+      {entryComponent.entry?.image && entryComponent?.entry?.image !== "" ? (
+        <>
+          <div
+            className={`rounded-r-0 absolute left-0 h-full w-full rounded-l-md ${
+              shift && "hover:cursor-move"
+            } ${entryComponent?.entry && !shift && "hover:cursor-pointer"}`}
+          />
+          <div className="rounded-r-0 pointer-events-none aspect-square h-full overflow-hidden rounded-l-md">
+            <Image
+              src={`https://www.themoviedb.org/t/p/w600_and_h900_bestv2/${entryComponent.entry.image}`}
+              alt=""
+              width="1080"
+              height="1080"
+              layout="responsive"
+              className="pointer-events-none bg-darkColor object-cover"
+              draggable={false}
+            />
+          </div>
+        </>
+      ) : (
+        <div className="pointer-events-none absolute h-full w-full overflow-hidden rounded-md">
+          <div className="absolute -left-7 -top-7 text-neutral-700 opacity-5 dark:text-neutral-200">
+            <Icon icon={movieLine} width="104" />
+          </div>
         </div>
-      </div>
-      <div
-        className={`flex h-full w-full items-center justify-center ${
-          shift && "hover:cursor-move"
-        } ${entryComponent?.entry && !shift && "hover:cursor-pointer"}`}
-      >
+      )}
+      <div className={`flex h-full grow items-center justify-center`}>
         <>
           {entryComponent?.entry?.movieId ? (
             entryComponent?.entry?.title
@@ -246,6 +274,14 @@ const EntryComponent = ({
           )}
         </>
       </div>
+      {/* Watch Status */}
+      {entryComponent?.entry?.movieId && (
+        <div
+          className={`pointer-events-none absolute top-2 right-2 h-2.5 w-2.5 rounded-full ${
+            watchStatus[entryComponent.entry.status]?.color
+          }`}
+        />
+      )}
     </motion.div>
   );
 };
