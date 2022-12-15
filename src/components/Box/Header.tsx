@@ -22,6 +22,7 @@ import { trpc } from "../../utils/trpc";
 import DeleteBox from "./DeleteBox";
 import Information from "./Information";
 import * as Popover from "@radix-ui/react-popover";
+import * as Tooltip from "@radix-ui/react-tooltip";
 
 type Props = {
   box: (User & { boxes: Box[] }) | null | undefined;
@@ -144,6 +145,12 @@ const Header = ({ box, favoriteBox, id, temp, refetch }: Props) => {
             session?.user?.id === box?.id &&
             "focus:border-b-gray-200 hover:border-b-gray-200 dark:focus:border-b-darkColor dark:hover:border-b-darkColor"
           }`}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              spanRef.current?.blur();
+            }
+          }}
           spellCheck="false"
           contentEditable={session?.user?.id === box?.id}
           suppressContentEditableWarning
@@ -161,20 +168,33 @@ const Header = ({ box, favoriteBox, id, temp, refetch }: Props) => {
                   align="center"
                   side="bottom"
                   sideOffset={4}
-                  className="-ml-1.5 rounded-md bg-red-500 px-3 py-2 text-sm text-white"
+                  className="-ml-2 rounded-md bg-red-500 px-3 py-2 text-sm text-white"
                 >
                   <Popover.Arrow className="ml-1.5 fill-red-500" />
                   {errors[0]}
                 </Popover.Content>
               </Popover.Root>
             ) : (
-              <>
-                {temp.length > 0 ? (
-                  <ArrowPathIcon className="mt-0.5 mr-2 h-4 w-4 animate-spin text-blue-500" />
-                ) : (
-                  <CheckCircleIcon className="mt-0.5 mr-2 h-4 w-4 text-blue-500" />
-                )}
-              </>
+              <Tooltip.Provider delayDuration={500}>
+                <Tooltip.Root>
+                  <Tooltip.Trigger tabIndex={-1} className="cursor-auto outline-none">
+                    {temp.length > 0 ? (
+                      <ArrowPathIcon className="mt-0.5 mr-2 h-4 w-4 animate-spin text-blue-500" />
+                    ) : (
+                      <CheckCircleIcon className="mt-0.5 mr-2 h-4 w-4 text-blue-500" />
+                    )}
+                  </Tooltip.Trigger>
+                  <Tooltip.Content
+                    align="center"
+                    side="bottom"
+                    sideOffset={4}
+                    className="z-50 -ml-2 rounded-md bg-gray-200 px-3 py-2 text-sm dark:bg-darkColor"
+                  >
+                    {temp.length > 0 ? "Saving..." : "Saved"}
+                    <Tooltip.Arrow className="ml-1.5 fill-gray-200 dark:fill-darkColor" />
+                  </Tooltip.Content>
+                </Tooltip.Root>
+              </Tooltip.Provider>
             )}
           </>
         )}
