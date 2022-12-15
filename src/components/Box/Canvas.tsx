@@ -63,11 +63,7 @@ const Canvas: React.FC<Props> = ({
       <div ref={canvasSizeRef} className="absolute top-0 left-0 -z-50" />
       {canvasElements?.length === 0 ? (
         <span className="text-sm text-gray-500 dark:text-neutral-400">
-          {session?.user?.id === userId ? (
-            <>Add your first entry.</>
-          ) : (
-            <>Owner has not added any changes yet.</>
-          )}
+          {session?.user?.id === userId ? "Add your first entry." : "This Box is empty."}
         </span>
       ) : (
         canvasElements?.map((canvasElement: Component, index) => {

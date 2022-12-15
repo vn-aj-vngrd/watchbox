@@ -140,34 +140,41 @@ const Header = ({ box, favoriteBox, id, temp, refetch }: Props) => {
         <span
           ref={spanRef}
           onBlur={handleBlur}
-          className="mt-px border-b border-b-transparent pl-1 pr-3 outline-none focus:border-b-gray-200 hover:border-b-gray-200 dark:focus:border-b-darkColor dark:hover:border-b-darkColor"
+          className={`mt-px border-b border-b-transparent pl-1 pr-3 outline-none ${
+            session?.user?.id === box?.id &&
+            "focus:border-b-gray-200 hover:border-b-gray-200 dark:focus:border-b-darkColor dark:hover:border-b-darkColor"
+          }`}
           spellCheck="false"
-          contentEditable
+          contentEditable={session?.user?.id === box?.id}
           suppressContentEditableWarning
         >
           {box?.boxes[0]?.boxTitle}
         </span>
-        {errors.length > 0 ? (
-          <Popover.Root>
-            <Popover.Trigger>
-              <InformationCircleIcon className="mt-0.5 mr-2 h-4 w-4 text-red-500" />
-            </Popover.Trigger>
-            <Popover.Content
-              align="center"
-              side="bottom"
-              sideOffset={4}
-              className="-ml-1.5 rounded-md bg-red-500 px-3 py-2 text-sm text-white"
-            >
-              <Popover.Arrow className="ml-1.5 fill-red-500" />
-              {errors[0]}
-            </Popover.Content>
-          </Popover.Root>
-        ) : (
+        {session?.user?.id === box?.id && (
           <>
-            {temp.length > 0 ? (
-              <ArrowPathIcon className="mt-0.5 mr-2 h-4 w-4 animate-spin text-blue-500" />
+            {errors.length > 0 ? (
+              <Popover.Root>
+                <Popover.Trigger>
+                  <InformationCircleIcon className="mt-0.5 mr-2 h-4 w-4 text-red-500" />
+                </Popover.Trigger>
+                <Popover.Content
+                  align="center"
+                  side="bottom"
+                  sideOffset={4}
+                  className="-ml-1.5 rounded-md bg-red-500 px-3 py-2 text-sm text-white"
+                >
+                  <Popover.Arrow className="ml-1.5 fill-red-500" />
+                  {errors[0]}
+                </Popover.Content>
+              </Popover.Root>
             ) : (
-              <CheckCircleIcon className="mt-0.5 mr-2 h-4 w-4 text-blue-500" />
+              <>
+                {temp.length > 0 ? (
+                  <ArrowPathIcon className="mt-0.5 mr-2 h-4 w-4 animate-spin text-blue-500" />
+                ) : (
+                  <CheckCircleIcon className="mt-0.5 mr-2 h-4 w-4 text-blue-500" />
+                )}
+              </>
             )}
           </>
         )}
@@ -234,7 +241,11 @@ const Header = ({ box, favoriteBox, id, temp, refetch }: Props) => {
                 </Menu.Item>
               </div>
             )}
-            <div className="rounded-b-md hover:bg-gray-100 dark:hover:bg-grayColor">
+            <div
+              className={`rounded-b-md hover:bg-gray-100 dark:hover:bg-grayColor ${
+                session?.user?.id !== box?.id && "rounded-t-md"
+              }`}
+            >
               <Menu.Item>
                 <Information box={box} />
               </Menu.Item>
