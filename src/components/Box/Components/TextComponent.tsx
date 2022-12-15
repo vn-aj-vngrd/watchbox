@@ -19,6 +19,7 @@ type Props = {
   canvasSizeRef: React.RefObject<HTMLDivElement>;
   temp: string[];
   shift: boolean;
+  setDisablePan: React.Dispatch<React.SetStateAction<boolean>>;
   setShift: React.Dispatch<React.SetStateAction<boolean>>;
   setTemp: React.Dispatch<React.SetStateAction<string[]>>;
 };
@@ -31,6 +32,7 @@ const TextComponent = ({
   canvasSizeRef,
   temp,
   shift,
+  setDisablePan,
   setShift,
   setTemp,
 }: Props) => {
@@ -196,6 +198,8 @@ const TextComponent = ({
       <span
         ref={spanRef}
         onBlur={handleBlur}
+        onMouseOver={() => setDisablePan(true)}
+        onMouseLeave={() => setDisablePan(false)}
         className={`justify-left cursor-text items-center whitespace-nowrap rounded-md bg-transparent px-1 text-lg outline-none focus:outline-2 focus:outline-blue-500 ${
           shift && "outline-2 hover:cursor-move hover:outline hover:outline-blue-500"
         }`}

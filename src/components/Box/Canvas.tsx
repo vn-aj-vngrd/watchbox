@@ -2,7 +2,7 @@ import { useDraggable } from "react-use-draggable-scroll";
 import EntryComponent from "./Components/EntryComponent";
 import { Prisma } from "@prisma/client";
 import TextComponent from "./Components/TextComponent";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import DividerComponent from "./Components/DividerComponent";
 import { useSession } from "next-auth/react";
 
@@ -40,6 +40,7 @@ const Canvas: React.FC<Props> = ({
 }) => {
   const { data: session } = useSession();
   const { events } = useDraggable(canvasRef as React.MutableRefObject<HTMLInputElement>) || {};
+  const [disablePan, setDisablePan] = useState(false);
 
   useEffect(() => {
     if (canvasSizeRef.current && canvasRef.current) {
@@ -57,7 +58,7 @@ const Canvas: React.FC<Props> = ({
   return (
     <div
       ref={canvasRef}
-      {...(shift ? {} : { ...events })}
+      {...(shift || disablePan ? {} : { ...events })}
       className="relative flex h-full items-center justify-center scrollbar-thin scrollbar-track-gray-400/20 scrollbar-thumb-blue-500"
     >
       <div ref={canvasSizeRef} className="absolute top-0 left-0 -z-50" />
@@ -79,6 +80,7 @@ const Canvas: React.FC<Props> = ({
                   canvasSizeRef={canvasSizeRef}
                   temp={temp}
                   shift={shift}
+                  setDisablePan={setDisablePan}
                   setShift={setShift}
                   setTemp={setTemp}
                 />
@@ -110,6 +112,7 @@ const Canvas: React.FC<Props> = ({
                   canvasSizeRef={canvasSizeRef}
                   temp={temp}
                   shift={shift}
+                  setDisablePan={setDisablePan}
                   setShift={setShift}
                   setTemp={setTemp}
                 />
