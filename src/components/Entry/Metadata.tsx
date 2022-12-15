@@ -238,7 +238,7 @@ const Metadata = ({
                 onClick={triggerReview}
                 className={`${
                   isReviewed ? "text-white" : "text-gray-800"
-                } inline-flex items-center rounded  py-2 px-4 font-bold text-gray-800 dark:bg-darkColor dark:hover:bg-grayColor md:py-4 md:px-8 ${
+                } inline-flex items-center rounded py-2 px-4 font-bold text-gray-800 dark:bg-darkColor dark:hover:bg-grayColor md:py-4 md:px-8 ${
                   isReviewed
                     ? "bg-blue-600 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-800"
                     : "bg-gray-100 hover:bg-gray-200"
