@@ -3,8 +3,10 @@ import { env } from "../../env/client.mjs";
 import { useEffect, useState, useCallback } from "react";
 import { Rating as StarRating } from "react-simple-star-rating";
 import { trpc } from "../../utils/trpc";
+import { XMarkIcon } from "@heroicons/react/20/solid";
 import { Icon } from "@iconify/react";
 import movieLine from "@iconify/icons-mingcute/movie-line";
+import starFill from "@iconify/icons-mingcute/star-fill";
 import pencilFill from "@iconify/icons-mingcute/pencil-fill";
 import bookmarkFill from "@iconify/icons-mingcute/bookmark-fill";
 import eye2Fill from "@iconify/icons-mingcute/eye-2-fill";
@@ -192,29 +194,44 @@ const Metadata = ({
               movie?.overview
             )}
           </p>
-          {/* TODO: Add a remove button beside rating */}
-          <StarRating
-            allowHover={true}
-            onClick={handleOnClick}
-            initialValue={currentRating}
-            allowFraction={true}
-            className="my-2 -ml-0.5"
-            onPointerEnter={() => setHovering(true)}
-            onPointerLeave={() => setHovering(false)}
-            SVGclassName={`inline-block h-8`}
-            emptyIcon={
-              !hovering &&
-              currentRating === 0 && (
-                <Icon
-                  icon={roundFill}
-                  width="6"
-                  className="mx-[13px] inline-block h-8 text-gray-200 dark:text-neutral-500"
-                />
-              )
-            }
-            size={32}
-            fillColorArray={fillColorArray}
-          />
+          <div className="group flex items-center justify-center gap-2 py-4">
+            <StarRating
+              className="-ml-0.5 mb-1"
+              allowHover={true}
+              onClick={handleOnClick}
+              initialValue={currentRating}
+              allowFraction={true}
+              onPointerEnter={() => setHovering(true)}
+              onPointerLeave={() => setHovering(false)}
+              fillIcon={<Icon icon={starFill} className="mx-0.5 inline-block h-6 w-6" />}
+              emptyIcon={
+                !hovering && currentRating === 0 ? (
+                  <Icon
+                    icon={roundFill}
+                    width="6"
+                    className="mx-[11px] inline-block h-6 text-gray-200 dark:text-neutral-500"
+                  />
+                ) : (
+                  <Icon
+                    icon={starFill}
+                    className="mx-0.5 inline-block h-6 w-6 text-gray-200 dark:text-neutral-500"
+                  />
+                )
+              }
+              size={32}
+              fillColorArray={fillColorArray}
+            />
+            {currentRating !== 0 && (
+              <button
+                className="invisible mr-2 h-full group-hover:visible"
+                onClick={() => {
+                  handleOnClick(0);
+                }}
+              >
+                <XMarkIcon className="h-5 w-5 text-red-500" />
+              </button>
+            )}
+          </div>
           <div className="mt-1 flex space-x-6 text-center">
             <div>
               <button

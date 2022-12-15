@@ -57,7 +57,7 @@ const EntryHeader = ({ boxId, entryId, entryTitle, refetch, status }: Props) => 
             <div className="flex items-center">
               <button
                 onClick={() => router.push(`/box/${boxId}`)}
-                className="text-md ml-1 font-medium text-black hover:text-blue-600 dark:text-white dark:hover:text-blue-600 md:ml-2"
+                className="text-md ml-1 font-medium text-black hover:text-blue-500 dark:text-white dark:hover:text-blue-500 md:ml-2"
               >
                 {getBoxTitle?.data?.boxTitle}
               </button>
@@ -66,7 +66,7 @@ const EntryHeader = ({ boxId, entryId, entryTitle, refetch, status }: Props) => 
           <li aria-current="page">
             <div className="flex items-center">
               <ChevronLeftIcon className="h-5 w-5 rotate-180 fill-neutral-400" />
-              <span className="text-md ml-1 font-medium text-blue-600 md:ml-2">{entryTitle}</span>
+              <span className="text-md ml-1 font-medium text-blue-500 md:ml-2">{entryTitle}</span>
             </div>
           </li>
         </ol>
