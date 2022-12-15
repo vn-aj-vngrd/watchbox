@@ -203,6 +203,12 @@ const TextComponent = ({
         className={`justify-left cursor-text items-center whitespace-nowrap rounded-md bg-transparent px-1 text-lg outline-none focus:outline-2 focus:outline-blue-500 ${
           shift && "outline-2 hover:cursor-move hover:outline hover:outline-blue-500"
         }`}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            spanRef.current?.blur();
+          }
+        }}
         spellCheck="false"
         contentEditable={!shift}
         suppressContentEditableWarning
