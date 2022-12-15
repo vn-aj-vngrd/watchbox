@@ -139,26 +139,22 @@ const EntryPage = () => {
           rating={getEntry?.data?.entry?.rating}
         />
         <div className="mx-auto flex w-full max-w-7xl flex-row">
-          <div className="sm:ml-30 md:ml-50 mx-auto flex max-w-7xl grow flex-col px-4 pt-1 lg:ml-60 xl:ml-60">
-            {isShowReview ? (
-              <>
-                <Review
-                  review={getEntry?.data?.entry?.review ?? ""}
-                  refetch={refetch}
-                  entryId={getEntry?.data?.entry?.id}
-                />
-              </>
-            ) : null}
+          <div className="sm:ml-30 md:ml-50 mx-auto mb-6 flex max-w-7xl grow flex-col gap-3 pt-1 lg:ml-60 xl:ml-60">
+            {isShowReview && (
+              <Review
+                review={getEntry?.data?.entry?.review ?? ""}
+                refetch={refetch}
+                entryId={getEntry?.data?.entry?.id}
+              />
+            )}
 
-            {isShowNotes ? (
-              <>
-                <Notes
-                  note={getEntry?.data?.entry?.note ?? ""}
-                  refetch={refetch}
-                  entryId={getEntry?.data?.entry?.id}
-                />
-              </>
-            ) : null}
+            {isShowNotes && (
+              <Notes
+                note={getEntry?.data?.entry?.note ?? ""}
+                refetch={refetch}
+                entryId={getEntry?.data?.entry?.id}
+              />
+            )}
           </div>
         </div>
       </div>
