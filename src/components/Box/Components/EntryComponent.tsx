@@ -240,7 +240,11 @@ const EntryComponent = ({
           </div>
         </div>
       )}
-      <div className={`flex h-full grow items-center justify-center`}>
+      <div
+        className={`flex h-full grow items-center justify-center ${shift && "hover:cursor-move"} ${
+          entryComponent?.entry && !shift && "hover:cursor-pointer"
+        }`}
+      >
         <>
           {entryComponent?.entry?.movieId ? (
             entryComponent?.entry?.title
