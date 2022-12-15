@@ -105,6 +105,9 @@ const TextComponent = ({
   };
 
   const handleBlur = async (event: React.FocusEvent<HTMLSpanElement>) => {
+    if (!spanRef.current?.contains(event.relatedTarget)) {
+      window.getSelection()?.removeAllRanges();
+    }
     if (temp.includes(textComponent.id)) return;
     const text = spanRef.current?.innerText;
     if (text === textComponent.text?.content) return;
@@ -158,10 +161,6 @@ const TextComponent = ({
         .then(() => {
           setTemp((prev) => prev.filter((item) => item !== textComponent.id));
         });
-    }
-
-    if (!spanRef.current?.contains(event.relatedTarget)) {
-      window.getSelection()?.removeAllRanges();
     }
   };
 
