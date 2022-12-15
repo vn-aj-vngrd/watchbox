@@ -47,6 +47,19 @@ type Movie = {
   vote_count: number;
 };
 
+const fillColorArray = [
+  "#FF1B6B",
+  "#FF1B6B",
+  "#CF4991",
+  "#CF4991",
+  "#A372B4",
+  "#A372B4",
+  "#749EDA",
+  "#749EDA",
+  "#45CAFF",
+  "#45CAFF",
+];
+
 const Metadata = ({
   triggerReview,
   triggerNotes,
@@ -64,19 +77,11 @@ const Metadata = ({
   const [date, setDate] = useState<string>("");
   const [hovering, setHovering] = useState(false);
   const [currentRating, setCurrentRating] = useState(rating || 0);
+  const [showMore, setShowMore] = useState(false);
 
-  const fillColorArray = [
-    "#FF1B6B",
-    "#FF1B6B",
-    "#CF4991",
-    "#CF4991",
-    "#A372B4",
-    "#A372B4",
-    "#749EDA",
-    "#749EDA",
-    "#45CAFF",
-    "#45CAFF",
-  ];
+  useEffect(() => {
+    if (movie?.overview) setShowMore(movie.overview.length < 350);
+  }, [movie]);
 
   const updateRating = trpc.useMutation("entry.updateRating", {
     onSuccess: () => {
@@ -173,7 +178,19 @@ const Metadata = ({
             </p>
           </div>
           <p className="mt-2 select-text pr-2 text-justify text-sm md:text-start">
-            {movie?.overview}
+            {movie?.overview && movie?.overview.length > 350 ? (
+              <>
+                {showMore ? movie?.overview + " " : movie?.overview.substring(0, 350) + "... "}
+                <span
+                  className="cursor-pointer select-none text-blue-500"
+                  onClick={() => setShowMore(!showMore)}
+                >
+                  {showMore ? "show less" : "show more"}
+                </span>
+              </>
+            ) : (
+              movie?.overview
+            )}
           </p>
           {/* TODO: Add a remove button beside rating */}
           <StarRating
@@ -186,14 +203,13 @@ const Metadata = ({
             onPointerLeave={() => setHovering(false)}
             SVGclassName={`inline-block h-8`}
             emptyIcon={
-              !hovering && currentRating === 0 ? (
+              !hovering &&
+              currentRating === 0 && (
                 <Icon
                   icon={roundFill}
                   width="6"
                   className="mx-[13px] inline-block h-8 text-gray-200 dark:text-neutral-500"
                 />
-              ) : (
-                ""
               )
             }
             size={32}
