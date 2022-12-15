@@ -24,14 +24,16 @@ export const dividerRouter = createProtectedRouter()
     input: z.object({
       componentId: z.string(),
       orientation: z.string(),
-      length: z.number(),
+      height: z.number(),
+      width: z.number(),
     }),
     async resolve({ input, ctx }) {
       return ctx.prisma.divider.create({
         data: {
           componentId: input.componentId,
           orientation: input.orientation,
-          length: input.length,
+          height: input.height,
+          width: input.width,
         },
       });
     },
@@ -40,7 +42,8 @@ export const dividerRouter = createProtectedRouter()
     input: z.object({
       id: z.string(),
       orientation: z.string(),
-      length: z.number(),
+      height: z.number(),
+      width: z.number(),
     }),
     async resolve({ input, ctx }) {
       return ctx.prisma.divider.update({
@@ -49,7 +52,8 @@ export const dividerRouter = createProtectedRouter()
         },
         data: {
           orientation: input.orientation,
-          length: input.length,
+          height: input.height,
+          width: input.width,
         },
       });
     },
