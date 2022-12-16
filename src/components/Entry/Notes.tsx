@@ -1,5 +1,5 @@
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { trpc } from "../../utils/trpc";
 
 type Inputs = {
@@ -14,6 +14,9 @@ type Props = {
 
 const Note = ({ note, refetch, entryId }: Props) => {
   const { register, handleSubmit, reset } = useForm<Inputs>();
+  const [timeoutId, setTimeoutId] = useState<number | undefined>();
+
+  useEffect(() => () => clearTimeout(timeoutId), [timeoutId]);
 
   useEffect(() => {
     reset({
@@ -28,7 +31,19 @@ const Note = ({ note, refetch, entryId }: Props) => {
     },
   });
 
-  const handleBlur: SubmitHandler<Inputs> = async (data) => {
+  const handleInput = () => {
+    if (timeoutId) clearTimeout(timeoutId);
+
+    const newTimeoutId = setTimeout(() => {
+      handleSubmit(handleBlur)();
+    }, 1000);
+
+    setTimeoutId(Number(newTimeoutId));
+  };
+
+  const handleBlur: SubmitHandler<Inputs> = (data) => {
+    if (timeoutId) clearTimeout(timeoutId);
+
     updateNote.mutateAsync({
       id: entryId as string,
       note: data.note,
@@ -47,6 +62,7 @@ const Note = ({ note, refetch, entryId }: Props) => {
             rows={5}
             spellCheck="false"
             onInput={(e) => {
+              handleInput();
               e.currentTarget.style.height = "auto";
               e.currentTarget.style.height = e.currentTarget.scrollHeight + "px";
             }}
