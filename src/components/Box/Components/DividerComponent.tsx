@@ -7,6 +7,7 @@ import { snap } from "popmotion";
 import { Resizable } from "re-resizable";
 import { useRef, forwardRef, LegacyRef } from "react";
 import { calculatePoint, resetCanvasSize, scrollEdge } from "../Helpers";
+
 type Component = Prisma.ComponentGetPayload<{
   include: { text: true; entry: true; divider: true };
 }>;
@@ -36,9 +37,9 @@ const DividerComponent = ({
   setShift,
   setTemp,
 }: Props) => {
+  const dividerRef = useRef<Resizable>(null);
   let canvasRect: DOMRect | undefined;
   const snapTo = snap(10);
-  const dividerRef = useRef<Resizable>(null);
 
   const deleteComponent = trpc.useMutation("component.deleteComponent");
   const updateComponent = trpc.useMutation("component.updateComponent");
@@ -56,9 +57,11 @@ const DividerComponent = ({
 
   const removeComponent = async (id: string) => {
     setTemp((prev) => [...prev, dividerComponent.id]);
+
     removeStateComponent(id).then(() => {
       resetCanvasSize(canvasSizeRef, canvasRef);
     });
+
     await deleteComponent
       .mutateAsync({
         id: id,
@@ -76,6 +79,7 @@ const DividerComponent = ({
       info.point.y - (canvasRect?.y ?? 0) > 0
     ) {
       setTemp((prev) => [...prev, dividerComponent.id]);
+
       updateStateComponent(
         Object.assign(dividerComponent, {
           xAxis: snapTo(
@@ -105,139 +109,31 @@ const DividerComponent = ({
     }
   };
 
-  const ResizableDiv = forwardRef((props, ref: LegacyRef<Resizable>) => (
-    <Resizable
-      ref={ref}
-      {...props}
-      className={`rounded-lg bg-gray-200 dark:bg-darkColor 
-      ${
-        (dividerComponent.divider?.orientation || "horizontal") === "horizontal"
-          ? "max-h-[2px]"
-          : "h-full"
-      }  
-      ${
-        (dividerComponent.divider?.orientation || "horizontal") === "horizontal"
-          ? "w-full"
-          : "max-w-[2px]"
-      } 
-      ${shift && "hover:bg-blue-500 dark:hover:bg-blue-500"}
-      group flex cursor-auto items-center justify-center`}
-      size={{
-        height: dividerComponent.divider?.height || 2,
-        width: dividerComponent.divider?.width || 320,
-      }}
-      enable={{
-        right:
-          (dividerComponent.divider?.orientation || "horizontal") === "horizontal" ? true : false,
-        bottom:
-          (dividerComponent.divider?.orientation || "horizontal") === "horizontal" ? false : true,
-        top: false,
-        left: false,
-        topRight: false,
-        bottomRight: false,
-        bottomLeft: false,
-        topLeft: false,
-      }}
-      onResizeStop={() => {
-        handleResize();
-      }}
-    ></Resizable>
-  ));
-
-  ResizableDiv.displayName = "ResizableDiv";
-
-  const handleResize = async () => {
-    if (temp.includes(dividerComponent.id)) return;
-    if (dividerRef.current?.size.width.toString() === dividerComponent.divider?.width) return;
-
-    if (dividerComponent.divider === null) {
-      setTemp((prev) => [...prev, dividerComponent.id]);
-      updateStateComponent(
-        Object.assign(dividerComponent, {
-          divider: {
-            componentId: dividerComponent.id,
-            orientation: "horizontal",
-            height: dividerRef.current?.size.height,
-            width: dividerRef.current?.size.width,
-          },
-        }),
-      );
-      await createDivider
-        .mutateAsync({
-          componentId: dividerComponent.id,
-          orientation: "horizontal",
-          height: dividerRef.current?.size.height || 2,
-          width: dividerRef.current?.size.width || 320,
-        })
-        .then((res) => {
-          updateStateComponent(
-            Object.assign(dividerComponent, {
-              divider: {
-                ...dividerComponent.divider,
-                id: res.id,
-                componentId: res.componentId,
-                orientation: res.orientation,
-                height: res.height,
-                width: res.width,
-                created_at: res.created_at,
-                updated_at: res.updated_at,
-              },
-            }),
-          );
-        })
-        .then(() => {
-          setTemp((prev) => prev.filter((item) => item !== dividerComponent.id));
-        });
-    } else {
-      if (dividerRef.current?.size.width && dividerComponent.divider) {
-        setTemp((prev) => [...prev, dividerComponent.divider?.id as string]);
-        updateStateComponent(
-          Object.assign(dividerComponent, {
-            divider: {
-              ...dividerComponent.divider,
-              height: dividerRef.current.size.height,
-              width: dividerRef.current.size.width,
-            },
-          }),
-        );
-
-        updateDivider
-          .mutateAsync({
-            id: dividerComponent.divider?.id,
-            orientation: dividerComponent.divider?.orientation,
-            height: dividerRef.current.size.height,
-            width: dividerRef.current.size.width,
-          })
-          .then(() => {
-            setTemp((prev) => prev.filter((item) => item !== dividerComponent.divider?.id));
-          });
-      }
-    }
-  };
-
-  //Handle Rotate
-
   const handleRotate = async () => {
     if (temp.includes(dividerComponent.id)) return;
 
-    if (dividerComponent.divider === null && dividerRef.current?.size.width) {
+    const { height = 2, width = 320 } = dividerRef.current?.size || {};
+
+    if (!dividerComponent.divider) {
       setTemp((prev) => [...prev, dividerComponent.id]);
+
       updateStateComponent(
         Object.assign(dividerComponent, {
           divider: {
             componentId: dividerComponent.id,
             orientation: "vertical",
-            height: dividerRef.current?.size.width,
-            width: dividerRef.current?.size.height,
+            height: width,
+            width: height,
           },
         }),
       );
+
       await createDivider
         .mutateAsync({
           componentId: dividerComponent.id,
           orientation: "vertical",
-          height: dividerRef.current?.size.width,
-          width: dividerRef.current?.size.height,
+          height: width,
+          width: height,
         })
         .then((res) => {
           updateStateComponent(
@@ -258,33 +154,140 @@ const DividerComponent = ({
         .then(() => {
           setTemp((prev) => prev.filter((item) => item !== dividerComponent.id));
         });
-    } else {
-      if (dividerComponent.divider && dividerRef.current) {
-        setTemp((prev) => [...prev, dividerComponent.divider?.id as string]);
-        updateStateComponent(
-          Object.assign(dividerComponent, {
-            divider: {
-              ...dividerComponent.divider,
-              orientation:
-                dividerComponent.divider?.orientation === "horizontal" ? "vertical" : "horizontal",
-              height: dividerRef.current.size.width,
-              width: dividerRef.current.size.height,
-            },
-          }),
-        );
-        updateDivider
-          .mutateAsync({
-            id: dividerComponent.divider?.id,
-            orientation: dividerComponent.divider?.orientation,
-            height: dividerRef.current?.size.width,
-            width: dividerRef.current?.size.height,
-          })
-          .then(() => {
-            setTemp((prev) => prev.filter((item) => item !== dividerComponent.divider?.id));
-          });
-      }
+
+      return;
     }
+
+    setTemp((prev) => [...prev, dividerComponent.divider?.id ?? dividerComponent.id]);
+
+    updateStateComponent(
+      Object.assign(dividerComponent, {
+        divider: {
+          ...dividerComponent.divider,
+          orientation:
+            dividerComponent.divider?.orientation === "horizontal" ? "vertical" : "horizontal",
+          height: width,
+          width: height,
+          updated_at: new Date(),
+        },
+      }),
+    );
+
+    updateDivider
+      .mutateAsync({
+        id: dividerComponent.divider.id,
+        orientation: dividerComponent.divider.orientation,
+        height: width,
+        width: height,
+      })
+      .then(() => {
+        setTemp((prev) =>
+          prev.filter((item) => item !== dividerComponent.divider?.id ?? dividerComponent.id),
+        );
+      });
   };
+
+  const handleResize = async () => {
+    if (temp.includes(dividerComponent.id)) return;
+
+    const { height = 2, width = 320 } = dividerRef.current?.size || {};
+    if (dividerComponent.divider?.width === width) return;
+
+    if (!dividerComponent.divider) {
+      setTemp((prev) => [...prev, dividerComponent.id]);
+
+      updateStateComponent(
+        Object.assign(dividerComponent, {
+          divider: {
+            componentId: dividerComponent.id,
+            orientation: "horizontal",
+            height: height,
+            width: width,
+          },
+        }),
+      );
+
+      await createDivider
+        .mutateAsync({
+          componentId: dividerComponent.id,
+          orientation: "horizontal",
+          height: height || 2,
+          width: width || 320,
+        })
+        .then((res) => {
+          updateStateComponent(
+            Object.assign(dividerComponent, {
+              divider: {
+                ...dividerComponent.divider,
+                id: res.id,
+                componentId: res.componentId,
+                orientation: res.orientation,
+                height: res.height,
+                width: res.width,
+                created_at: res.created_at,
+                updated_at: res.updated_at,
+              },
+            }),
+          );
+        })
+        .then(() => {
+          setTemp((prev) => prev.filter((item) => item !== dividerComponent.id));
+        });
+
+      return;
+    }
+
+    setTemp((prev) => [...prev, dividerComponent.divider?.id ?? dividerComponent.id]);
+
+    updateStateComponent(
+      Object.assign(dividerComponent, {
+        divider: {
+          ...dividerComponent.divider,
+          height: height,
+          width: width,
+          updated_at: new Date(),
+        },
+      }),
+    );
+
+    updateDivider
+      .mutateAsync({
+        id: dividerComponent.divider?.id,
+        orientation: dividerComponent.divider?.orientation,
+        height: height,
+        width: width,
+      })
+      .then(() => {
+        setTemp((prev) =>
+          prev.filter((item) => item !== dividerComponent.divider?.id ?? dividerComponent.id),
+        );
+      });
+  };
+
+  const ResizableDiv = forwardRef((props, ref: LegacyRef<Resizable>) => {
+    const { divider } = dividerComponent;
+    const { orientation = "horizontal", height = 2, width = 320 } = divider || {};
+
+    return (
+      <Resizable
+        ref={ref}
+        {...props}
+        className={`group flex cursor-auto items-center justify-center rounded-lg bg-gray-200 dark:bg-darkColor 
+          ${orientation === "horizontal" ? "max-h-[2px] w-full" : "h-full max-w-[2px]"} 
+          ${shift && "hover:bg-blue-500 dark:hover:bg-blue-500"}`}
+        size={{ height, width }}
+        enable={{
+          right: orientation === "horizontal",
+          bottom: orientation === "vertical",
+        }}
+        onResizeStop={() => {
+          handleResize();
+        }}
+      />
+    );
+  });
+
+  ResizableDiv.displayName = "ResizableDiv";
 
   return (
     <motion.div
@@ -304,7 +307,7 @@ const DividerComponent = ({
       }}
       {...bind()}
       style={{ top: dividerComponent?.yAxis - 9.25, left: dividerComponent?.xAxis - 168 }}
-      onMouseOver={() => {
+      onMouseEnter={() => {
         setDisablePan(true);
       }}
       onMouseLeave={() => {
@@ -328,7 +331,7 @@ const DividerComponent = ({
             <ArrowPathRoundedSquareIcon
               className={`${
                 dividerComponent.divider?.orientation === "vertical" && "rotate-90"
-              } h-4 w-4 group-disabled:opacity-50 `}
+              } h-4 w-4 transition-transform ease-in-out group-disabled:opacity-50`}
             />
           </button>
           <button
@@ -346,7 +349,6 @@ const DividerComponent = ({
           </button>
         </div>
       )}
-      {/* TODO: Fix divider resize direction (left)*/}
       <ResizableDiv ref={dividerRef} />
     </motion.div>
   );
