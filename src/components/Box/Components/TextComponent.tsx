@@ -60,6 +60,7 @@ const TextComponent = ({
     removeStateComponent(id).then(() => {
       resetCanvasSize(canvasSizeRef, canvasRef);
     });
+
     await deleteComponent
       .mutateAsync({
         id: id,
@@ -77,6 +78,7 @@ const TextComponent = ({
       info.point.y - (canvasRect?.y ?? 0) > 0
     ) {
       setTemp((prev) => [...prev, textComponent.id]);
+
       updateStateComponent(
         Object.assign(textComponent, {
           xAxis: snapTo(
@@ -107,19 +109,20 @@ const TextComponent = ({
   };
 
   const handleBlur = async (event: React.FocusEvent<HTMLSpanElement>) => {
-    if (!spanRef.current?.contains(event.relatedTarget)) {
-      window.getSelection()?.removeAllRanges();
-    }
+    if (!spanRef.current?.contains(event.relatedTarget)) window.getSelection()?.removeAllRanges();
     if (temp.includes(textComponent.id)) return;
-    const text = spanRef.current?.innerText;
+    const text = spanRef.current?.innerText || "";
     if (text === textComponent.text?.content) return;
+    if (text.trim().length === 0) return removeComponent(textComponent.id);
 
-    if (textComponent.text === null) {
+    if (!textComponent.text) {
+      setTemp((prev) => [...prev, textComponent.id]);
+
       updateStateComponent(
         Object.assign(textComponent, {
           text: {
             componentId: textComponent.id,
-            content: text || "",
+            content: text,
           },
         }),
       );
@@ -127,7 +130,7 @@ const TextComponent = ({
       await createText
         .mutateAsync({
           componentId: textComponent.id,
-          content: text || "",
+          content: text,
         })
         .then((res) => {
           updateStateComponent(
@@ -142,28 +145,34 @@ const TextComponent = ({
           );
         })
         .then(() => {
-          setTemp((prev) => prev.filter((item) => item !== textComponent.text?.id));
-        });
-    } else {
-      setTemp((prev) => [...prev, textComponent.id]);
-      updateStateComponent(
-        Object.assign(textComponent, {
-          text: {
-            ...textComponent.text,
-            content: text || "",
-          },
-        }),
-      );
-
-      updateText
-        .mutateAsync({
-          id: textComponent.text.id,
-          content: text || "",
-        })
-        .then(() => {
           setTemp((prev) => prev.filter((item) => item !== textComponent.id));
         });
+
+      return;
     }
+
+    setTemp((prev) => [...prev, textComponent.text?.id ?? textComponent.id]);
+
+    updateStateComponent(
+      Object.assign(textComponent, {
+        text: {
+          ...textComponent.text,
+          content: text,
+          updated_at: new Date(),
+        },
+      }),
+    );
+
+    updateText
+      .mutateAsync({
+        id: textComponent.text.id,
+        content: text,
+      })
+      .then(() => {
+        setTemp((prev) =>
+          prev.filter((item) => item !== textComponent.text?.id ?? textComponent.id),
+        );
+      });
   };
 
   return (
@@ -198,7 +207,7 @@ const TextComponent = ({
       <span
         ref={spanRef}
         onBlur={handleBlur}
-        onMouseOver={() => setDisablePan(true)}
+        onMouseEnter={() => setDisablePan(true)}
         onMouseLeave={() => setDisablePan(false)}
         className={`justify-left cursor-text items-center whitespace-nowrap rounded-md bg-transparent px-1 text-lg outline-none focus:outline-2 focus:outline-blue-500 ${
           shift && "outline-2 hover:cursor-move hover:outline hover:outline-blue-500"
@@ -213,7 +222,7 @@ const TextComponent = ({
         contentEditable={!shift}
         suppressContentEditableWarning
       >
-        {textComponent.text && textComponent.text?.content !== ""
+        {textComponent.text && textComponent.text?.content.trim().length > 0
           ? textComponent.text?.content
           : "Add a Text"}
       </span>
