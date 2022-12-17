@@ -11,6 +11,7 @@ import Header from "./Header";
 import { useSession } from "next-auth/react";
 import { useHotkeys } from "react-hotkeys-hook";
 import { Prisma } from "@prisma/client";
+import { resetCanvasSize } from "./Helpers";
 
 type Component = Prisma.ComponentGetPayload<{
   include: { text: true; entry: true; divider: true };
@@ -40,6 +41,10 @@ const BoxPage = () => {
   const getBox = trpc.useQuery(["box.getBox", { id: id as string }]);
   const getFavoriteBox = trpc.useQuery(["favorite.getFavoriteBox", { boxId: id as string }]);
   const getComponents = trpc.useQuery(["component.getComponents", { id: id as string }]);
+
+  useEffect(() => {
+    resetCanvasSize(canvasSizeRef, canvasRef);
+  }, [canvasSizeRef, canvasRef]);
 
   useEffect(() => {
     if (getComponents.isSuccess) {
@@ -90,14 +95,12 @@ const BoxPage = () => {
 
   if (getBox.isSuccess && !getBox.data) {
     return (
-      <>
-        <PageAlert
-          elem={<p className="text-4xl font-extrabold text-red-600 sm:text-5xl">404</p>}
-          title="Page not found"
-          description={description}
-          btnTitle="Go back to home"
-        />
-      </>
+      <PageAlert
+        elem={<p className="text-4xl font-extrabold text-red-600 sm:text-5xl">404</p>}
+        title="Page not found"
+        description={description}
+        btnTitle="Go back to home"
+      />
     );
   }
 
