@@ -6,6 +6,8 @@ import { Prisma } from "@prisma/client";
 import TextComponent from "./Components/TextComponent";
 import { MDEditorProps } from "@uiw/react-md-editor";
 import "@uiw/react-md-editor/markdown-editor.css";
+import DividerComponent from "./Components/DividerComponent";
+import { useSession } from "next-auth/react";
 
 type Component = Prisma.ComponentGetPayload<{
   include: { text: true; entry: true; divider: true };
@@ -13,11 +15,16 @@ type Component = Prisma.ComponentGetPayload<{
 
 type Props = {
   id: string;
+  userId: string;
   canvasRef: React.RefObject<HTMLDivElement>;
+  canvasSizeRef: React.RefObject<HTMLDivElement>;
   canvasElements: Component[] | undefined;
   shift: boolean;
+  temp: string[];
+  setTemp: React.Dispatch<React.SetStateAction<string[]>>;
+  removeStateComponent: (id: string) => Promise<void>;
+  updateStateComponent: (component: Component) => Promise<void>;
   setShift: React.Dispatch<React.SetStateAction<boolean>>;
-  refetch: () => void;
 };
 
 const MDEditor = dynamic<MDEditorProps>(
@@ -25,32 +32,82 @@ const MDEditor = dynamic<MDEditorProps>(
   { ssr: false },
 );
 
-const Canvas: React.FC<Props> = ({ canvasRef, canvasElements, shift, setShift, refetch }) => {
-  const { events } = useDraggable(canvasRef as React.MutableRefObject<HTMLInputElement>);
+const Canvas: React.FC<Props> = ({
+  userId,
+  canvasRef,
+  canvasSizeRef,
+  canvasElements,
+  shift,
+  temp,
+  setTemp,
+  removeStateComponent,
+  updateStateComponent,
+  setShift,
+}) => {
+  const { data: session } = useSession();
+  const { events } = useDraggable(canvasRef as React.MutableRefObject<HTMLInputElement>) || {};
   const [text, setText] = useState<string | undefined>(`**Hello world!**`);
+  const [disablePan, setDisablePan] = useState(false);
 
   return (
-    // TODO: add right and bottom padding to canvas
     <div
       ref={canvasRef}
-      {...events}
-      className="relative flex h-full flex-col items-center justify-center scrollbar-thin scrollbar-track-gray-400/20 scrollbar-thumb-blue-500"
+      {...(shift || disablePan ? {} : { ...events })}
+      className="relative flex h-full items-center justify-center scrollbar-thin scrollbar-track-gray-400/20 scrollbar-thumb-blue-500"
     >
+      <div ref={canvasSizeRef} className="absolute top-0 left-0 -z-50" />
       {canvasElements?.length === 0 ? (
-        <span className="text-sm text-gray-500 dark:text-neutral-400">Add your first entry</span>
+        <span className="text-sm text-gray-500 dark:text-neutral-400">
+          {session?.user?.id === userId ? "Add your first entry." : "This Box is empty."}
+        </span>
       ) : (
         canvasElements?.map((canvasElement: Component, index) => {
           switch (canvasElement.componentName) {
             case "Text":
-              return <TextComponent key={index} textComponent={canvasElement} refetch={refetch} />;
+              return (
+                <TextComponent
+                  key={index}
+                  textComponent={canvasElement}
+                  removeStateComponent={removeStateComponent}
+                  updateStateComponent={updateStateComponent}
+                  canvasRef={canvasRef}
+                  canvasSizeRef={canvasSizeRef}
+                  temp={temp}
+                  shift={shift}
+                  setDisablePan={setDisablePan}
+                  setShift={setShift}
+                  setTemp={setTemp}
+                />
+              );
             case "Entry":
               return (
                 <EntryComponent
                   key={index}
                   entryComponent={canvasElement}
+                  removeStateComponent={removeStateComponent}
+                  updateStateComponent={updateStateComponent}
+                  canvasRef={canvasRef}
+                  canvasSizeRef={canvasSizeRef}
+                  temp={temp}
                   shift={shift}
                   setShift={setShift}
-                  refetch={refetch}
+                  setTemp={setTemp}
+                />
+              );
+            case "Divider":
+              return (
+                <DividerComponent
+                  key={index}
+                  dividerComponent={canvasElement}
+                  removeStateComponent={removeStateComponent}
+                  updateStateComponent={updateStateComponent}
+                  canvasRef={canvasRef}
+                  canvasSizeRef={canvasSizeRef}
+                  temp={temp}
+                  shift={shift}
+                  setDisablePan={setDisablePan}
+                  setShift={setShift}
+                  setTemp={setTemp}
                 />
               );
           }

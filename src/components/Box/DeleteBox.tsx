@@ -5,30 +5,23 @@ import { ExclamationTriangleIcon, TrashIcon } from "@heroicons/react/24/solid";
 import { Fragment, useRef, useState } from "react";
 
 type Props = {
-  mobile?: boolean;
   onDeleteBox: () => void;
 };
 
-const DeleteBox = ({ mobile, onDeleteBox }: Props) => {
+const DeleteBox = ({ onDeleteBox }: Props) => {
   const [open, setOpen] = useState(false);
   const cancelButtonRef = useRef(null);
   const [isClicked, setIsClicked] = useState(false);
 
   return (
     <>
-      {!mobile ? (
-        <button
-          className="flex h-full w-11 items-center justify-center"
-          onClick={() => setOpen(true)}
-        >
-          <TrashIcon className="h-5 w-5 dark:text-white" />
-        </button>
-      ) : (
-        <button className="flex items-center justify-start py-2 px-4" onClick={() => setOpen(true)}>
-          <TrashIcon className="h-5 w-5 dark:text-white" />
-          <div className="w-24 px-3 pb-px text-left text-sm">Delete Box</div>
-        </button>
-      )}
+      <button
+        className="flex w-full items-center justify-start py-2 px-4"
+        onClick={() => setOpen(true)}
+      >
+        <TrashIcon className="h-5 w-5 dark:text-white" />
+        <div className="w-24 px-3 pb-px text-left text-sm">Delete Box</div>
+      </button>
       <Transition.Root show={open} as={Fragment}>
         <Dialog as="div" className="relative z-50" initialFocus={cancelButtonRef} onClose={setOpen}>
           <Transition.Child

@@ -8,7 +8,6 @@ import { useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { trpc } from "../../utils/trpc";
 import PageAlert from "../Common/PageAlert";
-import Spinner from "../Common/Spinner";
 import Confetti from "./Confetti";
 const description = [
   "WatchBox streamlines and simplifies the process of creating movie and TV show lists for you to share with others or keep for yourself. ",
@@ -20,7 +19,7 @@ type Inputs = {
 };
 
 const Welcome = () => {
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
 
   const {
     register,
@@ -34,7 +33,7 @@ const Welcome = () => {
     reset();
   }, [reset]);
 
-  const { mutate, isLoading, error } = trpc.useMutation(["user.getStarted"], {
+  const getStarted = trpc.useMutation(["user.getStarted"], {
     onSuccess: () => {
       document.dispatchEvent(new Event("visibilitychange"));
       router.push("/");
@@ -42,16 +41,8 @@ const Welcome = () => {
   });
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    mutate(data);
+    getStarted.mutateAsync(data);
   };
-
-  if (status === "loading") {
-    return (
-      <div>
-        <Spinner />
-      </div>
-    );
-  }
 
   return (
     <>
@@ -75,7 +66,7 @@ const Welcome = () => {
             <div className="relative mt-1 rounded-md shadow-sm">
               <input
                 type="text"
-                placeholder="Type your username here"
+                placeholder="Type your username here..."
                 className="input"
                 {...register("username", {
                   required: {
@@ -95,7 +86,10 @@ const Welcome = () => {
                 </div>
               )}
             </div>
-            {error && <p className="mt-1 text-sm text-red-500">{error.message}</p>}
+
+            {getStarted.error && (
+              <p className="mt-2 ml-1 text-sm text-red-500">{getStarted.error.message}</p>
+            )}
 
             {errors.username && (
               <p className="mt-2 ml-1 text-sm text-red-500">{errors.username.message}</p>
@@ -103,7 +97,7 @@ const Welcome = () => {
           </div>
 
           <div className="flex-col text-center">
-            {isLoading ? (
+            {getStarted.isLoading ? (
               <button className="mb-3 inline-flex items-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm focus:outline-none hover:bg-blue-500">
                 <svg
                   role="status"
@@ -124,7 +118,10 @@ const Welcome = () => {
                 Loading
               </button>
             ) : (
-              <button className="mb-3 inline-flex items-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm focus:outline-none hover:bg-blue-500">
+              <button
+                className="mb-3 inline-flex items-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm focus:outline-none hover:bg-blue-500"
+                type="submit"
+              >
                 Get Started <ArrowRightIcon className="ml-2 h-5 w-5" />
               </button>
             )}

@@ -8,6 +8,7 @@ import {
 import Image from "next/image";
 import router from "next/router";
 import { useState } from "react";
+import OutsideClickHandler from "react-outside-click-handler";
 import ReactPaginate from "react-paginate";
 import { trpc } from "../../utils/trpc";
 import Spinner from "../Common/Spinner";
@@ -83,7 +84,11 @@ const Boxes = ({ setMode }: BoxesProps) => {
         </div>
 
         <div className="flex space-x-6">
-          <div>
+          <OutsideClickHandler
+            onOutsideClick={() => {
+              setOpenSort(false);
+            }}
+          >
             <button
               onClick={() => {
                 setOpenSort(!openSort);
@@ -124,7 +129,7 @@ const Boxes = ({ setMode }: BoxesProps) => {
                 </ul>
               </div>
             )}
-          </div>
+          </OutsideClickHandler>
 
           <div className="flex items-center">
             <div className="relative w-full">
@@ -135,7 +140,7 @@ const Boxes = ({ setMode }: BoxesProps) => {
                 type="text"
                 onChange={(e) => onSearch(e)}
                 className="block w-full rounded-lg border border-gray-100 bg-white p-3 pl-10 text-sm text-gray-800 placeholder-gray-500 outline-none dark:border-transparent dark:bg-darkColor dark:text-white dark:placeholder-gray-300 "
-                placeholder="Search Box"
+                placeholder="Search Boxes"
               />
             </div>
           </div>
@@ -152,10 +157,13 @@ const Boxes = ({ setMode }: BoxesProps) => {
       </div>
 
       {boxesData.isLoading && (
-        <div className="absolute top-[50%] right-0 left-0">
-          <Spinner />
+        <div className="absolute top-[50%] left-0 right-0 ml-auto mr-auto">
+          <div className="flex items-center justify-center">
+            <Spinner />
+          </div>
         </div>
       )}
+
       {boxesData.data?.length === 0 && (
         <div className="absolute top-[50%] right-0 left-0 space-y-10 text-center">
           <div className="flex flex-col items-center justify-center">
@@ -184,8 +192,9 @@ const Boxes = ({ setMode }: BoxesProps) => {
           >
             <div
               className={`grid ${
-                box?.components.filter((x) => x.componentName === "Entry" && x.entry !== null)
-                  .length > 1
+                box?.components.filter(
+                  (x) => x.componentName === "Entry" && x.entry !== null && x.entry?.image !== "",
+                ).length > 1
                   ? "grid-cols-2 grid-rows-2"
                   : "grid-cols-1"
               } bg-white-50 aspect-square w-32 gap-3 rounded-lg border border-gray-100 bg-white p-3.5 transition duration-150 ease-in-out group-hover:scale-105 dark:border-transparent dark:bg-darkColor lg:w-36`}
@@ -197,8 +206,14 @@ const Boxes = ({ setMode }: BoxesProps) => {
                     <Image
                       className="object-cover"
                       src={
-                        `https://www.themoviedb.org/t/p/w600_and_h900_bestv2/${box?.components[0]?.entry?.image}` ||
-                        ""
+                        `https://www.themoviedb.org/t/p/w600_and_h900_bestv2/${
+                          box?.components.filter(
+                            (x) =>
+                              x.componentName === "Entry" &&
+                              x.entry !== null &&
+                              x.entry?.image !== "",
+                          )[0]?.entry?.image
+                        }` || ""
                       }
                       alt=""
                       width="1080"
@@ -208,12 +223,16 @@ const Boxes = ({ setMode }: BoxesProps) => {
                   </div>
                 ),
               }[
-                box?.components.filter((x) => x.componentName === "Entry" && x.entry !== null)
-                  .length
+                box?.components.filter(
+                  (x) => x.componentName === "Entry" && x.entry !== null && x.entry?.image !== "",
+                ).length
               ] || (
                 <>
                   {box?.components
-                    .filter((x) => x.componentName === "Entry" && x.entry?.image !== "")
+                    .filter(
+                      (x) =>
+                        x.componentName === "Entry" && x.entry !== null && x.entry?.image !== "",
+                    )
                     .slice(0, 4)
                     .map((component, index) => (
                       <div key={index} className="overflow-hidden rounded-md">
@@ -227,6 +246,7 @@ const Boxes = ({ setMode }: BoxesProps) => {
                           width="1080"
                           height="1080"
                           layout="responsive"
+                          priority={true}
                         />
                       </div>
                     ))}

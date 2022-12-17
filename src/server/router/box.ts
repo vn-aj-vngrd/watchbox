@@ -49,7 +49,7 @@ export const boxRouter = createProtectedRouter()
     async resolve({ input, ctx }) {
       return ctx.prisma.user.findFirst({
         where: {
-          id: ctx.session.user.id,
+          // id: ctx.session.user.id,
           boxes: {
             some: {
               id: input.id,
@@ -75,6 +75,51 @@ export const boxRouter = createProtectedRouter()
       });
     },
   })
+  .mutation("getGlobalBoxes", {
+    input: z.object({
+      searchInput: z.string().nullish(),
+      take: z.number(),
+    }),
+    async resolve({ input, ctx }) {
+      if (input.searchInput !== "") {
+        return ctx.prisma.box.findMany({
+          take: input.take,
+          where: {
+            boxTitle: {
+              contains: input.searchInput || "",
+              mode: "insensitive",
+            },
+            isPublic: true,
+          },
+          include: {
+            components: {
+              include: {
+                entry: true,
+              },
+            },
+          },
+        });
+      }
+
+      return;
+    },
+  })
+  .mutation("getGlobalBoxesCount", {
+    input: z.object({
+      searchInput: z.string().nullish(),
+    }),
+    async resolve({ input, ctx }) {
+      return ctx.prisma.box.count({
+        where: {
+          boxTitle: {
+            contains: input.searchInput || undefined,
+            mode: "insensitive",
+          },
+          isPublic: true,
+        },
+      });
+    },
+  })
   .mutation("createBox", {
     input: z.object({
       boxTitle: z.string(),
@@ -92,6 +137,7 @@ export const boxRouter = createProtectedRouter()
     input: z.object({
       id: z.string(),
       boxTitle: z.string(),
+      isPublic: z.boolean(),
     }),
     async resolve({ input, ctx }) {
       return ctx.prisma.box.update({
@@ -100,6 +146,7 @@ export const boxRouter = createProtectedRouter()
         },
         data: {
           boxTitle: input.boxTitle,
+          isPublic: input.isPublic,
           updated_at: new Date(),
         },
       });

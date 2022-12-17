@@ -1,10 +1,16 @@
 import Image from "next/image";
-import { BookmarkIcon, EyeIcon } from "@heroicons/react/24/solid";
 import { env } from "../../env/client.mjs";
 import { useEffect, useState, useCallback } from "react";
 import { Rating as StarRating } from "react-simple-star-rating";
 import { trpc } from "../../utils/trpc";
-import StarCircleComponent from "./StarCircleComponent";
+import { XMarkIcon } from "@heroicons/react/20/solid";
+import { Icon } from "@iconify/react";
+import movieLine from "@iconify/icons-mingcute/movie-line";
+import starFill from "@iconify/icons-mingcute/star-fill";
+import pencilFill from "@iconify/icons-mingcute/pencil-fill";
+import bookmarkFill from "@iconify/icons-mingcute/bookmark-fill";
+import eye2Fill from "@iconify/icons-mingcute/eye-2-fill";
+import roundFill from "@iconify/icons-mingcute/round-fill";
 
 type Props = {
   triggerReview: () => void;
@@ -43,6 +49,19 @@ type Movie = {
   vote_count: number;
 };
 
+const fillColorArray = [
+  "#FF1B6B",
+  "#FF1B6B",
+  "#CF4991",
+  "#CF4991",
+  "#A372B4",
+  "#A372B4",
+  "#749EDA",
+  "#749EDA",
+  "#45CAFF",
+  "#45CAFF",
+];
+
 const Metadata = ({
   triggerReview,
   triggerNotes,
@@ -60,19 +79,11 @@ const Metadata = ({
   const [date, setDate] = useState<string>("");
   const [hovering, setHovering] = useState(false);
   const [currentRating, setCurrentRating] = useState(rating || 0);
+  const [showMore, setShowMore] = useState(false);
 
-  const fillColorArray = [
-    "#FF1B6B",
-    "#FF1B6B",
-    "#CF4991",
-    "#CF4991",
-    "#A372B4",
-    "#A372B4",
-    "#749EDA",
-    "#749EDA",
-    "#45CAFF",
-    "#45CAFF",
-  ];
+  useEffect(() => {
+    if (movie?.overview) setShowMore(movie.overview.length < 350);
+  }, [movie]);
 
   const updateRating = trpc.useMutation("entry.updateRating", {
     onSuccess: () => {
@@ -143,21 +154,7 @@ const Metadata = ({
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center rounded-md bg-gray-100 text-gray-200 dark:bg-darkColor dark:text-neutral-500">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="6em"
-              height="6em"
-              preserveAspectRatio="xMidYMid meet"
-              viewBox="0 0 24 24"
-            >
-              <g fill="none">
-                <path d="M24 0v24H0V0h24ZM12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035c-.01-.004-.019-.001-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427c-.002-.01-.009-.017-.017-.018Zm.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093c.012.004.023 0 .029-.008l.004-.014l-.034-.614c-.003-.012-.01-.02-.02-.022Zm-.715.002a.023.023 0 0 0-.027.006l-.006.014l-.034.614c0 .012.007.02.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01l-.184-.092Z" />
-                <path
-                  fill="currentColor"
-                  d="M12 2c5.523 0 10 4.477 10 10a9.982 9.982 0 0 1-3.76 7.814l-.239.186H20a1 1 0 0 1 .117 1.993L20 22h-8C6.477 22 2 17.523 2 12S6.477 2 12 2Zm0 2a8 8 0 1 0 0 16a8 8 0 0 0 0-16Zm0 10a2 2 0 1 1 0 4a2 2 0 0 1 0-4Zm-4-4a2 2 0 1 1 0 4a2 2 0 0 1 0-4Zm8 0a2 2 0 1 1 0 4a2 2 0 0 1 0-4Zm-4-4a2 2 0 1 1 0 4a2 2 0 0 1 0-4Z"
-                />
-              </g>
-            </svg>
+            <Icon icon={movieLine} width="96" />
           </div>
         )}
       </div>
@@ -172,7 +169,7 @@ const Metadata = ({
                 draggable={false}
                 src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_square_1-5bdc75aaebeb75dc7ae79426ddd9be3b2be1e342510f8202baf6bffa71d7f5c4.svg"
                 layout="fill"
-                alt="TMDB Logo"
+                alt="TMDB"
               />
             </div>
             <p className="select-text">
@@ -183,49 +180,71 @@ const Metadata = ({
             </p>
           </div>
           <p className="mt-2 select-text pr-2 text-justify text-sm md:text-start">
-            {movie?.overview}
+            {movie?.overview && movie?.overview.length > 350 ? (
+              <>
+                {showMore ? movie?.overview + " " : movie?.overview.substring(0, 350) + "... "}
+                <span
+                  className="cursor-pointer select-none text-blue-500"
+                  onClick={() => setShowMore(!showMore)}
+                >
+                  {showMore ? "show less" : "show more"}
+                </span>
+              </>
+            ) : (
+              movie?.overview
+            )}
           </p>
-          {/* TODO: Add a remove button beside rating */}
-          <StarRating
-            allowHover={true}
-            onClick={handleOnClick}
-            initialValue={currentRating}
-            allowFraction={true}
-            className="my-2 -ml-0.5"
-            onPointerEnter={() => setHovering(true)}
-            onPointerLeave={() => setHovering(false)}
-            SVGclassName={`inline-block h-8`}
-            emptyIcon={!hovering && currentRating === 0 ? <StarCircleComponent /> : ""}
-            size={32}
-            fillColorArray={fillColorArray}
-          />
+          <div className="group flex items-center justify-center gap-2 py-4">
+            <StarRating
+              className="-ml-0.5 mb-1"
+              allowHover={true}
+              onClick={handleOnClick}
+              initialValue={currentRating}
+              allowFraction={true}
+              onPointerEnter={() => setHovering(true)}
+              onPointerLeave={() => setHovering(false)}
+              fillIcon={<Icon icon={starFill} className="mx-0.5 inline-block h-6 w-6" />}
+              emptyIcon={
+                !hovering && currentRating === 0 ? (
+                  <Icon
+                    icon={roundFill}
+                    width="6"
+                    className="mx-[11px] inline-block h-6 text-gray-200 dark:text-neutral-500"
+                  />
+                ) : (
+                  <Icon
+                    icon={starFill}
+                    className="mx-0.5 inline-block h-6 w-6 text-gray-200 dark:text-neutral-500"
+                  />
+                )
+              }
+              size={32}
+              fillColorArray={fillColorArray}
+            />
+            {currentRating !== 0 && (
+              <button
+                className="invisible mr-2 h-full group-hover:visible"
+                onClick={() => {
+                  handleOnClick(0);
+                }}
+              >
+                <XMarkIcon className="h-5 w-5 text-red-500" />
+              </button>
+            )}
+          </div>
           <div className="mt-1 flex space-x-6 text-center">
             <div>
               <button
                 onClick={triggerReview}
-                className={`dark:text-white ${
+                className={`${
                   isReviewed ? "text-white" : "text-gray-800"
-                } inline-flex items-center rounded  py-2 px-4 font-bold text-gray-800 dark:bg-darkColor dark:hover:bg-grayColor md:py-4 md:px-8 ${
+                } inline-flex items-center rounded py-2 px-4 font-bold text-gray-800 dark:bg-darkColor dark:hover:bg-grayColor md:py-4 md:px-8 ${
                   isReviewed
                     ? "bg-blue-600 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-800"
                     : "bg-gray-100 hover:bg-gray-200"
                 }`}
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
-                  preserveAspectRatio="xMidYMid meet"
-                  viewBox="0 0 24 24"
-                >
-                  <g fill="none" fillRule="evenodd">
-                    <path d="M24 0v24H0V0h24ZM12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035c-.01-.004-.019-.001-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427c-.002-.01-.009-.017-.017-.018Zm.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093c.012.004.023 0 .029-.008l.004-.014l-.034-.614c-.003-.012-.01-.02-.02-.022Zm-.715.002a.023.023 0 0 0-.027.006l-.006.014l-.034.614c0 .012.007.02.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01l-.184-.092Z" />
-                    <path
-                      fill="currentColor"
-                      d="M20.131 3.16a3 3 0 0 0-4.242 0l-.707.708l4.95 4.95l.706-.707a3 3 0 0 0 0-4.243l-.707-.707Zm-1.414 7.072l-4.95-4.95l-9.09 9.091a1.5 1.5 0 0 0-.401.724l-1.029 4.455a1 1 0 0 0 1.2 1.2l4.456-1.028a1.5 1.5 0 0 0 .723-.401l9.091-9.091Z"
-                    />
-                  </g>
-                </svg>
+                <Icon icon={pencilFill} className="h-5 w-5 dark:text-white" />
               </button>
               <p className="hidden pt-1.5 text-xs md:block">
                 {isReviewed ? "Remove Review" : "Add Review"}
@@ -240,7 +259,8 @@ const Metadata = ({
                     : "bg-gray-100 hover:bg-gray-200"
                 }`}
               >
-                <BookmarkIcon
+                <Icon
+                  icon={bookmarkFill}
                   className={`h-5 w-5 dark:text-white ${isNoted ? "text-white" : "text-gray-800"}`}
                 />
               </button>
@@ -256,7 +276,7 @@ const Metadata = ({
                 className={`${!watchProvider && "pointer-events-none"}`}
               >
                 <div className="inline-flex items-center rounded bg-gray-100 py-2 px-4 font-bold text-gray-800 hover:bg-gray-200 dark:bg-darkColor dark:hover:bg-grayColor md:py-4 md:px-8">
-                  <EyeIcon className="h-5 w-5 dark:text-white" />
+                  <Icon icon={eye2Fill} width="20" className="h-5 w-5 dark:text-white" />
                 </div>
               </a>
               <p className="hidden pt-1.5 text-xs md:block">Watch Now</p>
