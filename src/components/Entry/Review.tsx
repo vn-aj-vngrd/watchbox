@@ -1,5 +1,5 @@
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { trpc } from "../../utils/trpc";
 
 type Inputs = {
@@ -13,9 +13,16 @@ type Props = {
 };
 
 const Review = ({ review, refetch, entryId }: Props) => {
-  const { register, handleSubmit, watch, reset } = useForm<Inputs>();
+  const { register, handleSubmit, reset } = useForm<Inputs>();
+  const [timeoutId, setTimeoutId] = useState<number | undefined>();
 
-  const review_watch = watch("review");
+  useEffect(() => () => clearTimeout(timeoutId), [timeoutId]);
+
+  useEffect(() => {
+    reset({
+      review: review || "",
+    });
+  }, [reset, review]);
 
   const updateReview = trpc.useMutation("entry.updateReview", {
     onSuccess: () => {
@@ -24,13 +31,19 @@ const Review = ({ review, refetch, entryId }: Props) => {
     },
   });
 
-  useEffect(() => {
-    reset({
-      review: review || "",
-    });
-  }, [reset, review]);
+  const handleInput = () => {
+    if (timeoutId) clearTimeout(timeoutId);
 
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    const newTimeoutId = setTimeout(() => {
+      handleSubmit(handleBlur)();
+    }, 1000);
+
+    setTimeoutId(Number(newTimeoutId));
+  };
+
+  const handleBlur: SubmitHandler<Inputs> = (data) => {
+    if (timeoutId) clearTimeout(timeoutId);
+
     updateReview.mutateAsync({
       id: entryId as string,
       review: data.review,
@@ -39,33 +52,23 @@ const Review = ({ review, refetch, entryId }: Props) => {
 
   return (
     <>
-      <div className="border-t border-darkColor">
-        <p className="pt-3 text-lg">My Review</p>
-        <form onSubmit={handleSubmit(onSubmit)} className="mb-2 pt-3 ">
-          <div className="mb-4 w-full rounded-lg bg-gray-100 dark:border-darkColor dark:bg-darkColor">
-            <div
-              className={`bg-gray-100 p-2 pb-1 dark:bg-neutral-700 ${
-                review_watch !== review ? "rounded-t-lg" : "rounded-lg"
-              }`}
-            >
-              <textarea
-                {...register("review")}
-                rows={4}
-                className="w-full bg-gray-100 p-2 text-sm dark:bg-neutral-700 dark:text-white"
-                placeholder="Write a review..."
-              ></textarea>
-            </div>
-            <div className="dark:bg-dark flex items-center justify-end border-t px-3 py-2 dark:border-neutral-500">
-              <button
-                type="submit"
-                disabled={review_watch === review}
-                className="inline-flex w-28 justify-center rounded-lg bg-blue-600 py-2 text-sm font-medium text-white focus:ring-4 focus:ring-blue-200 disabled:opacity-60 enabled:hover:bg-blue-700 dark:focus:ring-blue-900"
-              >
-                Save Review
-              </button>
-            </div>
-          </div>
-        </form>
+      <div className="flex flex-col gap-3 border-t border-gray-200 py-3 dark:border-darkColor">
+        <p className="text-lg">My Review</p>
+        <div className="w-full rounded-md bg-gray-100 dark:bg-darkColor">
+          <textarea
+            {...register("review")}
+            className="h-full w-full resize-none bg-transparent p-3 text-sm"
+            placeholder="Write a review..."
+            rows={5}
+            spellCheck="false"
+            onInput={(e) => {
+              handleInput();
+              e.currentTarget.style.height = "auto";
+              e.currentTarget.style.height = e.currentTarget.scrollHeight + "px";
+            }}
+            onBlur={handleSubmit(handleBlur)}
+          />
+        </div>
       </div>
     </>
   );

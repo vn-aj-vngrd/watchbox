@@ -1,15 +1,21 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { XCircleIcon } from "@heroicons/react/24/solid";
 import { useRouter } from "next/router";
 import { trpc } from "../../utils/trpc";
-import Meta from "../Common/Meta";
 import PageAlert from "../Common/PageAlert";
 import Spinner from "../Common/Spinner";
 import Canvas from "./Canvas";
 import Components from "./Components";
 import Controls from "./Controls";
 import Header from "./Header";
+import { useSession } from "next-auth/react";
 import { useHotkeys } from "react-hotkeys-hook";
+import { Prisma } from "@prisma/client";
+import { resetCanvasSize } from "./Helpers";
+
+type Component = Prisma.ComponentGetPayload<{
+  include: { text: true; entry: true; divider: true };
+}>;
 
 const description = [
   "The page you are looking for does not exist.",
@@ -17,9 +23,14 @@ const description = [
 ];
 
 const BoxPage = () => {
+  const { data: session } = useSession();
   const [sidePanel, setSidePanel] = useState(true);
-  const canvasRef = useRef<HTMLDivElement>(null);
   const [shift, setShift] = useState(false);
+  const [temp, setTemp] = useState<string[]>([]);
+  const canvasRef = useRef<HTMLDivElement>(null);
+  const canvasSizeRef = useRef<HTMLDivElement>(null);
+
+  const [canvasElements, setCanvasElements] = useState<Component[]>([]);
 
   useHotkeys("shift", () => setShift(true), { keydown: true, keyup: false }, [shift]);
   useHotkeys("shift", () => setShift(false), { keydown: false, keyup: true }, [shift]);
@@ -31,21 +42,61 @@ const BoxPage = () => {
   const getFavoriteBox = trpc.useQuery(["favorite.getFavoriteBox", { boxId: id as string }]);
   const getComponents = trpc.useQuery(["component.getComponents", { id: id as string }]);
 
+  useEffect(() => {
+    resetCanvasSize(canvasSizeRef, canvasRef);
+  }, [canvasSizeRef, canvasRef]);
+
+  useEffect(() => {
+    if (getComponents.isSuccess) {
+      setCanvasElements(getComponents.data);
+    }
+  }, [getComponents.isSuccess, getComponents.data]);
+
+  const addComponent = (component: Component) => {
+    return new Promise<void>((resolve) => {
+      setCanvasElements((prev) => [...prev, component]);
+      resolve();
+    });
+  };
+
+  const deleteComponent = (id: string) => {
+    return new Promise<void>((resolve) => {
+      setCanvasElements((prev) => prev?.filter((component) => component.id !== id));
+      resolve();
+    });
+  };
+
+  const updateComponent = (component: Component) => {
+    return new Promise<void>((resolve) => {
+      setCanvasElements((prev) =>
+        prev?.map((prevComponent) => {
+          if (prevComponent.id === component.id) {
+            return component;
+          }
+          return prevComponent;
+        }),
+      );
+      resolve();
+    });
+  };
+
+  const refetchBox = () => {
+    getBox.refetch();
+    getFavoriteBox.refetch();
+  };
+
   if (getBox.isLoading || getFavoriteBox.isLoading) {
     return <Spinner isGlobal={true} />;
   }
 
   if (getBox.isSuccess && !getBox.data) {
     return (
-      <>
-        <Meta title="Watchbox | 404" />
-        <PageAlert
-          elem={<p className="text-4xl font-extrabold text-red-600 sm:text-5xl">404</p>}
-          title="Page not found"
-          description={description}
-          btnTitle="Go back to home"
-        />
-      </>
+      <PageAlert
+        elem={<p className="text-4xl font-extrabold text-red-600 sm:text-5xl">404</p>}
+        title="Page not found"
+        description={description}
+        btnTitle="Go back to home"
+      />
     );
   }
 
@@ -64,44 +115,47 @@ const BoxPage = () => {
     );
   }
 
-  const refetchBox = () => {
-    getBox.refetch();
-    getFavoriteBox.refetch();
-  };
-
-  const refetchCanvasElements = () => {
-    getComponents.refetch();
-  };
-
   return (
     <div className="flex h-full w-full">
-      <div
-        className={`flex h-full w-12 flex-col border-r transition-all duration-500 ease-in-out dark:border-darkColor ${
-          !sidePanel ? "md:w-12" : "md:w-[17rem]"
-        }`}
-      >
-        <Controls sidePanel={sidePanel} setSidePanel={setSidePanel} />
-        <Components
-          id={id as string}
-          canvasRef={canvasRef}
-          sidePanel={sidePanel}
-          refetch={refetchCanvasElements}
-        />
-      </div>
+      {session?.user?.id === getBox.data?.id && (
+        <div
+          className={`flex h-full w-12 flex-col border-r transition-all duration-500 ease-in-out dark:border-darkColor ${
+            !sidePanel ? "md:w-12" : "md:w-[17rem]"
+          }`}
+        >
+          <Controls sidePanel={sidePanel} setSidePanel={setSidePanel} />
+          <Components
+            id={id as string}
+            canvasRef={canvasRef}
+            canvasSizeRef={canvasSizeRef}
+            addStateComponent={addComponent}
+            updateStateComponent={updateComponent}
+            sidePanel={sidePanel}
+            setTemp={setTemp}
+          />
+        </div>
+      )}
+
       <div className="flex h-full grow flex-col">
         <Header
           box={getBox?.data}
           favoriteBox={getFavoriteBox?.data}
           id={id as string}
+          temp={temp}
           refetch={refetchBox}
         />
         <Canvas
           id={id as string}
+          userId={getBox?.data?.id as string}
           canvasRef={canvasRef}
-          canvasElements={getComponents?.data}
+          canvasSizeRef={canvasSizeRef}
+          canvasElements={canvasElements}
           shift={shift}
+          temp={temp}
+          setTemp={setTemp}
+          removeStateComponent={deleteComponent}
+          updateStateComponent={updateComponent}
           setShift={setShift}
-          refetch={refetchCanvasElements}
         />
       </div>
     </div>

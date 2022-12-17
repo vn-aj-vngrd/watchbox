@@ -6,10 +6,10 @@ type Props = {
   title?: string;
 };
 
-const Meta = ({ title }: Props) => {
+const Meta = ({ title = "WatchBox" }: Props) => {
   return (
     <Head>
-      <title> {title} </title>
+      <title>{title}</title>
       <meta charSet="utf-8" />
       <meta content="width=device-width, initial-scale=1.0" name="viewport" />
       <meta name="title" content="WatchBox" />
@@ -25,7 +25,7 @@ const Meta = ({ title }: Props) => {
       <meta name="author" content="NextDevs" />
       <link rel="icon" href="/favicon.ico" />
       <link rel="manifest" href="/manifest.json" />
-      <link rel="image_src" href="/favicon/favicon.png" />
+      <link rel="image_src" href="/favicon/watchbox.png" />
       <meta property="og:type" content="website" />
       <meta property="og:site_name" content="WatchBox" />
       <meta
@@ -33,9 +33,9 @@ const Meta = ({ title }: Props) => {
         content="WatchBox is an open-source utility web application that allows users to keep track of and record their viewing history for movies and television shows."
       />
       <meta property="og:title" content="WatchBox" />
-      <meta property="og:image" content="/favicon/favicon.png" />
-      <meta property="og:image:width" content="1200" />
-      <meta property="og:image:height" content="627" />
+      <meta property="og:image" content="/favicon/watchbox.png" />
+      <meta property="og:image:width" content="1080" />
+      <meta property="og:image:height" content="1920" />
     </Head>
   );
 };
