@@ -85,10 +85,6 @@ const BoxPage = () => {
     getFavoriteBox.refetch();
   };
 
-  const refetchCanvasElements = () => {
-    getComponents.refetch();
-  };
-
   if (getBox.isLoading || getFavoriteBox.isLoading) {
     return <Spinner isGlobal={true} />;
   }
@@ -160,7 +156,6 @@ const BoxPage = () => {
           removeStateComponent={deleteComponent}
           updateStateComponent={updateComponent}
           setShift={setShift}
-          refetch={refetchCanvasElements}
         />
       </div>
     </div>

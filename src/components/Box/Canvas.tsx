@@ -22,7 +22,6 @@ type Props = {
   removeStateComponent: (id: string) => Promise<void>;
   updateStateComponent: (component: Component) => Promise<void>;
   setShift: React.Dispatch<React.SetStateAction<boolean>>;
-  refetch: () => void;
 };
 
 const Canvas: React.FC<Props> = ({
@@ -36,7 +35,6 @@ const Canvas: React.FC<Props> = ({
   removeStateComponent,
   updateStateComponent,
   setShift,
-  refetch,
 }) => {
   const { data: session } = useSession();
   const { events } = useDraggable(canvasRef as React.MutableRefObject<HTMLInputElement>) || {};
@@ -84,7 +82,6 @@ const Canvas: React.FC<Props> = ({
                   temp={temp}
                   shift={shift}
                   setShift={setShift}
-                  refetch={refetch}
                   setTemp={setTemp}
                 />
               );
