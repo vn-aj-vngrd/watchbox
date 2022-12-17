@@ -2,7 +2,7 @@ import { useDraggable } from "react-use-draggable-scroll";
 import EntryComponent from "./Components/EntryComponent";
 import { Prisma } from "@prisma/client";
 import TextComponent from "./Components/TextComponent";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import DividerComponent from "./Components/DividerComponent";
 import { useSession } from "next-auth/react";
 
@@ -41,19 +41,6 @@ const Canvas: React.FC<Props> = ({
   const { data: session } = useSession();
   const { events } = useDraggable(canvasRef as React.MutableRefObject<HTMLInputElement>) || {};
   const [disablePan, setDisablePan] = useState(false);
-
-  useEffect(() => {
-    if (canvasSizeRef.current && canvasRef.current) {
-      canvasSizeRef.current.style.width =
-        canvasRef.current.scrollWidth +
-        (canvasRef.current.scrollWidth > canvasRef.current.clientWidth ? 16 : 0) +
-        "px";
-      canvasSizeRef.current.style.height =
-        canvasRef.current.scrollHeight +
-        (canvasRef.current.scrollHeight > canvasRef.current.clientHeight ? 16 : 0) +
-        "px";
-    }
-  }, [canvasSizeRef, canvasRef]);
 
   return (
     <div
