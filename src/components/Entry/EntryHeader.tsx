@@ -3,7 +3,13 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { trpc } from "../../utils/trpc";
 
-const watchStatus = ["Planned", "Watching", "On Hold", "Watched", "Dropped"];
+const watchStatus = [
+  { label: "Planned", color: "bg-gray-500" },
+  { label: "Watching", color: "bg-blue-500" },
+  { label: "On Hold", color: "bg-orange-500" },
+  { label: "Watched", color: "bg-green-500" },
+  { label: "Dropped", color: "bg-red-500" },
+];
 
 type Props = {
   boxId: string | undefined;
@@ -69,16 +75,18 @@ const EntryHeader = ({ boxId, entryId, entryTitle, refetch, status }: Props) => 
       <div className="flex flex-row items-center justify-end">
         <div className="relative inline-block text-left">
           <div>
-            {/* TODO: Add color indicator to watch status */}
             <button
               onClick={showDropdown}
               type="button"
-              className="text-md inline-flex w-fit items-center justify-center rounded-md border border-transparent bg-gray-100 py-1 pl-4 pr-10 font-medium text-gray-500 shadow-sm dark:bg-darkColor dark:text-white"
+              className="text-md inline-flex w-fit items-center justify-center rounded-md border border-transparent bg-gray-100 py-1 pl-1.5 pr-10 font-medium text-black shadow-sm dark:bg-darkColor dark:text-white"
               id="options-menu"
               aria-expanded="true"
               aria-haspopup="true"
             >
-              {watchStatus[watchStatusIdx]}
+              <div
+                className={`${watchStatus[watchStatusIdx]?.color} mx-2 h-3 w-3 rounded-full`}
+              ></div>
+              {watchStatus[watchStatusIdx]?.label}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -94,11 +102,9 @@ const EntryHeader = ({ boxId, entryId, entryTitle, refetch, status }: Props) => 
                 />
               </svg>
             </button>
-          </div>
-          {isShowDropdown ? (
-            <>
+            {isShowDropdown && (
               <div
-                className="absolute right-0 z-20 mt-2 w-[130px] origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-darkColor"
+                className="absolute right-0 z-20 mt-2 w-full origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-darkColor"
                 role="menu"
                 aria-orientation="vertical"
                 aria-labelledby="options-menu"
@@ -118,13 +124,13 @@ const EntryHeader = ({ boxId, entryId, entryTitle, refetch, status }: Props) => 
                       className="text-md block w-full px-4 py-2 text-left text-gray-900 hover:bg-gray-100 hover:text-gray-900 dark:text-white dark:hover:bg-grayColor"
                       role="menuitem"
                     >
-                      {item}
+                      {item.label}
                     </button>
                   ))}
                 </div>
               </div>
-            </>
-          ) : null}
+            )}
+          </div>
         </div>
       </div>
     </div>

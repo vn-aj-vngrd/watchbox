@@ -9,7 +9,7 @@ import Canvas from "./Canvas";
 import Components from "./Components";
 import Controls from "./Controls";
 import Header from "./Header";
-import { useHotkeys, isHotkeyPressed } from "react-hotkeys-hook";
+import { useHotkeys } from "react-hotkeys-hook";
 
 const description = [
   "The page you are looking for does not exist.",
@@ -21,7 +21,8 @@ const BoxPage = () => {
   const canvasRef = useRef<HTMLDivElement>(null);
   const [shift, setShift] = useState(false);
 
-  useHotkeys("shift", () => setShift(isHotkeyPressed("shift")), { keydown: true, keyup: true });
+  useHotkeys("shift", () => setShift(true), { keydown: true, keyup: false }, [shift]);
+  useHotkeys("shift", () => setShift(false), { keydown: false, keyup: true }, [shift]);
 
   const router = useRouter();
   const { id } = router.query;
@@ -99,6 +100,7 @@ const BoxPage = () => {
           canvasRef={canvasRef}
           canvasElements={getComponents?.data}
           shift={shift}
+          setShift={setShift}
           refetch={refetchCanvasElements}
         />
       </div>
