@@ -61,13 +61,21 @@ const fillColorArray = [
 
 const Metadata = ({ entryId, movieId, review, note, rating = 0 }: Props) => {
   const [movie, setMovie] = useState<Movie | null>(null);
-  const [watchProvider, setWatchProvider] = useState<string | null>(null);
-  const [hours, setHours] = useState<number>(0);
-  const [minutes, setMinutes] = useState<number>(0);
-  const [date, setDate] = useState<string>("");
-  const [hovering, setHovering] = useState(false);
-  const [currentRating, setCurrentRating] = useState(rating);
+  const [metadata, setMetadata] = useState({
+    watchProvider: null,
+    hours: 0,
+    minutes: 0,
+    date: "",
+  });
   const [showMore, setShowMore] = useState(false);
+  const [hovering, setHovering] = useState(false);
+  const [currentRating, setCurrentRating] = useState(0);
+
+  const { watchProvider, hours, minutes, date } = metadata;
+
+  useEffect(() => {
+    setCurrentRating(rating);
+  }, [rating]);
 
   useEffect(() => {
     if (movie?.overview) setShowMore(movie.overview.length < 350);
@@ -79,7 +87,7 @@ const Metadata = ({ entryId, movieId, review, note, rating = 0 }: Props) => {
     },
   });
 
-  const handleOnClick = (currentRating: number) => {
+  const handleClick = (currentRating: number) => {
     setCurrentRating(currentRating);
     updateRating.mutateAsync({
       id: entryId as string,
@@ -104,8 +112,7 @@ const Metadata = ({ entryId, movieId, review, note, rating = 0 }: Props) => {
         method: "GET",
       },
     ).then((res) => res.json());
-    const link = req.results?.PH?.link;
-    setWatchProvider(link);
+    setMetadata((prev) => ({ ...prev, watchProvider: req.results?.PH?.link }));
   }, [movieId]);
 
   useEffect(() => {
@@ -117,10 +124,9 @@ const Metadata = ({ entryId, movieId, review, note, rating = 0 }: Props) => {
     const { runtime } = movie;
     const hours = Math.floor(runtime / 60);
     const minutes = runtime % 60;
-    setHours(hours);
-    setMinutes(minutes);
-    setDate(new Date(Date.parse(movie?.release_date)).getFullYear().toString());
-  }, [date, getDetails, getWatchProviders, minutes, movie]);
+    const date = new Date(Date.parse(movie?.release_date)).getFullYear().toString();
+    setMetadata((prev) => ({ ...prev, hours, minutes, date }));
+  }, [getDetails, getWatchProviders, movie]);
 
   return (
     <div className="flex flex-col items-center py-4 md:flex-row md:items-start">
@@ -156,14 +162,14 @@ const Metadata = ({ entryId, movieId, review, note, rating = 0 }: Props) => {
             <p className="select-text">
               {date} • {(hours != 0 ? hours + "h " : "") + minutes + "m"} •
               {movie?.genres?.map((genre: Genre, index) =>
-                index < movie?.genres.length - 1 ? " " + genre.name + "," : " " + genre.name,
+                index < movie?.genres.length - 1 ? ` ${genre.name},` : ` ${genre.name}`,
               )}
             </p>
           </div>
           <p className="mt-2 select-text pr-2 text-justify text-sm md:text-start">
             {movie?.overview && movie?.overview.length > 350 ? (
               <>
-                {showMore ? movie?.overview + " " : movie?.overview.substring(0, 350) + "... "}
+                {showMore ? `${movie?.overview} ` : `${movie?.overview.substring(0, 350)}... `}
                 <span
                   className="cursor-pointer select-none text-blue-500"
                   onClick={() => setShowMore(!showMore)}
@@ -179,7 +185,7 @@ const Metadata = ({ entryId, movieId, review, note, rating = 0 }: Props) => {
             <StarRating
               className="-ml-0.5 mb-1"
               allowHover={true}
-              onClick={handleOnClick}
+              onClick={handleClick}
               initialValue={currentRating}
               allowFraction={true}
               onPointerEnter={() => setHovering(true)}
@@ -206,7 +212,7 @@ const Metadata = ({ entryId, movieId, review, note, rating = 0 }: Props) => {
               <button
                 className="invisible mr-2 h-full group-hover:visible"
                 onClick={() => {
-                  handleOnClick(0);
+                  handleClick(0);
                 }}
               >
                 <XMarkIcon className="h-5 w-5 text-red-500" />
