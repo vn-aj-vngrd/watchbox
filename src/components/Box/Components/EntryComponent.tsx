@@ -6,7 +6,6 @@ import { useState } from "react";
 import { env } from "../../../env/client.mjs";
 import { trpc } from "../../../utils/trpc";
 import { useLongPress, LongPressDetectEvents } from "use-long-press";
-import toast from "react-hot-toast";
 import { motion, PanInfo } from "framer-motion";
 import { snap } from "popmotion";
 import { calculatePoint, resetCanvasSize, scrollEdge } from "../Helpers";
@@ -55,7 +54,6 @@ type Props = {
   shift: boolean;
   temp: string[];
   setShift: React.Dispatch<React.SetStateAction<boolean>>;
-  refetch: () => void;
   setTemp: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
@@ -68,7 +66,6 @@ const EntryComponent = ({
   shift,
   temp,
   setShift,
-  refetch,
   setTemp,
 }: Props) => {
   const [movies, setMovies] = useState([]);
@@ -80,11 +77,32 @@ const EntryComponent = ({
   const deleteComponent = trpc.useMutation("component.deleteComponent");
   const updateComponent = trpc.useMutation("component.updateComponent");
 
+  const bind = useLongPress(
+    () => {
+      setShift(!shift);
+    },
+    {
+      detect: LongPressDetectEvents.TOUCH,
+    },
+  );
+
+  const searchMovies = async (title: string) => {
+    const req = await fetch(
+      `https://api.themoviedb.org/3/search/movie?api_key=${env.NEXT_PUBLIC_TMDB_API_KEY}&language=en-US&query=${title}&page=1&include_adult=true`,
+      { method: "GET" },
+    ).then((res) => res.json());
+    let { results } = req;
+    results = results.slice(0, 10);
+    setMovies(results);
+  };
+
   const removeComponent = async (id: string) => {
     setTemp((prev) => [...prev, entryComponent.id]);
+
     removeStateComponent(id).then(() => {
       resetCanvasSize(canvasSizeRef, canvasRef);
     });
+
     await deleteComponent
       .mutateAsync({
         id: id,
@@ -102,6 +120,7 @@ const EntryComponent = ({
       info.point.y - (canvasRect?.y ?? 0) > 0
     ) {
       setTemp((prev) => [...prev, entryComponent.id]);
+
       updateStateComponent(
         Object.assign(entryComponent, {
           xAxis: snapTo(
@@ -131,51 +150,54 @@ const EntryComponent = ({
     }
   };
 
-  const bind = useLongPress(
-    () => {
-      setShift(!shift);
-    },
-    {
-      detect: LongPressDetectEvents.TOUCH,
-    },
-  );
-
-  const searchMovies = async (title: string) => {
-    const req = await fetch(
-      `https://api.themoviedb.org/3/search/movie?api_key=${env.NEXT_PUBLIC_TMDB_API_KEY}&language=en-US&query=${title}&page=1&include_adult=true`,
-      {
-        method: "GET",
-      },
-    ).then((res) => res.json());
-    let { results } = req;
-    results = results.slice(0, 10);
-    setMovies(results);
-  };
-
   const handleInputChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     event.target.value.length > 0 ? await searchMovies(event.target.value) : setSelectedMovie(null);
   };
 
   const handleMovieSelect = async (movie: Movie) => {
-    if (movie != null) {
-      const { id, original_title, poster_path } = movie;
-      await createEntry
-        .mutateAsync({
+    if (!movie) return;
+
+    const { id, original_title, poster_path } = movie;
+
+    setTemp((prev) => [...prev, entryComponent.id]);
+
+    updateStateComponent(
+      Object.assign(entryComponent, {
+        entry: {
           componentId: entryComponent.id,
           movieId: id.toString(),
-          title: original_title,
           image: poster_path ?? "",
-        })
-        .catch(() => {
-          toast.error("Error");
-          setSelectedMovie(null);
-          refetch();
-        })
-        .then(() => {
-          setSelectedMovie(movie);
-          refetch();
-        });
-    }
+          title: original_title,
+          note: null,
+          review: null,
+          status: 0,
+          rating: 0,
+        },
+      }),
+    );
+
+    await createEntry
+      .mutateAsync({
+        componentId: entryComponent.id,
+        movieId: id.toString(),
+        image: poster_path ?? "",
+        title: original_title,
+      })
+      .then((res) => {
+        updateStateComponent(
+          Object.assign(entryComponent, {
+            entry: {
+              ...entryComponent.entry,
+              id: res.id,
+              created_at: res.created_at,
+              updated_at: res.updated_at,
+            },
+          }),
+        );
+      })
+      .then(() => {
+        setTemp((prev) => prev.filter((item) => item !== entryComponent.id));
+      });
   };
 
   return (
@@ -278,8 +300,7 @@ const EntryComponent = ({
           )}
         </>
       </div>
-      {/* Watch Status */}
-      {entryComponent?.entry?.movieId && (
+      {entryComponent?.entry && (
         <div
           className={`pointer-events-none absolute top-2 right-2 h-2.5 w-2.5 rounded-full ${
             watchStatus[entryComponent.entry.status]?.color
