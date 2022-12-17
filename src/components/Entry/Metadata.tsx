@@ -13,14 +13,11 @@ import eye2Fill from "@iconify/icons-mingcute/eye-2-fill";
 import roundFill from "@iconify/icons-mingcute/round-fill";
 
 type Props = {
-  triggerReview: () => void;
-  triggerNotes: () => void;
-  isReviewed: boolean;
-  isNoted: boolean;
-  movieId: string | undefined;
-  rating: number | undefined;
   entryId: string | undefined;
-  refetch: () => void;
+  movieId: string | undefined;
+  review: string | null | undefined;
+  note: string | null | undefined;
+  rating: number | undefined;
 };
 
 type Genre = {
@@ -62,23 +59,14 @@ const fillColorArray = [
   "#45CAFF",
 ];
 
-const Metadata = ({
-  triggerReview,
-  triggerNotes,
-  isReviewed,
-  isNoted,
-  movieId,
-  rating,
-  entryId,
-  refetch,
-}: Props) => {
+const Metadata = ({ entryId, movieId, review, note, rating = 0 }: Props) => {
   const [movie, setMovie] = useState<Movie | null>(null);
   const [watchProvider, setWatchProvider] = useState<string | null>(null);
   const [hours, setHours] = useState<number>(0);
   const [minutes, setMinutes] = useState<number>(0);
   const [date, setDate] = useState<string>("");
   const [hovering, setHovering] = useState(false);
-  const [currentRating, setCurrentRating] = useState(rating || 0);
+  const [currentRating, setCurrentRating] = useState(rating);
   const [showMore, setShowMore] = useState(false);
 
   useEffect(() => {
@@ -87,7 +75,6 @@ const Metadata = ({
 
   const updateRating = trpc.useMutation("entry.updateRating", {
     onSuccess: () => {
-      refetch();
       document.dispatchEvent(new Event("visibilitychange"));
     },
   });
@@ -117,28 +104,22 @@ const Metadata = ({
         method: "GET",
       },
     ).then((res) => res.json());
-    const { PH } = req.results;
-    const link = PH?.link;
+    const link = req.results?.PH?.link;
     setWatchProvider(link);
   }, [movieId]);
 
   useEffect(() => {
-    if (movie === null) {
+    if (!movie) {
       getDetails();
       getWatchProviders();
-    } else {
-      if (minutes === 0) {
-        const { runtime } = movie;
-        const hours = Math.floor(runtime / 60);
-        const minutes = runtime % 60;
-        setHours(hours);
-        setMinutes(minutes);
-      }
-
-      if (date === "") {
-        setDate(new Date(Date.parse(movie?.release_date)).getFullYear().toString());
-      }
+      return;
     }
+    const { runtime } = movie;
+    const hours = Math.floor(runtime / 60);
+    const minutes = runtime % 60;
+    setHours(hours);
+    setMinutes(minutes);
+    setDate(new Date(Date.parse(movie?.release_date)).getFullYear().toString());
   }, [date, getDetails, getWatchProviders, minutes, movie]);
 
   return (
@@ -174,7 +155,7 @@ const Metadata = ({
             </div>
             <p className="select-text">
               {date} • {(hours != 0 ? hours + "h " : "") + minutes + "m"} •
-              {movie?.genres.map((genre: Genre, index) =>
+              {movie?.genres?.map((genre: Genre, index) =>
                 index < movie?.genres.length - 1 ? " " + genre.name + "," : " " + genre.name,
               )}
             </p>
@@ -235,11 +216,10 @@ const Metadata = ({
           <div className="mt-1 flex space-x-6 text-center">
             <div>
               <button
-                onClick={triggerReview}
                 className={`${
-                  isReviewed ? "text-white" : "text-gray-800"
+                  review ? "text-white" : "text-gray-800"
                 } inline-flex items-center rounded py-2 px-4 font-bold text-gray-800 dark:bg-darkColor dark:hover:bg-grayColor md:py-4 md:px-8 ${
-                  isReviewed
+                  review
                     ? "bg-blue-600 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-800"
                     : "bg-gray-100 hover:bg-gray-200"
                 }`}
@@ -247,26 +227,23 @@ const Metadata = ({
                 <Icon icon={pencilFill} className="h-5 w-5 dark:text-white" />
               </button>
               <p className="hidden pt-1.5 text-xs md:block">
-                {isReviewed ? "Remove Review" : "Add Review"}
+                {review ? "Remove Review" : "Add Review"}
               </p>
             </div>
             <div>
               <button
-                onClick={triggerNotes}
                 className={`inline-flex items-center rounded bg-gray-100 py-2 px-4 font-bold text-gray-800  dark:bg-darkColor dark:hover:bg-grayColor md:py-4 md:px-8 ${
-                  isNoted
+                  note
                     ? "bg-blue-600 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-800"
                     : "bg-gray-100 hover:bg-gray-200"
                 }`}
               >
                 <Icon
                   icon={bookmarkFill}
-                  className={`h-5 w-5 dark:text-white ${isNoted ? "text-white" : "text-gray-800"}`}
+                  className={`h-5 w-5 dark:text-white ${note ? "text-white" : "text-gray-800"}`}
                 />
               </button>
-              <p className="hidden pt-1.5 text-xs md:block">
-                {isNoted ? "Remove Note" : "Add Note"}
-              </p>
+              <p className="hidden pt-1.5 text-xs md:block">{note ? "Remove Note" : "Add Note"}</p>
             </div>
             <div className={`${watchProvider ? "hover:cursor-pointer" : "opacity-50"}`}>
               <a

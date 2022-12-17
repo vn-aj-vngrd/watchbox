@@ -7,12 +7,11 @@ type Inputs = {
 };
 
 type Props = {
-  review: string | undefined;
-  refetch: () => void;
   entryId: string | undefined;
+  review: string | null | undefined;
 };
 
-const Review = ({ review, refetch, entryId }: Props) => {
+const Review = ({ entryId, review }: Props) => {
   const { register, handleSubmit, reset } = useForm<Inputs>();
   const [timeoutId, setTimeoutId] = useState<number | undefined>();
 
@@ -26,7 +25,6 @@ const Review = ({ review, refetch, entryId }: Props) => {
 
   const updateReview = trpc.useMutation("entry.updateReview", {
     onSuccess: () => {
-      refetch();
       document.dispatchEvent(new Event("visibilitychange"));
     },
   });
