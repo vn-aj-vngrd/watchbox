@@ -11,6 +11,7 @@ import pencilFill from "@iconify/icons-mingcute/pencil-fill";
 import bookmarkFill from "@iconify/icons-mingcute/bookmark-fill";
 import eye2Fill from "@iconify/icons-mingcute/eye-2-fill";
 import roundFill from "@iconify/icons-mingcute/round-fill";
+import { Entry } from "@prisma/client";
 
 type Props = {
   entryId: string | undefined;
@@ -18,6 +19,11 @@ type Props = {
   review: string | null | undefined;
   note: string | null | undefined;
   rating: number | undefined;
+  toggleReview: boolean;
+  setToggleReview: React.Dispatch<React.SetStateAction<boolean>>;
+  toggleNote: boolean;
+  setToggleNote: React.Dispatch<React.SetStateAction<boolean>>;
+  updateEntryComponent: (entry: Partial<Entry>) => Promise<void>;
 };
 
 type Genre = {
@@ -59,7 +65,18 @@ const fillColorArray = [
   "#45CAFF",
 ];
 
-const Metadata = ({ entryId, movieId, review, note, rating = 0 }: Props) => {
+const Metadata = ({
+  entryId,
+  movieId,
+  review,
+  note,
+  rating = 0,
+  toggleReview,
+  setToggleReview,
+  toggleNote,
+  setToggleNote,
+  updateEntryComponent,
+}: Props) => {
   const [movie, setMovie] = useState<Movie | null>(null);
   const [metadata, setMetadata] = useState({
     watchProvider: null,
@@ -81,17 +98,43 @@ const Metadata = ({ entryId, movieId, review, note, rating = 0 }: Props) => {
     if (movie?.overview) setShowMore(movie.overview.length < 350);
   }, [movie]);
 
-  const updateRating = trpc.useMutation("entry.updateRating", {
-    onSuccess: () => {
-      document.dispatchEvent(new Event("visibilitychange"));
-    },
-  });
+  const updateRating = trpc.useMutation("entry.updateRating");
+  const updateReview = trpc.useMutation("entry.updateReview");
+  const updateNote = trpc.useMutation("entry.updateNote");
 
-  const handleClick = (currentRating: number) => {
+  const handleRating = (currentRating: number) => {
     setCurrentRating(currentRating);
     updateRating.mutateAsync({
       id: entryId as string,
       rating: currentRating,
+    });
+  };
+
+  const handleReview = () => {
+    if (!review) {
+      setToggleReview((prev) => !prev);
+      return;
+    }
+
+    setToggleReview(false);
+    updateEntryComponent({ review: null });
+    updateReview.mutateAsync({
+      id: entryId as string,
+      review: null,
+    });
+  };
+
+  const handleNote = () => {
+    if (!note) {
+      setToggleNote((prev) => !prev);
+      return;
+    }
+
+    setToggleNote(false);
+    updateEntryComponent({ note: null });
+    updateNote.mutateAsync({
+      id: entryId as string,
+      note: null,
     });
   };
 
@@ -185,7 +228,7 @@ const Metadata = ({ entryId, movieId, review, note, rating = 0 }: Props) => {
             <StarRating
               className="-ml-0.5 mb-1"
               allowHover={true}
-              onClick={handleClick}
+              onClick={handleRating}
               initialValue={currentRating}
               allowFraction={true}
               onPointerEnter={() => setHovering(true)}
@@ -212,7 +255,7 @@ const Metadata = ({ entryId, movieId, review, note, rating = 0 }: Props) => {
               <button
                 className="invisible mr-2 h-full group-hover:visible"
                 onClick={() => {
-                  handleClick(0);
+                  handleRating(0);
                 }}
               >
                 <XMarkIcon className="h-5 w-5 text-red-500" />
@@ -222,34 +265,43 @@ const Metadata = ({ entryId, movieId, review, note, rating = 0 }: Props) => {
           <div className="mt-1 flex space-x-6 text-center">
             <div>
               <button
-                className={`${
-                  review ? "text-white" : "text-gray-800"
-                } inline-flex items-center rounded py-2 px-4 font-bold text-gray-800 dark:bg-darkColor dark:hover:bg-grayColor md:py-4 md:px-8 ${
-                  review
+                onClick={handleReview}
+                className={`inline-flex items-center rounded py-2 px-4 font-bold dark:bg-darkColor dark:hover:bg-grayColor md:py-4 md:px-8 ${
+                  review || toggleReview
                     ? "bg-blue-600 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-800"
-                    : "bg-gray-100 hover:bg-gray-200"
+                    : "bg-gray-100 text-gray-800 hover:bg-gray-200"
                 }`}
               >
-                <Icon icon={pencilFill} className="h-5 w-5 dark:text-white" />
+                <Icon
+                  icon={pencilFill}
+                  className={`h-5 w-5 dark:text-white ${
+                    review || toggleReview ? "text-white" : "text-gray-800"
+                  }`}
+                />
               </button>
               <p className="hidden pt-1.5 text-xs md:block">
-                {review ? "Remove Review" : "Add Review"}
+                {review || toggleReview ? "Remove Review" : "Add Review"}
               </p>
             </div>
             <div>
               <button
-                className={`inline-flex items-center rounded bg-gray-100 py-2 px-4 font-bold text-gray-800  dark:bg-darkColor dark:hover:bg-grayColor md:py-4 md:px-8 ${
-                  note
+                onClick={handleNote}
+                className={`inline-flex items-center rounded py-2 px-4 font-bold dark:bg-darkColor dark:hover:bg-grayColor md:py-4 md:px-8 ${
+                  note || toggleNote
                     ? "bg-blue-600 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-800"
-                    : "bg-gray-100 hover:bg-gray-200"
+                    : "bg-gray-100 text-gray-800 hover:bg-gray-200"
                 }`}
               >
                 <Icon
                   icon={bookmarkFill}
-                  className={`h-5 w-5 dark:text-white ${note ? "text-white" : "text-gray-800"}`}
+                  className={`h-5 w-5 dark:text-white ${
+                    note || toggleNote ? "text-white" : "text-gray-800"
+                  }`}
                 />
               </button>
-              <p className="hidden pt-1.5 text-xs md:block">{note ? "Remove Note" : "Add Note"}</p>
+              <p className="hidden pt-1.5 text-xs md:block">
+                {note || toggleNote ? "Remove Note" : "Add Note"}
+              </p>
             </div>
             <div className={`${watchProvider ? "hover:cursor-pointer" : "opacity-50"}`}>
               <a

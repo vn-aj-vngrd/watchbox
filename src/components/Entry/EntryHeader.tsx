@@ -24,11 +24,7 @@ const EntryHeader = ({ boxId, id, title, status = 0 }: Props) => {
   const [isShowDropdown, setIsShowDropdown] = useState<boolean>(false);
   const [watchStatusIdx, setWatchStatusIdx] = useState<number>(status);
 
-  const updateStatus = trpc.useMutation("entry.updateStatus", {
-    onSuccess: () => {
-      document.dispatchEvent(new Event("visibilitychange"));
-    },
-  });
+  const updateStatus = trpc.useMutation("entry.updateStatus");
 
   const showDropdown = () => {
     setIsShowDropdown(!isShowDropdown);

@@ -68,7 +68,7 @@ export const entryRouter = createProtectedRouter()
   .mutation("updateReview", {
     input: z.object({
       id: z.string(),
-      review: z.string(),
+      review: z.string().nullable(),
     }),
     resolve: async ({ input, ctx }) => {
       return ctx.prisma.entry.update({
@@ -80,7 +80,7 @@ export const entryRouter = createProtectedRouter()
   .mutation("updateNote", {
     input: z.object({
       id: z.string(),
-      note: z.string(),
+      note: z.string().nullable(),
     }),
     resolve: async ({ input, ctx }) => {
       return ctx.prisma.entry.update({

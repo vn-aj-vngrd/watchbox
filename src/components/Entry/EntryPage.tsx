@@ -23,17 +23,39 @@ const EntryPage = () => {
   const router = useRouter();
   const { id } = router.query;
   const [entryComponent, setEntryComponent] = useState<Component>();
+  const [toggleReview, setToggleReview] = useState<boolean>(false);
+  const [toggleNote, setToggleNote] = useState<boolean>(false);
   const entry = entryComponent?.entry as Entry;
 
   const getEntry = trpc.useQuery(["entry.getEntry", { id: id as string }]);
-  const updateReview = trpc.useMutation("entry.updateReview");
-  const updateNote = trpc.useMutation("entry.updateNote");
 
   useEffect(() => {
     if (getEntry.data && getEntry.isSuccess) {
       setEntryComponent(getEntry.data);
     }
   }, [getEntry.isSuccess, getEntry.data]);
+
+  useEffect(() => {
+    if (entry) {
+      setToggleReview(entry.review ? true : false);
+      setToggleNote(entry.note ? true : false);
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const updateEntryComponent = (entry: Partial<Entry>) => {
+    return new Promise<void>((resolve) => {
+      setEntryComponent((prev) => {
+        return {
+          ...prev,
+          entry: {
+            ...prev?.entry,
+            ...entry,
+          },
+        } as Component;
+      });
+      resolve();
+    });
+  };
 
   if (getEntry.isLoading) {
     return <Spinner isGlobal={true} />;
@@ -80,11 +102,28 @@ const EntryPage = () => {
           review={entry?.review}
           note={entry?.note}
           rating={entry?.rating}
+          toggleReview={toggleReview}
+          setToggleReview={setToggleReview}
+          toggleNote={toggleNote}
+          setToggleNote={setToggleNote}
+          updateEntryComponent={updateEntryComponent}
         />
         <div className="mx-auto flex w-full max-w-7xl flex-row">
           <div className="sm:ml-30 md:ml-50 mx-auto mb-6 flex max-w-7xl grow flex-col gap-3 pt-1 lg:ml-60 xl:ml-60">
-            <Review entryId={entry?.id} review={entry?.review} />
-            <Notes entryId={entry?.id} note={entry?.note} />
+            {toggleReview && (
+              <Review
+                entryId={entry?.id}
+                review={entry?.review}
+                updateEntryComponent={updateEntryComponent}
+              />
+            )}
+            {toggleNote && (
+              <Notes
+                entryId={entry?.id}
+                note={entry?.note}
+                updateEntryComponent={updateEntryComponent}
+              />
+            )}
           </div>
         </div>
       </div>
