@@ -1,6 +1,7 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
 import { trpc } from "../../utils/trpc";
+import { Entry } from "@prisma/client";
 
 type Inputs = {
   note: string;
@@ -9,9 +10,10 @@ type Inputs = {
 type Props = {
   entryId: string | undefined;
   note: string | null | undefined;
+  updateEntryComponent: (entry: Partial<Entry>) => Promise<void>;
 };
 
-const Note = ({ entryId, note }: Props) => {
+const Note = ({ entryId, note, updateEntryComponent }: Props) => {
   const { register, handleSubmit, reset } = useForm<Inputs>();
   const [timeoutId, setTimeoutId] = useState<number | undefined>();
 
@@ -23,11 +25,7 @@ const Note = ({ entryId, note }: Props) => {
     });
   }, [reset, note]);
 
-  const updateNote = trpc.useMutation("entry.updateNote", {
-    onSuccess: () => {
-      document.dispatchEvent(new Event("visibilitychange"));
-    },
-  });
+  const updateNote = trpc.useMutation("entry.updateNote");
 
   const handleInput = () => {
     if (timeoutId) clearTimeout(timeoutId);
@@ -42,9 +40,13 @@ const Note = ({ entryId, note }: Props) => {
   const handleBlur: SubmitHandler<Inputs> = (data) => {
     if (timeoutId) clearTimeout(timeoutId);
 
+    updateEntryComponent({
+      note: data.note || null,
+    });
+
     updateNote.mutateAsync({
       id: entryId as string,
-      note: data.note,
+      note: data.note || null,
     });
   };
 
