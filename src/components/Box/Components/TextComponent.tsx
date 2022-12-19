@@ -1,11 +1,19 @@
 import { Prisma } from "@prisma/client";
+import dynamic from "next/dynamic";
 import { TrashIcon } from "@heroicons/react/24/solid";
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { trpc } from "../../../utils/trpc";
 import { useLongPress, LongPressDetectEvents } from "use-long-press";
 import { motion, PanInfo } from "framer-motion";
 import { snap } from "popmotion";
 import { calculatePoint, resetCanvasSize, scrollEdge } from "../Helpers";
+import { MarkdownPreviewProps } from "@uiw/react-markdown-preview";
+import { text } from "stream/consumers";
+
+type Inputs = {
+  markdown: string;
+};
 
 type Component = Prisma.ComponentGetPayload<{
   include: { text: true; entry: true; divider: true };
@@ -24,6 +32,11 @@ type Props = {
   setTemp: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
+const MarkdownPreview = dynamic<MarkdownPreviewProps>(
+  () => import("@uiw/react-markdown-preview").then((mod) => mod.default),
+  { ssr: false },
+);
+
 const TextComponent = ({
   textComponent,
   removeStateComponent,
@@ -36,9 +49,16 @@ const TextComponent = ({
   setShift,
   setTemp,
 }: Props) => {
+  const { register, handleSubmit, reset } = useForm<Inputs>();
   const spanRef = useRef<HTMLSpanElement>(null);
   let canvasRect: DOMRect | undefined;
   const snapTo = snap(10);
+
+  useEffect(() => {
+    reset({
+      markdown: textComponent.text?.content || "Add text here",
+    });
+  }, [reset, textComponent.text?.content]);
 
   const deleteComponent = trpc.useMutation("component.deleteComponent");
   const updateComponent = trpc.useMutation("component.updateComponent");
@@ -175,6 +195,17 @@ const TextComponent = ({
       });
   };
 
+  const handleChange: SubmitHandler<Inputs> = (data) => {
+    updateStateComponent(
+      Object.assign(textComponent, {
+        text: {
+          ...textComponent.text,
+          content: data.markdown,
+        },
+      }),
+    );
+  };
+
   return (
     <motion.div
       drag={shift && !temp.includes(textComponent.id.startsWith("tmp-") ? textComponent.id : "")}
@@ -205,6 +236,7 @@ const TextComponent = ({
         </button>
       )}
       <span
+        {...register("markdown")}
         ref={spanRef}
         onBlur={handleBlur}
         onMouseEnter={() => setDisablePan(true)}
@@ -225,6 +257,7 @@ const TextComponent = ({
         {textComponent.text && textComponent.text?.content.trim().length > 0
           ? textComponent.text?.content
           : "Add a Text"}
+        <MarkdownPreview source={textComponent.text?.content} />
       </span>
     </motion.div>
   );
