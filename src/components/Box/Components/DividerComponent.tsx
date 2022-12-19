@@ -6,7 +6,7 @@ import { motion, PanInfo } from "framer-motion";
 import { snap } from "popmotion";
 import { Resizable } from "re-resizable";
 import { useRef, forwardRef, LegacyRef } from "react";
-import { calculatePoint, resetCanvasSize, scrollEdge } from "../Helpers";
+import { calculatePoint, resetCanvasSize } from "../Helpers";
 
 type Component = Prisma.ComponentGetPayload<{
   include: { text: true; entry: true; divider: true };
@@ -271,17 +271,16 @@ const DividerComponent = ({
       <Resizable
         ref={ref}
         {...props}
-        className={`group flex cursor-auto items-center justify-center rounded-lg bg-gray-200 dark:bg-darkColor 
-          ${orientation === "horizontal" ? "max-h-[2px] w-full" : "h-full max-w-[2px]"} 
-          ${shift && "hover:bg-blue-500 dark:hover:bg-blue-500"}`}
+        className={`flex items-center justify-center rounded-lg bg-gray-200 dark:bg-darkColor 
+          ${orientation === "horizontal" ? "max-h-[2px] w-full" : "h-full max-w-[2px]"}
+          ${shift && "group-hover:bg-blue-500 dark:group-hover:bg-blue-500"}`}
         size={{ height, width }}
         enable={{
           right: orientation === "horizontal",
           bottom: orientation === "vertical",
         }}
-        onResizeStop={() => {
-          handleResize();
-        }}
+        grid={[10, 10]}
+        onResizeStop={handleResize}
       />
     );
   });
@@ -297,9 +296,8 @@ const DividerComponent = ({
       dragSnapToOrigin
       dragElastic={0}
       dragConstraints={canvasRef}
-      onDrag={(e, info) => {
+      onDrag={() => {
         if (canvasRect == null) canvasRect = canvasRef.current?.getBoundingClientRect();
-        scrollEdge(info, canvasRect, canvasSizeRef, canvasRef);
       }}
       onDragEnd={(e, info) => {
         updateDividerComponent(info);
@@ -312,7 +310,7 @@ const DividerComponent = ({
       onMouseLeave={() => {
         setDisablePan(true);
       }}
-      className="absolute"
+      className={`group absolute py-2 ${shift && "hover:cursor-move"}`}
     >
       {shift && (
         <div className="absolute -top-3 -right-3 z-20 flex items-center justify-center rounded-full bg-gray-200 shadow-md shadow-gray-300 dark:bg-darkColor dark:shadow-black/20">
