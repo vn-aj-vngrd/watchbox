@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { trpc } from "../../utils/trpc";
 import { Entry } from "@prisma/client";
+import OutsideClickHandler from "react-outside-click-handler";
 
 type Props = {
   boxId: string | undefined;
@@ -87,25 +88,31 @@ const EntryHeader = ({ boxId, id, title, status = 0, updateEntryComponent }: Pro
               <ChevronLeftIcon className="absolute right-2 h-5 w-6 -rotate-90" />
             </button>
             {isShowDropdown && (
-              <div
-                className="absolute right-0 z-20 mt-2 w-full origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-darkColor"
-                role="menu"
-                aria-orientation="vertical"
-                aria-labelledby="options-menu"
+              <OutsideClickHandler
+                onOutsideClick={() => {
+                  setIsShowDropdown(false);
+                }}
               >
-                <div className="py-1" role="none">
-                  {watchStatus.map((item, index) => (
-                    <button
-                      key={index}
-                      onClick={handleWatchStatus.bind(null, index)}
-                      className="text-md block w-full px-4 py-2 text-left text-gray-900 hover:bg-gray-100 hover:text-gray-900 dark:text-white dark:hover:bg-grayColor"
-                      role="menuitem"
-                    >
-                      {item.label}
-                    </button>
-                  ))}
+                <div
+                  className="absolute right-0 z-20 mt-2 w-full origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-darkColor"
+                  role="menu"
+                  aria-orientation="vertical"
+                  aria-labelledby="options-menu"
+                >
+                  <div className="py-1" role="none">
+                    {watchStatus.map((item, index) => (
+                      <button
+                        key={index}
+                        onClick={handleWatchStatus.bind(null, index)}
+                        className="text-md block w-full px-4 py-2 text-left text-gray-900 hover:bg-gray-100 hover:text-gray-900 dark:text-white dark:hover:bg-grayColor"
+                        role="menuitem"
+                      >
+                        {item.label}
+                      </button>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              </OutsideClickHandler>
             )}
           </div>
         </div>
