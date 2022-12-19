@@ -80,7 +80,7 @@ const BoxPage = () => {
     });
   };
 
-  const refetchBox = () => {
+  const refetch = () => {
     getBox.refetch();
     getFavoriteBox.refetch();
   };
@@ -142,7 +142,7 @@ const BoxPage = () => {
           favoriteBox={getFavoriteBox?.data}
           id={id as string}
           temp={temp}
-          refetch={refetchBox}
+          refetch={refetch}
         />
         <Canvas
           id={id as string}

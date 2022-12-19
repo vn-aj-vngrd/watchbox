@@ -3,6 +3,13 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { trpc } from "../../utils/trpc";
 
+type Props = {
+  boxId: string | undefined;
+  id: string | undefined;
+  title: string | undefined;
+  status: number | undefined;
+};
+
 const watchStatus = [
   { label: "Planned", color: "bg-gray-500" },
   { label: "Watching", color: "bg-blue-500" },
@@ -11,26 +18,13 @@ const watchStatus = [
   { label: "Dropped", color: "bg-red-500" },
 ];
 
-type Props = {
-  boxId: string | undefined;
-  entryId: string | undefined;
-  entryTitle: string | undefined;
-  status: number | undefined;
-  refetch: () => void;
-};
-
-const EntryHeader = ({ boxId, entryId, entryTitle, refetch, status }: Props) => {
-  const [isShowDropdown, setIsShowDropdown] = useState<boolean>(false);
-  const [watchStatusIdx, setWatchStatusIdx] = useState<number>(status || 0);
-
+const EntryHeader = ({ boxId, id, title, status = 0 }: Props) => {
   const router = useRouter();
 
-  const updateStatus = trpc.useMutation("entry.updateStatus", {
-    onSuccess: () => {
-      refetch();
-      document.dispatchEvent(new Event("visibilitychange"));
-    },
-  });
+  const [isShowDropdown, setIsShowDropdown] = useState<boolean>(false);
+  const [watchStatusIdx, setWatchStatusIdx] = useState<number>(status);
+
+  const updateStatus = trpc.useMutation("entry.updateStatus");
 
   const showDropdown = () => {
     setIsShowDropdown(!isShowDropdown);
@@ -66,7 +60,7 @@ const EntryHeader = ({ boxId, entryId, entryTitle, refetch, status }: Props) => 
           <li aria-current="page">
             <div className="flex items-center">
               <ChevronLeftIcon className="h-5 w-5 rotate-180 fill-neutral-400" />
-              <span className="text-md ml-1 font-medium text-blue-500 md:ml-2">{entryTitle}</span>
+              <span className="text-md ml-1 font-medium text-blue-500 md:ml-2">{title}</span>
             </div>
           </li>
         </ol>
@@ -100,7 +94,7 @@ const EntryHeader = ({ boxId, entryId, entryTitle, refetch, status }: Props) => 
                       key={index}
                       onClick={() => {
                         updateStatus.mutateAsync({
-                          id: entryId as string,
+                          id: id as string,
                           status: index,
                         });
                         setWatchStatusIdx(index);
