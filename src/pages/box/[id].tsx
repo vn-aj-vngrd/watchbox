@@ -1,7 +1,7 @@
-import { GetServerSidePropsContext } from "next";
+// import { GetServerSidePropsContext } from "next";
+// import { getServerSideSession } from "../../utils/session";
 import BoxPage from "../../components/Box/BoxPage";
 import Meta from "../../components/Common/Meta";
-import { getServerSideSession } from "../../utils/session";
 
 const account = () => {
   return (
@@ -12,21 +12,21 @@ const account = () => {
   );
 };
 
-export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-  const session = await getServerSideSession(ctx);
+// export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+//   const session = await getServerSideSession(ctx);
 
-  if (!session) {
-    return {
-      redirect: {
-        destination: "/auth/signin",
-        permanent: false,
-      },
-    };
-  }
+//   if (!session) {
+//     return {
+//       redirect: {
+//         destination: "/auth/signin",
+//         permanent: false,
+//       },
+//     };
+//   }
 
-  return {
-    props: {},
-  };
-};
+//   return {
+//     props: {},
+//   };
+// };
 
 export default account;
