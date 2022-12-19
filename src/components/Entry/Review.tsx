@@ -1,18 +1,19 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
 import { trpc } from "../../utils/trpc";
+import { Entry } from "@prisma/client";
 
 type Inputs = {
   review: string;
 };
 
 type Props = {
-  review: string | undefined;
-  refetch: () => void;
   entryId: string | undefined;
+  review: string | null | undefined;
+  updateEntryComponent: (entry: Partial<Entry>) => Promise<void>;
 };
 
-const Review = ({ review, refetch, entryId }: Props) => {
+const Review = ({ entryId, review, updateEntryComponent }: Props) => {
   const { register, handleSubmit, reset } = useForm<Inputs>();
   const [timeoutId, setTimeoutId] = useState<number | undefined>();
 
@@ -24,12 +25,7 @@ const Review = ({ review, refetch, entryId }: Props) => {
     });
   }, [reset, review]);
 
-  const updateReview = trpc.useMutation("entry.updateReview", {
-    onSuccess: () => {
-      refetch();
-      document.dispatchEvent(new Event("visibilitychange"));
-    },
-  });
+  const updateReview = trpc.useMutation("entry.updateReview");
 
   const handleInput = () => {
     if (timeoutId) clearTimeout(timeoutId);
@@ -44,9 +40,13 @@ const Review = ({ review, refetch, entryId }: Props) => {
   const handleBlur: SubmitHandler<Inputs> = (data) => {
     if (timeoutId) clearTimeout(timeoutId);
 
+    updateEntryComponent({
+      review: data.review || null,
+    });
+
     updateReview.mutateAsync({
       id: entryId as string,
-      review: data.review,
+      review: data.review || null,
     });
   };
 

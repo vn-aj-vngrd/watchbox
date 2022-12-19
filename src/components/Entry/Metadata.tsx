@@ -11,16 +11,19 @@ import pencilFill from "@iconify/icons-mingcute/pencil-fill";
 import bookmarkFill from "@iconify/icons-mingcute/bookmark-fill";
 import eye2Fill from "@iconify/icons-mingcute/eye-2-fill";
 import roundFill from "@iconify/icons-mingcute/round-fill";
+import { Entry } from "@prisma/client";
 
 type Props = {
-  triggerReview: () => void;
-  triggerNotes: () => void;
-  isReviewed: boolean;
-  isNoted: boolean;
-  movieId: string | undefined;
-  rating: number | undefined;
   entryId: string | undefined;
-  refetch: () => void;
+  movieId: string | undefined;
+  review: string | null | undefined;
+  note: string | null | undefined;
+  rating: number | undefined;
+  toggleReview: boolean;
+  setToggleReview: React.Dispatch<React.SetStateAction<boolean>>;
+  toggleNote: boolean;
+  setToggleNote: React.Dispatch<React.SetStateAction<boolean>>;
+  updateEntryComponent: (entry: Partial<Entry>) => Promise<void>;
 };
 
 type Genre = {
@@ -63,40 +66,75 @@ const fillColorArray = [
 ];
 
 const Metadata = ({
-  triggerReview,
-  triggerNotes,
-  isReviewed,
-  isNoted,
-  movieId,
-  rating,
   entryId,
-  refetch,
+  movieId,
+  review,
+  note,
+  rating = 0,
+  toggleReview,
+  setToggleReview,
+  toggleNote,
+  setToggleNote,
+  updateEntryComponent,
 }: Props) => {
   const [movie, setMovie] = useState<Movie | null>(null);
-  const [watchProvider, setWatchProvider] = useState<string | null>(null);
-  const [hours, setHours] = useState<number>(0);
-  const [minutes, setMinutes] = useState<number>(0);
-  const [date, setDate] = useState<string>("");
-  const [hovering, setHovering] = useState(false);
-  const [currentRating, setCurrentRating] = useState(rating || 0);
+  const [metadata, setMetadata] = useState({
+    watchProvider: null,
+    hours: 0,
+    minutes: 0,
+    date: "",
+  });
   const [showMore, setShowMore] = useState(false);
+  const [hovering, setHovering] = useState(false);
+  const [currentRating, setCurrentRating] = useState(0);
+
+  const { watchProvider, hours, minutes, date } = metadata;
+
+  useEffect(() => {
+    setCurrentRating(rating);
+  }, [rating]);
 
   useEffect(() => {
     if (movie?.overview) setShowMore(movie.overview.length < 350);
   }, [movie]);
 
-  const updateRating = trpc.useMutation("entry.updateRating", {
-    onSuccess: () => {
-      refetch();
-      document.dispatchEvent(new Event("visibilitychange"));
-    },
-  });
+  const updateRating = trpc.useMutation("entry.updateRating");
+  const updateReview = trpc.useMutation("entry.updateReview");
+  const updateNote = trpc.useMutation("entry.updateNote");
 
-  const handleOnClick = (currentRating: number) => {
+  const handleRating = (currentRating: number) => {
     setCurrentRating(currentRating);
     updateRating.mutateAsync({
       id: entryId as string,
       rating: currentRating,
+    });
+  };
+
+  const handleReview = () => {
+    if (!review) {
+      setToggleReview((prev) => !prev);
+      return;
+    }
+
+    setToggleReview(false);
+    updateEntryComponent({ review: null });
+    updateReview.mutateAsync({
+      id: entryId as string,
+      review: null,
+    });
+  };
+
+  const handleNote = () => {
+    if (!note) {
+      setToggleNote((prev) => !prev);
+      return;
+    }
+
+    setToggleNote(false);
+    updateEntryComponent({ note: null });
+    updateNote.mutateAsync({
+      id: entryId as string,
+      note: null,
     });
   };
 
@@ -117,29 +155,21 @@ const Metadata = ({
         method: "GET",
       },
     ).then((res) => res.json());
-    const { PH } = req.results;
-    const link = PH?.link;
-    setWatchProvider(link);
+    setMetadata((prev) => ({ ...prev, watchProvider: req.results?.PH?.link }));
   }, [movieId]);
 
   useEffect(() => {
-    if (movie === null) {
+    if (!movie) {
       getDetails();
       getWatchProviders();
-    } else {
-      if (minutes === 0) {
-        const { runtime } = movie;
-        const hours = Math.floor(runtime / 60);
-        const minutes = runtime % 60;
-        setHours(hours);
-        setMinutes(minutes);
-      }
-
-      if (date === "") {
-        setDate(new Date(Date.parse(movie?.release_date)).getFullYear().toString());
-      }
+      return;
     }
-  }, [date, getDetails, getWatchProviders, minutes, movie]);
+    const { runtime } = movie;
+    const hours = Math.floor(runtime / 60);
+    const minutes = runtime % 60;
+    const date = new Date(Date.parse(movie?.release_date)).getFullYear().toString();
+    setMetadata((prev) => ({ ...prev, hours, minutes, date }));
+  }, [getDetails, getWatchProviders, movie]);
 
   return (
     <div className="flex flex-col items-center py-4 md:flex-row md:items-start">
@@ -174,15 +204,15 @@ const Metadata = ({
             </div>
             <p className="select-text">
               {date} • {(hours != 0 ? hours + "h " : "") + minutes + "m"} •
-              {movie?.genres.map((genre: Genre, index) =>
-                index < movie?.genres.length - 1 ? " " + genre.name + "," : " " + genre.name,
+              {movie?.genres?.map((genre: Genre, index) =>
+                index < movie?.genres.length - 1 ? ` ${genre.name},` : ` ${genre.name}`,
               )}
             </p>
           </div>
           <p className="mt-2 select-text pr-2 text-justify text-sm md:text-start">
             {movie?.overview && movie?.overview.length > 350 ? (
               <>
-                {showMore ? movie?.overview + " " : movie?.overview.substring(0, 350) + "... "}
+                {showMore ? `${movie?.overview} ` : `${movie?.overview.substring(0, 350)}... `}
                 <span
                   className="cursor-pointer select-none text-blue-500"
                   onClick={() => setShowMore(!showMore)}
@@ -198,7 +228,7 @@ const Metadata = ({
             <StarRating
               className="-ml-0.5 mb-1"
               allowHover={true}
-              onClick={handleOnClick}
+              onClick={handleRating}
               initialValue={currentRating}
               allowFraction={true}
               onPointerEnter={() => setHovering(true)}
@@ -225,7 +255,7 @@ const Metadata = ({
               <button
                 className="invisible mr-2 h-full group-hover:visible"
                 onClick={() => {
-                  handleOnClick(0);
+                  handleRating(0);
                 }}
               >
                 <XMarkIcon className="h-5 w-5 text-red-500" />
@@ -235,37 +265,42 @@ const Metadata = ({
           <div className="mt-1 flex space-x-6 text-center">
             <div>
               <button
-                onClick={triggerReview}
-                className={`${
-                  isReviewed ? "text-white" : "text-gray-800"
-                } inline-flex items-center rounded py-2 px-4 font-bold text-gray-800 dark:bg-darkColor dark:hover:bg-grayColor md:py-4 md:px-8 ${
-                  isReviewed
+                onClick={handleReview}
+                className={`inline-flex items-center rounded py-2 px-4 font-bold dark:bg-darkColor dark:hover:bg-grayColor md:py-4 md:px-8 ${
+                  review || toggleReview
                     ? "bg-blue-600 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-800"
-                    : "bg-gray-100 hover:bg-gray-200"
+                    : "bg-gray-100 text-gray-800 hover:bg-gray-200"
                 }`}
               >
-                <Icon icon={pencilFill} className="h-5 w-5 dark:text-white" />
+                <Icon
+                  icon={pencilFill}
+                  className={`h-5 w-5 dark:text-white ${
+                    review || toggleReview ? "text-white" : "text-gray-800"
+                  }`}
+                />
               </button>
               <p className="hidden pt-1.5 text-xs md:block">
-                {isReviewed ? "Remove Review" : "Add Review"}
+                {review || toggleReview ? "Remove Review" : "Add Review"}
               </p>
             </div>
             <div>
               <button
-                onClick={triggerNotes}
-                className={`inline-flex items-center rounded bg-gray-100 py-2 px-4 font-bold text-gray-800  dark:bg-darkColor dark:hover:bg-grayColor md:py-4 md:px-8 ${
-                  isNoted
+                onClick={handleNote}
+                className={`inline-flex items-center rounded py-2 px-4 font-bold dark:bg-darkColor dark:hover:bg-grayColor md:py-4 md:px-8 ${
+                  note || toggleNote
                     ? "bg-blue-600 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-800"
-                    : "bg-gray-100 hover:bg-gray-200"
+                    : "bg-gray-100 text-gray-800 hover:bg-gray-200"
                 }`}
               >
                 <Icon
                   icon={bookmarkFill}
-                  className={`h-5 w-5 dark:text-white ${isNoted ? "text-white" : "text-gray-800"}`}
+                  className={`h-5 w-5 dark:text-white ${
+                    note || toggleNote ? "text-white" : "text-gray-800"
+                  }`}
                 />
               </button>
               <p className="hidden pt-1.5 text-xs md:block">
-                {isNoted ? "Remove Note" : "Add Note"}
+                {note || toggleNote ? "Remove Note" : "Add Note"}
               </p>
             </div>
             <div className={`${watchProvider ? "hover:cursor-pointer" : "opacity-50"}`}>
