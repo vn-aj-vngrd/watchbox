@@ -24,7 +24,7 @@ const watchStatus = [
 const EntryHeader = ({ boxId, id, title, status = 0, updateEntryComponent }: Props) => {
   const router = useRouter();
   const [isShowDropdown, setIsShowDropdown] = useState<boolean>(false);
-  const [watchStatusIdx, setWatchStatusIdx] = useState<number>(0);
+  const [watchStatusIdx, setWatchStatusIdx] = useState<number>(status);
 
   const getBoxTitle = trpc.useQuery(["entry.getBoxTitle", { id: boxId as string }]);
   const updateStatus = trpc.useMutation("entry.updateStatus");
