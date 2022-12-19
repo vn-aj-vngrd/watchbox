@@ -191,7 +191,6 @@ const DividerComponent = ({
     if (temp.includes(dividerComponent.id)) return;
 
     const { height = 2, width = 320 } = dividerRef.current?.size || {};
-    if (dividerComponent.divider?.width === width) return;
 
     if (!dividerComponent.divider) {
       setTemp((prev) => [...prev, dividerComponent.id]);
