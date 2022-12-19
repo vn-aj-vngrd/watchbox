@@ -1,13 +1,15 @@
 import { ChevronLeftIcon } from "@heroicons/react/24/solid";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { trpc } from "../../utils/trpc";
+import { Entry } from "@prisma/client";
 
 type Props = {
   boxId: string | undefined;
   id: string | undefined;
   title: string | undefined;
   status: number | undefined;
+  updateEntryComponent: (entry: Partial<Entry>) => Promise<void>;
 };
 
 const watchStatus = [
@@ -18,24 +20,27 @@ const watchStatus = [
   { label: "Dropped", color: "bg-red-500" },
 ];
 
-const EntryHeader = ({ boxId, id, title, status = 0 }: Props) => {
+const EntryHeader = ({ boxId, id, title, status = 0, updateEntryComponent }: Props) => {
   const router = useRouter();
-
   const [isShowDropdown, setIsShowDropdown] = useState<boolean>(false);
-  const [watchStatusIdx, setWatchStatusIdx] = useState<number>(status);
+  const [watchStatusIdx, setWatchStatusIdx] = useState<number>(0);
 
+  const getBoxTitle = trpc.useQuery(["entry.getBoxTitle", { id: boxId as string }]);
   const updateStatus = trpc.useMutation("entry.updateStatus");
+
+  useEffect(() => {
+    setWatchStatusIdx(status);
+  }, [status]);
 
   const showDropdown = () => {
     setIsShowDropdown(!isShowDropdown);
   };
 
-  const getBoxTitle = trpc.useQuery([
-    "entry.getBoxTitle",
-    {
-      id: boxId as string,
-    },
-  ]);
+  const handleWatchStatus = async (idx: number) => {
+    updateEntryComponent({ status: idx });
+    setIsShowDropdown(false);
+    updateStatus.mutateAsync({ id: id as string, status: idx });
+  };
 
   return (
     <div className="mx-auto flex w-full max-w-7xl flex-row justify-between border-b border-gray-200 py-2.5 dark:border-grayColor md:py-4">
@@ -92,14 +97,7 @@ const EntryHeader = ({ boxId, id, title, status = 0 }: Props) => {
                   {watchStatus.map((item, index) => (
                     <button
                       key={index}
-                      onClick={() => {
-                        updateStatus.mutateAsync({
-                          id: id as string,
-                          status: index,
-                        });
-                        setWatchStatusIdx(index);
-                        setIsShowDropdown(false);
-                      }}
+                      onClick={handleWatchStatus.bind(null, index)}
                       className="text-md block w-full px-4 py-2 text-left text-gray-900 hover:bg-gray-100 hover:text-gray-900 dark:text-white dark:hover:bg-grayColor"
                       role="menuitem"
                     >
