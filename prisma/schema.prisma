@@ -61,7 +61,8 @@ model Divider {
   id          String    @id @default(cuid())
   componentId String    @unique
   orientation String
-  length      String
+  height      Float
+  width       Float
   created_at  DateTime  @default(now())
   updated_at  DateTime  @default(now())
   component   Component @relation(fields: [componentId], references: [id], onDelete: Cascade)

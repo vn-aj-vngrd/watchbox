@@ -177,8 +177,9 @@ const Favorites: React.FC<FavoritesProps> = ({ setMode }) => {
           >
             <div
               className={`grid ${
-                fav?.components.filter((x) => x.componentName === "Entry" && x.entry !== null)
-                  .length > 1
+                fav?.components.filter(
+                  (x) => x.componentName === "Entry" && x.entry !== null && x.entry?.image !== "",
+                ).length > 1
                   ? "grid-cols-2 grid-rows-2"
                   : "grid-cols-1"
               } bg-white-50 aspect-square w-32 gap-3 rounded-lg border border-gray-100 bg-white p-3.5 transition duration-150 ease-in-out group-hover:scale-105 dark:border-transparent dark:bg-darkColor lg:w-36`}
@@ -190,8 +191,14 @@ const Favorites: React.FC<FavoritesProps> = ({ setMode }) => {
                     <Image
                       className="object-cover"
                       src={
-                        `https://www.themoviedb.org/t/p/w600_and_h900_bestv2/${fav?.components[0]?.entry?.image}` ||
-                        ""
+                        `https://www.themoviedb.org/t/p/w600_and_h900_bestv2/${
+                          fav?.components.filter(
+                            (x) =>
+                              x.componentName === "Entry" &&
+                              x.entry !== null &&
+                              x.entry?.image !== "",
+                          )[0]?.entry?.image
+                        }` || ""
                       }
                       alt=""
                       width="1080"
@@ -201,12 +208,16 @@ const Favorites: React.FC<FavoritesProps> = ({ setMode }) => {
                   </div>
                 ),
               }[
-                fav?.components.filter((x) => x.componentName === "Entry" && x.entry !== null)
-                  .length
+                fav?.components.filter(
+                  (x) => x.componentName === "Entry" && x.entry !== null && x.entry?.image !== "",
+                ).length
               ] || (
                 <>
                   {fav?.components
-                    .filter((x) => x.componentName === "Entry" && x.entry?.image !== "")
+                    .filter(
+                      (x) =>
+                        x.componentName === "Entry" && x.entry !== null && x.entry?.image !== "",
+                    )
                     .slice(0, 4)
                     .map((component, index) => (
                       <div key={index} className="overflow-hidden rounded-md">
