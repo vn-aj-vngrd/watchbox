@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import "@uiw/react-markdown-preview/markdown.css";
 
 @layer base {
   html {

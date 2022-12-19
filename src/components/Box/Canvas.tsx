@@ -1,11 +1,8 @@
 import { useState } from "react";
-import dynamic from "next/dynamic";
 import { useDraggable } from "react-use-draggable-scroll";
 import EntryComponent from "./Components/EntryComponent";
 import { Prisma } from "@prisma/client";
 import TextComponent from "./Components/TextComponent";
-import { MDEditorProps } from "@uiw/react-md-editor";
-import "@uiw/react-md-editor/markdown-editor.css";
 import DividerComponent from "./Components/DividerComponent";
 import { useSession } from "next-auth/react";
 
@@ -27,11 +24,6 @@ type Props = {
   setShift: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const MDEditor = dynamic<MDEditorProps>(
-  () => import("@uiw/react-md-editor").then((mod) => mod.default),
-  { ssr: false },
-);
-
 const Canvas: React.FC<Props> = ({
   userId,
   canvasRef,
@@ -46,7 +38,6 @@ const Canvas: React.FC<Props> = ({
 }) => {
   const { data: session } = useSession();
   const { events } = useDraggable(canvasRef as React.MutableRefObject<HTMLInputElement>) || {};
-  const [text, setText] = useState<string | undefined>(`**Hello world!**`);
   const [disablePan, setDisablePan] = useState(false);
 
   return (
@@ -113,9 +104,6 @@ const Canvas: React.FC<Props> = ({
           }
         })
       )}
-      <div data-color-mode="dark">
-        <MDEditor value={text} onChange={setText} />
-      </div>
     </div>
   );
 };
