@@ -1,5 +1,5 @@
-// import { GetServerSidePropsContext } from "next";
-// import { getServerSideSession } from "../../../utils/session";
+import { GetServerSidePropsContext } from "next";
+import { getServerSideSession } from "../../../utils/session";
 import Meta from "../../../components/Common/Meta";
 import EntryPage from "../../../components/Entry/EntryPage";
 
@@ -12,21 +12,21 @@ const entry = () => {
   );
 };
 
-// export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
-//   const session = await getServerSideSession(ctx);
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const session = await getServerSideSession(ctx);
 
-//   if (!session) {
-//     return {
-//       redirect: {
-//         destination: "/auth/signin",
-//         permanent: false,
-//       },
-//     };
-//   }
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/auth/signin",
+        permanent: false,
+      },
+    };
+  }
 
-//   return {
-//     props: {},
-//   };
-// };
+  return {
+    props: {},
+  };
+};
 
 export default entry;
