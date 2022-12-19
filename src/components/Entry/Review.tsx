@@ -51,26 +51,24 @@ const Review = ({ entryId, review, updateEntryComponent }: Props) => {
   };
 
   return (
-    <>
-      <div className="flex flex-col gap-3 border-t border-gray-200 py-3 dark:border-darkColor">
-        <p className="text-lg">My Review</p>
-        <div className="w-full rounded-md bg-gray-100 dark:bg-darkColor">
-          <textarea
-            {...register("review")}
-            className="h-full w-full resize-none bg-transparent p-3 text-sm"
-            placeholder="Write a review..."
-            rows={5}
-            spellCheck="false"
-            onInput={(e) => {
-              handleInput();
-              e.currentTarget.style.height = "auto";
-              e.currentTarget.style.height = e.currentTarget.scrollHeight + "px";
-            }}
-            onBlur={handleSubmit(handleBlur)}
-          />
-        </div>
+    <div className="flex flex-col gap-3 border-t border-gray-200 py-3 dark:border-darkColor">
+      <p className="text-lg">My Review</p>
+      <div className="w-full rounded-md bg-gray-100 dark:bg-darkColor">
+        <textarea
+          {...register("review")}
+          className="h-full w-full resize-none bg-transparent p-3 text-sm"
+          placeholder="Write a review..."
+          rows={5}
+          spellCheck="false"
+          onInput={(e) => {
+            handleInput();
+            e.currentTarget.style.height = "auto";
+            e.currentTarget.style.height = e.currentTarget.scrollHeight + "px";
+          }}
+          onBlur={handleSubmit(handleBlur)}
+        />
       </div>
-    </>
+    </div>
   );
 };
 
