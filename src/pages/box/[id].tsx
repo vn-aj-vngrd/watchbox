@@ -1,7 +1,7 @@
 import { GetServerSidePropsContext } from "next";
+import { getServerSideSession } from "../../utils/session";
 import BoxPage from "../../components/Box/BoxPage";
 import Meta from "../../components/Common/Meta";
-import { getServerSideSession } from "../../utils/session";
 
 const account = () => {
   return (

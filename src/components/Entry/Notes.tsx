@@ -51,26 +51,24 @@ const Note = ({ entryId, note, updateEntryComponent }: Props) => {
   };
 
   return (
-    <>
-      <div className="flex flex-col gap-3 border-t border-gray-200 py-3 dark:border-darkColor">
-        <p className="text-lg">My Notes</p>
-        <div className="w-full rounded-md bg-gray-100 dark:bg-darkColor">
-          <textarea
-            {...register("note")}
-            className="h-full w-full resize-none bg-transparent p-3 text-sm"
-            placeholder="Write a note..."
-            rows={5}
-            spellCheck="false"
-            onInput={(e) => {
-              handleInput();
-              e.currentTarget.style.height = "auto";
-              e.currentTarget.style.height = e.currentTarget.scrollHeight + "px";
-            }}
-            onBlur={handleSubmit(handleBlur)}
-          />
-        </div>
+    <div className="flex flex-col gap-3 border-t border-gray-200 py-3 dark:border-darkColor">
+      <p className="text-lg">My Notes</p>
+      <div className="w-full rounded-md bg-gray-100 dark:bg-darkColor">
+        <textarea
+          {...register("note")}
+          className="h-full w-full resize-none bg-transparent p-3 text-sm"
+          placeholder="Write a note..."
+          rows={5}
+          spellCheck="false"
+          onInput={(e) => {
+            handleInput();
+            e.currentTarget.style.height = "auto";
+            e.currentTarget.style.height = e.currentTarget.scrollHeight + "px";
+          }}
+          onBlur={handleSubmit(handleBlur)}
+        />
       </div>
-    </>
+    </div>
   );
 };
 
