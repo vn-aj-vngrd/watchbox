@@ -10,7 +10,7 @@ import Controls from "./Controls";
 import Header from "./Header";
 import { useSession } from "next-auth/react";
 import { useHotkeys } from "react-hotkeys-hook";
-import { Prisma, Text } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import { resetCanvasSize } from "./Helpers";
 
 type Component = Prisma.ComponentGetPayload<{
@@ -186,8 +186,6 @@ const BoxPage = () => {
           removeStateComponent={deleteComponent}
           updateStateComponent={updateComponent}
           setShift={setShift}
-          setControls={setControls}
-          controls={controls}
           setSelectedComponent={setSelectedComponent}
         />
       </div>

@@ -10,13 +10,6 @@ type Component = Prisma.ComponentGetPayload<{
   include: { text: true; entry: true; divider: true };
 }>;
 
-type Controls = {
-  bold: boolean;
-  italic: boolean;
-  underline: boolean;
-  alignment: number;
-};
-
 type Props = {
   id: string;
   userId: string;
@@ -29,8 +22,6 @@ type Props = {
   removeStateComponent: (id: string) => Promise<void>;
   updateStateComponent: (component: Component) => Promise<void>;
   setShift: React.Dispatch<React.SetStateAction<boolean>>;
-  setControls: React.Dispatch<React.SetStateAction<Controls>>;
-  controls: Controls;
   setSelectedComponent: React.Dispatch<React.SetStateAction<Component | undefined>>;
 };
 
@@ -45,8 +36,6 @@ const Canvas: React.FC<Props> = ({
   removeStateComponent,
   updateStateComponent,
   setShift,
-  setControls,
-  controls,
   setSelectedComponent,
 }) => {
   const { data: session } = useSession();
@@ -81,8 +70,6 @@ const Canvas: React.FC<Props> = ({
                   setDisablePan={setDisablePan}
                   setShift={setShift}
                   setTemp={setTemp}
-                  controls={controls}
-                  setControls={setControls}
                   setSelectedComponent={setSelectedComponent}
                 />
               );

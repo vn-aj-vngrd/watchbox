@@ -12,13 +12,6 @@ type Component = Prisma.ComponentGetPayload<{
   include: { text: true; entry: true; divider: true };
 }>;
 
-type Controls = {
-  bold: boolean;
-  italic: boolean;
-  underline: boolean;
-  alignment: number;
-};
-
 type Props = {
   textComponent: Component;
   removeStateComponent: (id: string) => Promise<void>;
@@ -30,8 +23,6 @@ type Props = {
   setDisablePan: React.Dispatch<React.SetStateAction<boolean>>;
   setShift: React.Dispatch<React.SetStateAction<boolean>>;
   setTemp: React.Dispatch<React.SetStateAction<string[]>>;
-  setControls: React.Dispatch<React.SetStateAction<Controls>>;
-  controls: Controls;
   setSelectedComponent: React.Dispatch<React.SetStateAction<Component | undefined>>;
 };
 
@@ -46,14 +37,11 @@ const TextComponent = ({
   setDisablePan,
   setShift,
   setTemp,
-  setControls,
-  controls,
   setSelectedComponent,
 }: Props) => {
   const spanRef = useRef<HTMLSpanElement>(null);
   let canvasRect: DOMRect | undefined;
   const snapTo = snap(10);
-  const { bold, italic, underline, alignment } = controls;
 
   const deleteComponent = trpc.useMutation("component.deleteComponent");
   const updateComponent = trpc.useMutation("component.updateComponent");
@@ -235,7 +223,7 @@ const TextComponent = ({
         }}
         onMouseEnter={() => setDisablePan(true)}
         onMouseLeave={() => setDisablePan(false)}
-        className={`justify-left cursor-text items-center whitespace-nowrap rounded-md bg-transparent px-1 text-base text-lg outline-none focus:outline-2 focus:outline-blue-500 
+        className={`justify-left cursor-text items-center whitespace-nowrap rounded-md bg-transparent px-1 outline-none focus:outline-2 focus:outline-blue-500 
             ${shift && "outline-2 hover:cursor-move hover:outline hover:outline-blue-500"} 
             ${textComponent.text?.bold && "font-bold"} 
             ${textComponent.text?.italic && "italic"} 
@@ -249,9 +237,6 @@ const TextComponent = ({
             }
           `}
         onKeyDown={(e) => {
-          // if (e.ctrlKey && e.key === 'b') e.preventDefault();
-          // if (e.ctrlKey && e.key === 'i') e.preventDefault();
-          // if (e.ctrlKey && e.key === 'u') e.preventDefault();
           if (e.key === "Enter") {
             e.preventDefault();
             spanRef.current?.blur();
