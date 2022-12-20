@@ -22,6 +22,8 @@ const description = [
   "Please check the URL and try again.",
 ];
 
+const privateMessage = ["Sorry, this box is private."];
+
 const BoxPage = () => {
   const { data: session } = useSession();
   const [controls, setControls] = useState({
@@ -118,6 +120,21 @@ const BoxPage = () => {
         elem={<p className="text-4xl font-extrabold text-red-600 sm:text-5xl">404</p>}
         title="Page not found"
         description={description}
+        btnTitle="Go back to home"
+      />
+    );
+  }
+
+  if (
+    getBox.isSuccess &&
+    getBox.data?.boxes[0]?.isPublic === false &&
+    session?.user?.id !== getBox.data?.id
+  ) {
+    return (
+      <PageAlert
+        elem={<p className="text-4xl font-extrabold text-red-600 sm:text-5xl">Unrestricted</p>}
+        title="Private Box"
+        description={privateMessage}
         btnTitle="Go back to home"
       />
     );
