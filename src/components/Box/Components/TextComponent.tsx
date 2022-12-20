@@ -1,23 +1,23 @@
 import { Prisma } from "@prisma/client";
-import dynamic from "next/dynamic";
 import { TrashIcon } from "@heroicons/react/24/solid";
-import { useRef, useEffect } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useRef } from "react";
 import { trpc } from "../../../utils/trpc";
 import { useLongPress, LongPressDetectEvents } from "use-long-press";
 import { motion, PanInfo } from "framer-motion";
 import { snap } from "popmotion";
 import { calculatePoint, resetCanvasSize, scrollEdge } from "../Helpers";
-import { MarkdownPreviewProps } from "@uiw/react-markdown-preview";
-import { text } from "stream/consumers";
-
-type Inputs = {
-  markdown: string;
-};
+import { v4 as uuidv4 } from "uuid";
 
 type Component = Prisma.ComponentGetPayload<{
   include: { text: true; entry: true; divider: true };
 }>;
+
+type Controls = {
+  bold: boolean;
+  italic: boolean;
+  underline: boolean;
+  alignment: number;
+};
 
 type Props = {
   textComponent: Component;
@@ -30,12 +30,10 @@ type Props = {
   setDisablePan: React.Dispatch<React.SetStateAction<boolean>>;
   setShift: React.Dispatch<React.SetStateAction<boolean>>;
   setTemp: React.Dispatch<React.SetStateAction<string[]>>;
+  setControls: React.Dispatch<React.SetStateAction<Controls>>;
+  controls: Controls;
+  setSelectedComponent: React.Dispatch<React.SetStateAction<Component | undefined>>;
 };
-
-const MarkdownPreview = dynamic<MarkdownPreviewProps>(
-  () => import("@uiw/react-markdown-preview").then((mod) => mod.default),
-  { ssr: false },
-);
 
 const TextComponent = ({
   textComponent,
@@ -48,17 +46,14 @@ const TextComponent = ({
   setDisablePan,
   setShift,
   setTemp,
+  setControls,
+  controls,
+  setSelectedComponent,
 }: Props) => {
-  const { register, handleSubmit, reset } = useForm<Inputs>();
   const spanRef = useRef<HTMLSpanElement>(null);
   let canvasRect: DOMRect | undefined;
   const snapTo = snap(10);
-
-  useEffect(() => {
-    reset({
-      markdown: textComponent.text?.content || "Add text here",
-    });
-  }, [reset, textComponent.text?.content]);
+  const { bold, italic, underline, alignment } = controls;
 
   const deleteComponent = trpc.useMutation("component.deleteComponent");
   const updateComponent = trpc.useMutation("component.updateComponent");
@@ -78,6 +73,7 @@ const TextComponent = ({
     setTemp((prev) => [...prev, textComponent.id]);
 
     removeStateComponent(id).then(() => {
+      setSelectedComponent(undefined);
       resetCanvasSize(canvasSizeRef, canvasRef);
     });
 
@@ -141,8 +137,13 @@ const TextComponent = ({
       updateStateComponent(
         Object.assign(textComponent, {
           text: {
+            id: "tmp-" + uuidv4(),
             componentId: textComponent.id,
             content: text,
+            bold: false,
+            italic: false,
+            underline: false,
+            alignment: 0,
           },
         }),
       );
@@ -195,17 +196,6 @@ const TextComponent = ({
       });
   };
 
-  const handleChange: SubmitHandler<Inputs> = (data) => {
-    updateStateComponent(
-      Object.assign(textComponent, {
-        text: {
-          ...textComponent.text,
-          content: data.markdown,
-        },
-      }),
-    );
-  };
-
   return (
     <motion.div
       drag={shift && !temp.includes(textComponent.id.startsWith("tmp-") ? textComponent.id : "")}
@@ -213,6 +203,10 @@ const TextComponent = ({
       dragSnapToOrigin
       dragElastic={0}
       dragConstraints={canvasRef}
+      onClick={() => {
+        if (shift) return;
+        setSelectedComponent(textComponent);
+      }}
       onDrag={(e, info) => {
         if (canvasRect == null) canvasRect = canvasRef.current?.getBoundingClientRect();
         scrollEdge(info, canvasRect, canvasSizeRef, canvasRef);
@@ -222,7 +216,7 @@ const TextComponent = ({
       }}
       {...bind()}
       style={{ top: textComponent?.yAxis - 14, left: textComponent?.xAxis - 48 }}
-      className="absolute flex items-center justify-center"
+      className="absolute flex flex-col items-center justify-center"
     >
       {shift && (
         <button
@@ -236,15 +230,29 @@ const TextComponent = ({
         </button>
       )}
       <span
-        {...register("markdown")}
         ref={spanRef}
-        onBlur={handleBlur}
+        onBlur={(e) => {
+          handleBlur(e);
+        }}
         onMouseEnter={() => setDisablePan(true)}
         onMouseLeave={() => setDisablePan(false)}
-        className={`justify-left cursor-text items-center whitespace-nowrap rounded-md bg-transparent px-1 text-lg outline-none focus:outline-2 focus:outline-blue-500 ${
-          shift && "outline-2 hover:cursor-move hover:outline hover:outline-blue-500"
-        }`}
+        className={`justify-left cursor-text items-center whitespace-nowrap rounded-md bg-transparent px-1 text-base text-lg outline-none focus:outline-2 focus:outline-blue-500 
+            ${shift && "outline-2 hover:cursor-move hover:outline hover:outline-blue-500"} 
+            ${textComponent.text?.bold && "font-bold"} 
+            ${textComponent.text?.italic && "italic"} 
+            ${textComponent.text?.underline && "underline"} 
+            ${
+              {
+                0: "text-left",
+                1: "text-center",
+                2: "text-right",
+              }[textComponent.text?.alignment || 0]
+            }
+          `}
         onKeyDown={(e) => {
+          // if (e.ctrlKey && e.key === 'b') e.preventDefault();
+          // if (e.ctrlKey && e.key === 'i') e.preventDefault();
+          // if (e.ctrlKey && e.key === 'u') e.preventDefault();
           if (e.key === "Enter") {
             e.preventDefault();
             spanRef.current?.blur();
@@ -256,8 +264,7 @@ const TextComponent = ({
       >
         {textComponent.text && textComponent.text?.content.trim().length > 0
           ? textComponent.text?.content
-          : "Add a Text"}
-        <MarkdownPreview source={textComponent.text?.content} />
+          : "Add a text"}
       </span>
     </motion.div>
   );

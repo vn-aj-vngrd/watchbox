@@ -49,4 +49,26 @@ export const textRouter = createProtectedRouter()
         },
       });
     },
+  })
+  .mutation("updateControls", {
+    input: z.object({
+      id: z.string(),
+      bold: z.boolean(),
+      italic: z.boolean(),
+      underline: z.boolean(),
+      alignment: z.number(),
+    }),
+    async resolve({ input, ctx }) {
+      return ctx.prisma.text.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          bold: input.bold,
+          italic: input.italic,
+          underline: input.underline,
+          alignment: input.alignment,
+        },
+      });
+    },
   });

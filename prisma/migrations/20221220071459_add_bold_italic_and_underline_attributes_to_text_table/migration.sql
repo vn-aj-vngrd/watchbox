@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "Text" ADD COLUMN     "bold" BOOL NOT NULL DEFAULT false;
+ALTER TABLE "Text" ADD COLUMN     "italic" BOOL NOT NULL DEFAULT false;
+ALTER TABLE "Text" ADD COLUMN     "underline" BOOL NOT NULL DEFAULT false;
