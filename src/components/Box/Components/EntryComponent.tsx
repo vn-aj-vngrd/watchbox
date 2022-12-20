@@ -8,7 +8,7 @@ import { trpc } from "../../../utils/trpc";
 import { useLongPress, LongPressDetectEvents } from "use-long-press";
 import { motion, PanInfo } from "framer-motion";
 import { snap } from "popmotion";
-import { calculatePoint, resetCanvasSize, scrollEdge } from "../Helpers";
+import { calculatePoint, resetCanvasSize } from "../Helpers";
 import { Icon } from "@iconify/react";
 import movieLine from "@iconify/icons-mingcute/movie-line";
 import Image from "next/image.js";
@@ -207,9 +207,8 @@ const EntryComponent = ({
       dragSnapToOrigin
       dragElastic={0}
       dragConstraints={canvasRef}
-      onDrag={(e, info) => {
+      onDrag={() => {
         if (canvasRect == null) canvasRect = canvasRef.current?.getBoundingClientRect();
-        scrollEdge(info, canvasRect, canvasSizeRef, canvasRef);
       }}
       onDragEnd={(e, info) => {
         updateEntryComponent(info);
@@ -283,19 +282,21 @@ const EntryComponent = ({
                 }`}
                 placeholder="Search for a movie..."
               />
-              <Combobox.Options className="absolute top-20 z-20 mt-1 max-h-64 w-full rounded-md bg-gray-200 scrollbar-thin scrollbar-track-gray-400/20 scrollbar-thumb-blue-500 dark:bg-darkColor">
-                {movies.map((movie: Movie) => (
-                  <Combobox.Option
-                    key={movie.id}
-                    value={movie}
-                    className="y-2 rounded-md py-3 px-3 hover:cursor-pointer hover:bg-white hover:font-semibold hover:text-black active:bg-blue-500 active:text-white"
-                  >
-                    {movie.original_title +
-                      " • " +
-                      new Date(Date.parse(movie.release_date)).getFullYear()}
-                  </Combobox.Option>
-                ))}
-              </Combobox.Options>
+              <div className="absolute top-20 z-20 mt-1 max-h-64 w-full overflow-hidden rounded-md bg-gray-200 dark:bg-darkColor">
+                <Combobox.Options className="max-h-64 scrollbar-thin scrollbar-track-gray-400/20 scrollbar-thumb-blue-500">
+                  {movies.map((movie: Movie) => (
+                    <Combobox.Option
+                      key={movie.id}
+                      value={movie}
+                      className="y-2 rounded-md py-3 px-3 hover:cursor-pointer hover:bg-gray-300 active:bg-blue-500 active:text-white dark:hover:bg-neutral-600"
+                    >
+                      {movie.original_title +
+                        " • " +
+                        new Date(Date.parse(movie.release_date)).getFullYear()}
+                    </Combobox.Option>
+                  ))}
+                </Combobox.Options>
+              </div>
             </Combobox>
           )}
         </>

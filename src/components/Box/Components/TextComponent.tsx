@@ -5,7 +5,7 @@ import { trpc } from "../../../utils/trpc";
 import { useLongPress, LongPressDetectEvents } from "use-long-press";
 import { motion, PanInfo } from "framer-motion";
 import { snap } from "popmotion";
-import { calculatePoint, resetCanvasSize, scrollEdge } from "../Helpers";
+import { calculatePoint, resetCanvasSize } from "../Helpers";
 import { v4 as uuidv4 } from "uuid";
 
 type Component = Prisma.ComponentGetPayload<{
@@ -207,9 +207,8 @@ const TextComponent = ({
         if (shift) return;
         setSelectedComponent(textComponent);
       }}
-      onDrag={(e, info) => {
+      onDrag={() => {
         if (canvasRect == null) canvasRect = canvasRef.current?.getBoundingClientRect();
-        scrollEdge(info, canvasRect, canvasSizeRef, canvasRef);
       }}
       onDragEnd={(e, info) => {
         updateTextComponent(info);
