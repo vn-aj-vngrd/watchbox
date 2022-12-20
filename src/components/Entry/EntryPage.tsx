@@ -95,6 +95,7 @@ const EntryPage = () => {
           id={entry?.id}
           title={entry?.title}
           status={entry?.status}
+          updateEntryComponent={updateEntryComponent}
         />
         <Metadata
           entryId={entry?.id}
