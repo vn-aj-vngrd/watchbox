@@ -37,6 +37,10 @@ model Text {
   id          String    @id @default(cuid())
   componentId String    @unique
   content     String
+  bold        Boolean   @default(false)
+  italic      Boolean   @default(false)
+  underline   Boolean   @default(false)
+  alignment   Int       @default(0)
   created_at  DateTime  @default(now())
   updated_at  DateTime  @default(now())
   component   Component @relation(fields: [componentId], references: [id], onDelete: Cascade)

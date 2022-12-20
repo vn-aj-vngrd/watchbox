@@ -6,6 +6,7 @@ import { useLongPress, LongPressDetectEvents } from "use-long-press";
 import { motion, PanInfo } from "framer-motion";
 import { snap } from "popmotion";
 import { calculatePoint, resetCanvasSize } from "../Helpers";
+import { v4 as uuidv4 } from "uuid";
 
 type Component = Prisma.ComponentGetPayload<{
   include: { text: true; entry: true; divider: true };
@@ -22,6 +23,7 @@ type Props = {
   setDisablePan: React.Dispatch<React.SetStateAction<boolean>>;
   setShift: React.Dispatch<React.SetStateAction<boolean>>;
   setTemp: React.Dispatch<React.SetStateAction<string[]>>;
+  setSelectedComponent: React.Dispatch<React.SetStateAction<Component | undefined>>;
 };
 
 const TextComponent = ({
@@ -35,6 +37,7 @@ const TextComponent = ({
   setDisablePan,
   setShift,
   setTemp,
+  setSelectedComponent,
 }: Props) => {
   const spanRef = useRef<HTMLSpanElement>(null);
   let canvasRect: DOMRect | undefined;
@@ -58,6 +61,7 @@ const TextComponent = ({
     setTemp((prev) => [...prev, textComponent.id]);
 
     removeStateComponent(id).then(() => {
+      setSelectedComponent(undefined);
       resetCanvasSize(canvasSizeRef, canvasRef);
     });
 
@@ -121,8 +125,13 @@ const TextComponent = ({
       updateStateComponent(
         Object.assign(textComponent, {
           text: {
+            id: "tmp-" + uuidv4(),
             componentId: textComponent.id,
             content: text,
+            bold: false,
+            italic: false,
+            underline: false,
+            alignment: 0,
           },
         }),
       );
@@ -182,6 +191,10 @@ const TextComponent = ({
       dragSnapToOrigin
       dragElastic={0}
       dragConstraints={canvasRef}
+      onClick={() => {
+        if (shift) return;
+        setSelectedComponent(textComponent);
+      }}
       onDrag={() => {
         if (canvasRect == null) canvasRect = canvasRef.current?.getBoundingClientRect();
       }}
@@ -190,7 +203,7 @@ const TextComponent = ({
       }}
       {...bind()}
       style={{ top: textComponent?.yAxis - 14, left: textComponent?.xAxis - 48 }}
-      className="absolute flex items-center justify-center"
+      className="absolute flex flex-col items-center justify-center"
     >
       {shift && (
         <button
@@ -205,12 +218,24 @@ const TextComponent = ({
       )}
       <span
         ref={spanRef}
-        onBlur={handleBlur}
+        onBlur={(e) => {
+          handleBlur(e);
+        }}
         onMouseEnter={() => setDisablePan(true)}
         onMouseLeave={() => setDisablePan(false)}
-        className={`justify-left cursor-text items-center whitespace-nowrap rounded-md bg-transparent px-1 text-lg outline-none focus:outline-2 focus:outline-blue-500 ${
-          shift && "outline-2 hover:cursor-move hover:outline hover:outline-blue-500"
-        }`}
+        className={`justify-left cursor-text items-center whitespace-nowrap rounded-md bg-transparent px-1 outline-none focus:outline-2 focus:outline-blue-500 
+            ${shift && "outline-2 hover:cursor-move hover:outline hover:outline-blue-500"} 
+            ${textComponent.text?.bold && "font-bold"} 
+            ${textComponent.text?.italic && "italic"} 
+            ${textComponent.text?.underline && "underline"} 
+            ${
+              {
+                0: "text-left",
+                1: "text-center",
+                2: "text-right",
+              }[textComponent.text?.alignment || 0]
+            }
+          `}
         onKeyDown={(e) => {
           if (e.key === "Enter") {
             e.preventDefault();
@@ -223,7 +248,7 @@ const TextComponent = ({
       >
         {textComponent.text && textComponent.text?.content.trim().length > 0
           ? textComponent.text?.content
-          : "Add a Text"}
+          : "Add a text"}
       </span>
     </motion.div>
   );

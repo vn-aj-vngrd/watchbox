@@ -24,13 +24,19 @@ const description = [
 
 const BoxPage = () => {
   const { data: session } = useSession();
+  const [controls, setControls] = useState({
+    bold: false,
+    italic: false,
+    underline: false,
+    alignment: 0,
+  });
   const [sidePanel, setSidePanel] = useState(true);
   const [shift, setShift] = useState(false);
   const [temp, setTemp] = useState<string[]>([]);
   const canvasRef = useRef<HTMLDivElement>(null);
   const canvasSizeRef = useRef<HTMLDivElement>(null);
-
   const [canvasElements, setCanvasElements] = useState<Component[]>([]);
+  const [selectedComponent, setSelectedComponent] = useState<Component | undefined>();
 
   useHotkeys("shift", () => setShift(true), { keydown: true, keyup: false }, [shift]);
   useHotkeys("shift", () => setShift(false), { keydown: false, keyup: true }, [shift]);
@@ -41,6 +47,23 @@ const BoxPage = () => {
   const getBox = trpc.useQuery(["box.getBox", { id: id as string }]);
   const getFavoriteBox = trpc.useQuery(["favorite.getFavoriteBox", { boxId: id as string }]);
   const getComponents = trpc.useQuery(["component.getComponents", { id: id as string }]);
+
+  useEffect(() => {
+    if (selectedComponent?.text) {
+      setControls({
+        bold: selectedComponent.text.bold,
+        italic: selectedComponent.text.italic,
+        underline: selectedComponent.text.underline,
+        alignment: selectedComponent.text.alignment,
+      });
+    }
+  }, [
+    selectedComponent?.text,
+    selectedComponent?.text?.bold,
+    selectedComponent?.text?.italic,
+    selectedComponent?.text?.underline,
+    selectedComponent?.text?.alignment,
+  ]);
 
   useEffect(() => {
     resetCanvasSize(canvasSizeRef, canvasRef);
@@ -123,7 +146,14 @@ const BoxPage = () => {
             !sidePanel ? "md:w-12" : "md:w-[17rem]"
           }`}
         >
-          <Controls sidePanel={sidePanel} setSidePanel={setSidePanel} />
+          <Controls
+            controls={controls}
+            setControls={setControls}
+            sidePanel={sidePanel}
+            setSidePanel={setSidePanel}
+            selectedComponent={selectedComponent}
+            updateComponent={updateComponent}
+          />
           <Components
             id={id as string}
             canvasRef={canvasRef}
@@ -156,6 +186,7 @@ const BoxPage = () => {
           removeStateComponent={deleteComponent}
           updateStateComponent={updateComponent}
           setShift={setShift}
+          setSelectedComponent={setSelectedComponent}
         />
       </div>
     </div>

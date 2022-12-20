@@ -1,8 +1,8 @@
+import { useState } from "react";
 import { useDraggable } from "react-use-draggable-scroll";
 import EntryComponent from "./Components/EntryComponent";
 import { Prisma } from "@prisma/client";
 import TextComponent from "./Components/TextComponent";
-import { useState } from "react";
 import DividerComponent from "./Components/DividerComponent";
 import { useSession } from "next-auth/react";
 
@@ -22,6 +22,7 @@ type Props = {
   removeStateComponent: (id: string) => Promise<void>;
   updateStateComponent: (component: Component) => Promise<void>;
   setShift: React.Dispatch<React.SetStateAction<boolean>>;
+  setSelectedComponent: React.Dispatch<React.SetStateAction<Component | undefined>>;
 };
 
 const Canvas: React.FC<Props> = ({
@@ -35,6 +36,7 @@ const Canvas: React.FC<Props> = ({
   removeStateComponent,
   updateStateComponent,
   setShift,
+  setSelectedComponent,
 }) => {
   const { data: session } = useSession();
   const { events } = useDraggable(canvasRef as React.MutableRefObject<HTMLInputElement>) || {};
@@ -68,6 +70,7 @@ const Canvas: React.FC<Props> = ({
                   setDisablePan={setDisablePan}
                   setShift={setShift}
                   setTemp={setTemp}
+                  setSelectedComponent={setSelectedComponent}
                 />
               );
             case "Entry":
