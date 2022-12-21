@@ -22,7 +22,7 @@ const description = [
   "Please check the URL and try again.",
 ];
 
-const privateMessage = ["Sorry, this box is private."];
+const privateMessage = ["Sorry, this box is not available to the public."];
 
 const BoxPage = () => {
   const { data: session } = useSession();
@@ -132,7 +132,7 @@ const BoxPage = () => {
   ) {
     return (
       <PageAlert
-        elem={<p className="text-4xl font-extrabold text-red-600 sm:text-5xl">Unrestricted</p>}
+        elem={<p className="text-4xl font-extrabold text-red-600 sm:text-5xl">Restricted</p>}
         title="Private Box"
         description={privateMessage}
         btnTitle="Go back to home"
