@@ -55,7 +55,7 @@ const Search = () => {
           type="text"
           value={input}
           className={`block rounded-lg border border-gray-100 bg-gray-100 p-1.5 pl-10 text-sm text-black placeholder-gray-500 outline-none dark:border-transparent dark:bg-darkColor dark:text-white dark:placeholder-gray-300 ${
-            isShow ? "w-[162px] md:w-[400px]" : "w-[162px]"
+            isShow ? "w-[165px] md:w-[400px]" : "w-[165px]"
           }`}
           placeholder="Search WatchBox"
           onClick={() => {
@@ -82,7 +82,7 @@ const Search = () => {
       <Transition
         {...transitionClasses}
         show={isShow}
-        className="scroll-bar absolute right-0 left-0 ml-auto mr-auto mt-[8px] flex w-[85%] flex-shrink-0 origin-top-right flex-col overflow-y-auto rounded-md border border-gray-100 bg-white shadow-sm dark:border-transparent dark:bg-darkColor md:w-[400px]"
+        className="scroll-bar absolute left-0 right-0 ml-auto mr-auto mt-[8px] flex w-[85%] flex-shrink-0 origin-top-right flex-col overflow-y-auto rounded-md border border-gray-100 bg-white shadow-sm dark:border-transparent dark:bg-darkColor md:w-[400px]"
       >
         {data?.map((box) => (
           <div key={box.id}>

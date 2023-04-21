@@ -230,7 +230,7 @@ const EntryComponent = ({
           onClick={() => {
             removeComponent(entryComponent.id);
           }}
-          className="group absolute -top-3 -right-3 z-20 rounded-full bg-gray-200 p-1.5 shadow-md shadow-gray-300 outline-none dark:bg-darkColor dark:shadow-black/20"
+          className="group absolute -right-3 -top-3 z-20 rounded-full bg-gray-200 p-1.5 shadow-md shadow-gray-300 outline-none dark:bg-darkColor dark:shadow-black/20"
         >
           <TrashIcon className="h-4 w-4 text-red-500 group-disabled:opacity-50" />
         </button>
@@ -276,7 +276,7 @@ const EntryComponent = ({
               <Combobox.Input
                 onChange={handleInputChange}
                 displayValue={(movie: Movie) => movie?.original_title ?? ""}
-                disabled={shift}
+                // disabled={shift}
                 className={`h-full w-full bg-transparent text-center placeholder-neutral-700 outline-none dark:placeholder-neutral-300 ${
                   shift && "hover:cursor-move"
                 }`}
@@ -288,7 +288,7 @@ const EntryComponent = ({
                     <Combobox.Option
                       key={movie.id}
                       value={movie}
-                      className="y-2 rounded-md py-3 px-3 hover:cursor-pointer hover:bg-gray-300 active:bg-blue-500 active:text-white dark:hover:bg-neutral-600"
+                      className="y-2 rounded-md px-3 py-3 hover:cursor-pointer hover:bg-gray-300 active:bg-blue-500 active:text-white dark:hover:bg-neutral-600"
                     >
                       {movie.original_title +
                         " • " +
@@ -303,7 +303,7 @@ const EntryComponent = ({
       </div>
       {entryComponent?.entry && (
         <div
-          className={`pointer-events-none absolute top-2 right-2 h-2.5 w-2.5 rounded-full ${
+          className={`pointer-events-none absolute right-2 top-2 h-2.5 w-2.5 rounded-full ${
             watchStatus[entryComponent.entry.status]?.color
           }`}
         />
