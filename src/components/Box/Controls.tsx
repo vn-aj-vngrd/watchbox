@@ -32,7 +32,7 @@ type Props = {
 
 const Controls = ({
   controls,
-  setControls,
+  // setControls,
   sidePanel,
   setSidePanel,
   selectedComponent,
