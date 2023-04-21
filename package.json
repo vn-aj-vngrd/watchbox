@@ -2,10 +2,6 @@
   "name": "watchbox",
   "version": "1.0.0",
   "private": true,
-  "engines": {
-    "yarn": ">= 1.22.0",
-    "npm": "please-use-yarn"
-  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
