@@ -19,7 +19,7 @@ test("Delete Component", async () => {
   prismaMock.component.delete.mockResolvedValue(mockOutput);
 
   const result = await getCaller(prismaMock).mutation("component.deleteComponent", {
-    id: "test-component-id",
+    id: "test-id",
   });
 
   expect(result).toStrictEqual(mockOutput);

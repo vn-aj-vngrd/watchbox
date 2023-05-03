@@ -7,7 +7,7 @@ test("Create Box", async () => {
   const prismaMock = mockDeep<PrismaClient>();
 
   const mockOutput: Box = {
-    id: "test-box-id",
+    id: "test-id",
     boxTitle: "test-box-title",
     isPublic: false,
     userId: "test-user-id",

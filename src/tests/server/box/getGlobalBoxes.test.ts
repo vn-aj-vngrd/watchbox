@@ -12,7 +12,7 @@ test("Get Global Boxes", async () => {
     })[];
   })[] = [
     {
-      id: "test-box-id",
+      id: "test-id",
       userId: "test-user-id",
       boxTitle: "test-box-title",
       isPublic: true,
@@ -20,7 +20,7 @@ test("Get Global Boxes", async () => {
       updated_at: new Date(),
       components: [
         {
-          id: "test-component-id",
+          id: "test-id",
           boxId: "test-box-id",
           componentName: "test-component-type",
           xAxis: 1,

@@ -8,7 +8,7 @@ test("Get Boxes", async () => {
 
   const mockOutput: Box[] = [
     {
-      id: "test-box-id",
+      id: "test-id",
       userId: "test-user-id",
       boxTitle: "test-user-name",
       isPublic: true,

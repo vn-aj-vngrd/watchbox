@@ -11,7 +11,7 @@ test("Get Box", async () => {
   } = {
     boxes: [
       {
-        id: "test-box-id",
+        id: "test-id",
         userId: "test-user-id",
         boxTitle: "test-box-title",
         isPublic: true,
@@ -33,7 +33,7 @@ test("Get Box", async () => {
   prismaMock.user.findFirst.mockResolvedValue(mockOutput);
 
   const result = await getCaller(prismaMock).query("box.getBox", {
-    id: "",
+    id: "test-id",
   });
 
   expect(result).toStrictEqual(mockOutput);

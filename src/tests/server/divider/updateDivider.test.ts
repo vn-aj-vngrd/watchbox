@@ -7,7 +7,7 @@ test("Update Divider", async () => {
   const prismaMock = mockDeep<PrismaClient>();
 
   const mockOutput: Divider = {
-    id: "test-divider-id",
+    id: "test-id",
     componentId: "test-component-id",
     orientation: "test-orientation",
     height: 0,
@@ -19,7 +19,7 @@ test("Update Divider", async () => {
   prismaMock.divider.update.mockResolvedValue(mockOutput);
 
   const result = await getCaller(prismaMock).mutation("divider.updateDivider", {
-    id: "test-box-id",
+    id: "test-id",
     orientation: "test-orientation",
     height: 0,
     width: 0,

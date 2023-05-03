@@ -3,7 +3,7 @@ import { PrismaClient, Box } from "@prisma/client";
 import { mockDeep } from "jest-mock-extended";
 import { getCaller } from "..";
 
-test("Update Box", async () => {
+test("Get Box Title", async () => {
   const prismaMock = mockDeep<PrismaClient>();
 
   const mockOutput: Box = {
@@ -15,12 +15,10 @@ test("Update Box", async () => {
     updated_at: new Date(),
   };
 
-  prismaMock.box.update.mockResolvedValue(mockOutput);
+  prismaMock.box.findFirst.mockResolvedValue(mockOutput);
 
-  const result = await getCaller(prismaMock).mutation("box.updateBox", {
+  const result = await getCaller(prismaMock).query("entry.getBoxTitle", {
     id: "test-id",
-    boxTitle: "test-box-title",
-    isPublic: false,
   });
 
   expect(result).toStrictEqual(mockOutput);

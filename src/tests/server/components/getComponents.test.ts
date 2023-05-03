@@ -12,7 +12,7 @@ test("Get Components", async () => {
     divider: Divider | null;
   })[] = [
     {
-      id: "test-component-id",
+      id: "test-id",
       boxId: "test-box-id",
       componentName: "test-component-name",
       xAxis: 0,
@@ -28,7 +28,7 @@ test("Get Components", async () => {
   prismaMock.component.findMany.mockResolvedValue(mockOutput);
 
   const result = await getCaller(prismaMock).query("component.getComponents", {
-    id: "test-box-id",
+    id: "test-id",
   });
 
   expect(result).toStrictEqual(mockOutput);

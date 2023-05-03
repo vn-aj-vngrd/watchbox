@@ -7,7 +7,7 @@ test("Create Component", async () => {
   const prismaMock = mockDeep<PrismaClient>();
 
   const mockOutput: Component = {
-    id: "test-component-id",
+    id: "test-id",
     boxId: "test-box-id",
     componentName: "test-component-name",
     xAxis: 0,

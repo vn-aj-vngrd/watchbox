@@ -7,7 +7,7 @@ test("Create Box", async () => {
   const prismaMock = mockDeep<PrismaClient>();
 
   const mockOutput: Box = {
-    id: "test-box-id",
+    id: "test-id",
     boxTitle: "test-box-title",
     isPublic: false,
     userId: "test-user-id",
@@ -18,7 +18,7 @@ test("Create Box", async () => {
   prismaMock.box.delete.mockResolvedValue(mockOutput);
 
   const result = await getCaller(prismaMock).mutation("box.deleteBox", {
-    id: "test-box-id",
+    id: "test-id",
   });
 
   expect(result).toStrictEqual(mockOutput);
