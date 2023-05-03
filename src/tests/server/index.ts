@@ -1,5 +1,5 @@
 import { DeepMockProxy } from "jest-mock-extended";
-import { appRouter } from "../";
+import { appRouter } from "../../server/router";
 import { type Session } from "next-auth";
 import { PrismaClient, Prisma } from "@prisma/client";
 
