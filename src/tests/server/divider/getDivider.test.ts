@@ -16,7 +16,15 @@ test("Get Divider", async () => {
     yAxis: 0,
     created_at: new Date(),
     updated_at: new Date(),
-    divider: null,
+    divider: {
+      id: "test-divider-id",
+      componentId: "test-component-id",
+      orientation: "test-orientation",
+      height: 0,
+      width: 0,
+      created_at: new Date(),
+      updated_at: new Date(),
+    },
   };
 
   prismaMock.component.findFirst.mockResolvedValue(mockOutput);

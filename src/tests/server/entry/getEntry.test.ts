@@ -16,7 +16,19 @@ test("Get Entry", async () => {
     yAxis: 0,
     created_at: new Date(),
     updated_at: new Date(),
-    entry: null,
+    entry: {
+      id: "test-id",
+      componentId: "test-component-id",
+      movieId: "test-movie-id",
+      image: "test-image",
+      title: "test-title",
+      note: "test-note",
+      review: "test-review",
+      status: 0,
+      rating: 0,
+      created_at: new Date(),
+      updated_at: new Date(),
+    },
   };
 
   prismaMock.component.findFirst.mockResolvedValue(mockOutput);

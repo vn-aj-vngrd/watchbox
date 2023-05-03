@@ -1,5 +1,5 @@
 import { test, expect } from "@jest/globals";
-import { Component, Divider, Entry, PrismaClient } from "@prisma/client";
+import { Component, Divider, Entry, PrismaClient, Text } from "@prisma/client";
 import { mockDeep } from "jest-mock-extended";
 import { getCaller } from "..";
 
@@ -19,9 +19,39 @@ test("Get Components", async () => {
       yAxis: 0,
       created_at: new Date(),
       updated_at: new Date(),
-      text: null,
-      entry: null,
-      divider: null,
+      text: {
+        id: "test-id",
+        componentId: "test-component-id",
+        content: "test-content",
+        bold: false,
+        italic: false,
+        underline: false,
+        alignment: 0,
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+      entry: {
+        id: "test-id",
+        componentId: "test-component-id",
+        movieId: "test-movie-id",
+        image: "test-image",
+        title: "test-title",
+        note: "test-note",
+        review: "test-review",
+        status: 0,
+        rating: 0,
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+      divider: {
+        id: "test-divider-id",
+        componentId: "test-component-id",
+        orientation: "test-orientation",
+        height: 0,
+        width: 0,
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
     },
   ];
 
