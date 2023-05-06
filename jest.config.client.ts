@@ -1,0 +1,58 @@
+// export default {
+//   clearMocks: true,
+//   coverageProvider: "v8",
+//   preset: "ts-jest/presets/js-with-ts",
+//   setupFiles: ["dotenv/config"],
+//   transform: {
+//     "^.+\\.mjs$": "ts-jest",
+//   },
+// };
+
+import nextJest from "next/jest";
+
+const createJestConfig = nextJest({
+  // Provide the path to your Next.js app to load next.config.js and .env files in your test environment
+  dir: "./",
+});
+
+const customJestConfig = {
+  moduleNameMapper: {
+    // Handle module aliases (this will be automatically configured for you soon)
+    "^@/(.*)$": "<rootDir>/src/$1",
+
+    "^@/public/(.*)$": "<rootDir>/public/$1",
+  },
+  // setupFilesAfterEnv: ['./jest.setup.js'],
+  clearMocks: true,
+  coverageProvider: "v8",
+  collectCoverage: true,
+  preset: "ts-jest/presets/js-with-ts",
+  collectCoverageFrom: [
+    "./src/tests/client/**/*.{js,jsx,ts,tsx}",
+    "!./src/tests/client/**/_*.{js,jsx,ts,tsx}",
+    "!**/*.d.ts",
+    "!**/node_modules/**",
+  ],
+  coverageThreshold: {
+    global: {
+      branches: 30,
+      functions: 30,
+      lines: 30,
+      statements: 30,
+    },
+  },
+  setupFilesAfterEnv: ['./jest.setup.ts'],
+  testEnvironment: "jest-environment-jsdom",
+  setupFiles: ["dotenv/config"],
+  // transform: {
+  //   // Use babel-jest to transpile tests with the next/babel preset
+  //   // https://jestjs.io/docs/configuration#transform-objectstring-pathtotransformer--pathtotransformer-object
+  //   "^.+\\.(js|jsx|ts|tsx)$": ["babel-jest", { presets: ["next/babel"] }],
+  // },
+  transform: {
+    "^.+\\.(js|jsx|ts|tsx)$": "ts-jest",
+  },
+  testMatch: ["<rootDir>/src/tests/client/**/*.test.tsx"],
+};
+
+module.exports = createJestConfig(customJestConfig);
