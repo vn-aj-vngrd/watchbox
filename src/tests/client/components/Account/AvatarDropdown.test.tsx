@@ -2,7 +2,6 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import AvatarDropdown from "../../../../components/Account/AvatarDropdown"
 import router from "next/router"
-import { signOut } from "next-auth/react";
 
 jest.mock("next/router", () => ({
     push: jest.fn(),
@@ -22,7 +21,7 @@ describe("AvatarDropdown", () => {
         const emailElement = screen.getByText(session.user.email);
         expect(emailElement).toBeInTheDocument();
     });
-    
+
     test("opens menu when button is clicked", () => {
         render(<AvatarDropdown session={session} />);
         const buttonElement = screen.getByRole("button");
