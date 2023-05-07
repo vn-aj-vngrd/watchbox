@@ -19,7 +19,7 @@ const ToogleTheme = () => {
   if (currentTheme === "dark") {
     return (
       <>
-        <button onClick={() => setTheme("light")} type="button" className="nav-link inline-flex">
+        <button onClick={() => setTheme("light")} data-testid="sun-icon" type="button" className="nav-link inline-flex">
           <SunIcon className="nav-icon" />
         </button>
       </>
@@ -27,7 +27,7 @@ const ToogleTheme = () => {
   } else {
     return (
       <>
-        <button onClick={() => setTheme("dark")} type="button" className="nav-link inline-flex">
+        <button onClick={() => setTheme("dark")} data-testid="moon-icon" type="button" className="nav-link inline-flex">
           <MoonIcon className="nav-icon" />
         </button>
       </>

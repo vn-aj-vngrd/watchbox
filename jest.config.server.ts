@@ -30,8 +30,6 @@ const customJestConfig = {
   collectCoverageFrom: [
     "./src/tests/server/**/*.{js,jsx,ts,tsx}",
     "!./src/tests/server/**/_*.{js,jsx,ts,tsx}",
-    "!**/*.d.ts",
-    "!**/node_modules/**",
   ],
   coverageThreshold: {
     global: {

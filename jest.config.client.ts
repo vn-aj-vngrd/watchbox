@@ -30,8 +30,6 @@ const customJestConfig = {
   collectCoverageFrom: [
     "./src/tests/client/**/*.{js,jsx,ts,tsx}",
     "!./src/tests/client/**/_*.{js,jsx,ts,tsx}",
-    "!**/*.d.ts",
-    "!**/node_modules/**",
   ],
   coverageThreshold: {
     global: {
@@ -44,11 +42,6 @@ const customJestConfig = {
   setupFilesAfterEnv: ['./jest.setup.ts'],
   testEnvironment: "jest-environment-jsdom",
   setupFiles: ["dotenv/config"],
-  // transform: {
-  //   // Use babel-jest to transpile tests with the next/babel preset
-  //   // https://jestjs.io/docs/configuration#transform-objectstring-pathtotransformer--pathtotransformer-object
-  //   "^.+\\.(js|jsx|ts|tsx)$": ["babel-jest", { presets: ["next/babel"] }],
-  // },
   transform: {
     "^.+\\.(js|jsx|ts|tsx)$": "ts-jest",
   },
