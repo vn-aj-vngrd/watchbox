@@ -128,6 +128,7 @@ const SigninForm = () => {
                 <div className="relative mt-2 rounded-md">
                   <input
                     type="text"
+                    data-testid="email"
                     autoComplete="email"
                     className="input"
                     {...register("email", {

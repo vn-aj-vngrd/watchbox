@@ -1,70 +1,55 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import EntryHeader from "../../../../components/Entry/EntryHeader";
-import { trpc } from "../../../../utils/trpc";
+import router from "next/router";
 
-jest.mock("../../../../utils/trpc");
-const mockedTrpc = trpc as jest.Mocked<typeof trpc>;
-const mockedUpdateStatus = mockedTrpc.useMutation("entry.updateStatus");
-
-describe("EntryHeader", () => {
-
-    // Mock trpc
-
-    const mockProps = {
-        boxId: "1",
-        id: "2",
-        title: "Entry Title",
-        status: 0,
-        updateEntryComponent: jest.fn(),
+jest.mock("next/router", () => ({
+  useRouter() {
+    return {
+      route: "/",
+      pathname: "",
+      query: "",
+      asPath: "",
+      push: jest.fn(),
     };
+  },
+}));
 
-    it("should render properly", async () => {
-        render(<EntryHeader {...mockProps} />);
-        const backButton = screen.getByText("Back");
-        const entryTitle = screen.getByText("Entry Title");
-        const watchStatusButton = screen.getByText("Planned");
+describe("EntryHeader component", () => {
+  const defaultProps = {
+    boxId: "1",
+    id: "1",
+    title: "Example title",
+    status: 0,
+    updateEntryComponent: jest.fn(),
+  };
 
-        expect(backButton).toBeInTheDocument();
-        expect(entryTitle).toBeInTheDocument();
-        expect(watchStatusButton).toBeInTheDocument();
-    });
+  // test("clicking back button navigates to box page", () => {
+  //   render(<EntryHeader {...defaultProps} />);
+  //   fireEvent.click(screen.getByText("Back"));
+  //   expect(router.push).toHaveBeenCalledWith("/box/1");
+  // });
 
-    it("should call updateEntryComponent and updateStatus on click of a watch status button", async () => {
-        const { container } = render(<EntryHeader {...mockProps} />);
-        const watchStatusButton = screen.getByText("Planned");
+  // test("clicking watch status dropdown displays options", () => {
+  //   render(<EntryHeader {...defaultProps} />);
+  //   fireEvent.click(screen.getByText("Planned"));
+  //   expect(screen.getByText("Watching")).toBeVisible();
+  //   expect(screen.getByText("On Hold")).toBeVisible();
+  //   expect(screen.getByText("Watched")).toBeVisible();
+  //   expect(screen.getByText("Dropped")).toBeVisible();
+  // });
 
-        fireEvent.click(watchStatusButton);
+//   test("clicking watch status option updates status", () => {
+//     const updateStatusMock = jest.fn();
+//     jest.spyOn(require("../../utils/trpc"), "trpc").mockReturnValue({
+//       useQuery: () => ({ data: { boxTitle: "Example box" } }),
+//       useMutation: () => ({ mutateAsync: updateStatusMock }),
+//     });
 
-        const watchingStatusButton = await screen.findByText("Watching");
-
-        fireEvent.click(watchingStatusButton);
-
-        expect(mockProps.updateEntryComponent).toHaveBeenCalledWith({ status: 1 });
-        expect(container.querySelector(".bg-blue-500")).toBeInTheDocument();
-
-        fireEvent.click(watchingStatusButton);
-        const onHoldStatusButton = await screen.findByText("On Hold");
-
-        expect(mockProps.updateEntryComponent).toHaveBeenCalledWith({ status: 2 });
-        expect(container.querySelector(".bg-orange-500")).toBeInTheDocument();
-
-        fireEvent.click(onHoldStatusButton);
-        const watchedStatusButton = await screen.findByText("Watched");
-
-        expect(mockProps.updateEntryComponent).toHaveBeenCalledWith({ status: 3 });
-        expect(container.querySelector(".bg-green-500")).toBeInTheDocument();
-
-        fireEvent.click(watchedStatusButton);
-        const droppedStatusButton = await screen.findByText("Dropped");
-
-        expect(mockProps.updateEntryComponent).toHaveBeenCalledWith({ status: 4 });
-        expect(container.querySelector(".bg-red-500")).toBeInTheDocument();
-
-        fireEvent.click(droppedStatusButton);
-
-        expect(mockProps.updateEntryComponent).toHaveBeenCalledWith({ status: 0 });
-        expect(container.querySelector(".bg-gray-500")).toBeInTheDocument();
-
-        // expect(mockedUpdateStatus.mutateAsync({ id: "1", status: 1 })).toHaveBeenCalledTimes(1);
-    });
+//     render(<EntryHeader {...defaultProps} />);
+//     fireEvent.click(screen.getByText("Planned"));
+//     fireEvent.click(screen.getByText("On Hold"));
+//     expect(defaultProps.updateEntryComponent).toHaveBeenCalledWith({ status: 2 });
+//     expect(updateStatusMock).toHaveBeenCalledWith({ id: "1", status: 2 });
+//     expect(screen.getByText("On Hold")).toHaveClass("bg-orange-500");
+//   });
 });

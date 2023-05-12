@@ -19,7 +19,7 @@ const MyApp: AppType = ({ Component, pageProps: { session, ...pageProps } }) => 
     <SessionProvider session={session}>
       <ThemeProvider attribute="class" disableTransitionOnChange>
         <Toaster position="bottom-right" reverseOrder={false} />
-        <Layout>
+        <Layout data-testid="layout">
           <>
             <NextNProgress
               color="#3b82f6"
@@ -28,7 +28,7 @@ const MyApp: AppType = ({ Component, pageProps: { session, ...pageProps } }) => 
                 showSpinner: false,
               }}
             />
-            <Component {...pageProps} />
+            <Component {...pageProps} data-testid="app-component"/>
           </>
         </Layout>
       </ThemeProvider>

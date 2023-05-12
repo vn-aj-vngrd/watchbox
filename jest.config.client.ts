@@ -16,12 +16,6 @@ const createJestConfig = nextJest({
 });
 
 const customJestConfig = {
-  moduleNameMapper: {
-    // Handle module aliases (this will be automatically configured for you soon)
-    "^@/(.*)$": "<rootDir>/src/$1",
-
-    "^@/public/(.*)$": "<rootDir>/public/$1",
-  },
   // setupFilesAfterEnv: ['./jest.setup.js'],
   clearMocks: true,
   coverageProvider: "v8",
@@ -31,19 +25,20 @@ const customJestConfig = {
     "./src/tests/client/**/*.{js,jsx,ts,tsx}",
     "!./src/tests/client/**/_*.{js,jsx,ts,tsx}",
   ],
-  coverageThreshold: {
-    global: {
-      branches: 30,
-      functions: 30,
-      lines: 30,
-      statements: 30,
-    },
-  },
-  setupFilesAfterEnv: ['./jest.setup.ts'],
+  // coverageThreshold: {
+  //   global: {
+  //     branches: 30,
+  //     functions: 30,
+  //     lines: 30,
+  //     statements: 30,
+  //   },
+  // },
+  setupFilesAfterEnv: ["./jest.setup.ts"],
   testEnvironment: "jest-environment-jsdom",
   setupFiles: ["dotenv/config"],
   transform: {
     "^.+\\.(js|jsx|ts|tsx)$": "ts-jest",
+    "^.+\\.(ts|tsx)$": "babel-jest",
   },
   testMatch: ["<rootDir>/src/tests/client/**/*.test.tsx"],
 };

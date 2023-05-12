@@ -1,11 +1,15 @@
-// components/__tests__/SigninForm.test.tsx
-
 import { render, screen, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+
+// TODO: use fireEvent
+import { fireEvent } from "@testing-library/react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import React from "react";
 import SigninForm from "../../../../components/Auth/SigninForm";
+import ResizeObserver from "resize-observer-polyfill";
+
+window.ResizeObserver = ResizeObserver;
+
 
 jest.mock("next-auth/react", () => ({
     signIn: jest.fn(),
@@ -28,17 +32,17 @@ describe("SigninForm", () => {
 
     it("should render the form inputs", () => {
         render(<SigninForm />);
-        const emailInput = screen.getByLabelText("Email Address");
+        const emailInput = screen.getByTestId("email");
         expect(emailInput).toBeInTheDocument();
     });
 
     it("should display validation errors when submitting an invalid email", async () => {
         render(<SigninForm />);
-        const emailInput = screen.getByLabelText("Email Address");
+        const emailInput = screen.getByTestId("email");
         const submitButton = screen.getByRole("button", { name: "Sign in" });
 
-        userEvent.type(emailInput, "invalid-email");
-        userEvent.click(submitButton);
+        fireEvent.change(emailInput, { target: { value: "invalid-email" } })
+        fireEvent.click(submitButton);
 
         await waitFor(() => {
             const validationError = screen.getByText("Email is badly formatted");
@@ -48,11 +52,11 @@ describe("SigninForm", () => {
 
     it("should call the signIn function with the email when the form is submitted", async () => {
         render(<SigninForm />);
-        const emailInput = screen.getByLabelText("Email Address");
+        const emailInput = screen.getByTestId("email");
         const submitButton = screen.getByRole("button", { name: "Sign in" });
 
-        userEvent.type(emailInput, "test@example.com");
-        userEvent.click(submitButton);
+        fireEvent.change(emailInput, { target: { value: "test@example.com" } })
+        fireEvent.click(submitButton);
 
         await waitFor(() => {
             expect(signIn).toHaveBeenCalledWith("email", { email: "test@example.com" });

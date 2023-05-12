@@ -1,5 +1,3 @@
-// components/ToggleTheme.test.tsx
-
 import { render, screen, fireEvent } from '@testing-library/react'
 import ToggleTheme from "../../../../components/Common/ToggleTheme";
 
