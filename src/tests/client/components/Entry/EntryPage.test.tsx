@@ -56,4 +56,14 @@ describe("EntryPage", () => {
         await act(() => render(<EntryPage />));
         expect(screen.getByTestId("entry-page")).toBeInTheDocument();
     });
+
+    it("renders entry header component", async () => {
+        await act(() => render(<EntryPage />));
+        expect(screen.getByTestId("entry-header")).toBeInTheDocument();
+    });
+
+    it("renders entry header component", async () => {
+        await act(() => render(<EntryPage />));
+        expect(screen.getByTestId("entry-header")).toBeInTheDocument();
+    });
 })
