@@ -17,7 +17,6 @@ jest.mock("next-auth/react", () => ({
   }),
 }));
 
-
 jest.mock("../../../../utils/trpc", () => ({
   trpc: {
     useMutation: jest.fn().mockReturnValue({
