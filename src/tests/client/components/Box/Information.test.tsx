@@ -3,7 +3,7 @@ import Information from "../../../../components/Box/Information";
 
 describe("Information component", () => {
   const box = {
-    id: "123456",
+    id: "1",
     name: "testuser",
     username: "testuser",
     email: null,
@@ -13,9 +13,9 @@ describe("Information component", () => {
     created_at: new Date(2022, 4, 1, 8, 0, 0),
     updated_at: new Date(2022, 4, 1, 8, 0, 0),
     boxes: [{
-      id: "string",
-      userId: "string",
-      boxTitle: "string",
+      id: "1",
+      userId: "1",
+      boxTitle: "My Box",
       isPublic: false,
       created_at: new Date(2022, 4, 1, 8, 0, 0),
       updated_at: new Date(2022, 4, 1, 8, 0, 0),

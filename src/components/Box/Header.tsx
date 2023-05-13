@@ -141,10 +141,9 @@ const Header = ({ box, favoriteBox, id, temp, refetch }: Props) => {
         <span
           ref={spanRef}
           onBlur={handleBlur}
-          className={`mt-px border-b border-b-transparent pl-1 pr-3 outline-none ${
-            session?.user?.id === box?.id &&
+          className={`mt-px border-b border-b-transparent pl-1 pr-3 outline-none ${session?.user?.id === box?.id &&
             "focus:border-b-gray-200 hover:border-b-gray-200 dark:focus:border-b-darkColor dark:hover:border-b-darkColor"
-          }`}
+            }`}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
               e.preventDefault();
@@ -203,11 +202,18 @@ const Header = ({ box, favoriteBox, id, temp, refetch }: Props) => {
       <button
         onClick={onFavoriteBox}
         className="flex h-full w-10 items-center justify-center md:w-12"
+        aria-label="Favorite"
       >
         {favorite ? (
-          <SolidHeartIcon className="h-5 w-5 text-red-500" />
+          <SolidHeartIcon
+            className="h-5 w-5 text-red-500"
+            aria-label="Favorited"
+          />
         ) : (
-          <OutlineHeartIcon className="h-5 w-5 dark:text-white" />
+          <OutlineHeartIcon
+            className="h-5 w-5 dark:text-white"
+            aria-label="Unfavorited"
+          />
         )}
       </button>
 
@@ -217,12 +223,16 @@ const Header = ({ box, favoriteBox, id, temp, refetch }: Props) => {
           navigator.clipboard.writeText(server + router.asPath);
           toast.success("Copied to clipboard");
         }}
+        aria-label="Copy link"
       >
         <LinkIcon className="h-5 w-5 dark:text-white" />
       </button>
 
       <Menu as="div" className="flex">
-        <Menu.Button className="flex h-full w-10 items-center justify-center">
+        <Menu.Button
+          className="flex h-full w-10 items-center justify-center"
+          aria-label="More options"
+        >
           <EllipsisVerticalIcon className="h-[22px] w-[22px]" />
         </Menu.Button>
         <Transition
@@ -241,11 +251,18 @@ const Header = ({ box, favoriteBox, id, temp, refetch }: Props) => {
                   <button
                     onClick={onLockUnlock}
                     className="flex w-full items-center justify-start py-2 px-4"
+                    aria-label="Privacy"
                   >
                     {isPublic ? (
-                      <GlobeAsiaAustraliaIcon className="h-5 w-5 dark:text-white" />
+                      <GlobeAsiaAustraliaIcon
+                        className="h-5 w-5 dark:text-white"
+                        aria-label="Public"
+                      />
                     ) : (
-                      <LockClosedIcon className="h-5 w-5 dark:text-white" />
+                      <LockClosedIcon
+                        className="h-5 w-5 dark:text-white"
+                        aria-label="Private"
+                      />
                     )}
                     <div className="px-3 pb-px text-left text-sm">
                       {isPublic ? "Make Private" : "Make Public"}
@@ -262,9 +279,8 @@ const Header = ({ box, favoriteBox, id, temp, refetch }: Props) => {
               </div>
             )}
             <div
-              className={`rounded-b-md hover:bg-gray-100 dark:hover:bg-grayColor ${
-                session?.user?.id !== box?.id && "rounded-t-md"
-              }`}
+              className={`rounded-b-md hover:bg-gray-100 dark:hover:bg-grayColor ${session?.user?.id !== box?.id && "rounded-t-md"
+                }`}
             >
               <Menu.Item>
                 <Information box={box} />
