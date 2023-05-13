@@ -31,13 +31,4 @@ describe("Home page", () => {
     const boxesComponent = screen.getByTestId("component");
     expect(boxesComponent).toBeInTheDocument();
   });
-
-  // it("should render favorites component when mode is 'favorites'", () => {
-  //   jest.spyOn(React, "useState").mockImplementation(() => ["favorites", jest.fn()]);
-
-  //   render(<Home />);
-
-  //   const favoritesComponent = screen.getByTestId("favorites-component");
-  //   expect(favoritesComponent).toBeInTheDocument();
-  // });
 });

@@ -7,27 +7,13 @@ jest.mock("next/router", () => ({
     }),
 }));
 
-jest.mock("../../../../utils/trpc", () => ({
+const mockUseQuery = jest.mock("../../../../utils/trpc", () => ({
     trpc: {
         useQuery: jest.fn().mockReturnValue({
-            isLoading: false,
+            isLoading: true,
             isError: false,
-            isSuccess: true,
-            data: {
-                entry: {
-                    id: "entry-id",
-                    boxId: "box-id",
-                    title: "Test Entry",
-                    status: "watched",
-                    review: "Test review",
-                    note: "Test note",
-                    rating: 5,
-                    movieId: "movie-id",
-                },
-            },
-        }),
-        useMutation: jest.fn().mockReturnValue({
-            mutateAsync: jest.fn(),
+            isSuccess: false,
+            data: undefined,
         }),
     },
 }));
@@ -39,32 +25,14 @@ describe("EntryPage", () => {
     });
 
     it("shows a spinner while loading entry data", () => {
-        jest.mock("../../../../utils/trpc", () => ({
-            trpc: {
-                useQuery: jest.fn().mockReturnValue({
-                    isLoading: true,
-                    isError: false,
-                    isSuccess: false,
-                    data: undefined,
-                }),
-            },
-        }));
+        mockUseQuery;
 
         render(<EntryPage />);
         expect(screen.getByTestId("spinner")).toBeInTheDocument();
     });
 
     it("shows a 404 page alert if entry data is not found", () => {
-        jest.mock("../../../../utils/trpc", () => ({
-            trpc: {
-                useQuery: jest.fn().mockReturnValue({
-                    isLoading: false,
-                    isError: false,
-                    isSuccess: true,
-                    data: undefined,
-                }),
-            },
-        }));
+        mockUseQuery;
 
         render(<EntryPage />);
         expect(screen.getByText("404")).toBeInTheDocument();
@@ -75,16 +43,7 @@ describe("EntryPage", () => {
     });
 
     it("shows a 'Something went wrong' page alert if there is an error loading the entry data", () => {
-        jest.mock("../../../../utils/trpc", () => ({
-            trpc: {
-                useQuery: jest.fn().mockReturnValue({
-                    isLoading: false,
-                    isError: true,
-                    isSuccess: false,
-                    data: undefined,
-                }),
-            },
-        }));
+        mockUseQuery;
 
         render(<EntryPage />);
         expect(screen.getByText("Something went wrong")).toBeInTheDocument();
