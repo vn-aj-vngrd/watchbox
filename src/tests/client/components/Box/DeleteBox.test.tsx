@@ -1,4 +1,4 @@
-import { render, fireEvent } from "@testing-library/react";
+import { render, fireEvent, act } from "@testing-library/react";
 import DeleteBox from "../../../../components/Box/DeleteBox";
 
 describe("DeleteBox", () => {
@@ -7,23 +7,29 @@ describe("DeleteBox", () => {
     expect(getByText(/delete box/i)).toBeInTheDocument();
   });
 
-  it("should open the delete confirmation dialog when the DeleteBox button is clicked", () => {
+  it("should open the delete confirmation dialog when the DeleteBox button is clicked", async () => {
     const { getByText } = render(<DeleteBox onDeleteBox={jest.fn()} />);
-    fireEvent.click(getByText(/delete box/i));
+    await act(async () => {
+      fireEvent.click(getByText(/delete box/i));
+    });
     expect(getByText(/are you sure you want to delete this box/i)).toBeInTheDocument();
   });
 
-  it("should call the onDeleteBox function when the Delete button is clicked", () => {
+  it("should call the onDeleteBox function when the Delete button is clicked", async () => {
     const onDeleteBoxMock = jest.fn();
     const { getByText } = render(<DeleteBox onDeleteBox={onDeleteBoxMock} />);
-    fireEvent.click(getByText(/delete box/i));
+    await act(async () => {
+      fireEvent.click(getByText(/delete box/i));
+    });
     fireEvent.click(getByText(/Delete/, { selector: "button" }));
     expect(onDeleteBoxMock).toHaveBeenCalledTimes(1);
   });
 
-  it("should close the delete confirmation dialog when the Cancel button is clicked", () => {
+  it("should close the delete confirmation dialog when the Cancel button is clicked", async () => {
     const { getByText, queryByText } = render(<DeleteBox onDeleteBox={jest.fn()} />);
-    fireEvent.click(getByText(/delete box/i));
+    await act(async () => {
+      fireEvent.click(getByText(/delete box/i));
+    });
     fireEvent.click(getByText(/cancel/i));
     expect(queryByText(/are you sure you want to delete this box/i)).toBeNull();
   });
