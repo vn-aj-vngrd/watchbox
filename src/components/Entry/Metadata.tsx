@@ -96,7 +96,7 @@ const Metadata = ({
 
   useEffect(() => {
     if (movie?.overview) setShowMore(movie.overview.length < 350);
-  }, [movie]);
+  }, [movie]);  
 
   const updateRating = trpc.useMutation("entry.updateRating");
   const updateReview = trpc.useMutation("entry.updateReview");

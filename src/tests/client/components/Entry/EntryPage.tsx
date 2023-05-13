@@ -7,7 +7,9 @@ jest.mock("next/router", () => ({
     }),
 }));
 
-const mockUseQuery = jest.mock("../../../../utils/trpc", () => ({
+jest.mock("@prisma/client");
+
+jest.mock("../../../../utils/trpc", () => ({
     trpc: {
         useQuery: jest.fn().mockReturnValue({
             isLoading: true,
@@ -25,15 +27,11 @@ describe("EntryPage", () => {
     });
 
     it("shows a spinner while loading entry data", () => {
-        mockUseQuery;
-
         render(<EntryPage />);
         expect(screen.getByTestId("spinner")).toBeInTheDocument();
     });
 
     it("shows a 404 page alert if entry data is not found", () => {
-        mockUseQuery;
-
         render(<EntryPage />);
         expect(screen.getByText("404")).toBeInTheDocument();
         expect(screen.getByText("Page not found")).toBeInTheDocument();
@@ -43,8 +41,6 @@ describe("EntryPage", () => {
     });
 
     it("shows a 'Something went wrong' page alert if there is an error loading the entry data", () => {
-        mockUseQuery;
-
         render(<EntryPage />);
         expect(screen.getByText("Something went wrong")).toBeInTheDocument();
         expect(screen.getByText("There's a problem on our side. Please try again.")).toBeInTheDocument();

@@ -14,9 +14,10 @@ const customJestConfig = {
     "./src/tests/client/**/*.{js,jsx,ts,tsx}",
     "!./src/tests/client/**/_*.{js,jsx,ts,tsx}",
   ],
-  setupFilesAfterEnv: ["./jest.setup.ts"],
   testEnvironment: "jest-environment-jsdom",
   setupFiles: ["dotenv/config"],
+  automock: false,
+  setupFilesAfterEnv: ["./jest.setup.ts"],
   transform: {
     "^.+\\.(ts|tsx)$": "ts-jest",
   },
