@@ -43,4 +43,40 @@ describe("Welcome", () => {
       expect(screen.getByText("Enter a username to continue.")).toBeInTheDocument()
     );
   });
+
+  it("displays an error message if the entered username is invalid", async () => {
+    render(<Welcome />);
+
+    const usernameInput = screen.getByPlaceholderText("Type your username here...");
+    fireEvent.change(usernameInput, { target: { value: "invalid username" } });
+
+    const submitButton = screen.getByRole("button", { name: /get started/i });
+    fireEvent.click(submitButton);
+
+    await waitFor(() =>
+      expect(
+        screen.getByText(
+          "Username must be at least 5 characters long and contain only letters and numbers."
+        )
+      ).toBeInTheDocument()
+    );
+  });
+
+  it("displays an error message if the entered username is invalid", async () => {
+    render(<Welcome />);
+
+    const usernameInput = screen.getByPlaceholderText("Type your username here...");
+    fireEvent.change(usernameInput, { target: { value: "invalid username" } });
+
+    const submitButton = screen.getByRole("button", { name: /get started/i });
+    fireEvent.click(submitButton);
+
+    await waitFor(() =>
+      expect(
+        screen.getByText(
+          "Username must be at least 5 characters long and contain only letters and numbers."
+        )
+      ).toBeInTheDocument()
+    );
+  });
 });
