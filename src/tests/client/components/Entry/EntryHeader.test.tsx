@@ -25,44 +25,6 @@ jest.mock("../../../../utils/trpc", () => ({
   }
 }));
 
-// jest.mock("../../../../utils/trpc", () => ({
-//   trpc: {
-//     useQuery: jest.fn().mockReturnValue({
-//       isLoading: false,
-//       isError: false,
-//       isSuccess: true,
-//       data: {
-//         boxTitle: "This is a title",
-//       },
-//     }),
-//   },
-// }));
-
-// jest.mock("../../../../utils/trpc", () => ({
-//   trpc: {
-//     useMutation: jest.fn().mockReturnValue({
-//       mutateAsync: jest.fn(),
-//     }),
-//   },
-// }));
-
-// const mockUseQuery = jest.fn(() => ({
-//   ...trpc,
-//   useQuery: jest.fn().mockReturnValue({
-//     data: {
-//       boxTitle: "This is a title",
-//     },
-//   }),
-// }));
-
-// const mockUseMutation = jest.fn(() => ({
-//   ...trpc,
-//   useMutation: jest.fn().mockReturnValue({
-//     mutateAsync: jest.fn(),
-//   }),
-
-// }));
-
 describe("EntryHeader", () => {
 
   it("renders correctly", async () => {
