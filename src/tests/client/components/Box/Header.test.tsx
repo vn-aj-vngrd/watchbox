@@ -83,13 +83,11 @@ describe("Header", () => {
   it("toggles favorite box", () => {
     render(<Header box={box} favoriteBox={favoriteBox} id={"1"} temp={["1"]} refetch={refetch} />);
     const favoriteButton = screen.getByLabelText('Favorite');
-
     expect(screen.getByLabelText('Favorited')).toBeInTheDocument();
     fireEvent.click(favoriteButton);
     expect(screen.getByLabelText('Unfavorited')).toBeInTheDocument();
     fireEvent.click(favoriteButton);
     expect(screen.getByLabelText('Favorited')).toBeInTheDocument();
-
   });
 
   it("toggles box privacy", async () => {
@@ -99,7 +97,6 @@ describe("Header", () => {
     await act(async () => {
       fireEvent.click(moreOptions);
     });
-
     expect(screen.getByLabelText('Private')).toBeInTheDocument();
     fireEvent.click(screen.getByLabelText("Privacy"));
 
@@ -107,13 +104,11 @@ describe("Header", () => {
       fireEvent.click(moreOptions);
     });
     expect(screen.getByLabelText('Public')).toBeInTheDocument();
-
     fireEvent.click(screen.getByLabelText("Privacy"));
 
     await act(async () => {
       fireEvent.click(moreOptions);
     });
     expect(screen.getByLabelText('Private')).toBeInTheDocument();
-
   });
 });
