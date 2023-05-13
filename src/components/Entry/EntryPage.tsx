@@ -88,7 +88,7 @@ const EntryPage = () => {
   }
 
   return (
-    <div className="flex h-full justify-center">
+    <div className="flex h-full justify-center" data-testid="entry-page">
       <div className="flex w-full flex-col">
         <EntryHeader
           boxId={entryComponent?.boxId}

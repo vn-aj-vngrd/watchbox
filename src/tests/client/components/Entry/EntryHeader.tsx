@@ -5,7 +5,8 @@ jest.mock("@prisma/client");
 
 describe("EntryHeader", () => {
   const updateEntryComponent = jest.fn();
-  const props = {
+  
+  const EntryHeaderProps = {
     boxId: "1",
     id: "1",
     title: "My Entry",
@@ -14,7 +15,7 @@ describe("EntryHeader", () => {
   };
 
   test("displays watch status dropdown", async () => {
-    render(<EntryHeader {...props} />);
+    render(<EntryHeader {...EntryHeaderProps} />);
     const dropdownButton = screen.getByText("Planned");
     fireEvent.click(dropdownButton);
     const dropdownMenu = screen.getByTestId("dropdown-menu");
