@@ -1,3 +1,9 @@
 // Optional: configure or set up a testing framework before each test.
-// If you delete this file, remove `setupFilesAfterEnv` from `jest.config.js`
-import '@testing-library/jest-dom/extend-expect';
+// If you delete this file, remove `setupFilesAfterEnv` from `jest.config.ts`
+import "@testing-library/jest-dom/extend-expect";
+import { TextEncoder, TextDecoder } from "util";
+import ResizeObserver from "resize-observer-polyfill";
+import "jest-canvas-mock";
+
+Object.assign(global, { TextEncoder, TextDecoder });
+window.ResizeObserver = ResizeObserver;

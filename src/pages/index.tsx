@@ -19,7 +19,7 @@ const Home: NextPage = () => {
       <Meta title="WatchBox" />
       {session ? (
         <>
-          <div className="h-full">
+          <div className="h-full" data-testid="component" >
             {mode === "boxes" ? <Boxes setMode={setMode} /> : <Favorites setMode={setMode} />}
           </div>
         </>

@@ -98,6 +98,7 @@ const EntryHeader = ({ boxId, id, title, status = 0, updateEntryComponent }: Pro
                   role="menu"
                   aria-orientation="vertical"
                   aria-labelledby="options-menu"
+                  data-testid="dropdown-menu"
                 >
                   <div className="py-1" role="none">
                     {watchStatus.map((item, index) => (

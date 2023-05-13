@@ -653,7 +653,7 @@
   dependencies:
     "@babel/helper-plugin-utils" "^7.14.5"
 
-"@babel/plugin-syntax-typescript@^7.7.2":
+"@babel/plugin-syntax-typescript@^7.20.0", "@babel/plugin-syntax-typescript@^7.7.2":
   version "7.21.4"
   resolved "https://registry.yarnpkg.com/@babel/plugin-syntax-typescript/-/plugin-syntax-typescript-7.21.4.tgz#2751948e9b7c6d771a8efa59340c15d4a2891ff8"
   integrity sha512-xz0D39NvhQn4t4RNsHmDnnsaQizIlUkdtYvLs8La1BlfjQ6JEwxkJGeqJMW2tAXx+q6H+WFuUTXNdYVpEya0YA==
@@ -968,6 +968,16 @@
   dependencies:
     "@babel/helper-plugin-utils" "^7.18.9"
 
+"@babel/plugin-transform-typescript@^7.21.3":
+  version "7.21.3"
+  resolved "https://registry.yarnpkg.com/@babel/plugin-transform-typescript/-/plugin-transform-typescript-7.21.3.tgz#316c5be579856ea890a57ebc5116c5d064658f2b"
+  integrity sha512-RQxPz6Iqt8T0uw/WsJNReuBpWpBqs/n7mNo18sKLoTbMp+UrEekhH+pKSVC7gWz+DNjo9gryfV8YzCiT45RgMw==
+  dependencies:
+    "@babel/helper-annotate-as-pure" "^7.18.6"
+    "@babel/helper-create-class-features-plugin" "^7.21.0"
+    "@babel/helper-plugin-utils" "^7.20.2"
+    "@babel/plugin-syntax-typescript" "^7.20.0"
+
 "@babel/plugin-transform-unicode-escapes@^7.18.10":
   version "7.18.10"
   resolved "https://registry.yarnpkg.com/@babel/plugin-transform-unicode-escapes/-/plugin-transform-unicode-escapes-7.18.10.tgz#1ecfb0eda83d09bbcb77c09970c2dd55832aa246"
@@ -1175,6 +1185,17 @@
     "@babel/plugin-transform-react-jsx" "^7.18.6"
     "@babel/plugin-transform-react-jsx-development" "^7.18.6"
     "@babel/plugin-transform-react-pure-annotations" "^7.18.6"
+
+"@babel/preset-typescript@^7.21.5":
+  version "7.21.5"
+  resolved "https://registry.yarnpkg.com/@babel/preset-typescript/-/preset-typescript-7.21.5.tgz#68292c884b0e26070b4d66b202072d391358395f"
+  integrity sha512-iqe3sETat5EOrORXiQ6rWfoOg2y68Cs75B9wNxdPW4kixJxh7aXQE1KPdWLDniC24T/6dSnguF33W9j/ZZQcmA==
+  dependencies:
+    "@babel/helper-plugin-utils" "^7.21.5"
+    "@babel/helper-validator-option" "^7.21.0"
+    "@babel/plugin-syntax-jsx" "^7.21.4"
+    "@babel/plugin-transform-modules-commonjs" "^7.21.5"
+    "@babel/plugin-transform-typescript" "^7.21.3"
 
 "@babel/regjsgen@^0.8.0":
   version "0.8.0"
@@ -3007,6 +3028,11 @@ axobject-query@^3.1.1:
   dependencies:
     deep-equal "^2.0.5"
 
+babel-core@7.0.0-bridge.0:
+  version "7.0.0-bridge.0"
+  resolved "https://registry.yarnpkg.com/babel-core/-/babel-core-7.0.0-bridge.0.tgz#95a492ddd90f9b4e9a4a1da14eb335b87b634ece"
+  integrity sha512-poPX9mZH/5CSanm50Q+1toVci6pv5KSRv/5TWCwtzQS5XEwn40BcCrgIeMFWP9CKKIniKXNxoIOnOq4VVlGXhg==
+
 babel-jest@^29.5.0:
   version "29.5.0"
   resolved "https://registry.yarnpkg.com/babel-jest/-/babel-jest-29.5.0.tgz#3fe3ddb109198e78b1c88f9ebdecd5e4fc2f50a5"
@@ -3559,6 +3585,11 @@ cssesc@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/cssesc/-/cssesc-3.0.0.tgz#37741919903b868565e1c09ea747445cd18983ee"
   integrity sha512-/Tb/JcjK111nNScGob5MNtsntNM1aCNUDipB/TkwZFhyDrrE47SOx/18wF2bbjgc3ZzCSKW1T5nt5EbFoAz/Vg==
+
+cssfontparser@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/cssfontparser/-/cssfontparser-1.2.1.tgz#f4022fc8f9700c68029d542084afbaf425a3f3e3"
+  integrity sha512-6tun4LoZnj7VN6YeegOVb67KBX/7JJsqvj+pv3ZA7F878/eN33AbGa5b/S/wXxS/tcp8nc40xRUrsPlxIyNUPg==
 
 cssom@^0.5.0:
   version "0.5.0"
@@ -4860,7 +4891,7 @@ inflight@^1.0.4:
     once "^1.3.0"
     wrappy "1"
 
-inherits@2:
+inherits@2, inherits@^2.0.3:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/inherits/-/inherits-2.0.4.tgz#0fa2c64f932917c3433a0ded55363aae37416b7c"
   integrity sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==
@@ -4899,7 +4930,7 @@ is-alphanumerical@^2.0.0:
     is-alphabetical "^2.0.0"
     is-decimal "^2.0.0"
 
-is-arguments@^1.1.1:
+is-arguments@^1.0.4, is-arguments@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/is-arguments/-/is-arguments-1.1.1.tgz#15b3f88fda01f2a97fec84ca761a560f123efa9b"
   integrity sha512-8Q7EARjzEnKpt/PCD7e1cgUS0a6X8u5tdSiMqXhojOdoV9TsMsiO+9VLC5vAmO8N7/GmXn7yjR8qnA6bVAEzfA==
@@ -4991,6 +5022,13 @@ is-generator-fn@^2.0.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/is-generator-fn/-/is-generator-fn-2.1.0.tgz#7d140adc389aaf3011a8f2a2a4cfa6faadffb118"
   integrity sha512-cTIB4yPYL/Grw0EaSzASzg6bBy9gqCofvWN8okThAYIxKJZC+udlRAmGbM0XLeniEJSs8uEgHPGuHSe1XsOLSQ==
+
+is-generator-function@^1.0.7:
+  version "1.0.10"
+  resolved "https://registry.yarnpkg.com/is-generator-function/-/is-generator-function-1.0.10.tgz#f1558baf1ac17e0deea7c0415c438351ff2b3c72"
+  integrity sha512-jsEjy9l3yiXEQ+PsXdmBwEPcOxaXWLspKdplFUVI9vq1iZgIekeC0L167qeu86czQaxed3q/Uzuw0swL0irL8A==
+  dependencies:
+    has-tostringtag "^1.0.0"
 
 is-glob@^4.0.0, is-glob@^4.0.1, is-glob@^4.0.3, is-glob@~4.0.1:
   version "4.0.3"
@@ -5114,7 +5152,7 @@ is-symbol@^1.0.2, is-symbol@^1.0.3:
   dependencies:
     has-symbols "^1.0.2"
 
-is-typed-array@^1.1.10, is-typed-array@^1.1.9:
+is-typed-array@^1.1.10, is-typed-array@^1.1.3, is-typed-array@^1.1.9:
   version "1.1.10"
   resolved "https://registry.yarnpkg.com/is-typed-array/-/is-typed-array-1.1.10.tgz#36a5b5cb4189b575d1a3e4b08536bfb485801e3f"
   integrity sha512-PJqgEHiWZvMpaFZ3uTc8kHPM4+4ADTlDniuQL7cU/UDA0Ql7F70yGfHph3cLNe+c9toaigv+DFzTJKhc2CtO6A==
@@ -5211,6 +5249,14 @@ jake@^10.8.5:
     chalk "^4.0.2"
     filelist "^1.0.1"
     minimatch "^3.0.4"
+
+jest-canvas-mock@^2.5.0:
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/jest-canvas-mock/-/jest-canvas-mock-2.5.0.tgz#3e60f87f77ddfa273cf8e7e4ea5f86fa827c7117"
+  integrity sha512-s2bmY2f22WPMzhB2YA93kiyf7CAfWAnV/sFfY9s48IVOrGmwui1eSFluDPesq1M+7tSC1hJAit6mzO0ZNXvVBA==
+  dependencies:
+    cssfontparser "^1.2.1"
+    moo-color "^1.0.2"
 
 jest-changed-files@^29.5.0:
   version "29.5.0"
@@ -6453,6 +6499,13 @@ moment@^2.29.4:
   version "2.29.4"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.4.tgz#3dbe052889fe7c1b2ed966fcb3a77328964ef108"
   integrity sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w==
+
+moo-color@^1.0.2:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/moo-color/-/moo-color-1.0.3.tgz#d56435f8359c8284d83ac58016df7427febece74"
+  integrity sha512-i/+ZKXMDf6aqYtBhuOcej71YSlbjT3wCO/4H1j8rPvxDJEifdwgg5MaFyu6iYAT8GBZJg2z0dkgK4YMzvURALQ==
+  dependencies:
+    color-name "^1.1.4"
 
 mri@^1.1.0:
   version "1.2.0"
@@ -8565,6 +8618,17 @@ util-deprecate@^1.0.2:
   resolved "https://registry.yarnpkg.com/util-deprecate/-/util-deprecate-1.0.2.tgz#450d4dc9fa70de732762fbd2d4a28981419a0ccf"
   integrity sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==
 
+util@^0.12.5:
+  version "0.12.5"
+  resolved "https://registry.yarnpkg.com/util/-/util-0.12.5.tgz#5f17a6059b73db61a875668781a1c2b136bd6fbc"
+  integrity sha512-kZf/K6hEIrWHI6XqOFUiiMa+79wE/D8Q+NCNAWclkyg3b4d2k7s0QGepNjiABc+aR3N1PAyHL7p6UcLY6LmrnA==
+  dependencies:
+    inherits "^2.0.3"
+    is-arguments "^1.0.4"
+    is-generator-function "^1.0.7"
+    is-typed-array "^1.1.3"
+    which-typed-array "^1.1.2"
+
 uuid@8.3.2, uuid@^8.3.2:
   version "8.3.2"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.3.2.tgz#80d5b5ced271bb9af6c445f21a1a04c606cefbe2"
@@ -8720,7 +8784,7 @@ which-collection@^1.0.1:
     is-weakmap "^2.0.1"
     is-weakset "^2.0.1"
 
-which-typed-array@^1.1.9:
+which-typed-array@^1.1.2, which-typed-array@^1.1.9:
   version "1.1.9"
   resolved "https://registry.yarnpkg.com/which-typed-array/-/which-typed-array-1.1.9.tgz#307cf898025848cf995e795e8423c7f337efbde6"
   integrity sha512-w9c4xkx6mPidwp7180ckYWfMmvxpjlZuIudNtDf4N/tTAUB8VJbX25qZoAsrtGuYNnGw3pa0AXgbGKRB8/EceA==
