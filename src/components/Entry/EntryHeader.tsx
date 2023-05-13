@@ -82,6 +82,7 @@ const EntryHeader = ({ boxId, id, title, status = 0, updateEntryComponent }: Pro
               id="options-menu"
               aria-expanded="true"
               aria-haspopup="true"
+              data-testid="dropdown-menu-button"
             >
               <div className={`${watchStatus[watchStatusIdx]?.color} mx-2 h-3 w-3 rounded-full`} />
               {watchStatus[watchStatusIdx]?.label}
