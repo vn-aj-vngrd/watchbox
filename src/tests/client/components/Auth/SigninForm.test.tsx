@@ -1,15 +1,8 @@
-import { render, screen, waitFor } from "@testing-library/react";
-
-// TODO: use fireEvent
-import { fireEvent } from "@testing-library/react";
+import { render, screen, waitFor, fireEvent } from "@testing-library/react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import React from "react";
 import SigninForm from "../../../../components/Auth/SigninForm";
-import ResizeObserver from "resize-observer-polyfill";
-
-window.ResizeObserver = ResizeObserver;
-
 
 jest.mock("next-auth/react", () => ({
     signIn: jest.fn(),

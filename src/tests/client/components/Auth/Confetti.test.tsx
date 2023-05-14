@@ -1,11 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import Confetti from "../../../../components/Auth/Confetti";
-import ResizeObserver from "resize-observer-polyfill";
-
-window.ResizeObserver = ResizeObserver;
 
 jest.mock("next/router", () => ({
-    push: jest.fn(),
+  push: jest.fn(),
 }));
 
 describe("Confetti component", () => {

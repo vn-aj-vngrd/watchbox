@@ -1,5 +1,3 @@
-// components/Layout.tsx
-
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { ReactNode } from "react";
@@ -19,11 +17,10 @@ const Layout = ({ children }: Props) => {
       <div className="flex h-screen select-none flex-col justify-between">
         <Header session={session} />
         <main
-          className={`mx-auto w-full grow ${
-            pathname.includes("/box") && !pathname.includes("/entry")
+          className={`mx-auto w-full grow ${pathname.includes("/box") && !pathname.includes("/entry")
               ? "overflow-hidden"
               : "max-w-7xl px-4"
-          }`}
+            }`}
         >
           {children}
         </main>

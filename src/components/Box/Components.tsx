@@ -159,9 +159,8 @@ const Components: React.FC<Props> = ({
       className="flex h-full justify-center scrollbar-thin scrollbar-track-gray-400/20 scrollbar-thumb-blue-500"
     >
       <div
-        className={`my-3 grid h-fit grid-cols-1 gap-3 ${
-          !sidePanel ? "md:my-3 md:grid-cols-1 md:gap-3" : "md:my-4 md:grid-cols-2 md:gap-4"
-        }`}
+        className={`my-3 grid h-fit grid-cols-1 gap-3 ${!sidePanel ? "md:my-3 md:grid-cols-1 md:gap-3" : "md:my-4 md:grid-cols-2 md:gap-4"
+          }`}
       >
         {/* Text Component */}
         <motion.div
@@ -180,11 +179,11 @@ const Components: React.FC<Props> = ({
             componentsDiv.current?.classList.add("scrollbar-thin");
             addComponent(info, "Text");
           }}
-          className={`flex h-10 w-10 items-center justify-center rounded-md bg-gray-200 p-2 text-gray-700 dark:bg-darkColor dark:text-white ${
-            !sidePanel
+          className={`flex h-10 w-10 items-center justify-center rounded-md bg-gray-200 p-2 text-gray-700 dark:bg-darkColor dark:text-white ${!sidePanel
               ? "md:h-10 md:w-10 md:rounded-md md:p-2"
               : "md:h-28 md:w-28 md:rounded-lg md:p-0"
-          }`}
+            }`}
+          aria-label="Text Component"
         >
           <Icon icon={textLine} width="36" />
         </motion.div>
@@ -206,11 +205,11 @@ const Components: React.FC<Props> = ({
             componentsDiv.current?.classList.add("scrollbar-thin");
             addComponent(info, "Entry");
           }}
-          className={`flex h-10 w-10 items-center justify-center rounded-md bg-gray-200 p-2 text-gray-700 dark:bg-darkColor dark:text-white ${
-            !sidePanel
+          className={`flex h-10 w-10 items-center justify-center rounded-md bg-gray-200 p-2 text-gray-700 dark:bg-darkColor dark:text-white ${!sidePanel
               ? "md:h-10 md:w-10 md:rounded-md md:p-2"
               : "md:h-28 md:w-28 md:rounded-lg md:p-0"
-          }`}
+            }`}
+          aria-label="Entry Component"
         >
           <Icon icon={movieLine} width="36" />
         </motion.div>
@@ -232,11 +231,11 @@ const Components: React.FC<Props> = ({
             componentsDiv.current?.classList.add("scrollbar-thin");
             addComponent(info, "Divider");
           }}
-          className={`flex h-10 w-10 items-center justify-center rounded-md bg-gray-200 p-2 text-gray-700 dark:bg-darkColor dark:text-white ${
-            !sidePanel
+          className={`flex h-10 w-10 items-center justify-center rounded-md bg-gray-200 p-2 text-gray-700 dark:bg-darkColor dark:text-white ${!sidePanel
               ? "md:h-10 md:w-10 md:rounded-md md:p-2"
               : "md:h-28 md:w-28 md:rounded-lg md:p-0"
-          }`}
+            }`}
+          aria-label="Divider Component"
         >
           <Icon icon={minimizeLine} width="36" />
         </motion.div>

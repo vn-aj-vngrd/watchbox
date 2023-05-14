@@ -1,9 +1,6 @@
 import { render, screen, fireEvent, act } from "@testing-library/react";
 import AvatarDropdown from "../../../../components/Account/AvatarDropdown"
 import router from "next/router"
-import ResizeObserver from "resize-observer-polyfill";
-
-window.ResizeObserver = ResizeObserver;
 
 jest.mock("next/router", () => ({
     push: jest.fn(),
@@ -23,9 +20,7 @@ describe("AvatarDropdown", () => {
     };
 
     test("displays user email address", async () => {
-        await act(() => render(<AvatarDropdown session={session} />));
-
-        // render(<AvatarDropdown session={session} />);
+        render(<AvatarDropdown session={session} />);
         const menuButton = screen.getByRole("button");
 
         await act(async () => {
@@ -38,7 +33,7 @@ describe("AvatarDropdown", () => {
     });
 
     test("opens menu when button is clicked", async () => {
-        await act(() => render(<AvatarDropdown session={session} />));
+        render(<AvatarDropdown session={session} />);
         const buttonElement = screen.getByRole("button");
 
         await act(async () => {
