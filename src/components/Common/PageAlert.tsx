@@ -1,5 +1,3 @@
-// components/PageAlert.tsx
-
 import router from "next/router";
 
 type Props = {
