@@ -1,5 +1,3 @@
-// components/Footer.tsx
-
 const Footer = () => {
   return (
     <footer className="py-2">
