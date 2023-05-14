@@ -1,5 +1,3 @@
-// components/Header.tsx
-
 import { HomeIcon, SquaresPlusIcon } from "@heroicons/react/20/solid";
 import { Session } from "next-auth";
 import router from "next/router";

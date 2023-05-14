@@ -1,5 +1,3 @@
-// components/Meta.tsx
-
 import Head from "next/head";
 
 type Props = {
