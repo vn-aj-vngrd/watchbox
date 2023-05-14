@@ -1,23 +1,22 @@
-// import { createNextApiHandler } from "@trpc/server/adapters/next";
-// import { appRouter } from "../../../../../server/router";
-// import { createContext } from "../../../../../server/router/context";
-// import { createTRPCClient } from "@trpc/client";
-// import { httpLink } from "@trpc/client/links/httpLink";
+import { createNextApiHandler } from "@trpc/server/adapters/next";
+import { appRouter } from "../../../../../server/router";
+import { createContext } from "../../../../../server/router/context";
 
-// const apiHandler = createNextApiHandler({
-//   router: appRouter,
-//   createContext,
-// });
+jest.mock("../../../../../server/router", () => ({
+  appRouter: jest.fn(),
+}));
 
-// describe("TRPC API Handler", () => {
-//   test("returns 200 status code for a valid request", async () => {
-//     const url = "http://localhost:3000/api/trpc";
-//     const trpcClient = createTRPCClient({
-//       links: [httpLink({ url })],
-//     });
+jest.mock("../../../../../server/router/context", () => ({
+  createContext: jest.fn(),
+}));
 
-//     const response = await trpcClient.query("ping");
+describe("createNextApiHandler", () => {
+  it("should return a function", () => {
+    const handler = createNextApiHandler({
+      router: appRouter,
+      createContext,
+    });
 
-//     expect(response).toEqual("pong");
-//   });
-// });
+    expect(typeof handler).toBe("function");
+  });
+});

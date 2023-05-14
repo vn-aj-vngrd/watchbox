@@ -1,6 +1,5 @@
 import { render, fireEvent, screen, waitFor, act } from "@testing-library/react";
 import Note from "../../../../components/Entry/Notes";
-import { trpc } from "../../../../utils/trpc";
 
 jest.mock("../../../../utils/trpc");
 jest.mock("react-hook-form");

@@ -1,8 +1,6 @@
 import { render, screen, fireEvent, act } from "@testing-library/react";
 import CreateBox from "../../../../components/Dashboard/CreateBox";
-import { trpc } from "../../../../utils/trpc"
 import { useForm } from "react-hook-form";
-import { useRouter } from "next/router";
 
 jest.mock("next/router", () => ({
     useRouter: () => ({
@@ -56,15 +54,6 @@ describe("CreateBox component", () => {
 
     test("should submit form on create box button click", async () => {
         const onBoxCreated = jest.fn();
-        const router = useRouter();
-
-        const { mutateAsync } = trpc.useMutation("box.createBox", {
-            onSuccess: () => {
-                onBoxCreated();
-                document.dispatchEvent(new Event("visibilitychange"));
-                router.push("/");
-            },
-        });
 
         render(<CreateBox
             onBoxCreated={onBoxCreated}
