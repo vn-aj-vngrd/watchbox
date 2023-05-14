@@ -157,13 +157,14 @@ const CreateBox = ({ onBoxCreated, isFirstBox }: Props) => {
                     <div className="mt-2">
                       <div>
                         <label
-                          htmlFor="email"
+                          htmlFor="title"
                           className="block text-sm font-medium text-gray-700 dark:text-white"
                         >
                           Title
                         </label>
                         <div className="relative mt-2 rounded-md shadow-sm">
                           <input
+                            data-testid="title"
                             type="text"
                             className="input"
                             {...register("title", {
@@ -211,6 +212,7 @@ const CreateBox = ({ onBoxCreated, isFirstBox }: Props) => {
                   </button>
                   <button
                     type="submit"
+                    data-testid="create-button"
                     className="flex w-full items-center justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm focus:outline-none hover:bg-blue-700"
                   >
                     Create
