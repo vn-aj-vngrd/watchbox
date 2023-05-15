@@ -1,7 +1,6 @@
 import nextJest from "next/jest";
 
 const createJestConfig = nextJest({
-  // Provide the path to your Next.js app to load next.config.js and .env files in your test environment
   dir: "./",
 });
 
@@ -26,7 +25,6 @@ const customJestConfig = {
     "<rootDir>/src/tests/client/**/*.test.ts",
   ],
   moduleNameMapper: {
-    // Force module uuid to resolve with the CJS entry point, because Jest does not support package.json.exports. See https://github.com/uuidjs/uuid/issues/451
     uuid: require.resolve("uuid"),
     jose: require.resolve("jose"),
   },
