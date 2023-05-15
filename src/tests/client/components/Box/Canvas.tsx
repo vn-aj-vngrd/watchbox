@@ -1,6 +1,10 @@
 import { render, screen } from "@testing-library/react";
 import Canvas from "../../../../components/Box/Canvas";
 
+jest.mock("@prisma/client", () =>({
+  Prisma: jest.fn(),
+}));
+
 describe("Canvas component", () => {
   const mockCanvasElements = [
     {

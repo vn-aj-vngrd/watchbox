@@ -207,6 +207,7 @@ const EntryComponent = ({
       dragSnapToOrigin
       dragElastic={0}
       dragConstraints={canvasRef}
+      data-testid="entryComponent"
       onDrag={() => {
         if (canvasRect == null) canvasRect = canvasRef.current?.getBoundingClientRect();
       }}
@@ -219,14 +220,14 @@ const EntryComponent = ({
           ? () => router.push(`entry/${entryComponent?.entry?.componentId}`)
           : undefined
       }
-      className={`${
-        shift && "outline-2 hover:outline hover:outline-blue-500"
-      } absolute flex h-20 w-72 items-center justify-center rounded-md bg-gray-200 text-sm dark:bg-darkColor`}
+      className={`${shift && "outline-2 hover:outline hover:outline-blue-500"
+        } absolute flex h-20 w-72 items-center justify-center rounded-md bg-gray-200 text-sm dark:bg-darkColor`}
       style={{ top: entryComponent?.yAxis - 40, left: entryComponent?.xAxis - 144 }}
     >
       {shift && (
         <button
           disabled={!shift || temp.includes(entryComponent.id)}
+          data-testid="removeButton"
           onClick={() => {
             removeComponent(entryComponent.id);
           }}
@@ -238,9 +239,8 @@ const EntryComponent = ({
       {entryComponent.entry?.image && entryComponent?.entry?.image !== "" ? (
         <>
           <div
-            className={`rounded-r-0 absolute left-0 h-full w-full rounded-l-md ${
-              shift && "hover:cursor-move"
-            } ${entryComponent?.entry && !shift && "hover:cursor-pointer"}`}
+            className={`rounded-r-0 absolute left-0 h-full w-full rounded-l-md ${shift && "hover:cursor-move"
+              } ${entryComponent?.entry && !shift && "hover:cursor-pointer"}`}
           />
           <div className="rounded-r-0 pointer-events-none aspect-square h-full overflow-hidden rounded-l-md">
             <Image
@@ -262,9 +262,8 @@ const EntryComponent = ({
         </div>
       )}
       <div
-        className={`flex h-full grow items-center justify-center ${shift && "hover:cursor-move"} ${
-          entryComponent?.entry && !shift && "hover:cursor-pointer"
-        }`}
+        className={`flex h-full grow items-center justify-center ${shift && "hover:cursor-move"} ${entryComponent?.entry && !shift && "hover:cursor-pointer"
+          }`}
       >
         <>
           {entryComponent?.entry?.movieId ? (
@@ -277,9 +276,8 @@ const EntryComponent = ({
                 onChange={handleInputChange}
                 displayValue={(movie: Movie) => movie?.original_title ?? ""}
                 // disabled={shift}
-                className={`h-full w-full bg-transparent text-center placeholder-neutral-700 outline-none dark:placeholder-neutral-300 ${
-                  shift && "hover:cursor-move"
-                }`}
+                className={`h-full w-full bg-transparent text-center placeholder-neutral-700 outline-none dark:placeholder-neutral-300 ${shift && "hover:cursor-move"
+                  }`}
                 placeholder="Search for a movie..."
               />
               <div className="absolute top-20 z-20 mt-1 max-h-64 w-full overflow-hidden rounded-md bg-gray-200 dark:bg-darkColor">
@@ -303,9 +301,8 @@ const EntryComponent = ({
       </div>
       {entryComponent?.entry && (
         <div
-          className={`pointer-events-none absolute right-2 top-2 h-2.5 w-2.5 rounded-full ${
-            watchStatus[entryComponent.entry.status]?.color
-          }`}
+          className={`pointer-events-none absolute right-2 top-2 h-2.5 w-2.5 rounded-full ${watchStatus[entryComponent.entry.status]?.color
+            }`}
         />
       )}
     </motion.div>

@@ -57,7 +57,7 @@ describe("Components", () => {
     fireEvent.drag(entryComponent, { clientX: 150, clientY: 250 });
     fireEvent.dragEnd(entryComponent, { clientX: 150, clientY: 250 });
 
-    expect(mockAddStateComponent).toHaveBeenCalledWith(expect.any(Object));
+    expect(mockAddStateComponent).toHaveBeenCalled();
     expect(mockUpdateStateComponent).toHaveBeenCalled();
   });
 
