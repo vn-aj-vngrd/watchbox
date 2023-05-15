@@ -1,8 +1,28 @@
 import { render, screen } from "@testing-library/react";
 import Canvas from "../../../../components/Box/Canvas";
 
-jest.mock("@prisma/client", () =>({
-  Prisma: jest.fn(),
+jest.mock("next-auth/react", () => ({
+  useSession: jest.fn().mockReturnValue({
+    data: {
+      user: {
+        id: "1",
+        name: "John",
+      },
+    },
+  }),
+}));
+
+jest.mock("../../../../utils/trpc", () => ({
+  trpc: {
+    useMutation: jest.fn().mockReturnValue({
+      mutateAsync: jest.fn(),
+    }),
+  },
+}));
+
+jest.mock("use-long-press", () => ({
+  useLongPress: jest.fn().mockReturnValue(jest.fn()),
+  LongPressDetectEvents: jest.fn(),
 }));
 
 describe("Canvas component", () => {
