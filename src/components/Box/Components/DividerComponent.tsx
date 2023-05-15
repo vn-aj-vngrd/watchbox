@@ -296,6 +296,7 @@ const DividerComponent = ({
       dragSnapToOrigin
       dragElastic={0}
       dragConstraints={canvasRef}
+      data-testid="dividerComponent"
       onDrag={() => {
         if (canvasRect == null) canvasRect = canvasRef.current?.getBoundingClientRect();
       }}
@@ -326,9 +327,8 @@ const DividerComponent = ({
             className="group py-1.5 pl-2.5 pr-1 outline-none"
           >
             <ArrowPathRoundedSquareIcon
-              className={`${
-                dividerComponent.divider?.orientation === "vertical" && "rotate-90"
-              } h-4 w-4 transition-transform ease-in-out group-disabled:opacity-50`}
+              className={`${dividerComponent.divider?.orientation === "vertical" && "rotate-90"
+                } h-4 w-4 transition-transform ease-in-out group-disabled:opacity-50`}
             />
           </button>
           <button
@@ -337,6 +337,7 @@ const DividerComponent = ({
               temp.includes(dividerComponent.id) ||
               temp.includes(dividerComponent.divider?.id as string)
             }
+            data-testid="removeButton"
             onClick={() => {
               if (!deleteComponent.isLoading) removeComponent(dividerComponent.id);
             }}
