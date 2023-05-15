@@ -1,11 +1,11 @@
-import { render, screen, fireEvent, act } from '@testing-library/react';
-import DividerComponent from '../../../../../components/Box/Components/DividerComponent';
-import { trpc } from '../../../../../utils/trpc';
-import { snap } from "popmotion"
+import { render, screen, fireEvent, act } from "@testing-library/react";
+import DividerComponent from "../../../../../components/Box/Components/DividerComponent";
+import { trpc } from "../../../../../utils/trpc";
+import { snap } from "popmotion";
 
 jest.mock("popmotion", () => ({
-  snap: jest.fn()
-}))
+  snap: jest.fn(),
+}));
 
 jest.mock("use-long-press", () => ({
   useLongPress: jest.fn().mockReturnValue(jest.fn()),
@@ -19,14 +19,14 @@ jest.mock("next/router", () => ({
 jest.mock("../../../../../utils/trpc", () => ({
   trpc: {
     useMutation: jest.fn().mockReturnValue({
-      mutateAsync: jest.fn().mockResolvedValue(jest.fn())
+      mutateAsync: jest.fn().mockResolvedValue(jest.fn()),
     }),
   },
 }));
 
-describe('DividerComponent', () => {
+describe("DividerComponent", () => {
   const dividerComponent = {
-    id: '1',
+    id: "1",
     xAxis: 100,
     yAxis: 200,
     boxId: "1",
@@ -58,15 +58,15 @@ describe('DividerComponent', () => {
       updated_at: new Date(),
     },
     divider: {
-      componentId: '1',
-      orientation: 'horizontal',
+      componentId: "1",
+      orientation: "horizontal",
       height: 100,
       width: 2,
-      id: '2',
+      id: "2",
       created_at: new Date(),
       updated_at: new Date(),
-    }
-  }
+    },
+  };
 
   const removeStateComponent = jest.fn().mockResolvedValue(jest.fn());
   const updateStateComponent = jest.fn().mockResolvedValue(jest.fn());
@@ -75,8 +75,8 @@ describe('DividerComponent', () => {
     dividerComponent,
     removeStateComponent: removeStateComponent,
     updateStateComponent: updateStateComponent,
-    canvasRef: { current: document.createElement('div') },
-    canvasSizeRef: { current: document.createElement('div') },
+    canvasRef: { current: document.createElement("div") },
+    canvasSizeRef: { current: document.createElement("div") },
     shift: true,
     temp: [],
     setShift: jest.fn(),
@@ -85,32 +85,32 @@ describe('DividerComponent', () => {
     setSelectedComponent: jest.fn(),
   };
 
-  it('should render correctly', () => {
+  it("should render correctly", () => {
     render(<DividerComponent {...props} />);
-    expect(screen.getByTestId('dividerComponent')).toBeInTheDocument();
+    expect(screen.getByTestId("dividerComponent")).toBeInTheDocument();
   });
 
-  it('should call pop on render', () => {
+  it("should call pop on render", () => {
     render(<DividerComponent {...props} />);
     expect(snap).toHaveBeenCalledWith(10);
   });
 
-  it('should call the trpc use mutations', async () => {
+  it("should call the trpc use mutations", async () => {
     render(<DividerComponent {...props} />);
-    expect(screen.getByTestId('dividerComponent')).toBeInTheDocument();
+    expect(screen.getByTestId("dividerComponent")).toBeInTheDocument();
 
     expect(trpc.useMutation).toHaveBeenCalledWith("divider.createDivider");
     expect(trpc.useMutation).toHaveBeenCalledWith("component.deleteComponent");
     expect(trpc.useMutation).toHaveBeenCalledWith("component.updateComponent");
-  })
+  });
 
-  it('should call removeStateComponent when clicking trash icon', () => {
+  it("should call removeStateComponent when clicking trash icon", () => {
     render(<DividerComponent {...props} />);
 
     act(() => {
-      fireEvent.click(screen.getByTestId('removeButton'));
-    })
+      fireEvent.click(screen.getByTestId("removeButton"));
+    });
 
-    expect(removeStateComponent).toHaveBeenCalledWith('1');
+    expect(removeStateComponent).toHaveBeenCalledWith("1");
   });
 });

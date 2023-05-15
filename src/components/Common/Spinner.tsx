@@ -11,7 +11,7 @@ const Spinner = ({ isGlobal, isSmall }: Props) => {
       <div
         data-testid="spinner"
         role="status"
-        className="fixed top-0 bottom-0 left-0 right-0 z-50 m-auto flex h-full w-full flex-col items-center justify-center overflow-auto bg-gray-50 bg-opacity-50 dark:bg-darkerColor dark:bg-opacity-50"
+        className="fixed bottom-0 left-0 right-0 top-0 z-50 m-auto flex h-full w-full flex-col items-center justify-center overflow-auto bg-gray-50 bg-opacity-50 dark:bg-darkerColor dark:bg-opacity-50"
       >
         <svg
           aria-hidden="true"
@@ -38,8 +38,9 @@ const Spinner = ({ isGlobal, isSmall }: Props) => {
     <div className="text-center" data-testid="spinner">
       <div role="status">
         <svg
-          className={`flex animate-spin fill-blue-600 text-gray-200 ${isSmall ? "h-5 w-5" : "h-8 w-8"
-            }`}
+          className={`flex animate-spin fill-blue-600 text-gray-200 ${
+            isSmall ? "h-5 w-5" : "h-8 w-8"
+          }`}
           viewBox="0 0 100 101"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"

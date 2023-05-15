@@ -57,7 +57,7 @@ const Confetti = () => {
     <div data-testid="confetti">
       <ReactCanvasConfetti
         refConfetti={getInstance}
-        className="pointer-events-none absolute top-0 left-0 right-0 mx-auto h-full w-[31.25rem] sm:w-[37.5rem] md:w-[44.688rem] lg:w-[58.75rem]"
+        className="pointer-events-none absolute left-0 right-0 top-0 mx-auto h-full w-[31.25rem] sm:w-[37.5rem] md:w-[44.688rem] lg:w-[58.75rem]"
       />
     </div>
   );

@@ -145,15 +145,17 @@ const Controls = ({
 
   return (
     <div
-      className={`flex h-fit flex-col items-center justify-center gap-3 border-b py-2 transition-all duration-500 ease-in-out dark:border-darkColor ${!sidePanel ? "md:h-fit md:flex-col md:py-2" : "md:h-12 md:flex-row md:py-0"
-        }`}
+      className={`flex h-fit flex-col items-center justify-center gap-3 border-b py-2 transition-all duration-500 ease-in-out dark:border-darkColor ${
+        !sidePanel ? "md:h-fit md:flex-col md:py-2" : "md:h-12 md:flex-row md:py-0"
+      }`}
     >
       <button
         onClick={() => {
           updateControls(!bold, italic, underline, alignment);
         }}
-        className={`flex h-8 w-8 items-center justify-center rounded-md font-bold focus:outline-none hover:bg-gray-200 dark:border-transparent dark:text-white dark:hover:bg-darkColor ${bold ? "bg-gray-200 dark:bg-darkColor" : ""
-          }`}
+        className={`flex h-8 w-8 items-center justify-center rounded-md font-bold focus:outline-none hover:bg-gray-200 dark:border-transparent dark:text-white dark:hover:bg-darkColor ${
+          bold ? "bg-gray-200 dark:bg-darkColor" : ""
+        }`}
         aria-label="Bold"
       >
         <Icon icon={boldFill} />
@@ -162,8 +164,9 @@ const Controls = ({
         onClick={() => {
           updateControls(bold, !italic, underline, alignment);
         }}
-        className={`flex h-8 w-8 items-center justify-center rounded-md font-bold focus:outline-none hover:bg-gray-200 dark:border-transparent dark:text-white dark:hover:bg-darkColor ${italic ? "bg-gray-200 dark:bg-darkColor" : ""
-          }`}
+        className={`flex h-8 w-8 items-center justify-center rounded-md font-bold focus:outline-none hover:bg-gray-200 dark:border-transparent dark:text-white dark:hover:bg-darkColor ${
+          italic ? "bg-gray-200 dark:bg-darkColor" : ""
+        }`}
         aria-label="Italic"
       >
         <Icon icon={italicFill} />
@@ -172,8 +175,9 @@ const Controls = ({
         onClick={() => {
           updateControls(bold, italic, !underline, alignment);
         }}
-        className={`flex h-8 w-8 items-center justify-center rounded-md font-bold focus:outline-none hover:bg-gray-200 dark:border-transparent dark:text-white dark:hover:bg-darkColor ${underline ? "bg-gray-200 dark:bg-darkColor" : ""
-          }`}
+        className={`flex h-8 w-8 items-center justify-center rounded-md font-bold focus:outline-none hover:bg-gray-200 dark:border-transparent dark:text-white dark:hover:bg-darkColor ${
+          underline ? "bg-gray-200 dark:bg-darkColor" : ""
+        }`}
         aria-label="Underline"
       >
         <Icon icon={underlineFill} />
@@ -195,13 +199,15 @@ const Controls = ({
       </button>
       <button
         onClick={() => setSidePanel(!sidePanel)}
-        className={`hidden h-8 w-8 items-center justify-center rounded-md border font-bold focus:outline-none hover:bg-gray-200 dark:border-transparent dark:border-grayColor dark:text-white dark:hover:bg-darkColor md:flex ${!sidePanel ? "md:order-first" : "md:order-none"
-          }`}
+        className={`hidden h-8 w-8 items-center justify-center rounded-md border font-bold focus:outline-none hover:bg-gray-200 dark:border-grayColor dark:border-transparent dark:text-white dark:hover:bg-darkColor md:flex ${
+          !sidePanel ? "md:order-first" : "md:order-none"
+        }`}
         aria-label="Side Panel"
       >
         <ChevronLeftIcon
-          className={`h-4 w-4 fill-black transition-transform ease-in-out dark:fill-white ${!sidePanel ? "rotate-180" : ""
-            }`}
+          className={`h-4 w-4 fill-black transition-transform ease-in-out dark:fill-white ${
+            !sidePanel ? "rotate-180" : ""
+          }`}
         />
       </button>
     </div>

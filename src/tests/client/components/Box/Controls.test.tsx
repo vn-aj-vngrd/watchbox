@@ -72,7 +72,7 @@ describe("Controls", () => {
         setSidePanel={mockSetSidePanel}
         selectedComponent={mockSelectedComponent}
         updateComponent={mockUpdateComponent}
-      />
+      />,
     );
 
     const boldButton = getByLabelText("Bold");
@@ -93,7 +93,7 @@ describe("Controls", () => {
         setSidePanel={mockSetSidePanel}
         selectedComponent={mockSelectedComponent}
         updateComponent={mockUpdateComponent}
-      />
+      />,
     );
 
     const italicButton = getByLabelText("Italic");
@@ -114,7 +114,7 @@ describe("Controls", () => {
         setSidePanel={mockSetSidePanel}
         selectedComponent={mockSelectedComponent}
         updateComponent={mockUpdateComponent}
-      />
+      />,
     );
 
     const underlineButton = getByLabelText("Underline");
@@ -135,7 +135,7 @@ describe("Controls", () => {
         setSidePanel={mockSetSidePanel}
         selectedComponent={mockSelectedComponent}
         updateComponent={mockUpdateComponent}
-      />
+      />,
     );
 
     const alignButton = getByLabelText("Align");
@@ -150,7 +150,7 @@ describe("Controls", () => {
           alignment: 1,
           updated_at: expect.any(Date),
         },
-      })
+      }),
     );
   });
 });

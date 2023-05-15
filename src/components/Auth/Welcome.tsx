@@ -88,11 +88,11 @@ const Welcome = () => {
             </div>
 
             {getStarted.error && (
-              <p className="mt-2 ml-1 text-sm text-red-500">{getStarted.error.message}</p>
+              <p className="ml-1 mt-2 text-sm text-red-500">{getStarted.error.message}</p>
             )}
 
             {errors.username && (
-              <p className="mt-2 ml-1 text-sm text-red-500">{errors.username.message}</p>
+              <p className="ml-1 mt-2 text-sm text-red-500">{errors.username.message}</p>
             )}
           </div>
 

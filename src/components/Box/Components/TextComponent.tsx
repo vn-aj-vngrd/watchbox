@@ -230,12 +230,13 @@ const TextComponent = ({
             ${textComponent.text?.bold && "font-bold"} 
             ${textComponent.text?.italic && "italic"} 
             ${textComponent.text?.underline && "underline"} 
-            ${{
-            0: "text-left",
-            1: "text-center",
-            2: "text-right",
-          }[textComponent.text?.alignment || 0]
-          }
+            ${
+              {
+                0: "text-left",
+                1: "text-center",
+                2: "text-right",
+              }[textComponent.text?.alignment || 0]
+            }
           `}
         onKeyDown={(e) => {
           if (e.key === "Enter") {

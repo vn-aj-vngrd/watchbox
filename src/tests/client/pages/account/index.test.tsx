@@ -1,6 +1,6 @@
 import { act, render, screen } from "@testing-library/react";
 import Index from "../../../../pages/account/index";
-import React from 'react';
+import React from "react";
 
 jest.mock("next-auth/react", () => ({
   useSession: () => ({ data: { user: { isNewUser: false } } }),
@@ -24,17 +24,14 @@ jest.mock("../../../../utils/trpc", () => ({
   },
 }));
 
-jest.mock('../../../../components/Account/Settings',
-  () => {
-    const MockSettings = () => <div data-testid="settings" />;
-    return MockSettings;
-  }
-);
+jest.mock("../../../../components/Account/Settings", () => {
+  const MockSettings = () => <div data-testid="settings" />;
+  return MockSettings;
+});
 
 describe("Settings page", () => {
   it("renders entry header component", async () => {
     await act(() => render(<Index />));
     expect(screen.getByTestId("settings")).toBeInTheDocument();
   });
-
 });

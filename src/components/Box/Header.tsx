@@ -141,9 +141,10 @@ const Header = ({ box, favoriteBox, id, temp, refetch }: Props) => {
         <span
           ref={spanRef}
           onBlur={handleBlur}
-          className={`mt-px border-b border-b-transparent pl-1 pr-3 outline-none ${session?.user?.id === box?.id &&
+          className={`mt-px border-b border-b-transparent pl-1 pr-3 outline-none ${
+            session?.user?.id === box?.id &&
             "focus:border-b-gray-200 hover:border-b-gray-200 dark:focus:border-b-darkColor dark:hover:border-b-darkColor"
-            }`}
+          }`}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
               e.preventDefault();
@@ -161,7 +162,7 @@ const Header = ({ box, favoriteBox, id, temp, refetch }: Props) => {
             {errors.length > 0 ? (
               <Popover.Root>
                 <Popover.Trigger>
-                  <InformationCircleIcon className="mt-0.5 mr-2 h-4 w-4 text-red-500" />
+                  <InformationCircleIcon className="mr-2 mt-0.5 h-4 w-4 text-red-500" />
                 </Popover.Trigger>
                 <Popover.Content
                   align="center"
@@ -178,9 +179,9 @@ const Header = ({ box, favoriteBox, id, temp, refetch }: Props) => {
                 <Tooltip.Root>
                   <Tooltip.Trigger tabIndex={-1} className="cursor-auto outline-none">
                     {temp.length > 0 ? (
-                      <ArrowPathIcon className="mt-0.5 mr-2 h-4 w-4 animate-spin text-blue-500" />
+                      <ArrowPathIcon className="mr-2 mt-0.5 h-4 w-4 animate-spin text-blue-500" />
                     ) : (
-                      <CheckCircleIcon className="mt-0.5 mr-2 h-4 w-4 text-blue-500" />
+                      <CheckCircleIcon className="mr-2 mt-0.5 h-4 w-4 text-blue-500" />
                     )}
                   </Tooltip.Trigger>
                   <Tooltip.Content
@@ -205,15 +206,9 @@ const Header = ({ box, favoriteBox, id, temp, refetch }: Props) => {
         aria-label="Favorite"
       >
         {favorite ? (
-          <SolidHeartIcon
-            className="h-5 w-5 text-red-500"
-            aria-label="Favorited"
-          />
+          <SolidHeartIcon className="h-5 w-5 text-red-500" aria-label="Favorited" />
         ) : (
-          <OutlineHeartIcon
-            className="h-5 w-5 dark:text-white"
-            aria-label="Unfavorited"
-          />
+          <OutlineHeartIcon className="h-5 w-5 dark:text-white" aria-label="Unfavorited" />
         )}
       </button>
 
@@ -250,7 +245,7 @@ const Header = ({ box, favoriteBox, id, temp, refetch }: Props) => {
                 <Menu.Item>
                   <button
                     onClick={onLockUnlock}
-                    className="flex w-full items-center justify-start py-2 px-4"
+                    className="flex w-full items-center justify-start px-4 py-2"
                     aria-label="Privacy"
                   >
                     {isPublic ? (
@@ -259,10 +254,7 @@ const Header = ({ box, favoriteBox, id, temp, refetch }: Props) => {
                         aria-label="Public"
                       />
                     ) : (
-                      <LockClosedIcon
-                        className="h-5 w-5 dark:text-white"
-                        aria-label="Private"
-                      />
+                      <LockClosedIcon className="h-5 w-5 dark:text-white" aria-label="Private" />
                     )}
                     <div className="px-3 pb-px text-left text-sm">
                       {isPublic ? "Make Private" : "Make Public"}
@@ -279,8 +271,9 @@ const Header = ({ box, favoriteBox, id, temp, refetch }: Props) => {
               </div>
             )}
             <div
-              className={`rounded-b-md hover:bg-gray-100 dark:hover:bg-grayColor ${session?.user?.id !== box?.id && "rounded-t-md"
-                }`}
+              className={`rounded-b-md hover:bg-gray-100 dark:hover:bg-grayColor ${
+                session?.user?.id !== box?.id && "rounded-t-md"
+              }`}
             >
               <Menu.Item>
                 <Information box={box} />

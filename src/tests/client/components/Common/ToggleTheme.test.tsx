@@ -1,83 +1,83 @@
-import { render, screen, fireEvent } from '@testing-library/react'
+import { render, screen, fireEvent } from "@testing-library/react";
 import ToggleTheme from "../../../../components/Common/ToggleTheme";
 
 const mockUseTheme = jest.fn();
 
-jest.mock('next-themes', () => ({
+jest.mock("next-themes", () => ({
   useTheme: () => mockUseTheme(),
 }));
 
-describe('ToggleTheme', () => {
-  const setTheme = jest.fn()
-  const systemTheme = 'system'
-  const lightTheme = 'light'
-  const darkTheme = 'dark'
+describe("ToggleTheme", () => {
+  const setTheme = jest.fn();
+  const systemTheme = "system";
+  const lightTheme = "light";
+  const darkTheme = "dark";
 
   beforeEach(() => {
     mockUseTheme.mockReturnValue({
       systemTheme,
       theme: lightTheme,
       setTheme,
-    })
-  })
+    });
+  });
 
   afterEach(() => {
-    jest.clearAllMocks()
-  })
+    jest.clearAllMocks();
+  });
 
-  it('renders the sun icon for dark theme', () => {
+  it("renders the sun icon for dark theme", () => {
     mockUseTheme.mockReturnValue({
       systemTheme,
       theme: darkTheme,
       setTheme,
-    })
+    });
 
-    const { getByTestId } = render(<ToggleTheme />)
+    const { getByTestId } = render(<ToggleTheme />);
 
-    const sunIcon = getByTestId('sun-icon');
-    expect(sunIcon).toBeInTheDocument()
-  })
+    const sunIcon = getByTestId("sun-icon");
+    expect(sunIcon).toBeInTheDocument();
+  });
 
-  it('renders the moon icon for light theme', () => {
+  it("renders the moon icon for light theme", () => {
     mockUseTheme.mockReturnValue({
       systemTheme,
       theme: lightTheme,
       setTheme,
-    })
+    });
 
-    const { getByTestId } = render(<ToggleTheme />)
+    const { getByTestId } = render(<ToggleTheme />);
 
-    const moonIcon = getByTestId('moon-icon');
-    expect(moonIcon).toBeInTheDocument()
-  })
+    const moonIcon = getByTestId("moon-icon");
+    expect(moonIcon).toBeInTheDocument();
+  });
 
   it('calls setTheme with "light" when button is clicked on dark theme', () => {
     mockUseTheme.mockReturnValue({
       systemTheme,
       theme: darkTheme,
       setTheme,
-    })
+    });
 
-    render(<ToggleTheme />)
+    render(<ToggleTheme />);
 
-    const button = screen.getByRole('button')
-    fireEvent.click(button)
+    const button = screen.getByRole("button");
+    fireEvent.click(button);
 
-    expect(setTheme).toHaveBeenCalledWith(lightTheme)
-  })
+    expect(setTheme).toHaveBeenCalledWith(lightTheme);
+  });
 
   it('calls setTheme with "dark" when button is clicked on light theme', () => {
     mockUseTheme.mockReturnValue({
       systemTheme,
       theme: lightTheme,
       setTheme,
-    })
+    });
 
-    render(<ToggleTheme />)
+    render(<ToggleTheme />);
 
-    const button = screen.getByRole('button')
-    fireEvent.click(button)
+    const button = screen.getByRole("button");
+    fireEvent.click(button);
 
-    expect(setTheme).toHaveBeenCalledWith(darkTheme)
-  })
-})
+    expect(setTheme).toHaveBeenCalledWith(darkTheme);
+  });
+});

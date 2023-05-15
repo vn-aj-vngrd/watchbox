@@ -28,7 +28,7 @@ describe("Components", () => {
         updateStateComponent={updateStateComponent}
         setTemp={setTemp}
         sidePanel={sidePanel}
-      />
+      />,
     );
 
     expect(getByLabelText("Text Component")).toBeInTheDocument();

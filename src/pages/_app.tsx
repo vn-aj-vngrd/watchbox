@@ -12,7 +12,7 @@ import superjson from "superjson";
 import Layout from "../components/Common/Layout";
 import type { AppRouter } from "../server/router";
 import "../styles/globals.css";
-import 'resize-observer-polyfill';
+import "resize-observer-polyfill";
 
 const MyApp: AppType = ({ Component, pageProps: { session, ...pageProps } }) => {
   return (
@@ -28,7 +28,7 @@ const MyApp: AppType = ({ Component, pageProps: { session, ...pageProps } }) => 
                 showSpinner: false,
               }}
             />
-            <Component {...pageProps} data-testid="app-component"/>
+            <Component {...pageProps} data-testid="app-component" />
           </>
         </Layout>
       </ThemeProvider>

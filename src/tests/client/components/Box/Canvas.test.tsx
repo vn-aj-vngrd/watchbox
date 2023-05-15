@@ -66,7 +66,7 @@ describe("Canvas component", () => {
         updateStateComponent={jest.fn()}
         setShift={jest.fn()}
         setSelectedComponent={jest.fn()}
-      />
+      />,
     );
     expect(screen.getByText("Hello World!")).toBeInTheDocument();
   });

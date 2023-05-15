@@ -96,7 +96,7 @@ const Metadata = ({
 
   useEffect(() => {
     if (movie?.overview) setShowMore(movie.overview.length < 350);
-  }, [movie]);  
+  }, [movie]);
 
   const updateRating = trpc.useMutation("entry.updateRating");
   const updateReview = trpc.useMutation("entry.updateReview");
@@ -266,7 +266,7 @@ const Metadata = ({
             <div>
               <button
                 onClick={handleReview}
-                className={`inline-flex items-center rounded py-2 px-4 font-bold dark:bg-darkColor dark:hover:bg-grayColor md:py-4 md:px-8 ${
+                className={`inline-flex items-center rounded px-4 py-2 font-bold dark:bg-darkColor dark:hover:bg-grayColor md:px-8 md:py-4 ${
                   review || toggleReview
                     ? "bg-blue-600 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-800"
                     : "bg-gray-100 text-gray-800 hover:bg-gray-200"
@@ -286,7 +286,7 @@ const Metadata = ({
             <div>
               <button
                 onClick={handleNote}
-                className={`inline-flex items-center rounded py-2 px-4 font-bold dark:bg-darkColor dark:hover:bg-grayColor md:py-4 md:px-8 ${
+                className={`inline-flex items-center rounded px-4 py-2 font-bold dark:bg-darkColor dark:hover:bg-grayColor md:px-8 md:py-4 ${
                   note || toggleNote
                     ? "bg-blue-600 hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-800"
                     : "bg-gray-100 text-gray-800 hover:bg-gray-200"
@@ -310,7 +310,7 @@ const Metadata = ({
                 rel={"noreferrer"}
                 className={`${!watchProvider && "pointer-events-none"}`}
               >
-                <div className="inline-flex items-center rounded bg-gray-100 py-2 px-4 font-bold text-gray-800 hover:bg-gray-200 dark:bg-darkColor dark:hover:bg-grayColor md:py-4 md:px-8">
+                <div className="inline-flex items-center rounded bg-gray-100 px-4 py-2 font-bold text-gray-800 hover:bg-gray-200 dark:bg-darkColor dark:hover:bg-grayColor md:px-8 md:py-4">
                   <Icon icon={eye2Fill} width="20" className="h-5 w-5 dark:text-white" />
                 </div>
               </a>

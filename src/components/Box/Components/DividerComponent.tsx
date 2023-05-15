@@ -314,7 +314,7 @@ const DividerComponent = ({
       className={`group absolute py-2 ${shift && "hover:cursor-move"}`}
     >
       {shift && (
-        <div className="absolute -top-3 -right-3 z-20 flex items-center justify-center rounded-full bg-gray-200 shadow-md shadow-gray-300 dark:bg-darkColor dark:shadow-black/20">
+        <div className="absolute -right-3 -top-3 z-20 flex items-center justify-center rounded-full bg-gray-200 shadow-md shadow-gray-300 dark:bg-darkColor dark:shadow-black/20">
           <button
             disabled={
               !shift ||
@@ -327,8 +327,9 @@ const DividerComponent = ({
             className="group py-1.5 pl-2.5 pr-1 outline-none"
           >
             <ArrowPathRoundedSquareIcon
-              className={`${dividerComponent.divider?.orientation === "vertical" && "rotate-90"
-                } h-4 w-4 transition-transform ease-in-out group-disabled:opacity-50`}
+              className={`${
+                dividerComponent.divider?.orientation === "vertical" && "rotate-90"
+              } h-4 w-4 transition-transform ease-in-out group-disabled:opacity-50`}
             />
           </button>
           <button

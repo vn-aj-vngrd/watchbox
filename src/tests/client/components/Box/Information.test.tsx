@@ -12,14 +12,16 @@ describe("Information component", () => {
     isNewUser: false,
     created_at: new Date(2022, 4, 1, 8, 0, 0),
     updated_at: new Date(2022, 4, 1, 8, 0, 0),
-    boxes: [{
-      id: "1",
-      userId: "1",
-      boxTitle: "My Box",
-      isPublic: false,
-      created_at: new Date(2022, 4, 1, 8, 0, 0),
-      updated_at: new Date(2022, 4, 1, 8, 0, 0),
-    }],
+    boxes: [
+      {
+        id: "1",
+        userId: "1",
+        boxTitle: "My Box",
+        isPublic: false,
+        created_at: new Date(2022, 4, 1, 8, 0, 0),
+        updated_at: new Date(2022, 4, 1, 8, 0, 0),
+      },
+    ],
   };
 
   it("displays the owner's username", async () => {
@@ -41,7 +43,9 @@ describe("Information component", () => {
       fireEvent.click(menuButton);
     });
 
-    expect(screen.getByText(/Created at:/).nextSibling).toHaveTextContent("May 1st 2022, 8:00:00 am");
+    expect(screen.getByText(/Created at:/).nextSibling).toHaveTextContent(
+      "May 1st 2022, 8:00:00 am",
+    );
   });
 
   it("displays the box's update time", async () => {
@@ -52,6 +56,8 @@ describe("Information component", () => {
       fireEvent.click(menuButton);
     });
 
-    expect(screen.getByText(/Updated at:/).nextSibling).toHaveTextContent("May 1st 2022, 8:00:00 am");
+    expect(screen.getByText(/Updated at:/).nextSibling).toHaveTextContent(
+      "May 1st 2022, 8:00:00 am",
+    );
   });
 });

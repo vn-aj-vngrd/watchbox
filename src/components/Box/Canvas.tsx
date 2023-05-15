@@ -48,7 +48,7 @@ const Canvas: React.FC<Props> = ({
       {...(shift || disablePan ? {} : { ...events })}
       className="relative flex h-full items-center justify-center scrollbar-thin scrollbar-track-gray-400/20 scrollbar-thumb-blue-500"
     >
-      <div ref={canvasSizeRef} className="absolute top-0 left-0 -z-50" />
+      <div ref={canvasSizeRef} className="absolute left-0 top-0 -z-50" />
       {canvasElements?.length === 0 ? (
         <span className="text-sm text-gray-500 dark:text-neutral-400">
           {session?.user?.id === userId ? "Add your first entry." : "This Box is empty."}

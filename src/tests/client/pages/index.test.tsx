@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import Home from "../../../pages/index";
-import React from 'react';
+import React from "react";
 
 jest.mock("next-auth/react", () => ({
   useSession: () => ({ data: { user: { isNewUser: false } } }),

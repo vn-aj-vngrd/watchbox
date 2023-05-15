@@ -157,7 +157,7 @@ const Boxes = ({ setMode }: BoxesProps) => {
       </div>
 
       {boxesData.isLoading && (
-        <div className="absolute top-[50%] left-0 right-0 ml-auto mr-auto">
+        <div className="absolute left-0 right-0 top-[50%] ml-auto mr-auto">
           <div className="flex items-center justify-center">
             <Spinner />
           </div>
@@ -165,7 +165,7 @@ const Boxes = ({ setMode }: BoxesProps) => {
       )}
 
       {boxesData.data?.length === 0 && (
-        <div className="absolute top-[50%] right-0 left-0 space-y-10 text-center">
+        <div className="absolute left-0 right-0 top-[50%] space-y-10 text-center">
           <div className="flex flex-col items-center justify-center">
             <CubeIcon className="h-5 w-5 fill-blue-600" />
             <h3 className="mt-2 font-medium text-black dark:text-white">No Boxes Found</h3>

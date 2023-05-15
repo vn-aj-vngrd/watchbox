@@ -13,7 +13,7 @@ type Props = {
 const Information = ({ box }: Props) => {
   return (
     <Menu>
-      <Menu.Button className="flex w-full items-center justify-start py-2 px-4">
+      <Menu.Button className="flex w-full items-center justify-start px-4 py-2">
         <InformationCircleIcon className="h-5 w-5 dark:text-white" />
         <div className="w-24 px-3 pb-px text-left text-sm">Box Info</div>
       </Menu.Button>

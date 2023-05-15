@@ -39,7 +39,7 @@ describe("Welcome", () => {
     fireEvent.click(submitButton);
 
     await waitFor(() =>
-      expect(screen.getByText("Enter a username to continue.")).toBeInTheDocument()
+      expect(screen.getByText("Enter a username to continue.")).toBeInTheDocument(),
     );
   });
 
@@ -55,9 +55,9 @@ describe("Welcome", () => {
     await waitFor(() =>
       expect(
         screen.getByText(
-          "Username must be at least 5 characters long and contain only letters and numbers."
-        )
-      ).toBeInTheDocument()
+          "Username must be at least 5 characters long and contain only letters and numbers.",
+        ),
+      ).toBeInTheDocument(),
     );
   });
 
@@ -73,9 +73,9 @@ describe("Welcome", () => {
     await waitFor(() =>
       expect(
         screen.getByText(
-          "Username must be at least 5 characters long and contain only letters and numbers."
-        )
-      ).toBeInTheDocument()
+          "Username must be at least 5 characters long and contain only letters and numbers.",
+        ),
+      ).toBeInTheDocument(),
     );
   });
 });

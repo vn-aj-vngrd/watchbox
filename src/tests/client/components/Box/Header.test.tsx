@@ -37,14 +37,16 @@ describe("Header", () => {
     isNewUser: false,
     created_at: new Date(2022, 4, 1, 8, 0, 0),
     updated_at: new Date(2022, 4, 1, 8, 0, 0),
-    boxes: [{
-      id: "1",
-      userId: "1",
-      boxTitle: "My Box",
-      isPublic: false,
-      created_at: new Date(2022, 4, 1, 8, 0, 0),
-      updated_at: new Date(2022, 4, 1, 8, 0, 0),
-    }],
+    boxes: [
+      {
+        id: "1",
+        userId: "1",
+        boxTitle: "My Box",
+        isPublic: false,
+        created_at: new Date(2022, 4, 1, 8, 0, 0),
+        updated_at: new Date(2022, 4, 1, 8, 0, 0),
+      },
+    ],
   };
 
   const favoriteBox = {
@@ -77,17 +79,19 @@ describe("Header", () => {
     fireEvent.click(title);
     fireEvent.input(title, { target: { textContent: "This title exceeds 25 characters limit" } });
     fireEvent.blur(title);
-    await waitFor(() => expect(screen.getByText("This title exceeds 25 characters limit")).toBeInTheDocument());
+    await waitFor(() =>
+      expect(screen.getByText("This title exceeds 25 characters limit")).toBeInTheDocument(),
+    );
   });
 
   it("toggles favorite box", () => {
     render(<Header box={box} favoriteBox={favoriteBox} id={"1"} temp={["1"]} refetch={refetch} />);
-    const favoriteButton = screen.getByLabelText('Favorite');
-    expect(screen.getByLabelText('Favorited')).toBeInTheDocument();
+    const favoriteButton = screen.getByLabelText("Favorite");
+    expect(screen.getByLabelText("Favorited")).toBeInTheDocument();
     fireEvent.click(favoriteButton);
-    expect(screen.getByLabelText('Unfavorited')).toBeInTheDocument();
+    expect(screen.getByLabelText("Unfavorited")).toBeInTheDocument();
     fireEvent.click(favoriteButton);
-    expect(screen.getByLabelText('Favorited')).toBeInTheDocument();
+    expect(screen.getByLabelText("Favorited")).toBeInTheDocument();
   });
 
   it("toggles box privacy", async () => {
@@ -97,18 +101,18 @@ describe("Header", () => {
     await act(async () => {
       fireEvent.click(moreOptions);
     });
-    expect(screen.getByLabelText('Private')).toBeInTheDocument();
+    expect(screen.getByLabelText("Private")).toBeInTheDocument();
     fireEvent.click(screen.getByLabelText("Privacy"));
 
     await act(async () => {
       fireEvent.click(moreOptions);
     });
-    expect(screen.getByLabelText('Public')).toBeInTheDocument();
+    expect(screen.getByLabelText("Public")).toBeInTheDocument();
     fireEvent.click(screen.getByLabelText("Privacy"));
 
     await act(async () => {
       fireEvent.click(moreOptions);
     });
-    expect(screen.getByLabelText('Private')).toBeInTheDocument();
+    expect(screen.getByLabelText("Private")).toBeInTheDocument();
   });
 });

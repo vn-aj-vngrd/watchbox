@@ -17,7 +17,7 @@ jest.mock("../../../../utils/trpc", () => ({
           created_at: new Date(2022, 4, 1, 8, 0, 0),
           updated_at: new Date(2022, 4, 1, 8, 0, 0),
           components: [],
-        }
+        },
       ],
     }),
   },

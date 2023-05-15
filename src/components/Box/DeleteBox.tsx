@@ -16,7 +16,7 @@ const DeleteBox = ({ onDeleteBox }: Props) => {
   return (
     <>
       <button
-        className="flex w-full items-center justify-start py-2 px-4"
+        className="flex w-full items-center justify-start px-4 py-2"
         onClick={() => setOpen(true)}
       >
         <TrashIcon className="h-5 w-5 dark:text-white" />
@@ -48,7 +48,7 @@ const DeleteBox = ({ onDeleteBox }: Props) => {
                 leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
               >
                 <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all dark:bg-darkerColor sm:my-8 sm:w-full sm:max-w-lg">
-                  <div className="bg-white px-4 pt-5 pb-4 dark:bg-darkerColor sm:p-6 sm:pb-4">
+                  <div className="bg-white px-4 pb-4 pt-5 dark:bg-darkerColor sm:p-6 sm:pb-4">
                     <div className="sm:flex sm:items-start">
                       <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
                         <ExclamationTriangleIcon
@@ -56,7 +56,7 @@ const DeleteBox = ({ onDeleteBox }: Props) => {
                           aria-hidden="true"
                         />
                       </div>
-                      <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                      <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
                         <Dialog.Title
                           as="h3"
                           className="text-lg font-medium leading-6 text-gray-900 dark:text-white"
@@ -86,7 +86,7 @@ const DeleteBox = ({ onDeleteBox }: Props) => {
                     </button>
                     <button
                       type="button"
-                      className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm focus:outline-none hover:bg-gray-50 dark:border-darkColor dark:bg-darkColor dark:text-white dark:hover:bg-grayColor sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+                      className="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm focus:outline-none hover:bg-gray-50 dark:border-darkColor dark:bg-darkColor dark:text-white dark:hover:bg-grayColor sm:ml-3 sm:mt-0 sm:w-auto sm:text-sm"
                       onClick={() => setOpen(false)}
                       ref={cancelButtonRef}
                     >
