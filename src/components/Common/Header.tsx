@@ -35,6 +35,7 @@ const Header = ({ session }: Props) => {
               onClick={() => router.push("/")}
               type="button"
               className="nav-link hidden md:inline-flex"
+              data-testid="homeButton"
             >
               <HomeIcon className="nav-icon" />
             </button>
