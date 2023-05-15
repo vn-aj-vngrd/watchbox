@@ -156,7 +156,7 @@ const BoxPage = () => {
   }
 
   return (
-    <div className="flex h-full w-full">
+    <div className="flex h-full w-full" data-testid="boxComponent">
       {session?.user?.id === getBox.data?.id && (
         <div
           className={`flex h-full w-12 flex-col border-r transition-all duration-500 ease-in-out dark:border-darkColor ${
